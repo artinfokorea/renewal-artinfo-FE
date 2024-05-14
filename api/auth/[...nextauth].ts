@@ -158,8 +158,6 @@ const handler = NextAuth({
   ],
   callbacks: {
     async jwt({ token, user, account }: any) {
-      // const res = NextResponse.next()
-
       if (user?.data) {
         token.accessToken = user?.data.accessToken;
         token.refreshToken = user?.data.refreshToken;
@@ -195,11 +193,6 @@ const handler = NextAuth({
       }
 
       return session;
-    },
-
-    async redirect({ url, baseUrl }: any) {
-      console.log("baseUrl", baseUrl);
-      return baseUrl;
     },
   },
 });

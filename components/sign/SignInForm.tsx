@@ -7,11 +7,11 @@ import { ErrorMessage } from "@hookform/error-message";
 import { useLoading } from "@toss/use-loading";
 import * as yup from "yup";
 import { useRouter } from "next/navigation";
-import useToast from "@/hooks/useToast";
 import { Label } from "../ui/label";
 import { Input } from "../ui/input";
 import { Button } from "../ui/button";
 import ConfirmDialog from "../common/ConfirmDialog";
+import Link from "next/link";
 
 const schema = yup
   .object({
@@ -68,13 +68,18 @@ const SignInForm = () => {
 
   return (
     <form
-      className="max-w-[500px] mx-auto mt-40 md:mt-80 px-4 "
+      className="max-w-[500px] mx-auto mt-40 md:mt-60 px-4 "
       onSubmit={handleSubmit(handleSignIn)}
     >
-      <h2 className="text-2xl font-bold text-main text-center">ARTINFO</h2>
+      <h2 className="text-4xl font-bold text-main text-center">ARTINFO</h2>
       <div className="grid items-center gap-4 my-4 text-primary">
         <Label htmlFor="이메일">이메일</Label>
-        <Input {...register("email")} type="email" placeholder="이메일" />
+        <Input
+          {...register("email")}
+          type="email"
+          placeholder="이메일"
+          autoComplete="email"
+        />
         <ErrorMessage
           errors={errors}
           name="email"
@@ -89,6 +94,7 @@ const SignInForm = () => {
           {...register("password")}
           type="password"
           placeholder="비밀번호"
+          autoComplete="current-password"
         />
         <ErrorMessage
           errors={errors}
@@ -107,24 +113,29 @@ const SignInForm = () => {
       </Button>
 
       <p className="text-primary text-center">
-        아직 회원이 아니신가요?{" "}
-        <span
-          className="text-main cursor-pointer"
-          onClick={() => router.push("/auth/sign-up")}
-        >
-          회원가입
-        </span>
+        아직 회원이 아니신가요?
+        <Link href="/auth/sign-up">
+          <span className="text-main cursor-pointer"> 회원가입</span>
+        </Link>
       </p>
+      <Link href="/auth/sign-up">
+        <p className="text-center text-main">아이디 또는 비밀번호 찾기</p>
+      </Link>
+      <div className="flex text-grey mt-2">
+        <div className="border-b-2 w-full border-grey mb-3" />
+        <span className="whitespace-nowrap mx-4 font-semibold">간편로그인</span>
+        <div className="border-b-2 w-full border-grey mb-3" />
+      </div>
 
-      <div className="grid grid-cols-3 w-[200px] mx-auto mt-4">
-        <button
+      <div className="flex justify-between w-[200px] mx-auto mt-4">
+        <Button
           type="button"
-          className="p-1 w-[48px] h-[48px] rounded-lg transition ease-in-out duration-150 inline-flex items-center justify-center  text-white shadow-md  focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 disabled:opacity-50 "
+          className="p-1 bg-white w-[48px] h-[48px] rounded-lg transition ease-in-out duration-150 inline-flex items-center justify-center  text-white shadow-md  focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 disabled:opacity-50 "
           disabled={isLoading}
           //   onClick={signInWithGoogle}
         >
           <img src="/google_logo.png" alt="google_logo" />
-        </button>
+        </Button>
         <button
           type="button"
           className="w-[48px] h-[48px] rounded-lg transition ease-in-out duration-150 inline-flex items-center justify-center  text-white shadow-md  focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 disabled:opacity-50 "

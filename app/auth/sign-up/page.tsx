@@ -1,3 +1,4 @@
+import SignUpForm from "@/components/sign/SignUpForm";
 import { Metadata } from "next";
 import React from "react";
 
@@ -8,7 +9,11 @@ export const metadata: Metadata = {
 };
 
 const page = () => {
-  return <main className="h-full">sign-up</main>;
+  return (
+    <main>
+      <SignUpForm />
+    </main>
+  );
 };
 
 export default page;

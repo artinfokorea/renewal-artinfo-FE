@@ -2,6 +2,8 @@ import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
 import Header from "@/components/layouts/Header";
+import QueryProvider from "@/components/provider/QueryProvider";
+import ToasterProvider from "@/components/provider/ToasterProvider";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -55,7 +57,9 @@ export default function RootLayout({
         suppressHydrationWarning
       >
         <Header />
-        {children}
+        <ToasterProvider>
+          <QueryProvider>{children}</QueryProvider>
+        </ToasterProvider>
       </body>
     </html>
   );

@@ -10,7 +10,7 @@ export const metadata: Metadata = {
 
 const page = () => {
   return (
-    <main className="h-full">
+    <main>
       <SignInForm />
     </main>
   );
