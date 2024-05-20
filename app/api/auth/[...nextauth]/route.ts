@@ -1,17 +1,24 @@
-import NextAuth from "next-auth";
+import NextAuth, { User } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
 
-const handleRefreshToken = async (refreshToken: string) => {
+const handleRefreshToken = async ({
+  accessToken,
+  refreshToken,
+}: {
+  accessToken: string;
+  refreshToken: string;
+}) => {
   try {
     const res = await fetch(
-      `${process.env.NEXT_PUBLIC_REST_API}/sign/refresh`,
+      `${process.env.REST_API_BASE_URL}/auths/refresh/access-token`,
       {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          refreshToken: "11",
+          accessToken,
+          refreshToken,
         }),
       }
     ).then((res) => res.json());
@@ -28,10 +35,11 @@ const handleRefreshToken = async (refreshToken: string) => {
 
 const handler = NextAuth({
   pages: {
-    signIn: "/",
-    signOut: "/auth",
-    error: "/auth",
+    signIn: "/auth/sign-in",
+    signOut: "/auth/sign-in",
+    error: "/auth/sign-in",
   },
+  secret: process.env.NEXTAUTH_SECRET,
   providers: [
     CredentialsProvider({
       id: "signin-email",
@@ -39,28 +47,31 @@ const handler = NextAuth({
         email: { label: "email", type: "text" },
         password: { label: "phone", type: "password" },
       },
-      async authorize(credentials) {
+      async authorize(credentials): Promise<any> {
         const signInResult = await fetch(
-          `${process.env.NEXT_PUBLIC_REST_API}/sign-in/by-email`,
+          `${process.env.REST_API_BASE_URL}/auths/sign-in`,
           {
             method: "POST",
             headers: {
               "Content-Type": "application/json",
             },
             body: JSON.stringify({
-              email: "luka5@twosun.com",
-              password: "a123456!",
-              device: {
-                deviceType: "WEB",
-              },
+              email: credentials?.email,
+              password: credentials?.password,
+              deviceType: "TABLET",
             }),
           }
         ).then((res) => res.json());
-
-        if (signInResult.message) {
-          throw new Error(signInResult.message);
+        console.log("signInResult.data", signInResult.data);
+        if (signInResult.data) {
+          return {
+            accessToken: signInResult.data.accessToken.token,
+            refreshToken: signInResult.data.refreshToken.token,
+            accessTokenExpiresIn: signInResult.data.accessToken.expiresIn,
+            refreshTokenExpiresIn: signInResult.data.refreshToken.expiresIn,
+          };
         }
-        return signInResult;
+        return null;
       },
     }),
     CredentialsProvider({
@@ -68,34 +79,36 @@ const handler = NextAuth({
       credentials: {
         name: { label: "name", type: "text" },
         phone: { label: "phone", type: "text" },
-        smsAuthCode: {
-          label: "smsAuthCode",
-          type: "password",
-          placeholder: "000000",
-        },
+        email: { label: "email", type: "text" },
+        password: { label: "password", type: "password" },
       },
-      async authorize(credentials) {
-        //   const signUpResult = await client.mutate({
-        //     mutation: SIGNUP_USER,
-        //     variables: {
-        //       input: {
-        //         name: credentials?.name,
-        //         phone: credentials?.phone,
-        //         smsAuthCode: credentials?.smsAuthCode,
-        //       },
-        //     },
-        //   })
-        //   // client.query({ query: CUREENT_USER }).then((res) => console.log(res))
-
-        //   if (signUpResult) {
-        //     return {
-        //       id: "test_id",
-        //       name: "test_name",
-        //       email: "test@t.com",
-        //       phone: credentials?.phone,
-        //       token: signUpResult.data?.registerUser,
-        //     }
-        //   }
+      async authorize(credentials): Promise<any> {
+        const signUpResult = await fetch(
+          `${process.env.REST_API_BASE_URL}/auths/sign-up`,
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              email: credentials?.email,
+              password: credentials?.password,
+              name: credentials?.name,
+              phone: credentials?.phone,
+              deviceType: "TABLET",
+              clinicId: 1,
+            }),
+          }
+        ).then((res) => res.json());
+        console.log("signUpResult", signUpResult);
+        if (signUpResult) {
+          return {
+            accessToken: signUpResult.accessToken.token,
+            refreshToken: signUpResult.refreshToken.token,
+            accessTokenExpiresIn: signUpResult.accessToken.expiresIn,
+            refreshTokenExpiresIn: signUpResult.refreshToken.expiresIn,
+          };
+        }
 
         return null;
       },
@@ -157,20 +170,21 @@ const handler = NextAuth({
     }),
   ],
   callbacks: {
-    async jwt({ token, user, account }: any) {
-      if (user?.data) {
-        token.accessToken = user?.data.accessToken;
-        token.refreshToken = user?.data.refreshToken;
-        token.accessTokenExpiresIn = user?.data.accessTokenExpiresIn;
-        token.refreshTokenExpiresIn = user?.data.refreshTokenExpiresIn;
+    async jwt({ token, user }: any) {
+      if (user) {
+        token.accessToken = user?.accessToken;
+        token.refreshToken = user?.refreshToken;
+        token.accessTokenExpiresIn = user?.accessTokenExpiresIn;
+        token.refreshTokenExpiresIn = user?.refreshTokenExpiresIn;
       }
 
-      if (new Date() > new Date(token.accessTokenExpiresIn)) {
+      if (
+        token.accessTokenExpiresIn &&
+        new Date() > new Date(token.accessTokenExpiresIn)
+      ) {
         const result = await handleRefreshToken(token.refreshToken);
         token.accessToken = result.accessToken;
-        token.refreshToken = result.refreshToken;
         token.accessTokenExpiresIn = result.accessTokenExpiresIn;
-        token.refreshTokenExpiresIn = result.refreshTokenExpiresIn;
         return token;
       }
 
@@ -181,7 +195,7 @@ const handler = NextAuth({
       if (token) {
         session.token = token;
 
-        const getMe = await fetch(`${process.env.NEXT_PUBLIC_REST_API}/me`, {
+        const getMe = await fetch(`${process.env.REST_API_BASE_URL}/users/me`, {
           method: "GET",
           headers: {
             "Content-Type": "application/json",

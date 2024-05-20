@@ -2,7 +2,7 @@ import axios, { AxiosError, AxiosRequestConfig } from "axios";
 import { getServerSession } from "next-auth";
 import { notFound } from "next/navigation";
 
-const baseURL = process.env.NEXT_PUBLIC_REST_API;
+const baseURL = process.env.REST_API_BASE_URL;
 
 const baseInstance = axios.create({
   baseURL,

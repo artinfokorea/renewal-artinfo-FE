@@ -14,6 +14,7 @@ import {
 } from "@/components/ui/navigation-menu";
 import { Button } from "../ui/button";
 import Link from "next/link";
+import { signOut, useSession } from "next-auth/react";
 
 const NavItems = [
   {
@@ -33,6 +34,17 @@ const NavItems = [
 const Header = () => {
   const pathname = usePathname();
   const router = useRouter();
+  const { data } = useSession();
+
+  console.log("user", data?.user);
+
+  const handleSign = () => {
+    if (data?.user) {
+      signOut({ callbackUrl: "/auth/sign-in" });
+    } else {
+      router.push("/auth/sign-in");
+    }
+  };
 
   return (
     <header className="sticky top-0 left-0 z-50 border-b-2 border py-2 px-4">
@@ -62,8 +74,11 @@ const Header = () => {
             </NavigationMenuList>
           </NavigationMenu>
         </div>
-        <Button className="bg-white text-main border-main border text-sm h-8 hover:bg-white" onClick={()=>router.push('/auth/sign-in')}>
-          로그인
+        <Button
+          className="bg-white text-main border-main border text-sm h-8 hover:bg-white"
+          onClick={handleSign}
+        >
+          {data?.user ? "로그아웃" : "로그인"}
         </Button>
       </div>
     </header>

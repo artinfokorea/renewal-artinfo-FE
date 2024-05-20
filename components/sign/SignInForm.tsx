@@ -6,12 +6,12 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { ErrorMessage } from "@hookform/error-message";
 import { useLoading } from "@toss/use-loading";
 import * as yup from "yup";
-import { useRouter } from "next/navigation";
 import { Label } from "../ui/label";
 import { Input } from "../ui/input";
 import { Button } from "../ui/button";
 import ConfirmDialog from "../common/ConfirmDialog";
 import Link from "next/link";
+import { signIn } from "next-auth/react";
 
 const schema = yup
   .object({
@@ -36,12 +36,11 @@ type FormData = yup.InferType<typeof schema>;
 const SignInForm = () => {
   const [isLoading, startTransition] = useLoading();
   const [isConfirmDialogOpen, setIsConfirmDialogOpen] = useState(false);
-  const router = useRouter();
 
   const {
     register,
     handleSubmit,
-    formState: { errors, isValid },
+    formState: { errors },
   } = useForm<FormData>({
     resolver: yupResolver(schema),
   });
@@ -52,16 +51,11 @@ const SignInForm = () => {
     //
 
     try {
-      // startTransition
-      //   const { error } = await supabase.auth.signInWithPassword({
-      //     ...payload,
-      //   });
-      //   if (error) {
-      //     throw error;
-      //   }
-      //   router.replace("/");
-      setIsConfirmDialogOpen(true);
+      await startTransition(
+        signIn("signin-email", { ...payload, callbackUrl: "/" })
+      );
     } catch (error: any) {
+      console.log(error.message);
       setIsConfirmDialogOpen(true);
     }
   };
@@ -126,7 +120,6 @@ const SignInForm = () => {
         <span className="whitespace-nowrap mx-4 font-semibold">간편로그인</span>
         <div className="border-b-2 w-full border-grey mb-3" />
       </div>
-
       <div className="flex justify-between w-[200px] mx-auto mt-4">
         <Button
           type="button"

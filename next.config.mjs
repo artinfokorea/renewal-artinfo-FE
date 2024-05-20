@@ -4,9 +4,10 @@ import withPWA from "next-pwa";
 /** @type {import('next').NextConfig} */
 
 const config = {
-  // env: {
-  //   TEST: process.env.TEST,
-  // },
+  env: {
+    REST_API_BASE_URL: process.env.REST_API_BASE_URL,
+    NEXTAUTH_SECRET: process.env.NEXTAUTH_SECRET,
+  },
   images: {
     domains: ["ycuajmirzlqpgzuonzca.supabase.co", "www.sac.or.kr"],
     remotePatterns: [

@@ -4,6 +4,7 @@ import "./globals.css";
 import Header from "@/components/layouts/Header";
 import QueryProvider from "@/components/provider/QueryProvider";
 import ToasterProvider from "@/components/provider/ToasterProvider";
+import AuthProvider from "@/components/provider/SessionProvider";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -56,10 +57,14 @@ export default function RootLayout({
         className={`${inter.className} touch-manipulation h-screen`}
         suppressHydrationWarning
       >
-        <Header />
-        <ToasterProvider>
-          <QueryProvider>{children}</QueryProvider>
-        </ToasterProvider>
+        <AuthProvider>
+          <ToasterProvider>
+            <QueryProvider>
+              <Header />
+              {children}
+            </QueryProvider>
+          </ToasterProvider>
+        </AuthProvider>
       </body>
     </html>
   );
