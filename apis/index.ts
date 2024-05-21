@@ -1,6 +1,5 @@
 import axios, { AxiosError, AxiosRequestConfig } from "axios";
-import { getServerSession } from "next-auth";
-import { notFound } from "next/navigation";
+import { getSession } from "next-auth/react";
 
 const baseURL = process.env.REST_API_BASE_URL;
 
@@ -13,29 +12,24 @@ const baseInstance = axios.create({
 
 baseInstance.interceptors.response.use(
   ({ data }) => data,
-  async (error: AxiosError) => {
+  (error: AxiosError) => {
     const { response } = error; // // 404 에러 처리
-    if (response?.status === 404) {
-      notFound();
-    }
+
     if (response?.status === 401) {
-      const session = await getServerSession();
-      console.log("session", session);
+      window.location.href = "/auth/sign-in";
     }
 
-    // 기본적으로 에러를 던집니다.
     return Promise.reject(error);
   }
 );
 
-baseInstance.interceptors.request.use(async (request) => {
-  const session = await getServerSession();
-  console.log("request", request);
-  console.log("session", session);
-  // if(session) {
-  //   request.headers["Authorization"] = `Bearer ${session.user}`;
-  // }
-  return request;
+baseInstance.interceptors.request.use(async (config) => {
+  const session: any = await getSession();
+
+  if (session) {
+    config.headers["Authorization"] = `Bearer ${session.token.accessToken}`;
+  }
+  return config;
 });
 
 interface ApiResponse<T> {

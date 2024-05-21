@@ -21,7 +21,9 @@ const handleRefreshToken = async ({
           refreshToken,
         }),
       }
-    ).then((res) => res.json());
+    )
+      .then((res) => res.json())
+      .catch((error) => console.log("refresh error", error));
 
     if (!res.success && res.code) {
       throw new Error(res.code);
@@ -61,7 +63,9 @@ const handler = NextAuth({
               deviceType: "TABLET",
             }),
           }
-        ).then((res) => res.json());
+        )
+          .then((res) => res.json())
+          .catch((error) => console.log("signIn error", error));
 
         if (signInResult.data) {
           return {
@@ -99,7 +103,9 @@ const handler = NextAuth({
               clinicId: 1,
             }),
           }
-        ).then((res) => res.json());
+        )
+          .then((res) => res.json())
+          .catch((error) => console.log("signUp error", error));
 
         if (signUpResult.data) {
           return {
@@ -208,7 +214,9 @@ const handler = NextAuth({
             "Content-Type": "application/json",
             Authorization: `Bearer ${token.accessToken}`,
           },
-        }).then((res) => res.json());
+        })
+          .then((res) => res.json())
+          .catch((error) => console.log("getMe error", error));
 
         session.user = getMe.data;
       }

@@ -1,10 +1,9 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useTransition } from "react";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { ErrorMessage } from "@hookform/error-message";
-import { useLoading } from "@toss/use-loading";
 import * as yup from "yup";
 import { Label } from "../ui/label";
 import { Input } from "../ui/input";
@@ -34,7 +33,7 @@ const schema = yup
 type FormData = yup.InferType<typeof schema>;
 
 const SignInForm = () => {
-  const [isLoading, startTransition] = useLoading();
+  const [isPending, startTransition] = useTransition();
   const [isConfirmDialogOpen, setIsConfirmDialogOpen] = useState(false);
 
   const {
@@ -51,9 +50,9 @@ const SignInForm = () => {
     //
 
     try {
-      await startTransition(
-        signIn("signin-email", { ...payload, callbackUrl: "/" })
-      );
+      startTransition(() => {
+        signIn("signin-email", { ...payload, callbackUrl: "/" });
+      });
     } catch (error: any) {
       console.log(error.message);
       setIsConfirmDialogOpen(true);
@@ -101,7 +100,7 @@ const SignInForm = () => {
       <Button
         type="submit"
         className="bg-main w-full my-4 hover:bg-main"
-        disabled={isLoading}
+        disabled={isPending}
       >
         로그인
       </Button>
@@ -124,7 +123,7 @@ const SignInForm = () => {
         <Button
           type="button"
           className="p-1 bg-white w-[48px] h-[48px] rounded-lg transition ease-in-out duration-150 inline-flex items-center justify-center  text-white shadow-md  focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 disabled:opacity-50 "
-          disabled={isLoading}
+          disabled={isPending}
           //   onClick={signInWithGoogle}
         >
           <img src="/google_logo.png" alt="google_logo" />
@@ -132,7 +131,7 @@ const SignInForm = () => {
         <button
           type="button"
           className="w-[48px] h-[48px] rounded-lg transition ease-in-out duration-150 inline-flex items-center justify-center  text-white shadow-md  focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 disabled:opacity-50 "
-          disabled={isLoading}
+          disabled={isPending}
           //   onClick={signInWithGoogle}
         >
           <img src="/naver_logo.png" alt="naver_logo" />
@@ -140,7 +139,7 @@ const SignInForm = () => {
         <button
           type="button"
           className="w-[48px] h-[48px] rounded-lg transition ease-in-out duration-150 inline-flex items-center justify-center bg-[#FEE500]  text-white shadow-md  focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 disabled:opacity-50 "
-          disabled={isLoading}
+          disabled={isPending}
           //   onClick={signInWithGoogle}
         >
           <img src="/kakao_logo.png" alt="kakao_logo" />

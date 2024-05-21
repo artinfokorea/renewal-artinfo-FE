@@ -1,16 +1,23 @@
 "use client";
 
 import { usePathname, useRouter } from "next/navigation";
-import React from "react";
+import React, { useEffect } from "react";
 import {
   NavigationMenu,
   NavigationMenuItem,
-  NavigationMenuLink,
   NavigationMenuList,
 } from "@/components/ui/navigation-menu";
 import { Button } from "../ui/button";
 import Link from "next/link";
 import { signOut, useSession } from "next-auth/react";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
 const NavItems = [
   {
@@ -31,8 +38,6 @@ const Header = () => {
   const pathname = usePathname();
   const router = useRouter();
   const { data } = useSession();
-
-  // console.log("user", data);
 
   const handleSign = () => {
     if (data?.user) {
@@ -55,7 +60,7 @@ const Header = () => {
                 {NavItems.map(({ href, label }) => {
                   const isActive = pathname.includes(href);
                   return (
-                    <NavigationMenuLink
+                    <Link
                       href={href}
                       key={href}
                       className={`mx-4 font-semibold ${
@@ -63,24 +68,33 @@ const Header = () => {
                       }`}
                     >
                       {label}
-                    </NavigationMenuLink>
+                    </Link>
                   );
                 })}
               </NavigationMenuItem>
             </NavigationMenuList>
           </NavigationMenu>
         </div>
-
         {data?.user ? (
+          <DropdownMenu>
+            <DropdownMenuTrigger className="flex items-center">
+              <Avatar>
+                <AvatarImage src="https://github.com/shadcn.png" />
+                <AvatarFallback>CN</AvatarFallback>
+              </Avatar>
+              <span className="mx-2 hidden md:block">{data?.user.name}님</span>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent>
+              <DropdownMenuItem>내 프로필</DropdownMenuItem>
+              <DropdownMenuItem onClick={handleSign}>로그아웃</DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
+        ) : (
           <Button
-            className="bg-white text-main border-main border text-sm h-8 hover:bg-white"
+            className="bg-white text-main border-main border text-sm h-10 hover:bg-white"
             onClick={handleSign}
           >
             로그인
-          </Button>
-        ) : (
-          <Button className="bg-white text-main" onClick={handleSign}>
-            로그아웃
           </Button>
         )}
       </div>

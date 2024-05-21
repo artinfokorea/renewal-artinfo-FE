@@ -1,10 +1,9 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useTransition } from "react";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { ErrorMessage } from "@hookform/error-message";
-import { useLoading } from "@toss/use-loading";
 import * as yup from "yup";
 import { useHookFormMask } from "use-mask-input";
 import { Label } from "../ui/label";
@@ -49,7 +48,7 @@ const schema = yup
 type FormData = yup.InferType<typeof schema>;
 
 const SignUpForm = () => {
-  const [isLoading, startTransition] = useLoading();
+  const [isPending, startTransition] = useTransition();
 
   const {
     register,
@@ -64,7 +63,9 @@ const SignUpForm = () => {
 
   const handleSignUp = async (payload: FormData) => {
     try {
-      await startTransition(signIn("signup", { ...payload, callbackUrl: "/" }));
+      startTransition(() => {
+        signIn("signup", { ...payload, callbackUrl: "/" });
+      });
     } catch (error: any) {
       console.log(error.message);
     }
@@ -162,7 +163,7 @@ const SignUpForm = () => {
       <Button
         type="submit"
         className="bg-main w-full my-4 hover:bg-main"
-        disabled={isLoading}
+        disabled={isPending}
       >
         회원가입
       </Button>
