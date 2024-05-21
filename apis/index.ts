@@ -28,6 +28,16 @@ baseInstance.interceptors.response.use(
   }
 );
 
+baseInstance.interceptors.request.use(async (request) => {
+  const session = await getServerSession();
+  console.log("request", request);
+  console.log("session", session);
+  // if(session) {
+  //   request.headers["Authorization"] = `Bearer ${session.user}`;
+  // }
+  return request;
+});
+
 interface ApiResponse<T> {
   success: boolean;
   data?: T | null;

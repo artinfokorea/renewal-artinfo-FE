@@ -4,13 +4,9 @@ import { usePathname, useRouter } from "next/navigation";
 import React from "react";
 import {
   NavigationMenu,
-  NavigationMenuContent,
-  NavigationMenuIndicator,
   NavigationMenuItem,
   NavigationMenuLink,
   NavigationMenuList,
-  NavigationMenuTrigger,
-  NavigationMenuViewport,
 } from "@/components/ui/navigation-menu";
 import { Button } from "../ui/button";
 import Link from "next/link";
@@ -36,7 +32,7 @@ const Header = () => {
   const router = useRouter();
   const { data } = useSession();
 
-  console.log("user", data?.user);
+  // console.log("user", data);
 
   const handleSign = () => {
     if (data?.user) {
@@ -74,12 +70,19 @@ const Header = () => {
             </NavigationMenuList>
           </NavigationMenu>
         </div>
-        <Button
-          className="bg-white text-main border-main border text-sm h-8 hover:bg-white"
-          onClick={handleSign}
-        >
-          {data?.user ? "로그아웃" : "로그인"}
-        </Button>
+
+        {data?.user ? (
+          <Button
+            className="bg-white text-main border-main border text-sm h-8 hover:bg-white"
+            onClick={handleSign}
+          >
+            로그인
+          </Button>
+        ) : (
+          <Button className="bg-white text-main" onClick={handleSign}>
+            로그아웃
+          </Button>
+        )}
       </div>
     </header>
   );

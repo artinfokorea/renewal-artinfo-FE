@@ -22,7 +22,7 @@ const handleRefreshToken = async ({
         }),
       }
     ).then((res) => res.json());
-    console.log("res", res);
+
     if (!res.success && res.code) {
       throw new Error(res.code);
     }
@@ -62,7 +62,7 @@ const handler = NextAuth({
             }),
           }
         ).then((res) => res.json());
-        console.log("signInResult.data", signInResult.data);
+
         if (signInResult.data) {
           return {
             accessToken: signInResult.data.accessToken.token,
@@ -100,13 +100,13 @@ const handler = NextAuth({
             }),
           }
         ).then((res) => res.json());
-        console.log("signUpResult", signUpResult);
-        if (signUpResult) {
+
+        if (signUpResult.data) {
           return {
-            accessToken: signUpResult.accessToken.token,
-            refreshToken: signUpResult.refreshToken.token,
-            accessTokenExpiresIn: signUpResult.accessToken.expiresIn,
-            refreshTokenExpiresIn: signUpResult.refreshToken.expiresIn,
+            accessToken: signUpResult.data.accessToken.token,
+            refreshToken: signUpResult.data.refreshToken.token,
+            accessTokenExpiresIn: signUpResult.data.accessToken.expiresIn,
+            refreshTokenExpiresIn: signUpResult.data.refreshToken.expiresIn,
           };
         }
 
@@ -171,6 +171,7 @@ const handler = NextAuth({
   ],
   callbacks: {
     async jwt({ token, user }: any) {
+      // console.log("jwt", token);
       if (user) {
         token.accessToken = user?.accessToken;
         token.refreshToken = user?.refreshToken;
@@ -178,13 +179,17 @@ const handler = NextAuth({
         token.refreshTokenExpiresIn = user?.refreshTokenExpiresIn;
       }
 
-      if (
-        token.accessTokenExpiresIn &&
-        new Date() > new Date(token.accessTokenExpiresIn)
-      ) {
-        const result = await handleRefreshToken(token.refreshToken);
-        token.accessToken = result.accessToken;
-        token.accessTokenExpiresIn = result.accessTokenExpiresIn;
+      if (new Date() > new Date(token.accessTokenExpiresIn)) {
+        const result = await handleRefreshToken({
+          accessToken: token.accessToken,
+          refreshToken: token.refreshToken,
+        });
+
+        if (result) {
+          token.accessToken = result.token;
+          token.accessTokenExpiresIn = result.expiresIn;
+        }
+        // console.log("token", token);
         return token;
       }
 
@@ -192,6 +197,8 @@ const handler = NextAuth({
     },
 
     async session({ session, token }: any) {
+      // console.log("session", session);
+      // console.log("token", token);
       if (token) {
         session.token = token;
 
