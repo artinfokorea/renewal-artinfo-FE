@@ -63,6 +63,7 @@ const Header = () => {
                     <Link
                       href={href}
                       key={href}
+                      prefetch={false}
                       className={`mx-4 font-semibold ${
                         isActive && "text-main"
                       }`}
@@ -79,7 +80,7 @@ const Header = () => {
           <DropdownMenu>
             <DropdownMenuTrigger className="flex items-center">
               <Avatar>
-                <AvatarImage src="https://github.com/shadcn.png" />
+                <AvatarImage src="/img/placeholder-user.png" />
                 <AvatarFallback>CN</AvatarFallback>
               </Avatar>
               <span className="mx-2 hidden md:block">{data?.user.name}님</span>
