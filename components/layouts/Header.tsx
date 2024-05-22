@@ -48,8 +48,8 @@ const Header = () => {
   };
 
   return (
-    <header className="sticky top-0 left-0 z-50 border-b-2 border py-2 px-4">
-      <div className="max-w-screen-lg flex justify-between items-center mx-auto ">
+    <header className="sticky top-0 left-0 z-50 border-b-2 border py-2 px-4 bg-white shadow-sm">
+      <div className="max-w-screen-xl flex justify-between items-center mx-auto ">
         <div className="flex">
           <Link href="/">
             <h1 className="font-bold text-2xl text-main">ARTINFO</h1>

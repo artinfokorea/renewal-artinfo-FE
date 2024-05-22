@@ -8,6 +8,7 @@ import {
   CarouselItem,
 } from "@/components/ui/carousel";
 import Image from "next/image";
+import { AspectRatio } from "../ui/aspect-ratio";
 
 const BannerContainer = () => {
   const plugin = useRef(
@@ -24,14 +25,16 @@ const BannerContainer = () => {
       <CarouselContent>
         {Array.from({ length: 5 }).map((_, index) => (
           <CarouselItem key={index}>
-            <div className="relative h-[240px]">
-              <Image
-                src="/img/placeholder-user.png"
-                alt="banner_image"
-                fill
-                quality={100}
-                className="rounded-xl"
-              />
+            <div className="relative cursor-pointer">
+              <AspectRatio ratio={4 / 1}>
+                <Image
+                  src="/img/placeholder-user.png"
+                  alt="banner_image"
+                  fill
+                  quality={100}
+                  className="rounded-xl"
+                />
+              </AspectRatio>
             </div>
           </CarouselItem>
         ))}
