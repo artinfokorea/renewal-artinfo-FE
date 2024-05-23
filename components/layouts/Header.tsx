@@ -48,13 +48,13 @@ const Header = () => {
   };
 
   return (
-    <header className="sticky top-0 left-0 z-50 border-b-2 border py-2 px-4 bg-white shadow-sm">
-      <div className="max-w-screen-xl flex justify-between items-center mx-auto ">
+    <header className="sticky top-0 left-0 z-50 py-2 px-4 bg-white shadow-md">
+      <div className="max-w-screen-lg flex justify-between items-center mx-auto ">
         <div className="flex">
           <Link href="/">
             <h1 className="font-bold text-2xl text-main">ARTINFO</h1>
           </Link>
-          <NavigationMenu className="ml-16 hidden md:flex">
+          <NavigationMenu className="ml-20 hidden md:flex">
             <NavigationMenuList>
               <NavigationMenuItem>
                 {NavItems.map(({ href, label }) => {
@@ -86,7 +86,9 @@ const Header = () => {
               <span className="mx-2 hidden md:block">{data?.user.name}님</span>
             </DropdownMenuTrigger>
             <DropdownMenuContent>
-              <DropdownMenuItem>내 프로필</DropdownMenuItem>
+              <Link href="/my-profile" prefetch={false}>
+                <DropdownMenuItem>내 프로필</DropdownMenuItem>
+              </Link>
               <DropdownMenuItem onClick={handleSign}>로그아웃</DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>

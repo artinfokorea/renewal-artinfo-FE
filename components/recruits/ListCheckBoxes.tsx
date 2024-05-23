@@ -21,7 +21,7 @@ const ListCheckBoxes = ({
   checkedMajors,
 }: Props) => {
   return (
-    <form className="hidden lg:flex flex-col text-gray-400 min-w-[300px] px-8 lg:px-0">
+    <form className="hidden lg:flex flex-col text-gray-400 min-w-[180px]">
       <div className="mt-8">
         <h4 className="text-lg font-semibold">직군</h4>
 

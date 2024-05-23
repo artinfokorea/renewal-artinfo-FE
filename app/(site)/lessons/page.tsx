@@ -1,7 +1,7 @@
 import React from "react";
 
 const page = () => {
-  return <main>문의</main>;
+  return <div>레슨</div>;
 };
 
 export default page;

@@ -36,17 +36,17 @@ const ListContainer = () => {
   };
 
   return (
-    <div className="max-w-screen-xl mx-auto px-2">
+    <div className="max-w-screen-lg mx-auto px-2">
       <ListSearchForm />
-      <div className="flex">
+      <section className="flex">
         <ListCheckBoxes
           checkedRecruits={checkedRecruits}
           checkedMajors={checkedMajors}
           handleRecruit={handleRecruitChange}
           handleMajor={handleMajorChange}
         />
-        <section className="flex-1 bg-yellow-100">bye</section>
-      </div>
+        <div className="flex-1 bg-yellow-100">bye</div>
+      </section>
     </div>
   );
 };
