@@ -39,7 +39,7 @@ const handler = NextAuth({
   pages: {
     signIn: "/auth/sign-in",
     signOut: "/auth/sign-in",
-    error: "/auth/sign-in",
+    // error: "/auth/sign-in",
   },
   secret: process.env.NEXTAUTH_SECRET,
   providers: [

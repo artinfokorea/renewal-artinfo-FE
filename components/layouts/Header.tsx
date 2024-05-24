@@ -48,7 +48,7 @@ const Header = () => {
   };
 
   return (
-    <header className="sticky top-0 left-0 z-50 py-2 px-4 bg-white shadow-md">
+    <header className="sticky top-0 left-0 z-50 py-2 px-4 bg-white">
       <div className="max-w-screen-lg flex justify-between items-center mx-auto ">
         <div className="flex">
           <Link href="/">
@@ -63,7 +63,6 @@ const Header = () => {
                     <Link
                       href={href}
                       key={href}
-                      prefetch={false}
                       className={`mx-4 font-semibold ${
                         isActive && "text-main"
                       }`}
@@ -94,7 +93,7 @@ const Header = () => {
           </DropdownMenu>
         ) : (
           <Button
-            className="bg-white text-main border-main border text-sm h-10 hover:bg-white"
+            className="bg-white text-main border-main border text-sm h-8 hover:bg-white"
             onClick={handleSign}
           >
             로그인

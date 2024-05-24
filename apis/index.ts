@@ -1,5 +1,5 @@
 import axios, { AxiosError, AxiosRequestConfig } from "axios";
-import { getSession } from "next-auth/react";
+import { getSession, signOut } from "next-auth/react";
 
 const baseURL = process.env.REST_API_BASE_URL;
 
@@ -16,7 +16,7 @@ baseInstance.interceptors.response.use(
     const { response } = error; // // 404 에러 처리
 
     if (response?.status === 401) {
-      window.location.href = "/auth/sign-in";
+      signOut({ callbackUrl: "/auth/sign-in" });
     }
 
     return Promise.reject(error);
@@ -31,17 +31,6 @@ baseInstance.interceptors.request.use(async (config) => {
   }
   return config;
 });
-
-interface ApiResponse<T> {
-  success: boolean;
-  data?: T | null;
-  // "dataType": null,
-  timestamp: number;
-  // "code": "UNKNOWN_ERROR",
-  code: string;
-  statusCode: 200 | 201 | 400 | 500;
-  message?: string;
-}
 
 interface ApiRequestMethods {
   get<T>(url: string, request?: AxiosRequestConfig): Promise<T>;
