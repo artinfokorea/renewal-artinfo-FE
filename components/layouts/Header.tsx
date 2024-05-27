@@ -1,7 +1,7 @@
 "use client";
 
 import { usePathname, useRouter } from "next/navigation";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import {
   NavigationMenu,
   NavigationMenuItem,
@@ -38,6 +38,17 @@ const Header = () => {
   const pathname = usePathname();
   const router = useRouter();
   const { data } = useSession();
+  const [isTopScroll, setIsTopScroll] = useState(true);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      const isTop = window.scrollY === 0;
+      setIsTopScroll(isTop);
+    };
+
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
 
   const handleSign = () => {
     if (data?.user) {
@@ -48,7 +59,11 @@ const Header = () => {
   };
 
   return (
-    <header className="sticky top-0 left-0 z-50 py-2 px-4 bg-white">
+    <header
+      className={`sticky top-0 left-0 z-50 py-2 px-4 bg-white ${
+        !isTopScroll && "shadow-md"
+      }`}
+    >
       <div className="max-w-screen-lg flex justify-between items-center mx-auto ">
         <div className="flex">
           <Link href="/">

@@ -52,7 +52,10 @@ const SignInForm = () => {
   const handleSignIn = async (payload: FormData) => {
     try {
       await startTransition(
-        signIn("signin-email", { ...payload, callbackUrl: "/" })
+        signIn("signin-email", {
+          ...payload,
+          callbackUrl: "/",
+        })
       );
     } catch (error: any) {
       errorToast(error.message);
