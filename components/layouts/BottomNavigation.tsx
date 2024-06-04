@@ -17,7 +17,7 @@ const NavItems = [
   },
   {
     title: "채용",
-    href: "/recruits",
+    href: "/jobs",
     icon: NewsPaperIcon,
     prefetch: true,
   },
@@ -54,7 +54,7 @@ const BottomNavigation = () => {
         isIPhone ? "h-16 safe-area" : "h-12"
       }`}
     >
-      <div className="h-full grid max-w-lg grid-cols-4 mx-auto">
+      <div className="h-full grid grid-cols-4 mx-auto">
         {NavItems.map(({ href, title, prefetch, icon }) => {
           const isActive =
             href === "/" ? pathname === href : pathname.startsWith(href);

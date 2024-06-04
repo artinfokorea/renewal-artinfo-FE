@@ -5,7 +5,7 @@ import {
   RecruitType,
   MajorValues,
   recruitsValues,
-} from "@/types/recruits";
+} from "@/types/jobs";
 
 interface Props {
   checkedRecruits: RecruitType[];

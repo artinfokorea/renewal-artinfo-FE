@@ -10,6 +10,9 @@ import { Label } from "../ui/label";
 import { Input } from "../ui/input";
 import { Button } from "../ui/button";
 import { signIn } from "next-auth/react";
+import useToast from "@/hooks/useToast";
+import { signUp } from "@/apis/auth";
+import { useRouter } from "next/navigation";
 
 const schema = yup
   .object({
@@ -35,13 +38,13 @@ const schema = yup
       .min(2, "이름은 2글자 이상 입력해주세요.")
       .max(6, "이름은 6글자 이하로 입력해주세요.")
       .required("이름을 입력해주세요."),
-    phone: yup
-      .string()
-      .matches(
-        /^01(?:0|1|[6-9])-(?:\d{3}|\d{4})-\d{4}$/,
-        "휴대폰 번호를 입력해주세요."
-      )
-      .required(),
+    // phone: yup
+    //   .string()
+    //   .matches(
+    //     /^01(?:0|1|[6-9])-(?:\d{3}|\d{4})-\d{4}$/,
+    //     "휴대폰 번호를 입력해주세요."
+    //   )
+    //   .required(),
   })
   .required();
 
@@ -49,7 +52,7 @@ type FormData = yup.InferType<typeof schema>;
 
 const SignUpForm = () => {
   const [isPending, startTransition] = useTransition();
-
+  const { successToast, errorToast } = useToast();
   const {
     register,
     handleSubmit,
@@ -58,15 +61,23 @@ const SignUpForm = () => {
   } = useForm<FormData>({
     resolver: yupResolver(schema),
   });
+  const router = useRouter();
 
   const registerWithMask = useHookFormMask(register);
 
   const handleSignUp = async (payload: FormData) => {
     try {
       startTransition(() => {
-        signIn("signup", { ...payload, callbackUrl: "/" });
+        signUp({
+          name: payload.name,
+          email: payload.email,
+          password: payload.password,
+        });
       });
+      router.push("sign-in");
+      successToast("회원가입이 완료되었습니다. 로그인 해주세요.");
     } catch (error: any) {
+      errorToast(error.message);
       console.log(error.message);
     }
   };
@@ -78,6 +89,22 @@ const SignUpForm = () => {
       <h2 className="text-2xl font-bold text-main text-center mb-8">
         회원가입
       </h2>
+      <div className="grid items-center gap-4 my-4 text-primary">
+        <Label htmlFor="이름">이름</Label>
+        <Input
+          {...register("name")}
+          type="text"
+          placeholder="이름"
+          autoComplete="name"
+        />
+        <ErrorMessage
+          errors={errors}
+          name="name"
+          render={({ message }) => (
+            <p className="text-error font-semibold">{message}</p>
+          )}
+        />
+      </div>
       <div className="grid items-center gap-4 my-4 text-primary">
         <Label htmlFor="이메일">이메일</Label>
         <Input
@@ -126,23 +153,8 @@ const SignUpForm = () => {
           )}
         />
       </div>
-      <div className="grid items-center gap-4 my-4 text-primary">
-        <Label htmlFor="이름">이름</Label>
-        <Input
-          {...register("name")}
-          type="text"
-          placeholder="이름"
-          autoComplete="name"
-        />
-        <ErrorMessage
-          errors={errors}
-          name="name"
-          render={({ message }) => (
-            <p className="text-error font-semibold">{message}</p>
-          )}
-        />
-      </div>
-      <div className="grid items-center gap-4 my-4 text-primary">
+
+      {/* <div className="grid items-center gap-4 my-4 text-primary">
         <Label htmlFor="이름">휴대폰 번호</Label>
         <Input
           {...registerWithMask("phone", "010-9999-9999", {
@@ -159,10 +171,10 @@ const SignUpForm = () => {
             <p className="text-error font-semibold">{message}</p>
           )}
         />
-      </div>
+      </div> */}
       <Button
         type="submit"
-        className="bg-main w-full my-4 hover:bg-main"
+        className="bg-main w-full my-4 hover:bg-main text-white"
         disabled={isPending}
       >
         회원가입

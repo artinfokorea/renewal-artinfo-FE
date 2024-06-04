@@ -47,11 +47,11 @@ const handler = NextAuth({
       id: "signin-email",
       credentials: {
         email: { label: "email", type: "text" },
-        password: { label: "phone", type: "password" },
+        password: { label: "password", type: "password" },
       },
       async authorize(credentials): Promise<any> {
         const signInResult = await fetch(
-          `${process.env.REST_API_BASE_URL}/auths/sign-in`,
+          `${process.env.REST_API_BASE_URL}/auths/login/email`,
           {
             method: "POST",
             headers: {
@@ -66,13 +66,12 @@ const handler = NextAuth({
         )
           .then((res) => res.json())
           .catch((error) => console.log("signIn error", error));
-
-        if (signInResult.data) {
+        if (signInResult.item) {
           return {
-            accessToken: signInResult.data.accessToken.token,
-            refreshToken: signInResult.data.refreshToken.token,
-            accessTokenExpiresIn: signInResult.data.accessToken.expiresIn,
-            refreshTokenExpiresIn: signInResult.data.refreshToken.expiresIn,
+            accessToken: signInResult.item.accessToken,
+            refreshToken: signInResult.item.refreshToken,
+            accessTokenExpiresIn: signInResult.item.accessTokenExpiresIn,
+            refreshTokenExpiresIn: signInResult.item.refreshTokenExpiresIn,
           };
         }
         return null;
@@ -82,7 +81,6 @@ const handler = NextAuth({
       id: "signup",
       credentials: {
         name: { label: "name", type: "text" },
-        phone: { label: "phone", type: "text" },
         email: { label: "email", type: "text" },
         password: { label: "password", type: "password" },
       },
@@ -98,7 +96,6 @@ const handler = NextAuth({
               email: credentials?.email,
               password: credentials?.password,
               name: credentials?.name,
-              phone: credentials?.phone,
               deviceType: "TABLET",
               clinicId: 1,
             }),
@@ -106,7 +103,7 @@ const handler = NextAuth({
         )
           .then((res) => res.json())
           .catch((error) => console.log("signUp error", error));
-
+        console.log("signUpResult", signUpResult);
         if (signUpResult.data) {
           return {
             accessToken: signUpResult.data.accessToken.token,
@@ -218,7 +215,7 @@ const handler = NextAuth({
           .then((res) => res.json())
           .catch((error) => console.log("getMe error", error));
 
-        session.user = getMe.data;
+        session.user = getMe.item;
       }
 
       return session;

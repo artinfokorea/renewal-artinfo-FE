@@ -21,7 +21,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
 const NavItems = [
   {
-    href: "/recruits",
+    href: "/jobs",
     label: "채용",
   },
   {

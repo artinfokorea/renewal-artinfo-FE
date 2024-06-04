@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { useState } from "react";
 import { QueryClientProvider, QueryClient } from "@tanstack/react-query";
 import { SessionProvider } from "next-auth/react";
 import { Toaster } from "react-hot-toast";
@@ -11,7 +11,7 @@ interface Props {
 }
 
 const ClientProvider = ({ children }: Props) => {
-  const [client] = React.useState(
+  const [client] = useState(
     new QueryClient({
       defaultOptions: {
         queries: {

@@ -3,7 +3,7 @@
 import React, { useState } from "react";
 import ListSearchForm from "./ListSearchForm";
 import ListCheckBoxes from "./ListCheckBoxes";
-import { MajorType, RecruitType, MajorValues } from "@/types/recruits";
+import { MajorType, RecruitType, MajorValues } from "@/types/jobs";
 
 const ListContainer = () => {
   const [checkedRecruits, setCheckedRecruits] = useState<RecruitType[]>([]);

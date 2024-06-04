@@ -1,8 +1,8 @@
 export enum RecruitType {
-  ORCHESTRA = "ORCHESTRA",
-  OBRI = "OBRI",
+  ART_ORGANIZATION = "ART_ORGANIZATION",
+  PART_TIME = "PART_TIME",
   RELIGION = "RELIGION",
-  LECTURE = "LECTURE",
+  LECTURER = "LECTURER",
 }
 
 export enum MajorType {
@@ -20,16 +20,18 @@ export enum MajorType {
   ADMINISTRATION = "ADMINISTRATION",
   APPLIED_MUSIC = "APPLIED_MUSIC",
   TRADITIONAL_MUSIC = "TRADITIONAL_MUSIC",
+  PIANO = "PIANO",
+  ORGAN = "ORGAN",
 }
 
 export const recruitsValues = [
   {
     title: "연주단체",
-    value: RecruitType.ORCHESTRA,
+    value: RecruitType.ART_ORGANIZATION,
   },
   {
     title: "오브리",
-    value: RecruitType.OBRI,
+    value: RecruitType.PART_TIME,
   },
   {
     title: "종교",
@@ -37,7 +39,7 @@ export const recruitsValues = [
   },
   {
     title: "강사",
-    value: RecruitType.LECTURE,
+    value: RecruitType.LECTURER,
   },
 ];
 
@@ -67,3 +69,17 @@ export const MajorValues = [
   { title: "실용음악", value: MajorType.APPLIED_MUSIC },
   { title: "국악", value: MajorType.TRADITIONAL_MUSIC },
 ];
+
+export type JOB = {
+  title: string;
+  contents: string;
+  province: string;
+  imageUrl: string;
+  majors?: MajorType[];
+  type?: RecruitType;
+  isActive: true;
+  fee: number;
+  startAt: Date;
+  endAt: Date;
+  createdAt: Date;
+};

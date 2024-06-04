@@ -1,8 +1,4 @@
-import type { Config } from "tailwindcss";
-
 const withMT = require("@material-tailwind/react/utils/withMT");
-
-// const config =
 
 module.exports = withMT({
   darkMode: ["class"],
@@ -21,6 +17,9 @@ module.exports = withMT({
       padding: "2rem",
       screens: {
         "2xl": "1400px",
+        md: "768px",
+        lg: "1024px",
+        xl: "1280px",
       },
     },
     extend: {
@@ -29,10 +28,10 @@ module.exports = withMT({
         google: "#f44336",
         main: "#0064FF",
         grey: "#CBCBCB",
+        whitesmoke: "#f5f5f5",
         primaryblue: "#3F51B5",
         primaryred: "#FF6C6A",
         lightgrey: "#eeebeb",
-        whitesmoke: "#f5f5f5",
         badge: "#f2f4f7",
         silver: "#b5b6b9",
         royalblue: "#3366ff",
@@ -70,5 +69,3 @@ module.exports = withMT({
   },
   plugins: [require("tailwindcss-animate")],
 });
-
-// export default config;
