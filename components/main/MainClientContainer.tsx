@@ -5,13 +5,13 @@ import BannerContainer from "@/components/banner/BannerContainer";
 import ConcertContainer from "@/components/concert/MainConcertContainer";
 import MainObriContainer from "@/components/obri/MainObriContainer";
 import MainRecruitContainer from "@/components/recruits/MainRecruitContainer";
-import { queries } from "@/lib/\bqueries";
+import { queries } from "@/lib/queries";
 import { AdvertisementType } from "@/types/ads";
 import { RecruitType } from "@/types/jobs";
 import { useQueries } from "@tanstack/react-query";
 
 const MainClientContainer = () => {
-  const [isMobile, setIsMobile] = useState(false);
+  const [isMobile, setIsMobile] = useState(true);
   //   const [{ data: ads }, { data: concerts }, { data: jobs }, { data: obries }] =
   //     useQueries({
   //       queries: [

@@ -83,3 +83,9 @@ export type JOB = {
   endAt: Date;
   createdAt: Date;
 };
+
+export enum SearchType {
+  REGION = "REGION",
+  MAJOR = "MAJOR",
+  JOB = "JOB",
+}

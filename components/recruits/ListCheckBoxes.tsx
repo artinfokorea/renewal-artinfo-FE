@@ -6,20 +6,40 @@ import {
   MajorValues,
   recruitsValues,
 } from "@/types/jobs";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
 
 interface Props {
   checkedRecruits: RecruitType[];
   checkedMajors: MajorType[];
-  handleRecruit: (checked: boolean, value: RecruitType) => void;
-  handleMajor: (checked: boolean, value: MajorType) => void;
 }
 
-const ListCheckBoxes = ({
-  handleRecruit,
-  handleMajor,
-  checkedRecruits,
-  checkedMajors,
-}: Props) => {
+const ListCheckBoxes = ({ checkedRecruits, checkedMajors }: Props) => {
+  const pathname = usePathname();
+  const searchParams = useSearchParams();
+  const router = useRouter();
+  const recruit = searchParams.get("recruit") as RecruitType;
+  const major = searchParams.get("major") as MajorType;
+
+  const handleRecruitChange = (value: RecruitType) => {
+    if (recruit?.split(",").includes(value)) {
+      const recruitList = recruit.split(",").filter((v) => v !== value);
+      router.push(`${pathname}?recruit=${recruitList.join(",")}`);
+    } else {
+      router.push(
+        `${pathname}?recruit=${recruit ? `${recruit},${value}` : value}`
+      );
+    }
+  };
+
+  const handleMajorChange = (value: MajorType) => {
+    if (major?.split(",").includes(value)) {
+      const majorList = major.split(",").filter((v) => v !== value);
+      router.push(`${pathname}?major=${majorList.join(",")}`);
+    } else {
+      router.push(`${pathname}?major=${major ? `${major},${value}` : value}`);
+    }
+  };
+
   return (
     <form className="hidden lg:flex flex-col text-gray-400 min-w-[180px]">
       <div className="mt-8">
@@ -33,7 +53,7 @@ const ListCheckBoxes = ({
               checked={checkedRecruits.includes(value)}
               className="w-5 h-5 border-gray-400 checked:bg-main rounded"
               onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-                handleRecruit(e.target.checked, value)
+                handleRecruitChange(value)
               }
             />
             <Label htmlFor={title} className="ml-2 text-lg">
@@ -54,9 +74,7 @@ const ListCheckBoxes = ({
                   value={value}
                   checked={checkedMajors.includes(value)}
                   className="w-5 h-5 border-gray-400 checked:bg-main rounded"
-                  onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-                    handleMajor(e.target.checked, value)
-                  }
+                  onChange={() => handleMajorChange(value)}
                 />
                 <Label htmlFor={title} className="ml-2 text-lg">
                   {title}
@@ -71,9 +89,7 @@ const ListCheckBoxes = ({
                   value={value}
                   checked={checkedMajors.includes(value)}
                   className="w-5 h-5 border-gray-400 checked:bg-main rounded"
-                  onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-                    handleMajor(e.target.checked, value)
-                  }
+                  onChange={() => handleMajorChange(value)}
                 />
                 <Label htmlFor={title} className="ml-2 text-lg">
                   {title}

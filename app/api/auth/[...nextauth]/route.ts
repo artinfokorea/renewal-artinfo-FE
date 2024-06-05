@@ -103,7 +103,6 @@ const handler = NextAuth({
         )
           .then((res) => res.json())
           .catch((error) => console.log("signUp error", error));
-        console.log("signUpResult", signUpResult);
         if (signUpResult.data) {
           return {
             accessToken: signUpResult.data.accessToken.token,
@@ -174,7 +173,6 @@ const handler = NextAuth({
   ],
   callbacks: {
     async jwt({ token, user }: any) {
-      // console.log("jwt", token);
       if (user) {
         token.accessToken = user?.accessToken;
         token.refreshToken = user?.refreshToken;
@@ -192,7 +190,7 @@ const handler = NextAuth({
           token.accessToken = result.token;
           token.accessTokenExpiresIn = result.expiresIn;
         }
-        // console.log("token", token);
+
         return token;
       }
 
@@ -200,8 +198,6 @@ const handler = NextAuth({
     },
 
     async session({ session, token }: any) {
-      // console.log("session", session);
-      // console.log("token", token);
       if (token) {
         session.token = token;
 

@@ -1,6 +1,6 @@
 import MainClientContainer from "@/components/main/MainClientContainer";
 
-export const Home = async () => {
+const Home = () => {
   return <MainClientContainer />;
 };
 

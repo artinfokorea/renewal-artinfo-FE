@@ -10,7 +10,6 @@ interface Props {
 }
 
 const MainRecruitContainer = ({ isMobile }: Props) => {
-  console.log(isMobile, items.slice(0, isMobile ? 1 : 3));
   return (
     <section>
       <div className="flex justify-between">
