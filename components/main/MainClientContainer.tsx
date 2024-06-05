@@ -4,7 +4,7 @@ import React, { useEffect, useState } from "react";
 import BannerContainer from "@/components/banner/BannerContainer";
 import ConcertContainer from "@/components/concert/MainConcertContainer";
 import MainObriContainer from "@/components/obri/MainObriContainer";
-import MainRecruitContainer from "@/components/recruits/MainRecruitContainer";
+import MainJobsContainer from "@/components/jobs/MainJobsContainer";
 import { queries } from "@/lib/queries";
 import { AdvertisementType } from "@/types/ads";
 import { RecruitType } from "@/types/jobs";
@@ -12,23 +12,23 @@ import { useQueries } from "@tanstack/react-query";
 
 const MainClientContainer = () => {
   const [isMobile, setIsMobile] = useState(true);
-  //   const [{ data: ads }, { data: concerts }, { data: jobs }, { data: obries }] =
-  //     useQueries({
-  //       queries: [
-  //         queries.ads.list(AdvertisementType.BANNER),
-  //         queries.ads.list(AdvertisementType.CONCERT),
-  //         queries.jobs.list({
-  //           page: 1,
-  //           size: 5,
-  //           types: [RecruitType.ART_ORGANIZATION, RecruitType.LECTURER],
-  //         }),
-  //         queries.jobs.list({ page: 1, size: 5, types: [RecruitType.PART_TIME] }),
-  //       ],
-  //     });
-  //   console.log("ads", ads);
-  //   console.log("concerts", concerts);
-  //   console.log("jobs", jobs);
-  //   console.log("obries", obries);
+  const [{ data: ads }, { data: concerts }, { data: jobs }, { data: obries }] =
+    useQueries({
+      queries: [
+        queries.ads.list(AdvertisementType.BANNER),
+        queries.ads.list(AdvertisementType.CONCERT),
+        queries.jobs.list({
+          page: 1,
+          size: 5,
+          types: [RecruitType.ART_ORGANIZATION, RecruitType.LECTURER],
+        }),
+        queries.jobs.list({ page: 1, size: 5, types: [RecruitType.PART_TIME] }),
+      ],
+    });
+  // console.log("ads", ads);
+  // console.log("concerts", concerts);
+  // console.log("jobs", jobs);
+  // console.log("obries", obries);
 
   useEffect(() => {
     const mediaQuery = window.matchMedia("(min-width: 768px)");
@@ -47,7 +47,7 @@ const MainClientContainer = () => {
     <div className="max-w-screen-lg mx-auto h-full px-2">
       <BannerContainer />
       <ConcertContainer isMobile={isMobile} />
-      <MainRecruitContainer isMobile={isMobile} />
+      <MainJobsContainer isMobile={isMobile} jobs={jobs?.jobs} />
       <article className="bg-whitesmoke h-[100px] md:h-[120px] rounded-xl">
         <div className="max-w-screen-md mx-auto  relative flex justify-center md:justify-end items-center h-full">
           <img
@@ -68,7 +68,7 @@ const MainClientContainer = () => {
           </div>
         </div>
       </article>
-      <MainObriContainer />
+      <MainObriContainer jobs={jobs?.jobs} />
     </div>
   );
 };

@@ -1,18 +1,21 @@
 import { AD, AdvertisementType } from "@/types/ads";
 import { apiRequest } from ".";
 import { exceptionHandler } from "./exception-handler";
-import { ListResponse } from "@/interface";
+import { ApiResponse, ListResponse } from "@/interface";
 
 export const getAds = async (
   type: AdvertisementType
-): Promise<ListResponse<AD>> => {
+): Promise<ListResponse<AD, "advertisements">> => {
   try {
-    const response = await apiRequest.get<ListResponse<AD>>(`/advertisements`, {
-      params: {
-        type,
-      },
-    });
-    return response;
+    const response = await apiRequest.get<ApiResponse<AD, "advertisements">>(
+      `/advertisements`,
+      {
+        params: {
+          type,
+        },
+      }
+    );
+    return response.item;
   } catch (error) {
     throw new Error(exceptionHandler(error, "API getAds error"));
   }

@@ -71,6 +71,7 @@ export const MajorValues = [
 ];
 
 export type JOB = {
+  id: number;
   title: string;
   contents: string;
   province: string;

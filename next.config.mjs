@@ -9,11 +9,11 @@ const config = {
     NEXTAUTH_SECRET: process.env.NEXTAUTH_SECRET,
   },
   images: {
-    domains: ["ycuajmirzlqpgzuonzca.supabase.co", "www.sac.or.kr"],
+    domains: ["artinfokorea.com", "ycuajmirzlqpgzuonzca.supabase.co"],
     remotePatterns: [
       {
         protocol: "https",
-        hostname: "ycuajmirzlqpgzuonzca.supabase.co",
+        hostname: "https://artinfokorea.com",
         port: "",
         pathname: "**",
       },
@@ -23,11 +23,11 @@ const config = {
   },
 };
 
-const nextConfig = withPWA({
-  dest: "public",
-  // disable: !isProduction,
-  runtimeCaching: [],
-})(config);
+// const nextConfig = withPWA({
+//   dest: "public",
+//   // disable: !isProduction,
+//   runtimeCaching: [],
+// })(config);
 
 // const sentryWebpackPluginOptions = {
 //   org: 'artinfo',

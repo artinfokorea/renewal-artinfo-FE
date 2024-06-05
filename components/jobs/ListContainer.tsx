@@ -3,16 +3,21 @@
 import React, { useEffect, useState } from "react";
 import ListSearchForm from "./ListSearchForm";
 import ListCheckBoxes from "./ListCheckBoxes";
-import { MajorType, RecruitType, MajorValues } from "@/types/jobs";
+import { MajorType, RecruitType, MajorValues, JOB } from "@/types/jobs";
 import { Button } from "../ui/button";
 import { Badge } from "../ui/badge";
 import { useSearchParams } from "next/navigation";
 import MobileSearchTab from "./MobileSearchTab";
+import { useInfiniteQuery } from "@tanstack/react-query";
+import { queries } from "@/lib/queries";
+import { ScrollApiResponse } from "@/interface";
+import JobCard from "./JobCard";
 
 const ListContainer = () => {
   const searchParams = useSearchParams();
   const recruits = searchParams.get("recruit") as RecruitType;
   const majors = searchParams.get("major") as MajorType;
+  const keyword = searchParams.get("keyword") as string;
   const [checkedRecruits, setCheckedRecruits] = useState<RecruitType[]>(
     recruits ? recruits.split(",").map((item) => item as RecruitType) : []
   );
@@ -20,6 +25,19 @@ const ListContainer = () => {
   const [checkedMajors, setCheckedMajors] = useState<MajorType[]>(
     majors ? majors.split(",").map((item) => item as MajorType) : []
   );
+
+  const { data: jobs } = useInfiniteQuery<ScrollApiResponse<JOB, "jobs">>({
+    ...queries.jobs.infiniteList({
+      page: 1,
+      size: 20,
+      types: checkedRecruits,
+      keyword,
+    }),
+    initialPageParam: 1,
+    getNextPageParam: (lastPage) => {
+      if (!lastPage.isLast) return lastPage.nextPage;
+    },
+  });
 
   useEffect(() => {
     setCheckedRecruits(recruits ? (recruits.split(",") as RecruitType[]) : []);
@@ -62,6 +80,11 @@ const ListContainer = () => {
             </Button>
           </div>
           <MobileSearchTab />
+          <div className="mt-4">
+            {jobs?.pages?.map((page) =>
+              page?.jobs?.map((job) => <JobCard key={job.id} job={job} />)
+            )}
+          </div>
         </div>
       </section>
     </div>

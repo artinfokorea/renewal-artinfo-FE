@@ -1,7 +1,13 @@
 import { JOB } from "@/types/jobs";
 import { apiRequest } from ".";
 import { exceptionHandler } from "./exception-handler";
-import { ListResponse, PostResponse, SuccessResponse } from "@/interface";
+import {
+  ListResponse,
+  PostResponse,
+  SuccessResponse,
+  ApiResponse,
+  ScrollApiResponse,
+} from "@/interface";
 import {
   JobPayload,
   JobsRequest,
@@ -9,15 +15,27 @@ import {
   ReligionPayload,
 } from "@/interface/jobs";
 
+/* 채용 스크롤 리스트 조회 */
+export const getInfiniteJobs = async (
+  request: JobsRequest
+): Promise<ScrollApiResponse<JOB, "jobs">> => {
+  const response = await getJobs(request);
+  return {
+    jobs: response.jobs,
+    nextPage: request.page + 1,
+    isLast: response.jobs.length < 20,
+  };
+};
+
 /* 채용 리스트 조회 */
 export const getJobs = async (
   request: JobsRequest
-): Promise<ListResponse<JOB>> => {
+): Promise<ListResponse<JOB, "jobs">> => {
   try {
-    const response = await apiRequest.get<ListResponse<JOB>>("/jobs", {
+    const response = await apiRequest.get<ApiResponse<JOB, "jobs">>("/jobs", {
       params: request,
     });
-    return response;
+    return response.item;
   } catch (error) {
     throw new Error(exceptionHandler(error, "API getJobs error"));
   }

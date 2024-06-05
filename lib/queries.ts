@@ -1,5 +1,5 @@
 import { getAds } from "@/apis/ad";
-import { getJob, getJobs } from "@/apis/jobs";
+import { getInfiniteJobs, getJob, getJobs } from "@/apis/jobs";
 import { JobsRequest } from "@/interface/jobs";
 import { AdvertisementType } from "@/types/ads";
 import {
@@ -22,6 +22,11 @@ export const jobs = createQueryKeys("jobs", {
   list: (filters: JobsRequest) => ({
     queryKey: [{ filters }],
     queryFn: () => getJobs(filters),
+  }),
+  infiniteList: (filters: JobsRequest) => ({
+    queryKey: [{ filters }],
+    queryFn: ({ pageParam }: { pageParam: number }) =>
+      getInfiniteJobs({ ...filters, page: pageParam }),
   }),
 });
 

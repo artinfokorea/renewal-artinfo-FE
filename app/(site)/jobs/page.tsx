@@ -1,4 +1,4 @@
-import ListContainer from "@/components/recruits/ListContainer";
+import ListContainer from "@/components/jobs/ListContainer";
 import React from "react";
 
 const page = () => {
