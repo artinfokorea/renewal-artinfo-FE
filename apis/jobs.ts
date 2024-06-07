@@ -5,8 +5,9 @@ import {
   ListResponse,
   PostResponse,
   SuccessResponse,
-  ApiResponse,
+  ListApiResponse,
   ScrollApiResponse,
+  DetailApiResponse,
 } from "@/interface";
 import {
   JobPayload,
@@ -24,6 +25,7 @@ export const getInfiniteJobs = async (
     jobs: response.jobs,
     nextPage: request.page + 1,
     isLast: response.jobs.length < 20,
+    totalCount: response.totalCount ?? 0,
   };
 };
 
@@ -32,9 +34,12 @@ export const getJobs = async (
   request: JobsRequest
 ): Promise<ListResponse<JOB, "jobs">> => {
   try {
-    const response = await apiRequest.get<ApiResponse<JOB, "jobs">>("/jobs", {
-      params: request,
-    });
+    const response = await apiRequest.get<ListApiResponse<JOB, "jobs">>(
+      "/jobs",
+      {
+        params: request,
+      }
+    );
     return response.item;
   } catch (error) {
     throw new Error(exceptionHandler(error, "API getJobs error"));
@@ -44,8 +49,10 @@ export const getJobs = async (
 /* 채용 상세 조회 */
 export const getJob = async (id: number): Promise<JOB> => {
   try {
-    const response = await apiRequest.get<JOB>(`/jobs/${id}`);
-    return response;
+    const response = await apiRequest.get<DetailApiResponse<JOB>>(
+      `/jobs/${id}`
+    );
+    return response.item;
   } catch (error) {
     throw new Error(exceptionHandler(error, "API getJob error"));
   }

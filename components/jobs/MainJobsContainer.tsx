@@ -23,7 +23,7 @@ const MainJobsContainer = ({ isMobile, jobs }: Props) => {
         {jobs?.slice(0, isMobile ? 2 : 3).map((job) => (
           <div
             key={job.title}
-            className="border-2 border-whitesmoke h-[150px] md:h-[185px] relative"
+            className="border-2 border-whitesmoke h-[130px] md:h-[185px] relative"
           >
             <Link href={`/jobs/${job.id}`}>
               <Image src={job.imageUrl} alt="job_image" fill quality={100} />

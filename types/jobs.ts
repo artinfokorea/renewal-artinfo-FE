@@ -1,4 +1,4 @@
-export enum RecruitType {
+export enum JobType {
   ART_ORGANIZATION = "ART_ORGANIZATION",
   PART_TIME = "PART_TIME",
   RELIGION = "RELIGION",
@@ -24,22 +24,22 @@ export enum MajorType {
   ORGAN = "ORGAN",
 }
 
-export const recruitsValues = [
+export const jobTypessValues = [
   {
     title: "연주단체",
-    value: RecruitType.ART_ORGANIZATION,
+    value: JobType.ART_ORGANIZATION,
   },
   {
     title: "오브리",
-    value: RecruitType.PART_TIME,
+    value: JobType.PART_TIME,
   },
   {
     title: "종교",
-    value: RecruitType.RELIGION,
+    value: JobType.RELIGION,
   },
   {
     title: "강사",
-    value: RecruitType.LECTURER,
+    value: JobType.LECTURER,
   },
 ];
 
@@ -76,13 +76,14 @@ export type JOB = {
   contents: string;
   province: string;
   imageUrl: string;
-  majors?: MajorType[];
-  type?: RecruitType;
+  majors: MajorType[];
+  type: JobType;
   isActive: true;
   fee: number;
   startAt: Date;
   endAt: Date;
   createdAt: Date;
+  companyName: string;
 };
 
 export enum SearchType {

@@ -7,7 +7,7 @@ import MainObriContainer from "@/components/obri/MainObriContainer";
 import MainJobsContainer from "@/components/jobs/MainJobsContainer";
 import { queries } from "@/lib/queries";
 import { AdvertisementType } from "@/types/ads";
-import { RecruitType } from "@/types/jobs";
+import { JobType } from "@/types/jobs";
 import { useQueries } from "@tanstack/react-query";
 
 const MainClientContainer = () => {
@@ -20,9 +20,9 @@ const MainClientContainer = () => {
         queries.jobs.list({
           page: 1,
           size: 5,
-          types: [RecruitType.ART_ORGANIZATION, RecruitType.LECTURER],
+          types: [JobType.ART_ORGANIZATION, JobType.LECTURER],
         }),
-        queries.jobs.list({ page: 1, size: 5, types: [RecruitType.PART_TIME] }),
+        queries.jobs.list({ page: 1, size: 5, types: [JobType.PART_TIME] }),
       ],
     });
   // console.log("ads", ads);

@@ -1,11 +1,11 @@
-import { RecruitType } from "@/types/jobs";
+import { JobType } from "@/types/jobs";
 
 export interface JobsRequest {
   page: number;
   size: number;
   keyword?: string;
   categoryIds?: number[];
-  types?: RecruitType[];
+  types?: JobType[];
 }
 
 export interface PartTimePayload {

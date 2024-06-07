@@ -43,5 +43,5 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  return <main className="pb-12 md:pb-8">{children}</main>;
+  return <main>{children}</main>;
 }

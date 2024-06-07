@@ -14,7 +14,8 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${inter.className} touch-manipulation h-screen`}
+        className={`${inter.className} touch-manipulation`}
+        style={{ height: "calc(100vh - 156px)" }}
         suppressHydrationWarning
       >
         <ClientProvider>

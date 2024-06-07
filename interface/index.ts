@@ -27,10 +27,16 @@ export type SuccessResponse = {
   item?: any;
 };
 
-export type ApiResponse<T, K extends string = string> = {
+export type ListApiResponse<T, K extends string = string> = {
   code: SuccessCode;
   message?: string;
   item: ListResponse<T, K>;
+};
+
+export type DetailApiResponse<T> = {
+  code: SuccessCode;
+  message?: string;
+  item: T;
 };
 
 export type ListResponse<T, K extends string = string> = {
@@ -48,4 +54,5 @@ export type ScrollApiResponse<T, K extends string = string> = {
 } & {
   nextPage: number;
   isLast: boolean;
+  totalCount: number;
 };

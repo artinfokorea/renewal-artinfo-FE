@@ -3,23 +3,25 @@
 import React, { useEffect, useState } from "react";
 import ListSearchForm from "./ListSearchForm";
 import ListCheckBoxes from "./ListCheckBoxes";
-import { MajorType, RecruitType, MajorValues, JOB } from "@/types/jobs";
+import { MajorType, JobType, MajorValues, JOB } from "@/types/jobs";
 import { Button } from "../ui/button";
 import { Badge } from "../ui/badge";
-import { useSearchParams } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import MobileSearchTab from "./MobileSearchTab";
 import { useInfiniteQuery } from "@tanstack/react-query";
 import { queries } from "@/lib/queries";
 import { ScrollApiResponse } from "@/interface";
 import JobCard from "./JobCard";
+import ObriCard from "./ObriCard";
 
 const ListContainer = () => {
   const searchParams = useSearchParams();
-  const recruits = searchParams.get("recruit") as RecruitType;
+  const recruits = searchParams.get("recruit") as JobType;
   const majors = searchParams.get("major") as MajorType;
   const keyword = searchParams.get("keyword") as string;
-  const [checkedRecruits, setCheckedRecruits] = useState<RecruitType[]>(
-    recruits ? recruits.split(",").map((item) => item as RecruitType) : []
+  const router = useRouter();
+  const [checkedRecruits, setCheckedRecruits] = useState<JobType[]>(
+    recruits ? recruits.split(",").map((item) => item as JobType) : []
   );
 
   const [checkedMajors, setCheckedMajors] = useState<MajorType[]>(
@@ -39,8 +41,12 @@ const ListContainer = () => {
     },
   });
 
+  const totalCount = jobs?.pages?.reduce((acc, page) => {
+    return acc + page.totalCount;
+  }, 0);
+
   useEffect(() => {
-    setCheckedRecruits(recruits ? (recruits.split(",") as RecruitType[]) : []);
+    setCheckedRecruits(recruits ? (recruits.split(",") as JobType[]) : []);
   }, [recruits]);
 
   useEffect(() => {
@@ -49,7 +55,7 @@ const ListContainer = () => {
 
   return (
     <div className="max-w-screen-lg mx-auto px-4">
-      <ListSearchForm />
+      <ListSearchForm totalCount={totalCount} />
       <section className="flex">
         <ListCheckBoxes
           checkedRecruits={checkedRecruits}
@@ -75,14 +81,23 @@ const ListContainer = () => {
                 </Badge>
               ))}
             </div>
-            <Button className="py-2 px-6 text-white bg-main rounded-3xl">
+            <Button
+              className="py-2 px-6 text-white bg-main rounded-3xl"
+              onClick={() => router.push("/jobs/create")}
+            >
               등록
             </Button>
           </div>
           <MobileSearchTab />
           <div className="mt-4">
             {jobs?.pages?.map((page) =>
-              page?.jobs?.map((job) => <JobCard key={job.id} job={job} />)
+              page?.jobs?.map((job) => {
+                return job.type === JobType.PART_TIME ? (
+                  <ObriCard key={job.id} job={job} />
+                ) : (
+                  <JobCard key={job.id} job={job} />
+                );
+              })
             )}
           </div>
         </div>

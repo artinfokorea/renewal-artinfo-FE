@@ -1,15 +1,10 @@
 import React from "react";
 import { Label } from "../ui/label";
-import {
-  MajorType,
-  RecruitType,
-  MajorValues,
-  recruitsValues,
-} from "@/types/jobs";
+import { MajorType, JobType, MajorValues, jobTypessValues } from "@/types/jobs";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 
 interface Props {
-  checkedRecruits: RecruitType[];
+  checkedRecruits: JobType[];
   checkedMajors: MajorType[];
 }
 
@@ -17,10 +12,10 @@ const ListCheckBoxes = ({ checkedRecruits, checkedMajors }: Props) => {
   const pathname = usePathname();
   const searchParams = useSearchParams();
   const router = useRouter();
-  const recruit = searchParams.get("recruit") as RecruitType;
+  const recruit = searchParams.get("recruit") as JobType;
   const major = searchParams.get("major") as MajorType;
 
-  const handleRecruitChange = (value: RecruitType) => {
+  const handleRecruitChange = (value: JobType) => {
     if (recruit?.split(",").includes(value)) {
       const recruitList = recruit.split(",").filter((v) => v !== value);
       router.push(`${pathname}?recruit=${recruitList.join(",")}`);
@@ -45,7 +40,7 @@ const ListCheckBoxes = ({ checkedRecruits, checkedMajors }: Props) => {
       <div className="mt-8">
         <h4 className="text-lg font-semibold">직군</h4>
 
-        {recruitsValues.map(({ title, value }) => (
+        {jobTypessValues.map(({ title, value }) => (
           <div className="flex items-center my-2" key={value}>
             <input
               type="checkbox"

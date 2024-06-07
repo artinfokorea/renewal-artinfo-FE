@@ -1,6 +1,6 @@
 "use client";
 
-import { JOB, RecruitType } from "@/types/jobs";
+import { JOB, JobType } from "@/types/jobs";
 import Link from "next/link";
 import React from "react";
 
@@ -13,7 +13,7 @@ const MainObriContainer = ({ jobs }: Props) => {
     <section className="my-8 md:my-12">
       <div className="flex justify-between">
         <h3 className="text-xl font-bold">#오브리</h3>
-        <Link href={`/jobs?recruit=${RecruitType.PART_TIME}`}>
+        <Link href={`/jobs?recruit=${JobType.PART_TIME}`}>
           <h5 className="font-bold text-silver">더보기</h5>
         </Link>
       </div>

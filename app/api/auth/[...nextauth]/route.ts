@@ -8,6 +8,7 @@ const handleRefreshToken = async ({
   accessToken: string;
   refreshToken: string;
 }) => {
+  if (!accessToken || !refreshToken) return console.log("no token");
   try {
     const res = await fetch(
       `${process.env.REST_API_BASE_URL}/auths/refresh/access-token`,
@@ -60,7 +61,6 @@ const handler = NextAuth({
             body: JSON.stringify({
               email: credentials?.email,
               password: credentials?.password,
-              deviceType: "TABLET",
             }),
           }
         )
@@ -96,7 +96,6 @@ const handler = NextAuth({
               email: credentials?.email,
               password: credentials?.password,
               name: credentials?.name,
-              deviceType: "TABLET",
               clinicId: 1,
             }),
           }
@@ -180,19 +179,19 @@ const handler = NextAuth({
         token.refreshTokenExpiresIn = user?.refreshTokenExpiresIn;
       }
 
-      if (new Date() > new Date(token.accessTokenExpiresIn)) {
-        const result = await handleRefreshToken({
-          accessToken: token.accessToken,
-          refreshToken: token.refreshToken,
-        });
+      // if (new Date() > new Date(token.accessTokenExpiresIn)) {
+      //   const result = await handleRefreshToken({
+      //     accessToken: token.accessToken,
+      //     refreshToken: token.refreshToken,
+      //   });
 
-        if (result) {
-          token.accessToken = result.token;
-          token.accessTokenExpiresIn = result.expiresIn;
-        }
+      //   if (result) {
+      //     token.accessToken = result.token;
+      //     token.accessTokenExpiresIn = result.expiresIn;
+      //   }
 
-        return token;
-      }
+      //   return token;
+      // }
 
       return token;
     },
