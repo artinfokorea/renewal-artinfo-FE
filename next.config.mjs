@@ -1,4 +1,4 @@
-import withPWA from "next-pwa";
+import withPWA from 'next-pwa';
 // import { withSentryConfig } from '@sentry/nextjs';
 
 /** @type {import('next').NextConfig} */
@@ -9,16 +9,21 @@ const config = {
     NEXTAUTH_SECRET: process.env.NEXTAUTH_SECRET,
   },
   images: {
-    domains: ["artinfokorea.com", "ycuajmirzlqpgzuonzca.supabase.co"],
     remotePatterns: [
       {
-        protocol: "https",
-        hostname: "https://artinfokorea.com",
-        port: "",
-        pathname: "**",
+        protocol: 'https',
+        hostname: 'https://artinfokorea.com',
+        port: '',
+        pathname: '**',
+      },
+      {
+        protocol: 'https',
+        hostname: 'ycuajmirzlqpgzuonzca.supabase.co',
+        port: '',
+        pathname: '**',
       },
     ],
-    formats: ["image/webp"],
+    formats: ['image/webp'],
     minimumCacheTTL: 60 * 60 * 24 * 30,
   },
 };
