@@ -18,7 +18,7 @@ export type RefreshTokenResponse = {
 };
 
 enum SuccessCode {
-  OK = "OK",
+  OK = 'OK',
 }
 
 export type SuccessResponse = {
