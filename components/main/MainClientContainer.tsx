@@ -1,14 +1,14 @@
-"use client";
+'use client';
 
-import React, { useEffect, useState } from "react";
-import BannerContainer from "@/components/banner/BannerContainer";
-import ConcertContainer from "@/components/concert/MainConcertContainer";
-import MainObriContainer from "@/components/obri/MainObriContainer";
-import MainJobsContainer from "@/components/jobs/MainJobsContainer";
-import { queries } from "@/lib/queries";
-import { AdvertisementType } from "@/types/ads";
-import { JobType } from "@/types/jobs";
-import { useQueries } from "@tanstack/react-query";
+import React, { useEffect, useState } from 'react';
+import BannerContainer from '@/components/banner/BannerContainer';
+import ConcertContainer from '@/components/concert/MainConcertContainer';
+import MainObriContainer from '@/components/obri/MainObriContainer';
+import MainJobsContainer from '@/components/jobs/MainJobsContainer';
+import { queries } from '@/lib/queries';
+import { AdvertisementType } from '@/types/ads';
+import { JobType } from '@/types/jobs';
+import { useQueries } from '@tanstack/react-query';
 
 const MainClientContainer = () => {
   const [isMobile, setIsMobile] = useState(true);
@@ -31,15 +31,15 @@ const MainClientContainer = () => {
   // console.log("obries", obries);
 
   useEffect(() => {
-    const mediaQuery = window.matchMedia("(min-width: 768px)");
+    const mediaQuery = window.matchMedia('(min-width: 768px)');
     const handleMediaQueryChange = (event: any) => {
       setIsMobile(!event.matches);
     };
 
-    mediaQuery.addEventListener("change", handleMediaQueryChange);
+    mediaQuery.addEventListener('change', handleMediaQueryChange);
     handleMediaQueryChange(mediaQuery);
     return () => {
-      mediaQuery.removeEventListener("change", handleMediaQueryChange);
+      mediaQuery.removeEventListener('change', handleMediaQueryChange);
     };
   }, []);
 

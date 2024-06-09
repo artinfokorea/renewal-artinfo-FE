@@ -1,14 +1,14 @@
-"use client";
+'use client';
 
-import React, { useRef } from "react";
-import Autoplay from "embla-carousel-autoplay";
+import React, { useRef } from 'react';
+import Autoplay from 'embla-carousel-autoplay';
 import {
   Carousel,
   CarouselContent,
   CarouselItem,
-} from "@/components/ui/carousel";
-import Image from "next/image";
-import { AspectRatio } from "../ui/aspect-ratio";
+} from '@/components/ui/carousel';
+import Image from 'next/image';
+import { AspectRatio } from '../ui/aspect-ratio';
 
 const BannerContainer = () => {
   const plugin = useRef(
@@ -33,6 +33,7 @@ const BannerContainer = () => {
                   fill
                   quality={100}
                   className="rounded-xl"
+                  sizes="(max-width: 768px) 100px 180px, 960px 240px"
                 />
               </AspectRatio>
             </div>

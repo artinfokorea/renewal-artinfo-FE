@@ -12,7 +12,7 @@ const config = {
     remotePatterns: [
       {
         protocol: 'https',
-        hostname: 'https://artinfokorea.com',
+        hostname: 'artinfokorea.com',
         port: '',
         pathname: '**',
       },
