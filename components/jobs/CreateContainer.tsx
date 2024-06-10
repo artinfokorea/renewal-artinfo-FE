@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useMemo, useRef, useState } from "react";
+import React, { useMemo, useRef, useState } from "react";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { ErrorMessage } from "@hookform/error-message";
@@ -15,12 +15,16 @@ import CloseIcon from "../icons/CloseIcon";
 import DaumPostcode from "react-daum-postcode";
 import { Dialog, DialogPanel, Input } from "@headlessui/react";
 import PlusIcon from "../icons/PlusIcon";
-import Loading from "../common/Loading";
 import dynamic from "next/dynamic";
+import Loading from "../common/Loading";
 
-const QuillEditor = dynamic(() => import("@/components/editor/QuillEditor"), {
-  loading: () => <Loading />,
+const ToastEditor = dynamic(() => import("../editor/ToastEditor"), {
   ssr: false,
+  loading: () => (
+    <div className="h-[400px] flex items-center justify-center">
+      <Loading className="w-8 h-8" />
+    </div>
+  ),
 });
 
 const schema = yup
@@ -47,7 +51,7 @@ const schema = yup
   })
   .required();
 
-type FormData = yup.InferType<typeof schema>;
+export type CreateJobFormData = yup.InferType<typeof schema>;
 
 const CreateContainer = () => {
   const [createStep, setCreateStep] = useState(0);
@@ -56,8 +60,6 @@ const CreateContainer = () => {
   const [uploadedImage, setUploadedImage] = useState<File>();
   const [openPostcode, setOpenPostcode] = useState(false);
   const [detailAddress, setDetailAddress] = useState("");
-  const quillRef = useRef();
-  const [htmlStr, setHtmlStr] = useState("");
 
   const {
     register,
@@ -66,7 +68,7 @@ const CreateContainer = () => {
     setValue,
     getValues,
     formState: { errors, isValid },
-  } = useForm<FormData>({
+  } = useForm<CreateJobFormData>({
     resolver: yupResolver(schema),
   });
 
@@ -103,10 +105,6 @@ const CreateContainer = () => {
   const handleDetailAddress = (e: React.ChangeEvent<HTMLInputElement>) => {
     setDetailAddress(e.target.value);
   };
-
-  useEffect(() => {
-    setValue("contents", htmlStr);
-  }, [htmlStr]);
 
   return (
     <div>
@@ -151,7 +149,7 @@ const CreateContainer = () => {
             </div>
           )}
           <div className="md:ml-16 md:my-4 flex flex-col text-dimgray flex-1">
-            <div className="mb-2">
+            <div className="mt-4 md:mt:0 mb-2">
               <Input
                 {...register("title")}
                 className="border-b-2 border-whitesmoke focus:outline-none py-2 w-full"
@@ -180,7 +178,10 @@ const CreateContainer = () => {
               />
             </div>
             <div className="my-2">
-              <button className="border-main rounded-2xl border px-3 py-1">
+              <button
+                type="button"
+                className="border-main rounded-2xl border px-3 py-1"
+              >
                 <PlusIcon className="w-4 h-4 text-main" />
               </button>
             </div>
@@ -210,11 +211,10 @@ const CreateContainer = () => {
             </div>
           </div>
         </div>
-        <QuillEditor
-          quillRef={quillRef}
-          htmlContent={htmlStr}
-          setHtmlContent={setHtmlStr}
-        />
+        <div className="my-4 h-[400px]">
+          <ToastEditor setValue={setValue} />
+        </div>
+
         <FileUploader ref={fileUploader} uploadedFiles={handleUploadedFiles} />
         <Dialog
           open={openPostcode}

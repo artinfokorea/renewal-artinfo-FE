@@ -1,3 +1,4 @@
+import { ProvinceEn } from "@/types";
 import { JobType } from "@/types/jobs";
 
 export interface JobsRequest {
@@ -6,6 +7,7 @@ export interface JobsRequest {
   keyword?: string;
   categoryIds?: number[];
   types?: JobType[];
+  province?: ProvinceEn[];
 }
 
 export interface PartTimePayload {
