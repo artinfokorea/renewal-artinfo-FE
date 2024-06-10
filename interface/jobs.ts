@@ -24,8 +24,9 @@ export interface JobPayload {
   title: string;
   contents: string;
   companyName: string;
+  province: string;
   imageUrl: string;
-  majorIds: number[];
+  majorIds?: number[];
 }
 
 export interface ReligionPayload {

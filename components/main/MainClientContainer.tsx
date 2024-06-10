@@ -1,52 +1,57 @@
-'use client';
+"use client";
 
-import React, { useEffect, useState } from 'react';
-import BannerContainer from '@/components/banner/BannerContainer';
-import ConcertContainer from '@/components/concert/MainConcertContainer';
-import MainObriContainer from '@/components/obri/MainObriContainer';
-import MainJobsContainer from '@/components/jobs/MainJobsContainer';
-import { queries } from '@/lib/queries';
-import { AdvertisementType } from '@/types/ads';
-import { JobType } from '@/types/jobs';
-import { useQueries } from '@tanstack/react-query';
+import React, { useEffect, useState } from "react";
+import BannerContainer from "@/components/banner/BannerContainer";
+import ConcertContainer from "@/components/concert/MainConcertContainer";
+import MainObriContainer from "@/components/obri/MainObriContainer";
+import MainJobsContainer from "@/components/jobs/MainJobsContainer";
+import { queries } from "@/lib/queries";
+import { AdvertisementType } from "@/types/ads";
+import { JobType } from "@/types/jobs";
+import { useQueries } from "@tanstack/react-query";
+import Loading from "@/app/(site)/loading";
 
 const MainClientContainer = () => {
   const [isMobile, setIsMobile] = useState(true);
-  const [{ data: ads }, { data: concerts }, { data: jobs }, { data: obries }] =
-    useQueries({
-      queries: [
-        queries.ads.list(AdvertisementType.BANNER),
-        queries.ads.list(AdvertisementType.CONCERT),
-        queries.jobs.list({
-          page: 1,
-          size: 5,
-          types: [JobType.ART_ORGANIZATION, JobType.LECTURER],
-        }),
-        queries.jobs.list({ page: 1, size: 5, types: [JobType.PART_TIME] }),
-      ],
-    });
-  // console.log("ads", ads);
-  // console.log("concerts", concerts);
-  // console.log("jobs", jobs);
-  // console.log("obries", obries);
+  const [
+    { data: ads, isLoading: isAdsLoading },
+    { data: concerts, isLoading: isConcertsLoading },
+    { data: jobs, isLoading: isJobsLoading },
+    { data: obries, isLoading: isObriesLoading },
+  ] = useQueries({
+    queries: [
+      queries.ads.list(AdvertisementType.BANNER),
+      queries.ads.list(AdvertisementType.CONCERT),
+      queries.jobs.list({
+        page: 1,
+        size: 5,
+        types: [JobType.ART_ORGANIZATION, JobType.LECTURER],
+      }),
+      queries.jobs.list({ page: 1, size: 5, types: [JobType.PART_TIME] }),
+    ],
+  });
 
   useEffect(() => {
-    const mediaQuery = window.matchMedia('(min-width: 768px)');
+    const mediaQuery = window.matchMedia("(min-width: 768px)");
     const handleMediaQueryChange = (event: any) => {
       setIsMobile(!event.matches);
     };
 
-    mediaQuery.addEventListener('change', handleMediaQueryChange);
+    mediaQuery.addEventListener("change", handleMediaQueryChange);
     handleMediaQueryChange(mediaQuery);
     return () => {
-      mediaQuery.removeEventListener('change', handleMediaQueryChange);
+      mediaQuery.removeEventListener("change", handleMediaQueryChange);
     };
   }, []);
 
+  if (isAdsLoading || isConcertsLoading || isJobsLoading || isObriesLoading) {
+    return <Loading />;
+  }
+
   return (
     <div className="max-w-screen-lg mx-auto h-full px-2">
-      <BannerContainer />
-      <ConcertContainer isMobile={isMobile} />
+      <BannerContainer ads={ads} />
+      <ConcertContainer concerts={concerts} isMobile={isMobile} />
       <MainJobsContainer isMobile={isMobile} jobs={jobs?.jobs} />
       <article className="bg-whitesmoke h-[100px] md:h-[120px] rounded-xl">
         <div className="max-w-screen-md mx-auto  relative flex justify-center md:justify-end items-center h-full">
@@ -68,7 +73,7 @@ const MainClientContainer = () => {
           </div>
         </div>
       </article>
-      <MainObriContainer jobs={jobs?.jobs} />
+      <MainObriContainer jobs={obries?.jobs} />
     </div>
   );
 };

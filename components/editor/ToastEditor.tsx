@@ -43,7 +43,7 @@ const ToastEditor = ({ setValue }: Props) => {
       placeholder="내용을 입력해주세요."
       initialValue=""
       initialEditType="wysiwyg"
-      style={{ height: "100%" }}
+      height="100%"
       previewStyle="vertical"
       toolbarItems={toolbarItems}
       plugins={[colorSyntax]}

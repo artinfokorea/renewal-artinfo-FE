@@ -26,7 +26,13 @@ const MainJobsContainer = ({ isMobile, jobs }: Props) => {
             className="border-2 border-whitesmoke h-[130px] md:h-[185px] relative"
           >
             <Link href={`/jobs/${job.id}`}>
-              <Image src={job.imageUrl} alt="job_image" fill quality={100} />
+              <Image
+                src={job.imageUrl}
+                alt="job_image"
+                fill
+                quality={100}
+                sizes="(max-width: 768px) 100px 130px, (max-width: 1200px) 200px, 185px"
+              />
             </Link>
           </div>
         ))}

@@ -1,16 +1,22 @@
-'use client';
+"use client";
 
-import React, { useRef } from 'react';
-import Autoplay from 'embla-carousel-autoplay';
+import React, { useRef } from "react";
+import Autoplay from "embla-carousel-autoplay";
 import {
   Carousel,
   CarouselContent,
   CarouselItem,
-} from '@/components/ui/carousel';
-import Image from 'next/image';
-import { AspectRatio } from '../ui/aspect-ratio';
+} from "@/components/ui/carousel";
+import Image from "next/image";
+import { AspectRatio } from "../ui/aspect-ratio";
+import { AD } from "@/types/ads";
+import Link from "next/link";
 
-const BannerContainer = () => {
+interface Props {
+  ads?: AD[];
+}
+
+const BannerContainer = ({ ads }: Props) => {
   const plugin = useRef(
     Autoplay({ delay: 5000, stopOnInteraction: true, loop: true })
   );
@@ -23,20 +29,21 @@ const BannerContainer = () => {
       onMouseLeave={plugin.current.reset}
     >
       <CarouselContent>
-        {Array.from({ length: 5 }).map((_, index) => (
-          <CarouselItem key={index}>
-            <div className="relative cursor-pointer">
-              <AspectRatio ratio={4 / 1}>
+        {ads?.map((ad) => (
+          <CarouselItem key={ad.id}>
+            <Link href={ad.redirectUrl} target="_blank">
+              <AspectRatio ratio={4 / 1} className="relative cursor-pointer">
                 <Image
-                  src="/img/placeholder-user.png"
+                  src={ad.imageUrl}
                   alt="banner_image"
                   fill
+                  priority
                   quality={100}
                   className="rounded-xl"
                   sizes="(max-width: 768px) 100px 180px, 960px 240px"
                 />
               </AspectRatio>
-            </div>
+            </Link>
           </CarouselItem>
         ))}
       </CarouselContent>

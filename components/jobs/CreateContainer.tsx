@@ -1,7 +1,20 @@
 "use client";
 
-import React, { useMemo, useRef, useState } from "react";
-import { useForm } from "react-hook-form";
+import React, {
+  createContext,
+  useMemo,
+  useRef,
+  useState,
+  useTransition,
+} from "react";
+import {
+  FieldErrors,
+  UseFormHandleSubmit,
+  UseFormRegister,
+  UseFormSetValue,
+  UseFormWatch,
+  useForm,
+} from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { ErrorMessage } from "@hookform/error-message";
 import * as yup from "yup";
@@ -15,17 +28,11 @@ import CloseIcon from "../icons/CloseIcon";
 import DaumPostcode from "react-daum-postcode";
 import { Dialog, DialogPanel, Input } from "@headlessui/react";
 import PlusIcon from "../icons/PlusIcon";
-import dynamic from "next/dynamic";
-import Loading from "../common/Loading";
-
-const ToastEditor = dynamic(() => import("../editor/ToastEditor"), {
-  ssr: false,
-  loading: () => (
-    <div className="h-[400px] flex items-center justify-center">
-      <Loading className="w-8 h-8" />
-    </div>
-  ),
-});
+import useToast from "@/hooks/useToast";
+import { createFullTimeJob } from "@/apis/jobs";
+import { useRouter } from "next/navigation";
+import OrganizationForm from "./OrganizationForm";
+import ReligionForm from "./ReligionForm";
 
 const schema = yup
   .object({
@@ -41,11 +48,7 @@ const schema = yup
       .max(20, "2자 이상 20자 이하로 입력해주세요.")
       .required(),
     province: yup.string().required("지역을 선택해주세요."),
-    name: yup
-      .string()
-      .min(2, "이름은 2글자 이상 입력해주세요.")
-      .max(6, "이름은 6글자 이하로 입력해주세요.")
-      .required("이름을 입력해주세요."),
+    detailAddress: yup.string().required("상세 주소를 입력해주세요."),
     imageUrl: yup.string().required("이미지를 등록해주세요."),
     majorIds: yup.array().of(yup.number()).min(1, "전공을 선택해주세요."),
   })
@@ -53,13 +56,45 @@ const schema = yup
 
 export type CreateJobFormData = yup.InferType<typeof schema>;
 
+interface DefaultFormContextValue {
+  register: UseFormRegister<CreateJobFormData>;
+  handleSubmit: UseFormHandleSubmit<CreateJobFormData>;
+  watch: UseFormWatch<CreateJobFormData>;
+  errors: FieldErrors<CreateJobFormData>;
+  openFileUploader: () => void;
+  deleteImage: () => void;
+  openPostDialog: () => void;
+  isPending: boolean;
+  uploadedImageUrl?: string;
+  setValue: UseFormSetValue<CreateJobFormData>;
+  handleJob: (payload: CreateJobFormData) => void;
+}
+
+const defaultValue: DefaultFormContextValue = {
+  register: () => ({} as any),
+  handleSubmit: () => ({} as any),
+  watch: () => ({} as any),
+  errors: {},
+  openFileUploader: () => {},
+  deleteImage: () => {},
+  openPostDialog: () => {},
+  isPending: false,
+  uploadedImageUrl: "" || undefined,
+  setValue: () => {},
+  handleJob: () => {},
+};
+
+export const FormContext = createContext<DefaultFormContextValue>(defaultValue);
+
 const CreateContainer = () => {
   const [createStep, setCreateStep] = useState(0);
   const [selectedJobType, setSelectedJobType] = useState<JobType>();
   const fileUploader = useRef<HTMLInputElement>(null);
   const [uploadedImage, setUploadedImage] = useState<File>();
   const [openPostcode, setOpenPostcode] = useState(false);
-  const [detailAddress, setDetailAddress] = useState("");
+  const router = useRouter();
+  const { errorToast } = useToast();
+  const [isPending, startTransition] = useTransition();
 
   const {
     register,
@@ -102,131 +137,71 @@ const CreateContainer = () => {
     border: "1.4px solid #333333",
   };
 
-  const handleDetailAddress = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setDetailAddress(e.target.value);
+  const handleJob = async (payload: CreateJobFormData) => {
+    const {
+      title,
+      companyName,
+      province,
+      detailAddress,
+      imageUrl,
+      majorIds,
+      contents,
+    } = payload;
+    try {
+      startTransition(() => {
+        createFullTimeJob({
+          title,
+          companyName,
+          province: `${province} ${detailAddress}`,
+          imageUrl,
+          majorIds: majorIds?.map((id) => Number(id)),
+          contents,
+        });
+      });
+    } catch (error: any) {
+      errorToast(error.message);
+      console.log(error);
+    }
   };
 
+  const openPostDialog = () => setOpenPostcode(!openPostcode);
+  const onSubmit = handleSubmit(handleJob);
+  const deleteImage = () => setUploadedImage(undefined);
+
   return (
-    <div>
+    <FormContext.Provider
+      value={{
+        register,
+        handleSubmit,
+        watch,
+        errors,
+        openFileUploader,
+        deleteImage,
+        openPostDialog,
+        isPending,
+        uploadedImageUrl,
+        setValue,
+        handleJob,
+      }}
+    >
       {/* {createStep === 0 && (
         <JobTypeSelectCard handleSelectedJobType={handleSelectedJobType} />
       )}
       {createStep === 1 && <MajorSelectCard />} */}
-      <form className="max-w-screen-lg mx-auto py-4 md:py-8 px-2">
-        <div className="flex flex-col md:flex-row">
-          {uploadedImageUrl ? (
-            <div className="h-[190px] md:h-[244px] w-full md:w-[400px] rounded-md relative">
-              <Image
-                src={uploadedImageUrl}
-                alt="job_create_image"
-                fill
-                quality={100}
-              />
-              <Button
-                className="absolute top-2 right-2 rounded-full opacity-40 bg-white p-2"
-                onClick={() => setUploadedImage(undefined)}
-              >
-                <CloseIcon className="w-6 h-6 text-primary" />
-              </Button>
-            </div>
-          ) : (
-            <div
-              className="bg-whitesmoke h-[190px] md:h-[244px] w-full md:w-[400px] rounded-md
-          flex flex-col items-center justify-center gap-6"
-            >
-              <div className="flex flex-col items-center gap-2">
-                <PhotoIcon className="w-12 h-12 text-dimgray" />
-                <h5 className="font-bold text-sm md:text-base">
-                  대표 이미지를 등록해주세요.
-                </h5>
-              </div>
-              <Button
-                className="bg-white text-silver font-medium h-8 px-6"
-                onClick={openFileUploader}
-              >
-                이미지 선택
-              </Button>
-            </div>
-          )}
-          <div className="md:ml-16 md:my-4 flex flex-col text-dimgray flex-1">
-            <div className="mt-4 md:mt:0 mb-2">
-              <Input
-                {...register("title")}
-                className="border-b-2 border-whitesmoke focus:outline-none py-2 w-full"
-                placeholder="제목을 입력해주세요."
-              />
-              <ErrorMessage
-                errors={errors}
-                name="title"
-                render={({ message }) => (
-                  <p className="text-error font-semibold">{message}</p>
-                )}
-              />
-            </div>
-            <div className="mb-2">
-              <Input
-                {...register("companyName")}
-                className="border-b-2 border-whitesmoke focus:outline-none py-2 w-full"
-                placeholder="단체 이름을 입력해주세요."
-              />
-              <ErrorMessage
-                errors={errors}
-                name="companyName"
-                render={({ message }) => (
-                  <p className="text-error font-semibold">{message}</p>
-                )}
-              />
-            </div>
-            <div className="my-2">
-              <button
-                type="button"
-                className="border-main rounded-2xl border px-3 py-1"
-              >
-                <PlusIcon className="w-4 h-4 text-main" />
-              </button>
-            </div>
-            <div className="flex gap-4 h-20">
-              <Button
-                type="button"
-                onClick={() => setOpenPostcode(!openPostcode)}
-                className="border text-main h-[36px]"
-              >
-                주소검색
-              </Button>
-              {watch("province") && (
-                <div>
-                  <Input
-                    readOnly
-                    defaultValue={watch("province")}
-                    className="border-b-2 border-whitesmoke focus:outline-none py-2 w-full"
-                  />
-                  <Input
-                    value={detailAddress}
-                    onChange={handleDetailAddress}
-                    placeholder="상세 주소를 입력해주세요."
-                    className="border-b-2 border-whitesmoke focus:outline-none py-2 w-full"
-                  />
-                </div>
-              )}
-            </div>
-          </div>
-        </div>
-        <div className="my-4 h-[400px]">
-          <ToastEditor setValue={setValue} />
-        </div>
 
-        <FileUploader ref={fileUploader} uploadedFiles={handleUploadedFiles} />
-        <Dialog
-          open={openPostcode}
-          onClose={() => setOpenPostcode(false)}
-          className="fixed inset-0 z-50 flex items-center justify-center"
-        >
-          <DialogPanel>
-            <DaumPostcode style={style} onComplete={completeHandler} />
-          </DialogPanel>
-        </Dialog>
-      </form>
-    </div>
+      {/* <OrganizationForm /> */}
+      <ReligionForm />
+      <FileUploader ref={fileUploader} uploadedFiles={handleUploadedFiles} />
+      <Dialog
+        open={openPostcode}
+        onClose={() => setOpenPostcode(false)}
+        className="fixed inset-0 z-50 flex items-center justify-center"
+      >
+        <DialogPanel>
+          <DaumPostcode style={style} onComplete={completeHandler} />
+        </DialogPanel>
+      </Dialog>
+    </FormContext.Provider>
   );
 };
 
