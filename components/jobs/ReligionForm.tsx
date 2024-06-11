@@ -1,12 +1,26 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import React, { useContext } from "react";
+import React, { ChangeEvent, useContext } from "react";
 import { FormContext } from "./CreateContainer";
 import { Input } from "@headlessui/react";
 import dynamic from "next/dynamic";
 import Loading from "../common/Loading";
 import { Button } from "../ui/button";
+import { useHookFormMask } from "use-mask-input";
+import * as yup from "yup";
+import { yupResolver } from "@hookform/resolvers/yup";
+import { ErrorMessage } from "@hookform/error-message";
+import {
+  FieldErrors,
+  UseFormHandleSubmit,
+  UseFormRegister,
+  UseFormSetValue,
+  UseFormWatch,
+  useController,
+  useForm,
+} from "react-hook-form";
+import filters from "@/lib/filters";
 
 const ToastEditor = dynamic(() => import("../editor/ToastEditor"), {
   ssr: false,
@@ -17,66 +31,99 @@ const ToastEditor = dynamic(() => import("../editor/ToastEditor"), {
   ),
 });
 
+const schema = yup
+  .object({
+    title: yup
+      .string()
+      .min(3, "3자 이상 20자 이하로 입력해주세요.")
+      .max(20, "3자 이상 20자 이하로 입력해주세요.")
+      .required("제목을 입력해주세요."),
+    contents: yup.string().required("내용을 입력해주세요."),
+    companyName: yup
+      .string()
+      .min(2, "2자 이상 20자 이하로 입력해주세요.")
+      .max(20, "2자 이상 20자 이하로 입력해주세요.")
+      .required(),
+    province: yup.string().required("지역을 선택해주세요."),
+    detailAddress: yup.string().required("상세 주소를 입력해주세요."),
+    majorIds: yup.array().of(yup.number()).min(1, "전공을 선택해주세요."),
+    fee: yup.number().required("사례비를 입력해주세요."),
+  })
+  .required();
+
+export type CreateReligionFormData = yup.InferType<typeof schema>;
+
 const ReligionForm = () => {
   const router = useRouter();
+  const filter = filters();
 
   const {
     register,
     handleSubmit,
     watch,
-    errors,
-    openFileUploader,
-    deleteImage,
-    openPostDialog,
-    isPending,
-    uploadedImageUrl,
     setValue,
-    handleJob,
-  } = useContext(FormContext);
+    getValues,
+    control,
+
+    formState: { errors, isValid },
+  } = useForm<CreateReligionFormData>({
+    resolver: yupResolver(schema),
+  });
+
+  const {
+    field: { onChange, value },
+  } = useController({
+    name: "fee",
+    control,
+  });
+
+  const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
+    console.log(event.target.value);
+    const maskedValue = filter.FEECOMMA(event.target.value);
+    onChange(maskedValue);
+  };
 
   return (
     <form
-      className="max-w-screen-lg mx-auto py-4 md:py-20 px-2 font-semibold"
-      onSubmit={handleSubmit(handleJob)}
+      className="max-w-screen-lg mx-auto py-4 md:py-20 px-2 font-semibold text-sm"
+      //   onSubmit={handleSubmit(handleJob)}
     >
-      <div className="flex justify-center ">
+      <div className="flex mb-2">
         <Input
           {...register("title")}
-          className="focus:outline-none py-2 mx-auto mb-4 "
+          className="focus:outline-none p-2 border border-whitesmoke rounded-lg w-full md:w-1/2"
           placeholder="제목을 입력해주세요."
         />
       </div>
-      <div className="border-b-2 border border-whitesmoke w-2/3 mx-auto mb-4" />
-      <div className="my-2 flex flex-col md:flex-row md:items-center gap-2 md:gap-16 md:px-16">
-        <div className="flex items-center gap-2">
-          <Button className="text-sm border-whitesmoke border font-medium text-main px-4 h-8">
-            전공
+      <div className="flex flex-col md:flex-row my-2">
+        <div className="md:basis-1/2 items-center gap-2">
+          <Button className="text-sm border-whitesmoke border font-medium bg-main text-white rounded-full px-4 h-8">
+            전공추가
           </Button>
-          <span>바이올린</span>
+          {/* <span>바이올린</span> */}
         </div>
-        <div className="flex items-center gap-4">
-          <Button className="text-sm border-whitesmoke border font-medium text-main px-4 h-8">
-            사례비
-          </Button>
+        <div className="md:basis-1/2 flex items-center gap-4">
+          <span className="text-sm font-medium text-main">사례비</span>
           <Input
-            {...register("majorIds")}
-            className="border-b-2 border-whitesmoke focus:outline-none h-8 w-full font-semibold"
-            placeholder="300,000"
+            {...register("fee")}
+            placeholder="100000"
+            type="number"
+            className="focus:outline-none p-2 border border-whitesmoke rounded-lg w-full md:w-1/2"
           />
         </div>
       </div>
-      <div className="flex flex-col md:flex-row gap-2 md:gap-16  md:px-16 ">
-        <div className="flex items-center my-2 gap-4">
-          <Button className="text-sm border-whitesmoke border font-medium text-main px-4 h-8">
+      <div className="flex flex-col md:flex-row gap-2">
+        <div className="md:basis-1/2 flex items-center my-2 gap-4">
+          <span className="text-sm font-medium text-main whitespace-nowrap">
             단체명
-          </Button>
+          </span>
           <Input
             {...register("majorIds")}
             className="border-b-2 border-whitesmoke focus:outline-none h-8 w-full"
             placeholder="단체 이름을 입력해주세요."
           />
         </div>
-        <div className="flex items-center gap-4">
+        <div className="md:basis-1/2 flex items-center gap-4">
           <Button className="text-sm border-whitesmoke border font-medium text-main px-4 h-8">
             주소검색
           </Button>
