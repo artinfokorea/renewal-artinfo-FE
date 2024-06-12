@@ -185,7 +185,7 @@ const OrganizationForm = ({ handleFullTimeJob, isLoading }: Props) => {
               )}
             />
           </div>
-          <div className="my-2 flex gap-2">
+          <div className="my-2 flex md:items-center gap-2">
             <button
               type="button"
               onClick={() => setIsMajorDialog(!isMajorDialog)}

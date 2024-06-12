@@ -79,6 +79,10 @@ const CreateContainer = () => {
     }
   };
 
+  // const handleImageUpload = async (file: File) => {
+  //   try {}
+  // }
+
   return (
     <section>
       {!jobType && (
