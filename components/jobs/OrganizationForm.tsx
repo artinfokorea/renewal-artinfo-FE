@@ -1,21 +1,22 @@
 import { ErrorMessage } from "@hookform/error-message";
-import React, { useContext } from "react";
+import React, { useContext, useMemo, useRef, useState } from "react";
 import { Dialog, DialogPanel, Input } from "@headlessui/react";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
+import { useForm } from "react-hook-form";
+import { yupResolver } from "@hookform/resolvers/yup";
+import dynamic from "next/dynamic";
+import * as yup from "yup";
+import FileUploader from "../common/FileUploader";
 import CloseIcon from "../icons/CloseIcon";
 import { Button } from "../ui/button";
 import PhotoIcon from "../icons/PhotoIcon";
 import PlusIcon from "../icons/PlusIcon";
 import Loading from "../common/Loading";
-import { useRouter } from "next/navigation";
-import {
-  FieldErrors,
-  UseFormRegister,
-  UseFormWatch,
-  UseFormSetValue,
-} from "react-hook-form";
-import { CreateJobFormData, FormContext } from "./CreateContainer";
-import dynamic from "next/dynamic";
+import MajorDialog from "../dialog/MajorDialog";
+import { MAJOR } from "@/types";
+import { Badge } from "../ui/badge";
+import PostCodeDialog from "../dialog/PostCodeDialog";
 
 const ToastEditor = dynamic(() => import("../editor/ToastEditor"), {
   ssr: false,
@@ -26,32 +27,104 @@ const ToastEditor = dynamic(() => import("../editor/ToastEditor"), {
   ),
 });
 
-const OrganizationForm = () => {
+const schema = yup
+  .object({
+    title: yup
+      .string()
+      .min(3, "3자 이상 20자 이하로 입력해주세요.")
+      .max(20, "3자 이상 20자 이하로 입력해주세요.")
+      .required("제목을 입력해주세요."),
+    contents: yup.string().required("내용을 입력해주세요."),
+    companyName: yup
+      .string()
+      .min(2, "2자 이상 20자 이하로 입력해주세요.")
+      .max(20, "2자 이상 20자 이하로 입력해주세요.")
+      .required(),
+    province: yup.string().required("지역을 선택해주세요."),
+    detailAddress: yup.string().required("상세 주소를 입력해주세요."),
+    imageFile: yup
+      .mixed()
+      .test("fileType", "이미지 파일만 등록할 수 있습니다.", (value) => {
+        if (!value) return false; // 값이 없으면 유효성 검사 실패
+        return value instanceof File;
+      })
+      .required("이미지를 등록해주세요."),
+    majors: yup
+      .array()
+      .min(1, "전공을 최소 1개 선택해야 합니다.")
+      .max(10, "전공은 하나만 선택할 수 있습니다.")
+      .required("전공을 선택해주세요."),
+  })
+  .required();
+
+export type CreateJobFormData = yup.InferType<typeof schema>;
+
+interface Props {
+  handleFullTimeJob: (payload: CreateJobFormData) => void;
+  isLoading: boolean;
+}
+
+const OrganizationForm = ({ handleFullTimeJob, isLoading }: Props) => {
   const router = useRouter();
+  const fileUploader = useRef<HTMLInputElement>(null);
+  const [isMajorDialog, setIsMajorDialog] = useState(false);
+  const [isPostDialog, setIsPostDialog] = useState(false);
 
   const {
     register,
     handleSubmit,
     watch,
-    errors,
-    openFileUploader,
-    deleteImage,
-    openPostDialog,
-    isPending,
-    uploadedImageUrl,
     setValue,
-    handleJob,
-  } = useContext(FormContext);
+    clearErrors,
+    formState: { errors },
+  } = useForm<CreateJobFormData>({
+    resolver: yupResolver(schema),
+    defaultValues: {
+      majors: [],
+    },
+  });
+
+  const openFileUploader = () => {
+    fileUploader.current?.click();
+  };
+
+  const handleUploadedFiles = (files: File[]) => {
+    setValue("imageFile", files[0]);
+  };
+
+  const imageUrl = useMemo(() => {
+    const file = watch("imageFile") as File;
+    if (file) {
+      return URL.createObjectURL(file);
+    }
+    return undefined;
+  }, [watch("imageFile")]);
+
+  const handleSelectMajor = (selectedMajor: MAJOR) => {
+    if (watch("majors").includes(selectedMajor)) {
+      setValue(
+        "majors",
+        watch("majors").filter((major) => major !== selectedMajor)
+      );
+    } else {
+      setValue("majors", [...watch("majors"), selectedMajor]);
+    }
+    clearErrors("majors");
+  };
+
   return (
     <form
-      className="max-w-screen-lg mx-auto py-4 md:py-8 px-2"
-      onSubmit={handleSubmit(handleJob)}
+      className="max-w-screen-lg mx-auto py-4 px-2"
+      onSubmit={handleSubmit(handleFullTimeJob)}
     >
+      <h2 className="text-center md:text-2xl my-4 md:my-12 font-bold">
+        채용 등록
+      </h2>
       <div className="flex flex-col md:flex-row">
-        {uploadedImageUrl ? (
+        {imageUrl ? (
           <div className="h-[190px] md:h-[244px] w-full md:w-[400px] rounded-md relative">
             <Image
-              src={uploadedImageUrl}
+              src={imageUrl}
               alt="job_create_image"
               fill
               quality={100}
@@ -59,7 +132,7 @@ const OrganizationForm = () => {
             />
             <Button
               className="absolute top-2 right-2 rounded-full opacity-40 bg-white p-2"
-              onClick={deleteImage}
+              onClick={() => setValue("imageFile", "")}
             >
               <CloseIcon className="w-6 h-6 text-primary" />
             </Button>
@@ -112,19 +185,38 @@ const OrganizationForm = () => {
               )}
             />
           </div>
-          <div className="my-2 flex">
+          <div className="my-2 flex gap-2">
             <button
               type="button"
-              className="border-main rounded-2xl border px-3 py-1 flex items-center bg-main"
+              onClick={() => setIsMajorDialog(!isMajorDialog)}
+              className="border-main rounded-2xl border px-3 h-8 flex items-center bg-main"
             >
               <PlusIcon className="w-4 h-4 text-white" />
               <span className="text-white">전공</span>
             </button>
+            {watch("majors").map((major) => (
+              <Badge key={major.id} className="bg-main text-white text-sm h-8">
+                {major.koName}
+                <button
+                  onClick={() => handleSelectMajor(major)}
+                  className="ml-1"
+                >
+                  <CloseIcon className="w-4 h-4 mb-[1px] text-white" />
+                </button>
+              </Badge>
+            ))}
+            <ErrorMessage
+              errors={errors}
+              name="majors"
+              render={({ message }) => (
+                <p className="text-error font-semibold">{message}</p>
+              )}
+            />
           </div>
           <div className="flex gap-4 h-20">
             <Button
               type="button"
-              onClick={openPostDialog}
+              onClick={() => setIsPostDialog(!isPostDialog)}
               className="border text-main h-[36px]"
             >
               주소검색
@@ -171,13 +263,29 @@ const OrganizationForm = () => {
           취소
         </Button>
         <Button
-          disabled={isPending}
+          disabled={isLoading}
           type="submit"
           className="rounded-3xl text-sm h-9 bg-main text-white px-6"
         >
           등록
         </Button>
       </div>
+      <FileUploader ref={fileUploader} uploadedFiles={handleUploadedFiles} />
+      <MajorDialog
+        open={isMajorDialog}
+        close={() => setIsMajorDialog(!isMajorDialog)}
+        selectedMajors={watch("majors")}
+        handleSelectMajor={handleSelectMajor}
+        multiple={false}
+      />
+      <PostCodeDialog
+        isOpen={isPostDialog}
+        close={() => setIsPostDialog(!isPostDialog)}
+        setValue={(address) => {
+          setValue("province", address);
+          clearErrors("province");
+        }}
+      />
     </form>
   );
 };

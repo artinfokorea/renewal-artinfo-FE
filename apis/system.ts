@@ -47,10 +47,10 @@ export const verifyPhoneCode = async (
   }
 };
 
-export const uploadImage = async (files: File[]): Promise<string> => {
+export const uploadImage = async (imageFiles: File[]): Promise<string> => {
   try {
     const response = await apiRequest.post<string>("/system/upload/images", {
-      imageFiles: files,
+      imageFiles,
       target: "USER",
     });
     return response;

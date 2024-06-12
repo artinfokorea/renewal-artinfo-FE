@@ -33,7 +33,7 @@ export interface ReligionPayload {
   title: string;
   contents: string;
   companyName: string;
-  province: string;
+
   address: string;
   fee: number;
   majorId: number;

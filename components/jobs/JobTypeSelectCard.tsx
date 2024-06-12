@@ -2,7 +2,7 @@ import { JobType, jobTypessValues } from "@/types/jobs";
 import React from "react";
 import { Button } from "../ui/button";
 import CloseIcon from "../icons/CloseIcon";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 
 interface Props {
   handleSelectedJobType: (jobType: JobType) => void;
@@ -10,6 +10,7 @@ interface Props {
 
 const JobTypeSelectCard = ({ handleSelectedJobType }: Props) => {
   const router = useRouter();
+  const pathname = usePathname();
 
   return (
     <div
@@ -23,7 +24,9 @@ const JobTypeSelectCard = ({ handleSelectedJobType }: Props) => {
           </h5>
           <Button
             className="absolute top-2 right-0 text-silver"
-            onClick={() => router.back()}
+            onClick={() =>
+              router.push(pathname.slice(0, pathname.lastIndexOf("/")))
+            }
           >
             <CloseIcon className="w-5 h-5" />
           </Button>
