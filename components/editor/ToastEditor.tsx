@@ -1,9 +1,9 @@
-import { Editor } from "@toast-ui/react-editor";
-import React, { useCallback, useEffect, useRef } from "react";
-import colorSyntax from "@toast-ui/editor-plugin-color-syntax";
-import { UseFormSetValue } from "react-hook-form";
-import "@toast-ui/editor/dist/toastui-editor.css";
-import "./toastEditor.css";
+import { Editor } from '@toast-ui/react-editor';
+import React, { useCallback, useEffect, useRef } from 'react';
+import colorSyntax from '@toast-ui/editor-plugin-color-syntax';
+import { UseFormSetValue } from 'react-hook-form';
+import '@toast-ui/editor/dist/toastui-editor.css';
+import './toastEditor.css';
 
 interface Props {
   setValue: UseFormSetValue<any>;
@@ -12,29 +12,29 @@ interface Props {
 const ToastEditor = ({ setValue }: Props) => {
   const editorRef = useRef<Editor>(null);
   const toolbarItems = [
-    ["heading", "bold", "italic", "strike"],
-    ["hr"],
-    ["ul", "ol", "task"],
-    ["link"],
-    ["image"],
+    ['heading', 'bold', 'italic', 'strike'],
+    ['hr'],
+    ['ul', 'ol', 'task'],
+    ['link'],
+    ['image'],
   ];
 
   const handleChange = useCallback(() => {
     if (editorRef.current) {
-      setValue("contents", editorRef.current.getInstance().getMarkdown());
+      setValue('contents', editorRef.current.getInstance().getHTML());
     }
   }, []);
 
   useEffect(() => {
     if (editorRef.current) {
-      editorRef.current.getInstance().removeHook("change");
-      editorRef.current.getInstance().addHook("change", handleChange);
+      editorRef.current.getInstance().removeHook('change');
+      editorRef.current.getInstance().addHook('change', handleChange);
     }
   }, [handleChange]);
 
   useEffect(() => {
     if (editorRef.current) {
-      editorRef.current.getInstance().setMarkdown("");
+      editorRef.current.getInstance().setMarkdown('');
     }
   }, []);
   return (

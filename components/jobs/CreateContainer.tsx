@@ -1,19 +1,19 @@
-"use client";
+'use client';
 
-import React, { useState } from "react";
-import { JobType } from "@/types/jobs";
-import useToast from "@/hooks/useToast";
-import { createFullTimeJob, createReligionJob } from "@/apis/jobs";
-import { usePathname, useRouter, useSearchParams } from "next/navigation";
-import OrganizationForm, { CreateJobFormData } from "./OrganizationForm";
-import ReligionForm, { CreateReligionFormData } from "./ReligionForm";
-import JobTypeSelectCard from "./JobTypeSelectCard";
-import { useLoading } from "@toss/use-loading";
-import { uploadImage } from "@/apis/system";
+import React, { useState } from 'react';
+import { JobType } from '@/types/jobs';
+import useToast from '@/hooks/useToast';
+import { createFullTimeJob, createReligionJob } from '@/apis/jobs';
+import { usePathname, useRouter, useSearchParams } from 'next/navigation';
+import OrganizationForm, { CreateJobFormData } from './OrganizationForm';
+import ReligionForm, { CreateReligionFormData } from './ReligionForm';
+import JobTypeSelectCard from './JobTypeSelectCard';
+import { useLoading } from '@toss/use-loading';
+import { uploadImages } from '@/apis/system';
 
 const CreateContainer = () => {
   const searchParams = useSearchParams();
-  const jobType = searchParams.get("jobType");
+  const jobType = searchParams.get('jobType');
   const pathname = usePathname();
   const router = useRouter();
   const { errorToast, successToast } = useToast();
@@ -30,20 +30,22 @@ const CreateContainer = () => {
       contents,
     } = payload;
     try {
-      const imageUrl = await startTransition(uploadImage([imageFile as File]));
+      const uploadResponse = await startTransition(
+        uploadImages([imageFile] as File[])
+      );
 
       await startTransition(
         createFullTimeJob({
           title,
           companyName,
           province: `${province} ${detailAddress}`,
-          imageUrl,
-          majorIds: majors?.map((id) => Number(id)),
+          imageUrl: uploadResponse.images[0].url as string,
+          majorIds: majors.map((major) => major.id),
           contents,
         })
       );
-      successToast("채용이 등록되었습니다.");
-      router.push(pathname.slice(0, pathname.lastIndexOf("/")));
+      successToast('채용이 등록되었습니다.');
+      router.push(pathname.slice(0, pathname.lastIndexOf('/')));
     } catch (error: any) {
       errorToast(error.message);
       console.log(error);
@@ -71,8 +73,8 @@ const CreateContainer = () => {
           fee,
         })
       );
-      successToast("채용이 등록되었습니다.");
-      router.push(pathname.slice(0, pathname.lastIndexOf("/")));
+      successToast('채용이 등록되었습니다.');
+      router.push(pathname.slice(0, pathname.lastIndexOf('/')));
     } catch (error: any) {
       errorToast(error.message);
       console.log(error);
