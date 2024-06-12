@@ -1,6 +1,7 @@
 "use client";
 
 import React, {
+  Suspense,
   createContext,
   useMemo,
   useRef,
@@ -16,23 +17,20 @@ import {
   useForm,
 } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { ErrorMessage } from "@hookform/error-message";
 import * as yup from "yup";
 import { JobType } from "@/types/jobs";
 import MajorSelectCard from "./MajorSelectCard";
 import FileUploader from "../common/FileUploader";
-import PhotoIcon from "../icons/PhotoIcon";
-import { Button } from "../ui/button";
-import Image from "next/image";
-import CloseIcon from "../icons/CloseIcon";
 import DaumPostcode from "react-daum-postcode";
 import { Dialog, DialogPanel, Input } from "@headlessui/react";
-import PlusIcon from "../icons/PlusIcon";
 import useToast from "@/hooks/useToast";
 import { createFullTimeJob } from "@/apis/jobs";
 import { useRouter } from "next/navigation";
 import OrganizationForm from "./OrganizationForm";
 import ReligionForm from "./ReligionForm";
+import MajorDialog from "../dialog/MajorDialog";
+import { MAJOR } from "@/types";
+import Loading from "../common/Loading";
 
 const schema = yup
   .object({
@@ -89,9 +87,11 @@ export const FormContext = createContext<DefaultFormContextValue>(defaultValue);
 const CreateContainer = () => {
   const [createStep, setCreateStep] = useState(0);
   const [selectedJobType, setSelectedJobType] = useState<JobType>();
+  const [selectedMajors, setSelectedMajors] = useState<MAJOR[]>([]);
   const fileUploader = useRef<HTMLInputElement>(null);
   const [uploadedImage, setUploadedImage] = useState<File>();
   const [openPostcode, setOpenPostcode] = useState(false);
+  const [isMajorDialog, setIsMajorDialog] = useState(false);
   const router = useRouter();
   const { errorToast } = useToast();
   const [isPending, startTransition] = useTransition();
@@ -167,6 +167,15 @@ const CreateContainer = () => {
   const openPostDialog = () => setOpenPostcode(!openPostcode);
   const onSubmit = handleSubmit(handleJob);
   const deleteImage = () => setUploadedImage(undefined);
+  const handleSelectMajor = (selectedMajor: MAJOR) => {
+    if (selectedMajors.includes(selectedMajor)) {
+      setSelectedMajors(
+        selectedMajors.filter((major) => major !== selectedMajor)
+      );
+    } else {
+      setSelectedMajors([...selectedMajors, selectedMajor]);
+    }
+  };
 
   return (
     <FormContext.Provider
@@ -190,8 +199,18 @@ const CreateContainer = () => {
       {createStep === 1 && <MajorSelectCard />} */}
 
       {/* <OrganizationForm /> */}
-      <ReligionForm />
+      <ReligionForm
+        selectedMajors={selectedMajors}
+        handleSelectMajor={handleSelectMajor}
+        handleMajorDialog={() => setIsMajorDialog(!isMajorDialog)}
+      />
       <FileUploader ref={fileUploader} uploadedFiles={handleUploadedFiles} />
+      <MajorDialog
+        open={isMajorDialog}
+        close={() => setIsMajorDialog(!isMajorDialog)}
+        selectedMajors={selectedMajors}
+        handleSelectMajor={handleSelectMajor}
+      />
       <Dialog
         open={openPostcode}
         onClose={() => setOpenPostcode(false)}

@@ -21,6 +21,9 @@ import {
   useForm,
 } from "react-hook-form";
 import filters from "@/lib/filters";
+import { MAJOR } from "@/types";
+import { Badge } from "../ui/badge";
+import CloseIcon from "../icons/CloseIcon";
 
 const ToastEditor = dynamic(() => import("../editor/ToastEditor"), {
   ssr: false,
@@ -53,7 +56,17 @@ const schema = yup
 
 export type CreateReligionFormData = yup.InferType<typeof schema>;
 
-const ReligionForm = () => {
+interface Props {
+  handleMajorDialog: () => void;
+  selectedMajors: MAJOR[];
+  handleSelectMajor: (major: MAJOR) => void;
+}
+
+const ReligionForm = ({
+  handleMajorDialog,
+  selectedMajors,
+  handleSelectMajor,
+}: Props) => {
   const router = useRouter();
   const filter = filters();
 
@@ -78,7 +91,6 @@ const ReligionForm = () => {
   });
 
   const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
-    console.log(event.target.value);
     const maskedValue = filter.FEECOMMA(event.target.value);
     onChange(maskedValue);
   };
@@ -96,18 +108,30 @@ const ReligionForm = () => {
         />
       </div>
       <div className="flex flex-col md:flex-row my-2">
-        <div className="md:basis-1/2 items-center gap-2">
-          <Button className="text-sm border-whitesmoke border font-medium bg-main text-white rounded-full px-4 h-8">
+        <div className="md:basis-1/2 items-center gap-1 flex flex-wrap">
+          <Button
+            type="button"
+            onClick={handleMajorDialog}
+            className="text-sm font-medium bg-main text-white rounded-full px-3 h-7"
+          >
             전공추가
           </Button>
-          {/* <span>바이올린</span> */}
+          {selectedMajors.map((major) => (
+            <Badge key={major.id} className="bg-main text-white text-sm">
+              {major.koName}
+              <button onClick={() => handleSelectMajor(major)}>
+                <CloseIcon className="w-4 h-4 ml-1 text-white" />
+              </button>
+            </Badge>
+          ))}
         </div>
         <div className="md:basis-1/2 flex items-center gap-4">
           <span className="text-sm font-medium text-main">사례비</span>
           <Input
-            {...register("fee")}
-            placeholder="100000"
-            type="number"
+            value={value}
+            onChange={handleChange}
+            placeholder="100,000"
+            type="type"
             className="focus:outline-none p-2 border border-whitesmoke rounded-lg w-full md:w-1/2"
           />
         </div>

@@ -1,5 +1,6 @@
 import { getAds } from "@/apis/ad";
 import { getInfiniteJobs, getJob, getJobs } from "@/apis/jobs";
+import { getMajors } from "@/apis/system";
 import { JobsRequest } from "@/interface/jobs";
 import { AdvertisementType } from "@/types/ads";
 import {
@@ -11,6 +12,13 @@ export const ads = createQueryKeys("ads", {
   list: (type: AdvertisementType) => ({
     queryKey: [type],
     queryFn: () => getAds(type),
+  }),
+});
+
+export const majors = createQueryKeys("majors", {
+  list: () => ({
+    queryKey: [""],
+    queryFn: () => getMajors(),
   }),
 });
 
@@ -30,4 +38,4 @@ export const jobs = createQueryKeys("jobs", {
   }),
 });
 
-export const queries = mergeQueryKeys(ads, jobs);
+export const queries = mergeQueryKeys(ads, jobs, majors);

@@ -1,7 +1,7 @@
 import { ListApiResponse, ListResponse, SuccessResponse } from "@/interface";
 import { apiRequest } from ".";
 import { exceptionHandler } from "./exception-handler";
-import { PROVINCE } from "@/types";
+import { MAJOR, PROVINCE } from "@/types";
 import { VerifyPhoneCodePayload } from "@/interface/systems";
 
 export const getProvince = async (): Promise<
@@ -56,5 +56,16 @@ export const uploadImage = async (files: File[]): Promise<string> => {
     return response;
   } catch (error) {
     throw new Error(exceptionHandler(error, "API uploadImage error"));
+  }
+};
+
+export const getMajors = async (): Promise<ListResponse<MAJOR, "majors">> => {
+  try {
+    const response = await apiRequest.get<ListApiResponse<MAJOR, "majors">>(
+      "/common/majors"
+    );
+    return response.item;
+  } catch (error) {
+    throw new Error(exceptionHandler(error, "API getMajors error"));
   }
 };
