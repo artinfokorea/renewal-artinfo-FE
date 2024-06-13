@@ -1,8 +1,8 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { Label } from "../ui/label";
 import { JobType, jobTypessValues } from "@/types/jobs";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
-import { MAJOR, MajorCategoryValues } from "@/types";
+import { MAJOR, MajorCategory, MajorCategoryValues } from "@/types";
 import RightIcon from "../icons/RightIcon";
 
 interface Props {
@@ -27,6 +27,67 @@ const ListCheckBoxes = ({ majors }: Props) => {
   const [isMajorCategoryChecked, setIsMajorCategoryChecked] =
     useState(initialState);
 
+  const majorCategoryIds = useMemo(() => {
+    return {
+      [MajorCategory.MUSIC_MAJOR_ETC]: majors
+        ?.filter((major) => major.enGroup === MajorCategory.MUSIC_MAJOR_ETC)
+        .map((major) => major.id.toString()),
+      [MajorCategory.MUSIC_MAJOR_KEYBOARD]: majors
+        ?.filter(
+          (major) => major.enGroup === MajorCategory.MUSIC_MAJOR_KEYBOARD
+        )
+        .map((major) => major.id.toString()),
+      [MajorCategory.MUSIC_MAJOR_VOCAL]: majors
+        ?.filter((major) => major.enGroup === MajorCategory.MUSIC_MAJOR_VOCAL)
+        .map((major) => major.id.toString()),
+      [MajorCategory.MUSIC_MAJOR_ADMINISTRATION]: majors
+        ?.filter(
+          (major) => major.enGroup === MajorCategory.MUSIC_MAJOR_ADMINISTRATION
+        )
+        .map((major) => major.id.toString()),
+      [MajorCategory.MUSIC_MAJOR_STRING]: majors
+        ?.filter((major) => major.enGroup === MajorCategory.MUSIC_MAJOR_STRING)
+        .map((major) => major.id.toString()),
+      [MajorCategory.MUSIC_MAJOR_BRASS]: majors
+        ?.filter((major) => major.enGroup === MajorCategory.MUSIC_MAJOR_BRASS)
+        .map((major) => major.id.toString()),
+      [MajorCategory.MUSIC_MAJOR_POPULAR_MUSIC]: majors
+        ?.filter(
+          (major) => major.enGroup === MajorCategory.MUSIC_MAJOR_POPULAR_MUSIC
+        )
+        .map((major) => major.id.toString()),
+      [MajorCategory.MUSIC_MAJOR_TRADITIONAL_MUSIC]: majors
+        ?.filter(
+          (major) =>
+            major.enGroup === MajorCategory.MUSIC_MAJOR_TRADITIONAL_MUSIC
+        )
+        .map((major) => major.id.toString()),
+    };
+  }, [majors]);
+
+  useEffect(() => {
+    const newIsMajorCategoryChecked = { ...isMajorCategoryChecked };
+
+    for (const category in majorCategoryIds) {
+      const categoryIds = majorCategoryIds[category as MajorCategory];
+
+      const isAllCategoryIdsIncluded = categoryIds
+        ? categoryIds.every((id) => majorIds.includes(id))
+        : false;
+
+      if (newIsMajorCategoryChecked[category] !== isAllCategoryIdsIncluded) {
+        newIsMajorCategoryChecked[category] = isAllCategoryIdsIncluded;
+      }
+    }
+
+    if (
+      JSON.stringify(newIsMajorCategoryChecked) !==
+      JSON.stringify(isMajorCategoryChecked)
+    ) {
+      setIsMajorCategoryChecked(newIsMajorCategoryChecked);
+    }
+  }, [majorIds, isMajorCategoryChecked, majorCategoryIds]);
+
   const handleRecruitChange = (value: JobType) => {
     const locationParams = new URLSearchParams(window.location.search);
 
@@ -46,6 +107,9 @@ const ListCheckBoxes = ({ majors }: Props) => {
   const handleMajorChange = (majorId: string) => {
     const locationParams = new URLSearchParams(window.location.search);
     if (majorIds?.includes(majorId)) {
+      const categoryKey = majors?.find((major) => major.id === Number(majorId))
+        ?.enGroup as MajorCategory;
+
       locationParams.delete("majorId");
       const majorList = majorIds.filter((v) => v !== majorId);
       majorList.forEach((v) => locationParams.append("majorId", v));
@@ -78,12 +142,16 @@ const ListCheckBoxes = ({ majors }: Props) => {
         });
     } else {
       locationParams.delete("majorId");
-      console.log("majorIds", majorIds);
-      // majors
-      //   ?.filter((major) => major.enGroup !== key)
-      //   .forEach((major) => {
-      //     locationParams.append("majorId", major.id.toString());
-      //   });
+
+      const filteredMajors = majors?.filter((major) => {
+        if (major.enGroup !== key) return major.id;
+      });
+      const filterdMajorIds = majorIds.filter((id) =>
+        filteredMajors?.some((major) => major.id === Number(id))
+      );
+      filterdMajorIds.forEach((id) =>
+        locationParams.append("majorId", id.toString())
+      );
     }
 
     setIsMajorCategoryChecked((prev) => {
@@ -110,6 +178,14 @@ const ListCheckBoxes = ({ majors }: Props) => {
       router.push(newUrl, {
         scroll: false,
       });
+      setIsMajorCategoryChecked(
+        MajorCategoryValues.reduce<{
+          [key: string]: boolean;
+        }>((acc, curr) => {
+          acc[curr.key] = true;
+          return acc;
+        }, {})
+      );
     } else {
       const locationParams = new URLSearchParams(window.location.search);
       locationParams.delete("majorId");
@@ -117,6 +193,14 @@ const ListCheckBoxes = ({ majors }: Props) => {
       router.push(newUrl, {
         scroll: false,
       });
+      setIsMajorCategoryChecked(
+        MajorCategoryValues.reduce<{
+          [key: string]: boolean;
+        }>((acc, curr) => {
+          acc[curr.key] = false;
+          return acc;
+        }, {})
+      );
     }
   }, [isMajorAllChecked]);
 
@@ -162,7 +246,7 @@ const ListCheckBoxes = ({ majors }: Props) => {
                 <input
                   type="checkbox"
                   value={key}
-                  // checked={majorIds.includes(major.id.toString())}
+                  checked={isMajorCategoryChecked[key]}
                   className="w-5 h-5 border-gray-400 checked:bg-main rounded"
                   onChange={() => handleMajorGroupChange(key)}
                 />
@@ -206,51 +290,6 @@ const ListCheckBoxes = ({ majors }: Props) => {
                 })}
             </div>
           );
-          // return (
-          //   <div className="flex items-center my-2" key={major.id}>
-          //     <input
-          //       type="checkbox"
-          //       value={major.id}
-          //       checked={majorIds.includes(major.id.toString())}
-          //       className="w-5 h-5 border-gray-400 checked:bg-main rounded"
-          //       onChange={() => handleMajorChange(major.id.toString())}
-          //     />
-          //     <Label htmlFor={major.koName} className="ml-2 text-lg">
-          //       {major.koName}
-          //     </Label>
-          //   </div>
-          // );
-          // if (deps !== 2) {
-          //   return (
-          //     <div className="flex items-center my-2" key={value}>
-          //       <input
-          //         type="checkbox"
-          //         value={value}
-          //         checked={majorIds.includes(value)}
-          //         className="w-5 h-5 border-gray-400 checked:bg-main rounded"
-          //         onChange={() => handleMajorChange(value)}
-          //       />
-          //       <Label htmlFor={title} className="ml-2 text-lg">
-          //         {title}
-          //       </Label>
-          //     </div>
-          //   );
-          // } else {
-          //   return (
-          //     <div className="ml-8 flex items-center my-2" key={value}>
-          //       <input
-          //         type="checkbox"
-          //         value={value}
-          //         checked={majorIds.includes(value)}
-          //         className="w-5 h-5 border-gray-400 checked:bg-main rounded"
-          //         onChange={() => handleMajorChange(value)}
-          //       />
-          //       <Label htmlFor={title} className="ml-2 text-lg">
-          //         {title}
-          //       </Label>
-          //     </div>
-          //   );
-          // }
         })}
       </div>
     </form>

@@ -123,7 +123,7 @@ export const MajorCategoryValues = [
   },
   {
     key: MajorCategory.MUSIC_MAJOR_KEYBOARD,
-    value: "행정",
+    value: "건반",
   },
   {
     key: MajorCategory.MUSIC_MAJOR_ADMINISTRATION,
