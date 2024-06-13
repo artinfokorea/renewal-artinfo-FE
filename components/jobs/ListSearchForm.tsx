@@ -15,7 +15,15 @@ const ListSearchForm = ({ totalCount }: Props) => {
 
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    router.push(`${pathname}?keyword=${searchInput}`);
+
+    const searchParams = new URLSearchParams(window.location.search);
+
+    searchParams.delete("keyword");
+    searchInput && searchParams.append("keyword", searchInput);
+
+    const newUrl = `${window.location.pathname}?${searchParams.toString()}`;
+
+    router.push(newUrl);
   };
 
   return (

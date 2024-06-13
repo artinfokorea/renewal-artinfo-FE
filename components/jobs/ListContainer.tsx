@@ -8,7 +8,7 @@ import { Button } from "../ui/button";
 import { Badge } from "../ui/badge";
 import { useRouter, useSearchParams } from "next/navigation";
 import MobileSearchTab from "./MobileSearchTab";
-import { useInfiniteQuery } from "@tanstack/react-query";
+import { useInfiniteQuery, useQuery } from "@tanstack/react-query";
 import { queries } from "@/lib/queries";
 import { ScrollApiResponse } from "@/interface";
 import JobCard from "./JobCard";
@@ -16,24 +16,18 @@ import ObriCard from "./ObriCard";
 
 const ListContainer = () => {
   const searchParams = useSearchParams();
-  const recruits = searchParams.get("recruit") as JobType;
-  const majors = searchParams.get("major") as MajorType;
+  const recruits = searchParams.getAll("recruit") as JobType[];
+  const majorIds = searchParams.getAll("majorId") as string[];
   const keyword = searchParams.get("keyword") as string;
   const router = useRouter();
-  const [checkedRecruits, setCheckedRecruits] = useState<JobType[]>(
-    recruits ? recruits.split(",").map((item) => item as JobType) : []
-  );
-
-  const [checkedMajors, setCheckedMajors] = useState<MajorType[]>(
-    majors ? majors.split(",").map((item) => item as MajorType) : []
-  );
 
   const { data: jobs } = useInfiniteQuery<ScrollApiResponse<JOB, "jobs">>({
     ...queries.jobs.infiniteList({
       page: 1,
       size: 20,
-      types: checkedRecruits,
+      types: recruits,
       keyword,
+      categoryIds: majorIds.map((id) => Number(id)),
     }),
     initialPageParam: 1,
     getNextPageParam: (lastPage) => {
@@ -41,30 +35,24 @@ const ListContainer = () => {
     },
   });
 
+  const { data: majors } = useQuery({
+    ...queries.majors.list(),
+    enabled: !!jobs,
+  });
+
   const totalCount = jobs?.pages?.reduce((acc, page) => {
     return acc + page.totalCount;
   }, 0);
-
-  useEffect(() => {
-    setCheckedRecruits(recruits ? (recruits.split(",") as JobType[]) : []);
-  }, [recruits]);
-
-  useEffect(() => {
-    setCheckedMajors(majors ? (majors.split(",") as MajorType[]) : []);
-  }, [majors]);
 
   return (
     <div className="max-w-screen-lg mx-auto px-4">
       <ListSearchForm totalCount={totalCount} />
       <section className="flex">
-        <ListCheckBoxes
-          checkedRecruits={checkedRecruits}
-          checkedMajors={checkedMajors}
-        />
+        <ListCheckBoxes majors={majors?.majors} />
         <div className="md:flex-1 w-full flex flex-col md:ml-12 md:mt-4">
           <div className="hidden md:flex justify-between items-center">
             <div>
-              {checkedRecruits.map((recruit) => (
+              {recruits.map((recruit) => (
                 <Badge
                   key={recruit}
                   className="text-main text-sm border-lightgray rounded py-1 px-3 ml-2 mb-2"
@@ -72,14 +60,14 @@ const ListContainer = () => {
                   {recruit}
                 </Badge>
               ))}
-              {checkedMajors.map((major) => (
+              {/* {majors.map((major) => (
                 <Badge
                   key={major}
                   className="text-main text-sm border-lightgray rounded py-1 px-3 ml-2 mb-2"
                 >
                   {major}
                 </Badge>
-              ))}
+              ))} */}
             </div>
             <Button
               className="py-2 px-6 text-white bg-main rounded-3xl"

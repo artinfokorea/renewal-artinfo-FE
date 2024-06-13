@@ -18,6 +18,7 @@ export interface PartTimePayload {
   majorId: number;
   startAt: Date;
   endAt: Date;
+  fee: number;
 }
 
 export interface JobPayload {

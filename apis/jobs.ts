@@ -1,6 +1,6 @@
-import { JOB } from '@/types/jobs';
-import { apiRequest } from '.';
-import { exceptionHandler } from './exception-handler';
+import { JOB } from "@/types/jobs";
+import { apiRequest } from ".";
+import { exceptionHandler } from "./exception-handler";
 import {
   ListResponse,
   PostResponse,
@@ -8,18 +8,18 @@ import {
   ListApiResponse,
   ScrollApiResponse,
   DetailApiResponse,
-} from '@/interface';
+} from "@/interface";
 import {
   JobPayload,
   JobsRequest,
   PartTimePayload,
   ReligionPayload,
-} from '@/interface/jobs';
+} from "@/interface/jobs";
 
 /* 채용 스크롤 리스트 조회 */
 export const getInfiniteJobs = async (
   request: JobsRequest
-): Promise<ScrollApiResponse<JOB, 'jobs'>> => {
+): Promise<ScrollApiResponse<JOB, "jobs">> => {
   const response = await getJobs(request);
   return {
     jobs: response.jobs,
@@ -32,17 +32,25 @@ export const getInfiniteJobs = async (
 /* 채용 리스트 조회 */
 export const getJobs = async (
   request: JobsRequest
-): Promise<ListResponse<JOB, 'jobs'>> => {
+): Promise<ListResponse<JOB, "jobs">> => {
   try {
-    const response = await apiRequest.get<ListApiResponse<JOB, 'jobs'>>(
-      '/jobs',
+    const params = new URLSearchParams();
+    for (const [key, value] of Object.entries(request)) {
+      if (Array.isArray(value)) {
+        value.forEach((v) => params.append(key + "[]", v));
+      } else if (value) {
+        params.append(key, value);
+      }
+    }
+    const response = await apiRequest.get<ListApiResponse<JOB, "jobs">>(
+      "/jobs",
       {
-        params: request,
+        params,
       }
     );
     return response.item;
   } catch (error) {
-    throw new Error(exceptionHandler(error, 'API getJobs error'));
+    throw new Error(exceptionHandler(error, "API getJobs error"));
   }
 };
 
@@ -54,7 +62,7 @@ export const getJob = async (id: number): Promise<JOB> => {
     );
     return response.item;
   } catch (error) {
-    throw new Error(exceptionHandler(error, 'API getJob error'));
+    throw new Error(exceptionHandler(error, "API getJob error"));
   }
 };
 
@@ -64,7 +72,7 @@ export const deleteJob = async (id: number): Promise<SuccessResponse> => {
     const response = await apiRequest.delete<SuccessResponse>(`/jobs`, id);
     return response;
   } catch (error) {
-    throw new Error(exceptionHandler(error, 'API deleteJob error'));
+    throw new Error(exceptionHandler(error, "API deleteJob error"));
   }
 };
 
@@ -79,7 +87,7 @@ export const createPartTimeJob = async (
     );
     return response;
   } catch (error) {
-    throw new Error(exceptionHandler(error, 'API createPartTimeJob error'));
+    throw new Error(exceptionHandler(error, "API createPartTimeJob error"));
   }
 };
 
@@ -87,7 +95,7 @@ export const createPartTimeJob = async (
 export const createFullTimeJob = async (
   job: JobPayload
 ): Promise<PostResponse> => {
-  console.log('job', job);
+  console.log("job", job);
   try {
     const response = await apiRequest.post<PostResponse>(
       `/jobs/full-time`,
@@ -95,7 +103,7 @@ export const createFullTimeJob = async (
     );
     return response;
   } catch (error) {
-    throw new Error(exceptionHandler(error, 'API createFullTimeJob error'));
+    throw new Error(exceptionHandler(error, "API createFullTimeJob error"));
   }
 };
 
@@ -110,7 +118,7 @@ export const createReligionJob = async (
     );
     return response;
   } catch (error) {
-    throw new Error(exceptionHandler(error, 'API createReligionJob error'));
+    throw new Error(exceptionHandler(error, "API createReligionJob error"));
   }
 };
 
@@ -126,7 +134,7 @@ export const updateArtOrganization = async (
     );
     return response;
   } catch (error) {
-    throw new Error(exceptionHandler(error, 'API updateArtOrganization error'));
+    throw new Error(exceptionHandler(error, "API updateArtOrganization error"));
   }
 };
 
@@ -142,6 +150,6 @@ export const updateReligion = async (
     );
     return response;
   } catch (error) {
-    throw new Error(exceptionHandler(error, 'API updateReligion error'));
+    throw new Error(exceptionHandler(error, "API updateReligion error"));
   }
 };
