@@ -1,6 +1,6 @@
 import { getAds } from "@/apis/ad";
 import { getInfiniteJobs, getJob, getJobs } from "@/apis/jobs";
-import { getMajors } from "@/apis/system";
+import { getMajors, getProvinces } from "@/apis/system";
 import { JobsRequest } from "@/interface/jobs";
 import { AdvertisementType } from "@/types/ads";
 import {
@@ -22,20 +22,27 @@ export const majors = createQueryKeys("majors", {
   }),
 });
 
+export const provinces = createQueryKeys("provinces", {
+  list: (depth?: number) => ({
+    queryKey: [depth],
+    queryFn: () => getProvinces(depth),
+  }),
+});
+
 export const jobs = createQueryKeys("jobs", {
   detail: (JobId: number) => ({
     queryKey: [JobId],
     queryFn: () => getJob(JobId),
   }),
   list: (filters: JobsRequest) => ({
-    queryKey: [{ filters }],
+    queryKey: ["list", { filters }],
     queryFn: () => getJobs(filters),
   }),
   infiniteList: (filters: JobsRequest) => ({
-    queryKey: [{ filters }],
+    queryKey: ["infiniteList", { filters }],
     queryFn: ({ pageParam }: { pageParam: number }) =>
       getInfiniteJobs({ ...filters, page: pageParam }),
   }),
 });
 
-export const queries = mergeQueryKeys(ads, jobs, majors);
+export const queries = mergeQueryKeys(ads, jobs, majors, provinces);

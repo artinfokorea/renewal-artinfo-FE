@@ -1,6 +1,6 @@
 import React, { useEffect, useMemo, useState } from "react";
 import { Label } from "../ui/label";
-import { JobType, jobTypessValues } from "@/types/jobs";
+import { JobType, JobTypeList } from "@/types/jobs";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { MAJOR, MajorCategory, MajorCategoryValues } from "@/types";
 import RightIcon from "../icons/RightIcon";
@@ -209,7 +209,7 @@ const ListCheckBoxes = ({ majors }: Props) => {
       <div className="mt-8">
         <h4 className="text-lg font-semibold">직군</h4>
 
-        {jobTypessValues.map(({ title, value }) => (
+        {JobTypeList.map(({ title, value }) => (
           <div className="flex items-center my-2" key={value}>
             <input
               type="checkbox"

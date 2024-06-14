@@ -15,6 +15,8 @@ import JobTypeSelectCard from "./JobTypeSelectCard";
 import { useLoading } from "@toss/use-loading";
 import { uploadImages } from "@/apis/system";
 import ObriForm, { CreateObriFormData } from "./ObriForm";
+import { useQueryClient } from "@tanstack/react-query";
+import { queries } from "@/lib/queries";
 
 const CreateContainer = () => {
   const searchParams = useSearchParams();
@@ -23,6 +25,7 @@ const CreateContainer = () => {
   const router = useRouter();
   const { errorToast, successToast } = useToast();
   const [isLoading, startTransition] = useLoading();
+  const queryClient = useQueryClient();
 
   const handleFullTimeJob = async (payload: CreateJobFormData) => {
     const {
@@ -51,6 +54,9 @@ const CreateContainer = () => {
       );
       successToast("채용이 등록되었습니다.");
       router.push(pathname.slice(0, pathname.lastIndexOf("/")));
+      queryClient.invalidateQueries({
+        queryKey: ["jobs", "infiniteList"],
+      });
     } catch (error: any) {
       errorToast(error.message);
       console.log(error);
@@ -80,6 +86,9 @@ const CreateContainer = () => {
       );
       successToast("채용이 등록되었습니다.");
       router.push(pathname.slice(0, pathname.lastIndexOf("/")));
+      queryClient.invalidateQueries({
+        queryKey: ["jobs", "infiniteList"],
+      });
     } catch (error: any) {
       errorToast(error.message);
       console.log(error);
@@ -113,6 +122,9 @@ const CreateContainer = () => {
       );
       successToast("채용이 등록되었습니다.");
       router.push(pathname.slice(0, pathname.lastIndexOf("/")));
+      queryClient.invalidateQueries({
+        queryKey: ["jobs", "infiniteList"],
+      });
     } catch (error: any) {
       errorToast(error.message);
       console.log(error);

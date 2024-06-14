@@ -1,4 +1,4 @@
-import { JobType, jobTypessValues } from "@/types/jobs";
+import { JobType, JobTypeList } from "@/types/jobs";
 import React from "react";
 import { Button } from "../ui/button";
 import CloseIcon from "../icons/CloseIcon";
@@ -33,7 +33,7 @@ const JobTypeSelectCard = ({ handleSelectedJobType }: Props) => {
         </div>
         <div className="border-whitesmoke border-b-[3px]" />
         <div className="px-4 md:px-12 py-12">
-          {jobTypessValues.map((type) => (
+          {JobTypeList.map((type) => (
             <Button
               key={type.value}
               className="text-white text-xs md:text-sm bg-main w-[72px] md:w-[100px] h-10 rounded-3xl mx-1 md:mx-4"

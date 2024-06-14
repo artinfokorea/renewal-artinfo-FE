@@ -4,13 +4,17 @@ import { exceptionHandler } from "./exception-handler";
 import { IMAGE, MAJOR, PROVINCE } from "@/types";
 import { VerifyPhoneCodePayload } from "@/interface/systems";
 
-export const getProvince = async (): Promise<
-  ListResponse<PROVINCE, "province">
-> => {
+export const getProvinces = async (
+  depth?: number
+): Promise<ListResponse<PROVINCE, "provinces">> => {
   try {
     const response = await apiRequest.get<
-      ListApiResponse<PROVINCE, "province">
-    >("/system/province");
+      ListApiResponse<PROVINCE, "provinces">
+    >("/provinces", {
+      params: {
+        parentId: depth,
+      },
+    });
     return response.item;
   } catch (error) {
     throw new Error(exceptionHandler(error, "API getProvince error"));
@@ -74,7 +78,7 @@ export const uploadImages = async (
 export const getMajors = async (): Promise<ListResponse<MAJOR, "majors">> => {
   try {
     const response = await apiRequest.get<ListApiResponse<MAJOR, "majors">>(
-      "/common/majors"
+      "/majors"
     );
     return response.item;
   } catch (error) {

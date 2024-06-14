@@ -24,7 +24,7 @@ export enum MajorType {
   ORGAN = "ORGAN",
 }
 
-export const jobTypessValues = [
+export const JobTypeList = [
   {
     title: "연주단체",
     value: JobType.ART_ORGANIZATION,
@@ -42,6 +42,13 @@ export const jobTypessValues = [
     value: JobType.LECTURER,
   },
 ];
+
+export const JobTypeValues: { [key in JobType]: string } = JobTypeList.reduce<{
+  [key in JobType]: string;
+}>((acc, curr) => {
+  acc[curr.value] = curr.title;
+  return acc;
+}, {} as { [key in JobType]: string });
 
 export const MajorValues = [
   {

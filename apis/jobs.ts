@@ -23,8 +23,8 @@ export const getInfiniteJobs = async (
   const response = await getJobs(request);
   return {
     jobs: response.jobs,
-    nextPage: request.page + 1,
-    isLast: response.jobs.length < 20,
+    nextPage: request.page ? request.page + 1 : 2,
+    isLast: response.jobs.length < request.size,
     totalCount: response.totalCount ?? 0,
   };
 };

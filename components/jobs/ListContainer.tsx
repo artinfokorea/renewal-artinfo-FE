@@ -1,9 +1,10 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useMemo } from "react";
 import ListSearchForm from "./ListSearchForm";
 import ListCheckBoxes from "./ListCheckBoxes";
-import { MajorType, JobType, MajorValues, JOB } from "@/types/jobs";
+import { useInView } from "react-intersection-observer";
+import { JobType, JOB } from "@/types/jobs";
 import { Button } from "../ui/button";
 import { Badge } from "../ui/badge";
 import { useRouter, useSearchParams } from "next/navigation";
@@ -13,18 +14,30 @@ import { queries } from "@/lib/queries";
 import { ScrollApiResponse } from "@/interface";
 import JobCard from "./JobCard";
 import ObriCard from "./ObriCard";
+import ProvinceDialog from "../dialog/ProvinceDialog";
+import CloseIcon from "../icons/CloseIcon";
 
 const ListContainer = () => {
   const searchParams = useSearchParams();
   const recruits = searchParams.getAll("recruit") as JobType[];
   const majorIds = searchParams.getAll("majorId") as string[];
   const keyword = searchParams.get("keyword") as string;
+  const provinceIds = searchParams.getAll("provinceId") as string[];
   const router = useRouter();
+  const [isProvinceDialog, setIsProvinceDialog] = useState(false);
 
-  const { data: jobs } = useInfiniteQuery<ScrollApiResponse<JOB, "jobs">>({
+  const [ref, inView] = useInView({
+    delay: 100,
+    threshold: 0.5,
+  });
+
+  const {
+    data: jobs,
+    hasNextPage,
+    fetchNextPage,
+  } = useInfiniteQuery<ScrollApiResponse<JOB, "jobs">>({
     ...queries.jobs.infiniteList({
-      page: 1,
-      size: 20,
+      size: 10,
       types: recruits,
       keyword,
       categoryIds: majorIds.map((id) => Number(id)),
@@ -32,17 +45,46 @@ const ListContainer = () => {
     initialPageParam: 1,
     getNextPageParam: (lastPage) => {
       if (!lastPage.isLast) return lastPage.nextPage;
+      return null;
     },
   });
 
-  const { data: majors } = useQuery({
-    ...queries.majors.list(),
-    enabled: !!jobs,
-  });
+  const { data: majors } = useQuery(queries.majors.list());
+
+  const { data: provinceList } = useQuery(queries.provinces.list());
+
+  const selectedProvinces = useMemo(() => {
+    return provinceList?.provinces?.filter((province) =>
+      provinceIds.includes(province.id.toString())
+    );
+  }, [provinceIds]);
 
   const totalCount = jobs?.pages?.reduce((acc, page) => {
     return acc + page.totalCount;
   }, 0);
+
+  const deleteProvince = (provinceId: string) => {
+    const locationParams = new URLSearchParams(window.location.search);
+    if (provinceIds.includes(provinceId)) {
+      const newProvinceIds = provinceIds.filter((id) => id !== provinceId);
+
+      locationParams.delete("provinceId");
+      newProvinceIds.forEach((id) => {
+        locationParams.append("provinceId", id);
+      });
+    }
+
+    const newUrl = `${window.location.pathname}?${locationParams.toString()}`;
+    router.push(newUrl, {
+      scroll: false,
+    });
+  };
+
+  useEffect(() => {
+    if (inView && hasNextPage) {
+      fetchNextPage();
+    }
+  }, [inView, hasNextPage]);
 
   return (
     <div className="max-w-screen-lg mx-auto px-4">
@@ -51,23 +93,26 @@ const ListContainer = () => {
         <ListCheckBoxes majors={majors?.majors} />
         <div className="md:flex-1 w-full flex flex-col md:ml-12 md:mt-4">
           <div className="hidden md:flex justify-between items-center">
-            <div>
-              {recruits.map((recruit) => (
+            <div className="flex gap-2 flex-wrap">
+              <Button
+                onClick={() => setIsProvinceDialog(!isProvinceDialog)}
+                className="text-main text-sm border border-lightgray rounded px-4 h-7"
+              >
+                지역선택
+              </Button>
+              {selectedProvinces?.map((province) => (
                 <Badge
-                  key={recruit}
-                  className="text-main text-sm border-lightgray rounded py-1 px-3 ml-2 mb-2"
+                  key={province.id}
+                  className="text-main text-sm border-lightgray rounded h-7 flex items-center"
                 >
-                  {recruit}
+                  <span>{province.name.slice(0, 2)}</span>
+                  <button
+                    onClick={() => deleteProvince(province.id.toString())}
+                  >
+                    <CloseIcon className="w-4 h-4 pb-[1px]" />
+                  </button>
                 </Badge>
               ))}
-              {/* {majors.map((major) => (
-                <Badge
-                  key={major}
-                  className="text-main text-sm border-lightgray rounded py-1 px-3 ml-2 mb-2"
-                >
-                  {major}
-                </Badge>
-              ))} */}
             </div>
             <Button
               className="py-2 px-6 text-white bg-main rounded-3xl"
@@ -79,16 +124,36 @@ const ListContainer = () => {
           <MobileSearchTab />
           <div className="mt-4">
             {jobs?.pages?.map((page) =>
-              page?.jobs?.map((job) => {
+              page?.jobs?.map((job, index) => {
                 return job.type === JobType.PART_TIME ? (
-                  <ObriCard key={job.id} job={job} />
+                  <ObriCard
+                    key={job.id}
+                    job={job}
+                    ref={ref}
+                    isLastPage={
+                      !(hasNextPage && index === page.jobs.length - 5)
+                    }
+                  />
                 ) : (
-                  <JobCard key={job.id} job={job} />
+                  <JobCard
+                    key={job.id}
+                    job={job}
+                    ref={ref}
+                    isLastPage={
+                      !(hasNextPage && index === page.jobs.length - 5)
+                    }
+                  />
                 );
               })
             )}
           </div>
         </div>
+        <ProvinceDialog
+          provinces={provinceList?.provinces}
+          open={isProvinceDialog}
+          close={() => setIsProvinceDialog(false)}
+          multiple
+        />
       </section>
     </div>
   );

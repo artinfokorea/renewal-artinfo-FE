@@ -39,8 +39,9 @@ export enum ProvinceKo {
 }
 
 export type PROVINCE = {
-  key: ProvinceEn;
-  value: ProvinceKo;
+  id: number;
+  depth: number;
+  name: string;
 };
 
 export enum MajorEnum {
