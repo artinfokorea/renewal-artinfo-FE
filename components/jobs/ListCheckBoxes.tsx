@@ -204,6 +204,24 @@ const ListCheckBoxes = ({ majors }: Props) => {
     }
   }, [isMajorAllChecked]);
 
+  // const handleIsAllMajorChecked = () => {
+  //   const locationParams = new URLSearchParams(window.location.search);
+  //   locationParams.delete("majorId");
+  //   // setIsMajorCategoryChecked(
+  //   //   MajorCategoryValues.reduce<{
+  //   //     [key: string]: boolean;
+  //   //   }>((acc, curr) => {
+  //   //     acc[curr.key] = !isMajorAllChecked;
+  //   //     return acc;
+  //   //   }, {})
+  //   // );
+  //   setIsMajorAllChecked(!isMajorAllChecked);
+  //   const newUrl = `${window.location.pathname}?${locationParams.toString()}`;
+  //   router.push(newUrl, {
+  //     scroll: false,
+  //   });
+  // };
+
   return (
     <form className="hidden lg:flex flex-col text-gray-400 min-w-[180px]">
       <div className="mt-8">

@@ -96,5 +96,5 @@ export type JOB = {
 export enum SearchType {
   REGION = "REGION",
   MAJOR = "MAJOR",
-  JOB = "JOB",
+  RECRUIT = "RECRUIT",
 }

@@ -22,7 +22,7 @@ const ObriCard = forwardRef<HTMLDivElement, Props>(
           <li className="flex justify-between items-center h-12 md:h-12 border-whitespace border-b px-4">
             <h4 className="font-bold text-sm md:text-base">{job.title}</h4>
             <div className="text-xs md:text-sm flex gap-4 items-center">
-              <span>{job.majors[0]}</span>
+              <span className="text-main font-semibold">{job.majors[0]}</span>
               {job.endAt < new Date() ? (
                 <button
                   disabled

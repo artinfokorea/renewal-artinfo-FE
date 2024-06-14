@@ -29,7 +29,8 @@ const ListSearchForm = ({ totalCount }: Props) => {
   return (
     <div className="max-w-screen-sm mx-auto mt-8 md:mt-20 flex flex-col items-center">
       <h4 className="font-bold text-lg md:text-2xl">
-        <span className="text-main">{totalCount}</span>개의 채용이 진행중이에요.
+        <span className="text-main">{totalCount ?? "000"}</span>개의 채용이
+        진행중이에요.
       </h4>
       <form className="w-full mt-4 relative" onSubmit={handleSubmit}>
         <Input

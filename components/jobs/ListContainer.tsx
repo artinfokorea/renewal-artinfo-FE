@@ -8,7 +8,7 @@ import { JobType, JOB } from "@/types/jobs";
 import { Button } from "../ui/button";
 import { Badge } from "../ui/badge";
 import { useRouter, useSearchParams } from "next/navigation";
-import MobileSearchTab from "./MobileSearchTab";
+import MobileFilterTab from "./MobileFilterTab";
 import { useInfiniteQuery, useQuery } from "@tanstack/react-query";
 import { queries } from "@/lib/queries";
 import { ScrollApiResponse } from "@/interface";
@@ -92,7 +92,7 @@ const ListContainer = () => {
       <section className="flex">
         <ListCheckBoxes majors={majors?.majors} />
         <div className="md:flex-1 w-full flex flex-col md:ml-12 md:mt-4">
-          <div className="hidden md:flex justify-between items-center">
+          <div className="hidden lg:flex justify-between items-center">
             <div className="flex gap-2 flex-wrap">
               <Button
                 onClick={() => setIsProvinceDialog(!isProvinceDialog)}
@@ -121,7 +121,10 @@ const ListContainer = () => {
               등록
             </Button>
           </div>
-          <MobileSearchTab />
+          <MobileFilterTab
+            majors={majors?.majors}
+            provinces={provinceList?.provinces}
+          />
           <div className="mt-4">
             {jobs?.pages?.map((page) =>
               page?.jobs?.map((job, index) => {
