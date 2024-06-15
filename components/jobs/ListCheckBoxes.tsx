@@ -1,9 +1,9 @@
-import React, { useEffect, useMemo, useState } from "react";
-import { Label } from "../ui/label";
-import { JobType, JobTypeList } from "@/types/jobs";
-import { usePathname, useRouter, useSearchParams } from "next/navigation";
-import { MAJOR, MajorCategory, MajorCategoryValues } from "@/types";
-import RightIcon from "../icons/RightIcon";
+import React, { useEffect, useMemo, useState } from 'react';
+import { Label } from '../ui/label';
+import { JobType, JobTypeList } from '@/types/jobs';
+import { usePathname, useRouter, useSearchParams } from 'next/navigation';
+import { MAJOR, MajorCategory, MajorCategoryValues } from '@/types';
+import RightIcon from '../icons/RightIcon';
 
 interface Props {
   majors?: MAJOR[];
@@ -14,8 +14,8 @@ const ListCheckBoxes = ({ majors }: Props) => {
   const searchParams = useSearchParams();
   const [isMajorAllChecked, setIsMajorAllChecked] = useState(false);
   const router = useRouter();
-  const recruits = searchParams.getAll("recruit") as JobType[];
-  const majorIds = searchParams.getAll("majorId") as string[];
+  const recruits = searchParams.getAll('recruit') as JobType[];
+  const majorIds = searchParams.getAll('majorId') as string[];
   const initialState: { [key: string]: boolean } = MajorCategoryValues.reduce<{
     [key: string]: boolean;
   }>((acc, curr) => {
@@ -92,11 +92,11 @@ const ListCheckBoxes = ({ majors }: Props) => {
     const locationParams = new URLSearchParams(window.location.search);
 
     if (recruits?.includes(value)) {
-      locationParams.delete("recruit");
+      locationParams.delete('recruit');
       const recruitList = recruits.filter((v) => v !== value);
-      recruitList.forEach((v) => locationParams.append("recruit", v));
+      recruitList.forEach((v) => locationParams.append('recruit', v));
     } else {
-      locationParams.append("recruit", value);
+      locationParams.append('recruit', value);
     }
     const newUrl = `${window.location.pathname}?${locationParams.toString()}`;
     router.push(newUrl, {
@@ -110,11 +110,11 @@ const ListCheckBoxes = ({ majors }: Props) => {
       const categoryKey = majors?.find((major) => major.id === Number(majorId))
         ?.enGroup as MajorCategory;
 
-      locationParams.delete("majorId");
+      locationParams.delete('majorId');
       const majorList = majorIds.filter((v) => v !== majorId);
-      majorList.forEach((v) => locationParams.append("majorId", v));
+      majorList.forEach((v) => locationParams.append('majorId', v));
     } else {
-      locationParams.append("majorId", majorId);
+      locationParams.append('majorId', majorId);
     }
     const newUrl = `${window.location.pathname}?${locationParams.toString()}`;
     router.push(newUrl, {
@@ -138,10 +138,10 @@ const ListCheckBoxes = ({ majors }: Props) => {
       majors
         ?.filter((major) => major.enGroup === key)
         .forEach((major) => {
-          locationParams.append("majorId", major.id.toString());
+          locationParams.append('majorId', major.id.toString());
         });
     } else {
-      locationParams.delete("majorId");
+      locationParams.delete('majorId');
 
       const filteredMajors = majors?.filter((major) => {
         if (major.enGroup !== key) return major.id;
@@ -150,7 +150,7 @@ const ListCheckBoxes = ({ majors }: Props) => {
         filteredMajors?.some((major) => major.id === Number(id))
       );
       filterdMajorIds.forEach((id) =>
-        locationParams.append("majorId", id.toString())
+        locationParams.append('majorId', id.toString())
       );
     }
 
@@ -170,9 +170,9 @@ const ListCheckBoxes = ({ majors }: Props) => {
   useEffect(() => {
     if (isMajorAllChecked) {
       const locationParams = new URLSearchParams(window.location.search);
-      locationParams.delete("majorId");
+      locationParams.delete('majorId');
       majors?.forEach((major) => {
-        locationParams.append("majorId", major.id.toString());
+        locationParams.append('majorId', major.id.toString());
       });
       const newUrl = `${window.location.pathname}?${locationParams.toString()}`;
       router.push(newUrl, {
@@ -188,7 +188,7 @@ const ListCheckBoxes = ({ majors }: Props) => {
       );
     } else {
       const locationParams = new URLSearchParams(window.location.search);
-      locationParams.delete("majorId");
+      locationParams.delete('majorId');
       const newUrl = `${window.location.pathname}?${locationParams.toString()}`;
       router.push(newUrl, {
         scroll: false,
@@ -275,7 +275,7 @@ const ListCheckBoxes = ({ majors }: Props) => {
                 <button
                   type="button"
                   className={`transform transition duration-200 ${
-                    isMajorCategoryDetail[key] ? "rotate-90" : "rotate-0"
+                    isMajorCategoryDetail[key] ? 'rotate-90' : 'rotate-0'
                   }`}
                   onClick={() => handleMajorDetailBoxes(key)}
                 >
