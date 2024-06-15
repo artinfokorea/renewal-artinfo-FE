@@ -1,11 +1,9 @@
-import { queries } from "@/lib/queries";
-import { Dialog, DialogPanel, DialogTitle } from "@headlessui/react";
-import { useQuery } from "@tanstack/react-query";
-import React, { useEffect, useState } from "react";
-import CloseIcon from "../icons/CloseIcon";
-import { Button } from "../ui/button";
-import { useRouter, useSearchParams } from "next/navigation";
-import { PROVINCE } from "@/types";
+import { Dialog, DialogPanel, DialogTitle } from '@headlessui/react';
+import React, { useEffect, useState } from 'react';
+import CloseIcon from '../icons/CloseIcon';
+import { Button } from '../ui/button';
+import { useRouter, useSearchParams } from 'next/navigation';
+import { PROVINCE } from '@/types';
 
 interface Props {
   provinces?: PROVINCE[];
@@ -16,7 +14,7 @@ interface Props {
 
 const ProvinceDialog = ({ open, close, multiple, provinces }: Props) => {
   const searchParams = useSearchParams();
-  const provinceIds = searchParams.getAll("provinceId");
+  const provinceIds = searchParams.getAll('provinceId');
   const router = useRouter();
   const [selectedProvinceIds, setSelectedProvinceIds] = useState<string[]>([]);
 
@@ -38,12 +36,12 @@ const ProvinceDialog = ({ open, close, multiple, provinces }: Props) => {
     const locationParams = new URLSearchParams(window.location.search);
 
     if (selectedProvinceIds.length > 0) {
-      locationParams.delete("provinceId");
+      locationParams.delete('provinceId');
       selectedProvinceIds.forEach((id) => {
-        locationParams.append("provinceId", id);
+        locationParams.append('provinceId', id);
       });
     } else {
-      locationParams.delete("provinceId");
+      locationParams.delete('provinceId');
     }
     const newUrl = `${window.location.pathname}?${locationParams.toString()}`;
     router.push(newUrl, {
@@ -79,10 +77,10 @@ const ProvinceDialog = ({ open, close, multiple, provinces }: Props) => {
                   className={`text-white text-sm h-6 md:text-base md:h-7 px-3 rounded-xl
                     ${
                       !multiple
-                        ? "bg-indigo-500"
+                        ? 'bg-main'
                         : selectedProvinceIds.includes(province.id.toString())
-                        ? "bg-indigo-500"
-                        : "bg-indigo-200"
+                        ? 'bg-main'
+                        : 'bg-indigo-100'
                     }    
                           `}
                 >
@@ -95,7 +93,7 @@ const ProvinceDialog = ({ open, close, multiple, provinces }: Props) => {
           {multiple && (
             <div className="flex justify-center">
               <Button
-                className={` text-white rounded-lg text-sm bg-indigo-500 h-8`}
+                className={` text-white rounded-lg text-sm bg-main h-8`}
                 onClick={selectComplete}
               >
                 선택 완료

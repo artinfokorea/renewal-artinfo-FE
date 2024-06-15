@@ -1,21 +1,21 @@
-import { JobType, JobTypeList } from "@/types/jobs";
-import React from "react";
-import { Button } from "../ui/button";
-import CloseIcon from "../icons/CloseIcon";
-import { usePathname, useRouter } from "next/navigation";
+import { JobType, JobTypeList } from '@/types/jobs';
+import React from 'react';
+import { Button } from '../ui/button';
+import CloseIcon from '../icons/CloseIcon';
+import { usePathname, useRouter } from 'next/navigation';
 
 interface Props {
   handleSelectedJobType: (jobType: JobType) => void;
 }
 
-const JobTypeSelectCard = ({ handleSelectedJobType }: Props) => {
+const JobTypeSelectDialog = ({ handleSelectedJobType }: Props) => {
   const router = useRouter();
   const pathname = usePathname();
 
   return (
     <div
       className="bg-whitesmoke flex items-center justify-center"
-      style={{ height: "calc(100vh - 56px)" }}
+      style={{ height: 'calc(100vh - 56px)' }}
     >
       <div className="bg-white max-w-screen-md rounded-xl">
         <div className="flex justify-center items-center relative h-14">
@@ -25,7 +25,7 @@ const JobTypeSelectCard = ({ handleSelectedJobType }: Props) => {
           <Button
             className="absolute top-2 right-0 text-silver"
             onClick={() =>
-              router.push(pathname.slice(0, pathname.lastIndexOf("/")))
+              router.push(pathname.slice(0, pathname.lastIndexOf('/')))
             }
           >
             <CloseIcon className="w-5 h-5" />
@@ -48,4 +48,4 @@ const JobTypeSelectCard = ({ handleSelectedJobType }: Props) => {
   );
 };
 
-export default JobTypeSelectCard;
+export default JobTypeSelectDialog;

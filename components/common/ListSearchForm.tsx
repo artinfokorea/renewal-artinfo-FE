@@ -1,15 +1,16 @@
-import React, { FormEvent, useState } from "react";
-import { Input } from "../ui/input";
-import SearchIcon from "../icons/SearchIcon";
-import CloseIcon from "../icons/CloseIcon";
-import { usePathname, useRouter } from "next/navigation";
+import React, { FormEvent, useState } from 'react';
+import { Input } from '../ui/input';
+import SearchIcon from '../icons/SearchIcon';
+import CloseIcon from '../icons/CloseIcon';
+import { usePathname, useRouter } from 'next/navigation';
 
 interface Props {
   totalCount?: number;
+  title?: string;
 }
 
-const ListSearchForm = ({ totalCount }: Props) => {
-  const [searchInput, setSearchInput] = useState("");
+const ListSearchForm = ({ totalCount, title }: Props) => {
+  const [searchInput, setSearchInput] = useState('');
   const pathname = usePathname();
   const router = useRouter();
 
@@ -18,8 +19,8 @@ const ListSearchForm = ({ totalCount }: Props) => {
 
     const searchParams = new URLSearchParams(window.location.search);
 
-    searchParams.delete("keyword");
-    searchInput && searchParams.append("keyword", searchInput);
+    searchParams.delete('keyword');
+    searchInput && searchParams.append('keyword', searchInput);
 
     const newUrl = `${window.location.pathname}?${searchParams.toString()}`;
 
@@ -29,8 +30,8 @@ const ListSearchForm = ({ totalCount }: Props) => {
   return (
     <div className="max-w-screen-sm mx-auto mt-8 md:mt-20 flex flex-col items-center">
       <h4 className="font-bold text-lg md:text-2xl">
-        <span className="text-main">{totalCount ?? "000"}</span>개의 채용이
-        진행중이에요.
+        <span className="text-main">{totalCount ?? '000'}</span>
+        {title}
       </h4>
       <form className="w-full mt-4 relative" onSubmit={handleSubmit}>
         <Input
@@ -46,7 +47,7 @@ const ListSearchForm = ({ totalCount }: Props) => {
         {searchInput && (
           <button
             type="button"
-            onClick={() => setSearchInput("")}
+            onClick={() => setSearchInput('')}
             className="absolute right-3 top-[10px] md:top-[14px]"
           >
             <CloseIcon className="w-5 h-5 md:w-6 md:h-6 text-gray-400" />

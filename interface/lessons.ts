@@ -1,5 +1,5 @@
 export interface LessonsRequest {
-  page: number;
+  page?: number;
   size: number;
   keyword?: string;
 }

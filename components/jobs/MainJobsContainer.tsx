@@ -1,9 +1,9 @@
-"use client";
+'use client';
 
-import { JOB } from "@/types/jobs";
-import Image from "next/image";
-import Link from "next/link";
-import React from "react";
+import { JOB } from '@/types/jobs';
+import Image from 'next/image';
+import Link from 'next/link';
+import React from 'react';
 
 interface Props {
   isMobile: boolean;
@@ -21,11 +21,8 @@ const MainJobsContainer = ({ isMobile, jobs }: Props) => {
       </div>
       <div className="grid grid-cols-2 md:grid-cols-3 gap-4 md:gap-8 mt-4 mb-12 ">
         {jobs?.slice(0, isMobile ? 2 : 3).map((job) => (
-          <div
-            key={job.title}
-            className="border-2 border-whitesmoke h-[130px] md:h-[185px] relative"
-          >
-            <Link href={`/jobs/${job.id}`}>
+          <Link key={job.title} href={`/jobs/${job.id}`}>
+            <div className="border-2 border-whitesmoke h-[130px] md:h-[185px] relative">
               <Image
                 src={job.imageUrl}
                 alt="job_image"
@@ -33,8 +30,8 @@ const MainJobsContainer = ({ isMobile, jobs }: Props) => {
                 quality={100}
                 sizes="(max-width: 768px) 100px 130px, (max-width: 1200px) 200px, 185px"
               />
-            </Link>
-          </div>
+            </div>
+          </Link>
         ))}
       </div>
     </section>

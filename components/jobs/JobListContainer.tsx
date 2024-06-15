@@ -1,28 +1,28 @@
-"use client";
+'use client';
 
-import React, { useEffect, useState, useMemo } from "react";
-import ListSearchForm from "./ListSearchForm";
-import ListCheckBoxes from "./ListCheckBoxes";
-import { useInView } from "react-intersection-observer";
-import { JobType, JOB } from "@/types/jobs";
-import { Button } from "../ui/button";
-import { Badge } from "../ui/badge";
-import { useRouter, useSearchParams } from "next/navigation";
-import MobileFilterTab from "./MobileFilterTab";
-import { useInfiniteQuery, useQuery } from "@tanstack/react-query";
-import { queries } from "@/lib/queries";
-import { ScrollApiResponse } from "@/interface";
-import JobCard from "./JobCard";
-import ObriCard from "./ObriCard";
-import ProvinceDialog from "../dialog/ProvinceDialog";
-import CloseIcon from "../icons/CloseIcon";
+import React, { useEffect, useState, useMemo } from 'react';
+import ListSearchForm from '../common/ListSearchForm';
+import JobListCheckBoxes from './JobListCheckBoxes';
+import { useInView } from 'react-intersection-observer';
+import { JobType, JOB } from '@/types/jobs';
+import { Button } from '../ui/button';
+import { Badge } from '../ui/badge';
+import { useRouter, useSearchParams } from 'next/navigation';
+import { useInfiniteQuery, useQuery } from '@tanstack/react-query';
+import { queries } from '@/lib/queries';
+import { ScrollApiResponse } from '@/interface';
+import JobCard from './JobCard';
+import ObriCard from './ObriCard';
+import ProvinceDialog from '../dialog/ProvinceDialog';
+import CloseIcon from '../icons/CloseIcon';
+import MobileFilterTab from '../common/MobileFIlterTab';
 
 const ListContainer = () => {
   const searchParams = useSearchParams();
-  const recruits = searchParams.getAll("recruit") as JobType[];
-  const majorIds = searchParams.getAll("majorId") as string[];
-  const keyword = searchParams.get("keyword") as string;
-  const provinceIds = searchParams.getAll("provinceId") as string[];
+  const recruits = searchParams.getAll('recruit') as JobType[];
+  const majorIds = searchParams.getAll('majorId') as string[];
+  const keyword = searchParams.get('keyword') as string;
+  const provinceIds = searchParams.getAll('provinceId') as string[];
   const router = useRouter();
   const [isProvinceDialog, setIsProvinceDialog] = useState(false);
 
@@ -35,7 +35,7 @@ const ListContainer = () => {
     data: jobs,
     hasNextPage,
     fetchNextPage,
-  } = useInfiniteQuery<ScrollApiResponse<JOB, "jobs">>({
+  } = useInfiniteQuery<ScrollApiResponse<JOB, 'jobs'>>({
     ...queries.jobs.infiniteList({
       size: 10,
       types: recruits,
@@ -68,9 +68,9 @@ const ListContainer = () => {
     if (provinceIds.includes(provinceId)) {
       const newProvinceIds = provinceIds.filter((id) => id !== provinceId);
 
-      locationParams.delete("provinceId");
+      locationParams.delete('provinceId');
       newProvinceIds.forEach((id) => {
-        locationParams.append("provinceId", id);
+        locationParams.append('provinceId', id);
       });
     }
 
@@ -88,9 +88,13 @@ const ListContainer = () => {
 
   return (
     <div className="max-w-screen-lg mx-auto px-4">
-      <ListSearchForm totalCount={totalCount} />
+      <ListSearchForm
+        totalCount={totalCount}
+        title="개의 채용이
+        진행중이에요."
+      />
       <section className="flex">
-        <ListCheckBoxes majors={majors?.majors} />
+        <JobListCheckBoxes majors={majors?.majors} />
         <div className="md:flex-1 w-full flex flex-col md:ml-12 md:mt-4">
           <div className="hidden lg:flex justify-between items-center">
             <div className="flex gap-2 flex-wrap">
@@ -116,7 +120,7 @@ const ListContainer = () => {
             </div>
             <Button
               className="py-2 px-6 text-white bg-main rounded-3xl"
-              onClick={() => router.push("/jobs/create")}
+              onClick={() => router.push('/jobs/create')}
             >
               등록
             </Button>
@@ -124,6 +128,7 @@ const ListContainer = () => {
           <MobileFilterTab
             majors={majors?.majors}
             provinces={provinceList?.provinces}
+            page="JOB"
           />
           <div className="mt-4">
             {jobs?.pages?.map((page) =>
