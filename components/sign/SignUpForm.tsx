@@ -1,15 +1,13 @@
 'use client';
 
-import React, { useEffect, useMemo, useState, useTransition } from 'react';
-import { useController, useForm } from 'react-hook-form';
+import React, { useMemo, useState, useTransition } from 'react';
+import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { ErrorMessage } from '@hookform/error-message';
 import * as yup from 'yup';
-import { useHookFormMask } from 'use-mask-input';
 import { Label } from '../ui/label';
 import { Input } from '../ui/input';
 import { Button } from '../ui/button';
-import { signIn } from 'next-auth/react';
 import useToast from '@/hooks/useToast';
 import {
   checkEmailVerificationCode,
