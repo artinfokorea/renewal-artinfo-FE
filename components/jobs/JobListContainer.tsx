@@ -41,6 +41,7 @@ const ListContainer = () => {
       types: recruits,
       keyword,
       categoryIds: majorIds.map((id) => Number(id)),
+      provinceIds: provinceIds.map((id) => Number(id)),
     }),
     initialPageParam: 1,
     getNextPageParam: (lastPage) => {

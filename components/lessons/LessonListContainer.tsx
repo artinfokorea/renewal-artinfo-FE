@@ -7,13 +7,14 @@ import { useInfiniteQuery, useQuery } from '@tanstack/react-query';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { useInView } from 'react-intersection-observer';
 import ListSearchForm from '../common/ListSearchForm';
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { Button } from '../ui/button';
 import { Badge } from '../ui/badge';
 import CloseIcon from '../icons/CloseIcon';
 import ProvinceDialog from '../dialog/ProvinceDialog';
 import MajorCheckBoxes from '../common/MajorCheckBoxes';
 import MobileFilterTab from '../common/MobileFIlterTab';
+import LessonCard from './LessonCard';
 
 const LessonListContainer = () => {
   const searchParams = useSearchParams();
@@ -31,6 +32,8 @@ const LessonListContainer = () => {
     ...queries.lessons.infiniteList({
       size: 10,
       keyword,
+      majorIds: majorIds.map((id) => Number(id)),
+      provinceIds: provinceIds.map((id) => Number(id)),
     }),
     initialPageParam: 1,
     getNextPageParam: (lastPage) => {
@@ -74,6 +77,12 @@ const LessonListContainer = () => {
   const totalCount = lessons?.pages?.reduce((acc, page) => {
     return acc + page.totalCount;
   }, 0);
+
+  useEffect(() => {
+    if (inView && hasNextPage) {
+      fetchNextPage();
+    }
+  }, [inView, hasNextPage]);
 
   return (
     <div className="max-w-screen-lg mx-auto px-4">
@@ -121,31 +130,21 @@ const LessonListContainer = () => {
             provinces={provinceList?.provinces}
             page="LESSON"
           />
-          {/* <div className="mt-4">
-            {jobs?.pages?.map((page) =>
-              page?.jobs?.map((job, index) => {
-                return job.type === JobType.PART_TIME ? (
-                  <ObriCard
-                    key={job.id}
-                    job={job}
-                    ref={ref}
+          <div className="mt-4 grid grid-cols-2 md:grid-cols-3 gap-4 md:gap-10">
+            {lessons?.pages?.map((page) =>
+              page?.lessons?.map((lesson, index) => {
+                return (
+                  <LessonCard
+                    lesson={lesson}
+                    key={lesson.id}
                     isLastPage={
-                      !(hasNextPage && index === page.jobs.length - 5)
-                    }
-                  />
-                ) : (
-                  <JobCard
-                    key={job.id}
-                    job={job}
-                    ref={ref}
-                    isLastPage={
-                      !(hasNextPage && index === page.jobs.length - 5)
+                      !(hasNextPage && index === page.lessons.length - 5)
                     }
                   />
                 );
               })
             )}
-          </div> */}
+          </div>
         </div>
         <ProvinceDialog
           provinces={provinceList?.provinces}

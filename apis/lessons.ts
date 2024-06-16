@@ -2,7 +2,12 @@ import { LESSON } from '@/types/lessons';
 import { apiRequest } from '.';
 import { exceptionHandler } from './exception-handler';
 import { LessonsRequest } from '@/interface/lessons';
-import { ListResponse, ScrollApiResponse } from '@/interface';
+import {
+  ListApiResponse,
+  ListResponse,
+  ScrollApiResponse,
+  SuccessResponse,
+} from '@/interface';
 
 export const getLesson = async (id: number): Promise<LESSON> => {
   try {
@@ -25,13 +30,13 @@ export const getLessons = async (
         params.append(key, value);
       }
     }
-    const response = await apiRequest.get<ListResponse<LESSON, 'lessons'>>(
+    const response = await apiRequest.get<ListApiResponse<LESSON, 'lessons'>>(
       '/lessons',
       {
         params,
       }
     );
-    return response;
+    return response.item;
   } catch (error) {
     throw new Error(exceptionHandler(error, 'API getJobs error'));
   }
@@ -47,4 +52,17 @@ export const getInfiniteLessons = async (
     isLast: response.lessons.length < request.size,
     totalCount: response.totalCount ?? 0,
   };
+};
+
+export const getLessonQualification = async (): Promise<SuccessResponse> => {
+  try {
+    const response = await apiRequest.get<SuccessResponse>(
+      '/lessons/qualification'
+    );
+    return response;
+  } catch (error) {
+    throw new Error(
+      exceptionHandler(error, 'API getLessonQualification error')
+    );
+  }
 };
