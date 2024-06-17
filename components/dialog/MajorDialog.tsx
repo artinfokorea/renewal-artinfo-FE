@@ -28,6 +28,8 @@ const MajorDialog = ({
     if (!multiple) close();
   };
 
+  const selectedMajorIds = selectedMajors.map((major) => major.id);
+
   return (
     <Dialog
       open={open}
@@ -59,9 +61,7 @@ const MajorDialog = ({
                           onClick={() => selectMajor(major)}
                           className={`text-white text-sm h-6 md:text-base md:h-7 px-3 rounded-xl
                           ${
-                            !multiple
-                              ? "bg-main"
-                              : selectedMajors.includes(major)
+                            selectedMajorIds.includes(major.id)
                               ? "bg-main"
                               : "bg-lavender"
                           }`}
@@ -78,7 +78,6 @@ const MajorDialog = ({
           {multiple && (
             <div className="flex justify-center">
               <Button
-                disabled={selectedMajors.length === 0}
                 className={` text-white rounded-lg text-sm bg-main h-8`}
                 onClick={close}
               >

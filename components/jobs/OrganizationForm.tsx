@@ -101,17 +101,18 @@ const OrganizationForm = ({ handleFullTimeJob, isLoading }: Props) => {
   }, [watch("imageFile")]);
 
   const handleSelectMajor = (selectedMajor: MAJOR) => {
-    if (watch("majors").includes(selectedMajor)) {
+    const majorIds = watch("majors")?.map((major) => major.id);
+
+    if (majorIds?.includes(selectedMajor.id)) {
       setValue(
         "majors",
-        watch("majors").filter((major) => major !== selectedMajor)
+        watch("majors")?.filter((major) => major.id !== selectedMajor.id)
       );
     } else {
-      setValue("majors", [...watch("majors"), selectedMajor]);
+      const currentMajors = watch("majors") || [];
+      setValue("majors", [...currentMajors, selectedMajor]);
     }
-    clearErrors("majors");
   };
-
   return (
     <form
       className="max-w-screen-lg mx-auto py-4 px-2"
@@ -276,7 +277,7 @@ const OrganizationForm = ({ handleFullTimeJob, isLoading }: Props) => {
         close={() => setIsMajorDialog(!isMajorDialog)}
         selectedMajors={watch("majors")}
         handleSelectMajor={handleSelectMajor}
-        multiple={false}
+        multiple={true}
       />
       <PostCodeDialog
         isOpen={isPostDialog}

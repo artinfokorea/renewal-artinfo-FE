@@ -9,11 +9,7 @@ export const metadata: Metadata = {
 };
 
 const page = () => {
-  return (
-    <div>
-      <SignUpForm />
-    </div>
-  );
+  return <SignUpForm />;
 };
 
 export default page;

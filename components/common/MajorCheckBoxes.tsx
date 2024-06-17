@@ -1,8 +1,8 @@
-import { useEffect, useMemo, useState } from 'react';
-import { Label } from '../ui/label';
-import { useRouter, useSearchParams } from 'next/navigation';
-import { MAJOR, MajorCategory, MajorCategoryValues } from '@/types';
-import RightIcon from '../icons/RightIcon';
+import { useEffect, useMemo, useState } from "react";
+import { Label } from "../ui/label";
+import { useRouter, useSearchParams } from "next/navigation";
+import { MAJOR, MajorCategory, MajorCategoryValues } from "@/types";
+import RightIcon from "../icons/RightIcon";
 
 interface Props {
   majors?: MAJOR[];
@@ -11,7 +11,7 @@ interface Props {
 const MajorCheckBoxes = ({ majors }: Props) => {
   const searchParams = useSearchParams();
   const router = useRouter();
-  const majorIds = searchParams.getAll('majorId') as string[];
+  const majorIds = searchParams.getAll("majorId") as string[];
   const [isMajorAllChecked, setIsMajorAllChecked] = useState(
     majorIds.length === 0
   );
@@ -39,10 +39,10 @@ const MajorCheckBoxes = ({ majors }: Props) => {
       majors
         ?.filter((major) => major.enGroup === key)
         .forEach((major) => {
-          locationParams.append('majorId', major.id.toString());
+          locationParams.append("majorId", major.id.toString());
         });
     } else {
-      locationParams.delete('majorId');
+      locationParams.delete("majorId");
 
       const filteredMajors = majors?.filter((major) => {
         if (major.enGroup !== key) return major.id;
@@ -51,7 +51,7 @@ const MajorCheckBoxes = ({ majors }: Props) => {
         filteredMajors?.some((major) => major.id === Number(id))
       );
       filterdMajorIds.forEach((id) =>
-        locationParams.append('majorId', id.toString())
+        locationParams.append("majorId", id.toString())
       );
     }
 
@@ -109,11 +109,11 @@ const MajorCheckBoxes = ({ majors }: Props) => {
   const handleMajorChange = (majorId: string) => {
     const locationParams = new URLSearchParams(window.location.search);
     if (majorIds?.includes(majorId)) {
-      locationParams.delete('majorId');
+      locationParams.delete("majorId");
       const majorList = majorIds.filter((v) => v !== majorId);
-      majorList.forEach((v) => locationParams.append('majorId', v));
+      majorList.forEach((v) => locationParams.append("majorId", v));
     } else {
-      locationParams.append('majorId', majorId);
+      locationParams.append("majorId", majorId);
     }
     const newUrl = `${window.location.pathname}?${locationParams.toString()}`;
     router.push(newUrl, {
@@ -132,7 +132,7 @@ const MajorCheckBoxes = ({ majors }: Props) => {
 
   const handleIsAllMajorChecked = () => {
     const locationParams = new URLSearchParams(window.location.search);
-    locationParams.delete('majorId');
+    locationParams.delete("majorId");
     setIsMajorCategoryChecked(
       MajorCategoryValues.reduce<{
         [key: string]: boolean;
@@ -168,9 +168,10 @@ const MajorCheckBoxes = ({ majors }: Props) => {
               <input
                 type="checkbox"
                 value={key}
-                checked={majorCategoryIds[key]?.every((id) =>
-                  majorIds.includes(id)
-                )}
+                checked={
+                  majorCategoryIds[key]?.every((id) => majorIds.includes(id)) ||
+                  false
+                }
                 className="w-5 h-5 border-gray-400 checked:bg-main rounded"
                 onChange={() => handleMajorGroupChange(key)}
               />
@@ -181,7 +182,7 @@ const MajorCheckBoxes = ({ majors }: Props) => {
               <button
                 type="button"
                 className={`transform transition duration-200 ${
-                  isMajorCategoryDetail[key] ? 'rotate-90' : 'rotate-0'
+                  isMajorCategoryDetail[key] ? "rotate-90" : "rotate-0"
                 }`}
                 onClick={() => handleMajorDetailBoxes(key)}
               >
@@ -196,7 +197,9 @@ const MajorCheckBoxes = ({ majors }: Props) => {
                       <input
                         type="checkbox"
                         value={major.id}
-                        checked={majorIds.includes(major.id.toString())}
+                        checked={
+                          majorIds.includes(major.id.toString()) || false
+                        }
                         className="w-5 h-5 border-gray-400 checked:bg-main rounded"
                         onChange={() => handleMajorChange(major.id.toString())}
                       />

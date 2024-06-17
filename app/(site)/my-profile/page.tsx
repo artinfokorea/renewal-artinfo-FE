@@ -1,7 +1,12 @@
+import ProfileContainer from "@/components/profile/ProfileContainer";
 import React from "react";
 
 const page = () => {
-  return <div>my profile</div>;
+  return (
+    <section className="max-w-screen-lg mx-auto">
+      <ProfileContainer />
+    </section>
+  );
 };
 
 export default page;

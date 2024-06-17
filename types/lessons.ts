@@ -6,18 +6,24 @@ export type LESSON = {
   career: string;
   phone: string;
   imageUrl: string;
-  provinces: string[];
+  areas: string[];
   majors: string[];
   schools: School[];
 };
 
-enum SchoolType {
+export enum SchoolType {
   UNDERGRADUATE = "UNDERGRADUATE",
   MASTER = "MASTER",
   DOCTOR = "DOCTOR",
 }
 
-type School = {
+export const SchoolTypeValues = {
+  UNDERGRADUATE: "대학교",
+  MASTER: "대학원 석사",
+  DOCTOR: "대학원 박사",
+};
+
+export type School = {
   id: number;
   name: string;
   type: SchoolType;

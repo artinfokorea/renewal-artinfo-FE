@@ -58,6 +58,7 @@ const BottomNavigation = () => {
         {NavItems.map(({ href, title, prefetch, icon }) => {
           const isActive =
             href === "/" ? pathname === href : pathname.startsWith(href);
+
           return (
             <Link
               href={href}

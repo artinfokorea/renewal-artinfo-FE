@@ -1,29 +1,30 @@
-'use client';
+"use client";
 
-import React, { useEffect, useState, useMemo } from 'react';
-import ListSearchForm from '../common/ListSearchForm';
-import JobListCheckBoxes from './JobListCheckBoxes';
-import { useInView } from 'react-intersection-observer';
-import { JobType, JOB } from '@/types/jobs';
-import { Button } from '../ui/button';
-import { Badge } from '../ui/badge';
-import { useRouter, useSearchParams } from 'next/navigation';
-import { useInfiniteQuery, useQuery } from '@tanstack/react-query';
-import { queries } from '@/lib/queries';
-import { ScrollApiResponse } from '@/interface';
-import JobCard from './JobCard';
-import ObriCard from './ObriCard';
-import ProvinceDialog from '../dialog/ProvinceDialog';
-import CloseIcon from '../icons/CloseIcon';
-import MobileFilterTab from '../common/MobileFIlterTab';
+import React, { useEffect, useState, useMemo } from "react";
+import ListSearchForm from "../common/ListSearchForm";
+import JobListCheckBoxes from "./JobListCheckBoxes";
+import { useInView } from "react-intersection-observer";
+import { JobType, JOB } from "@/types/jobs";
+import { Button } from "../ui/button";
+import { Badge } from "../ui/badge";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import { useInfiniteQuery, useQuery } from "@tanstack/react-query";
+import { queries } from "@/lib/queries";
+import { ScrollApiResponse } from "@/interface";
+import JobCard from "./JobCard";
+import ObriCard from "./ObriCard";
+import ProvinceDialog from "../dialog/ProvinceDialog";
+import CloseIcon from "../icons/CloseIcon";
+import MobileFilterTab from "../common/MobileFIlterTab";
 
 const ListContainer = () => {
   const searchParams = useSearchParams();
-  const recruits = searchParams.getAll('recruit') as JobType[];
-  const majorIds = searchParams.getAll('majorId') as string[];
-  const keyword = searchParams.get('keyword') as string;
-  const provinceIds = searchParams.getAll('provinceId') as string[];
+  const recruits = searchParams.getAll("recruit") as JobType[];
+  const majorIds = searchParams.getAll("majorId") as string[];
+  const keyword = searchParams.get("keyword") as string;
+  const provinceIds = searchParams.getAll("provinceId") as string[];
   const router = useRouter();
+  const pathname = usePathname();
   const [isProvinceDialog, setIsProvinceDialog] = useState(false);
 
   const [ref, inView] = useInView({
@@ -35,7 +36,7 @@ const ListContainer = () => {
     data: jobs,
     hasNextPage,
     fetchNextPage,
-  } = useInfiniteQuery<ScrollApiResponse<JOB, 'jobs'>>({
+  } = useInfiniteQuery<ScrollApiResponse<JOB, "jobs">>({
     ...queries.jobs.infiniteList({
       size: 10,
       types: recruits,
@@ -69,9 +70,9 @@ const ListContainer = () => {
     if (provinceIds.includes(provinceId)) {
       const newProvinceIds = provinceIds.filter((id) => id !== provinceId);
 
-      locationParams.delete('provinceId');
+      locationParams.delete("provinceId");
       newProvinceIds.forEach((id) => {
-        locationParams.append('provinceId', id);
+        locationParams.append("provinceId", id);
       });
     }
 
@@ -121,7 +122,7 @@ const ListContainer = () => {
             </div>
             <Button
               className="py-2 px-6 text-white bg-main rounded-3xl"
-              onClick={() => router.push('/jobs/create')}
+              onClick={() => router.push(`${pathname}/create`)}
             >
               등록
             </Button>

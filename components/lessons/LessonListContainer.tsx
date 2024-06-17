@@ -1,34 +1,35 @@
-'use client';
+"use client";
 
-import { ScrollApiResponse } from '@/interface';
-import { queries } from '@/lib/queries';
-import { LESSON } from '@/types/lessons';
-import { useInfiniteQuery, useQuery } from '@tanstack/react-query';
-import { useRouter, useSearchParams } from 'next/navigation';
-import { useInView } from 'react-intersection-observer';
-import ListSearchForm from '../common/ListSearchForm';
-import { useEffect, useMemo, useState } from 'react';
-import { Button } from '../ui/button';
-import { Badge } from '../ui/badge';
-import CloseIcon from '../icons/CloseIcon';
-import ProvinceDialog from '../dialog/ProvinceDialog';
-import MajorCheckBoxes from '../common/MajorCheckBoxes';
-import MobileFilterTab from '../common/MobileFIlterTab';
-import LessonCard from './LessonCard';
+import { ScrollApiResponse } from "@/interface";
+import { queries } from "@/lib/queries";
+import { LESSON } from "@/types/lessons";
+import { useInfiniteQuery, useQuery } from "@tanstack/react-query";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import { useInView } from "react-intersection-observer";
+import ListSearchForm from "../common/ListSearchForm";
+import { useEffect, useMemo, useState } from "react";
+import { Button } from "../ui/button";
+import { Badge } from "../ui/badge";
+import CloseIcon from "../icons/CloseIcon";
+import ProvinceDialog from "../dialog/ProvinceDialog";
+import MajorCheckBoxes from "../common/MajorCheckBoxes";
+import MobileFilterTab from "../common/MobileFIlterTab";
+import LessonCard from "./LessonCard";
 
 const LessonListContainer = () => {
   const searchParams = useSearchParams();
-  const majorIds = searchParams.getAll('majorId') as string[];
-  const keyword = searchParams.get('keyword') as string;
-  const provinceIds = searchParams.getAll('provinceId') as string[];
+  const majorIds = searchParams.getAll("majorId") as string[];
+  const keyword = searchParams.get("keyword") as string;
+  const provinceIds = searchParams.getAll("provinceId") as string[];
   const router = useRouter();
   const [isProvinceDialog, setIsProvinceDialog] = useState(false);
+  const pathname = usePathname();
 
   const {
     data: lessons,
     hasNextPage,
     fetchNextPage,
-  } = useInfiniteQuery<ScrollApiResponse<LESSON, 'lessons'>>({
+  } = useInfiniteQuery<ScrollApiResponse<LESSON, "lessons">>({
     ...queries.lessons.infiniteList({
       size: 10,
       keyword,
@@ -57,9 +58,9 @@ const LessonListContainer = () => {
     if (provinceIds.includes(provinceId)) {
       const newProvinceIds = provinceIds.filter((id) => id !== provinceId);
 
-      locationParams.delete('provinceId');
+      locationParams.delete("provinceId");
       newProvinceIds.forEach((id) => {
-        locationParams.append('provinceId', id);
+        locationParams.append("provinceId", id);
       });
     }
 
@@ -120,7 +121,7 @@ const LessonListContainer = () => {
             </div>
             <Button
               className="py-2 px-6 text-white bg-main rounded-3xl"
-              onClick={() => router.push('/jobs/create')}
+              onClick={() => router.push(`${pathname}/create`)}
             >
               등록
             </Button>
