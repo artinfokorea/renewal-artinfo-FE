@@ -95,7 +95,6 @@ export const createPartTimeJob = async (
 export const createFullTimeJob = async (
   job: JobPayload
 ): Promise<PostResponse> => {
-  console.log("job", job);
   try {
     const response = await apiRequest.post<PostResponse>(
       `/jobs/full-time`,

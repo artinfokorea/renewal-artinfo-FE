@@ -14,7 +14,6 @@ const DetailContainer = () => {
   const filter = filters();
 
   const { data: job } = useQuery(queries.jobs.detail(Number(params.id)));
-  console.log("job", job);
 
   return (
     <Suspense fallback={<Loading />}>

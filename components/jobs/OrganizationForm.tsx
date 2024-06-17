@@ -1,24 +1,24 @@
-import { ErrorMessage } from '@hookform/error-message';
-import React, { useContext, useMemo, useRef, useState } from 'react';
-import { Dialog, DialogPanel, Input } from '@headlessui/react';
-import Image from 'next/image';
-import { useRouter } from 'next/navigation';
-import { useForm } from 'react-hook-form';
-import { yupResolver } from '@hookform/resolvers/yup';
-import dynamic from 'next/dynamic';
-import * as yup from 'yup';
-import FileUploader from '../common/FileUploader';
-import CloseIcon from '../icons/CloseIcon';
-import { Button } from '../ui/button';
-import PhotoIcon from '../icons/PhotoIcon';
-import PlusIcon from '../icons/PlusIcon';
-import Loading from '../common/Loading';
-import MajorDialog from '../dialog/MajorDialog';
-import { MAJOR } from '@/types';
-import { Badge } from '../ui/badge';
-import PostCodeDialog from '../dialog/PostCodeDialog';
+import { ErrorMessage } from "@hookform/error-message";
+import React, { useContext, useMemo, useRef, useState } from "react";
+import { Dialog, DialogPanel, Input } from "@headlessui/react";
+import Image from "next/image";
+import { useRouter } from "next/navigation";
+import { useForm } from "react-hook-form";
+import { yupResolver } from "@hookform/resolvers/yup";
+import dynamic from "next/dynamic";
+import * as yup from "yup";
+import FileUploader from "../common/FileUploader";
+import CloseIcon from "../icons/CloseIcon";
+import { Button } from "../ui/button";
+import PhotoIcon from "../icons/PhotoIcon";
+import PlusIcon from "../icons/PlusIcon";
+import Loading from "../common/Loading";
+import MajorDialog from "../dialog/MajorDialog";
+import { MAJOR } from "@/types";
+import { Badge } from "../ui/badge";
+import PostCodeDialog from "../dialog/PostCodeDialog";
 
-const ToastEditor = dynamic(() => import('../editor/ToastEditor'), {
+const ToastEditor = dynamic(() => import("../editor/ToastEditor"), {
   ssr: false,
   loading: () => (
     <div className="h-[400px] flex items-center justify-center">
@@ -31,29 +31,29 @@ const schema = yup
   .object({
     title: yup
       .string()
-      .min(3, '3자 이상 20자 이하로 입력해주세요.')
-      .max(20, '3자 이상 20자 이하로 입력해주세요.')
-      .required('제목을 입력해주세요.'),
-    contents: yup.string().required('내용을 입력해주세요.'),
+      .min(3, "3자 이상 20자 이하로 입력해주세요.")
+      .max(20, "3자 이상 20자 이하로 입력해주세요.")
+      .required("제목을 입력해주세요."),
+    contents: yup.string().required("내용을 입력해주세요."),
     companyName: yup
       .string()
-      .min(2, '2자 이상 20자 이하로 입력해주세요.')
-      .max(20, '2자 이상 20자 이하로 입력해주세요.')
+      .min(2, "2자 이상 20자 이하로 입력해주세요.")
+      .max(20, "2자 이상 20자 이하로 입력해주세요.")
       .required(),
-    province: yup.string().required('지역을 선택해주세요.'),
-    detailAddress: yup.string().required('상세 주소를 입력해주세요.'),
+    province: yup.string().required("지역을 선택해주세요."),
+    detailAddress: yup.string().required("상세 주소를 입력해주세요."),
     imageFile: yup
       .mixed()
-      .test('fileType', '이미지 파일만 등록할 수 있습니다.', (value) => {
+      .test("fileType", "이미지 파일만 등록할 수 있습니다.", (value) => {
         if (!value) return false; // 값이 없으면 유효성 검사 실패
         return value instanceof File;
       })
-      .required('이미지를 등록해주세요.'),
+      .required("이미지를 등록해주세요."),
     majors: yup
       .array()
-      .min(1, '전공을 최소 1개 선택해야 합니다.')
-      .max(10, '전공은 하나만 선택할 수 있습니다.')
-      .required('전공을 선택해주세요.'),
+      .min(1, "전공을 최소 1개 선택해야 합니다.")
+      .max(10, "전공은 하나만 선택할 수 있습니다.")
+      .required("전공을 선택해주세요."),
   })
   .required();
 
@@ -84,34 +84,32 @@ const OrganizationForm = ({ handleFullTimeJob, isLoading }: Props) => {
     },
   });
 
-  console.log('watch("contents")', watch('contents'));
-
   const openFileUploader = () => {
     fileUploader.current?.click();
   };
 
   const handleUploadedFiles = (files: File[]) => {
-    setValue('imageFile', files[0]);
+    setValue("imageFile", files[0]);
   };
 
   const imageUrl = useMemo(() => {
-    const file = watch('imageFile') as File;
+    const file = watch("imageFile") as File;
     if (file) {
       return URL.createObjectURL(file);
     }
     return undefined;
-  }, [watch('imageFile')]);
+  }, [watch("imageFile")]);
 
   const handleSelectMajor = (selectedMajor: MAJOR) => {
-    if (watch('majors').includes(selectedMajor)) {
+    if (watch("majors").includes(selectedMajor)) {
       setValue(
-        'majors',
-        watch('majors').filter((major) => major !== selectedMajor)
+        "majors",
+        watch("majors").filter((major) => major !== selectedMajor)
       );
     } else {
-      setValue('majors', [...watch('majors'), selectedMajor]);
+      setValue("majors", [...watch("majors"), selectedMajor]);
     }
-    clearErrors('majors');
+    clearErrors("majors");
   };
 
   return (
@@ -134,7 +132,7 @@ const OrganizationForm = ({ handleFullTimeJob, isLoading }: Props) => {
             />
             <Button
               className="absolute top-2 right-2 rounded-full opacity-40 bg-white p-2"
-              onClick={() => setValue('imageFile', '')}
+              onClick={() => setValue("imageFile", "")}
             >
               <CloseIcon className="w-6 h-6 text-primary" />
             </Button>
@@ -161,7 +159,7 @@ const OrganizationForm = ({ handleFullTimeJob, isLoading }: Props) => {
         <div className="md:ml-16 md:my-4 flex flex-col text-dimgray flex-1">
           <div className="mt-4 md:mt:0 mb-2">
             <Input
-              {...register('title')}
+              {...register("title")}
               className="border-b-2 border-whitesmoke focus:outline-none py-2 w-full"
               placeholder="제목을 입력해주세요."
             />
@@ -175,7 +173,7 @@ const OrganizationForm = ({ handleFullTimeJob, isLoading }: Props) => {
           </div>
           <div className="mb-2">
             <Input
-              {...register('companyName')}
+              {...register("companyName")}
               className="border-b-2 border-whitesmoke focus:outline-none py-2 w-full"
               placeholder="단체 이름을 입력해주세요."
             />
@@ -196,7 +194,7 @@ const OrganizationForm = ({ handleFullTimeJob, isLoading }: Props) => {
               <PlusIcon className="w-4 h-4 text-white" />
               <span className="text-white">전공</span>
             </button>
-            {watch('majors').map((major) => (
+            {watch("majors").map((major) => (
               <Badge key={major.id} className="bg-main text-white text-sm h-8">
                 {major.koName}
                 <button
@@ -223,10 +221,10 @@ const OrganizationForm = ({ handleFullTimeJob, isLoading }: Props) => {
             >
               주소검색
             </Button>
-            {watch('province') && (
+            {watch("province") && (
               <div className="w-full">
                 <Input
-                  defaultValue={watch('province')}
+                  defaultValue={watch("province")}
                   className="border-b-2 border-whitesmoke focus:outline-none py-2 w-full"
                 />
                 <ErrorMessage
@@ -237,7 +235,7 @@ const OrganizationForm = ({ handleFullTimeJob, isLoading }: Props) => {
                   )}
                 />
                 <Input
-                  {...register('detailAddress')}
+                  {...register("detailAddress")}
                   placeholder="상세 주소를 입력해주세요."
                   className="border-b-2 border-whitesmoke focus:outline-none py-2 w-full"
                 />
@@ -276,7 +274,7 @@ const OrganizationForm = ({ handleFullTimeJob, isLoading }: Props) => {
       <MajorDialog
         open={isMajorDialog}
         close={() => setIsMajorDialog(!isMajorDialog)}
-        selectedMajors={watch('majors')}
+        selectedMajors={watch("majors")}
         handleSelectMajor={handleSelectMajor}
         multiple={false}
       />
@@ -284,8 +282,8 @@ const OrganizationForm = ({ handleFullTimeJob, isLoading }: Props) => {
         isOpen={isPostDialog}
         close={() => setIsPostDialog(!isPostDialog)}
         setValue={(address) => {
-          setValue('province', address);
-          clearErrors('province');
+          setValue("province", address);
+          clearErrors("province");
         }}
       />
     </form>
