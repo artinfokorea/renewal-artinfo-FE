@@ -28,8 +28,14 @@ const MainJobsContainer = ({ isMobile }: Props) => {
         </Link>
       </div>
       <div className="grid grid-cols-2 md:grid-cols-3 gap-4 md:gap-8 mt-4 mb-12 ">
-        {data?.jobs?.slice(0, isMobile ? 2 : 3).map((job) => (
-          <Link key={job.title} href={`/jobs/${job.id}`}>
+        {data?.jobs?.map((job, index) => (
+          <Link
+            key={job.title}
+            href={`/jobs/${job.id}`}
+            className={`${
+              index < 2 ? "block" : index < 3 ? "hidden md:block" : "hidden"
+            }`}
+          >
             <div className="border-2 border-whitesmoke h-[130px] md:h-[185px] relative">
               <Image
                 src={job.imageUrl}

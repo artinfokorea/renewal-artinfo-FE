@@ -10,7 +10,7 @@ const MainJobSkeleton = () => {
           <Skeleton
             key={index}
             className={`h-[130px] md:h-[185px] w-full bg-gray-200 animate-pulse ${
-              index < 1 ? "block" : "hidden md:block"
+              index < 2 ? "block" : "hidden md:block"
             }`}
           />
         ))}

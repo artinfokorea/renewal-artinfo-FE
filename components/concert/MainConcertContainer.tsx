@@ -8,18 +8,21 @@ import Link from "next/link";
 import { useSuspenseQuery } from "@tanstack/react-query";
 import { queries } from "@/lib/queries";
 
-interface Props {
-  isMobile: boolean;
-}
-
-const MainConcertContainer = ({ isMobile }: Props) => {
+const MainConcertContainer = () => {
   const { data: concerts } = useSuspenseQuery(
     queries.ads.list(AdvertisementType.CONCERT)
   );
   return (
     <section className="py-6 gap-8 lg:gap-12 grid grid-cols-2 md:grid-cols-4">
-      {concerts?.slice(0, isMobile ? 2 : 4).map((concert) => (
-        <Link key={concert.id} href={concert.redirectUrl} target="_blank">
+      {concerts?.map((concert, index) => (
+        <Link
+          key={concert.id}
+          href={concert.redirectUrl}
+          target="_blank"
+          className={`${
+            index < 2 ? "block" : index < 4 ? "hidden md:block" : "hidden"
+          }`}
+        >
           <div className="h-[240px] md:h-[280px] relative">
             <Image
               src={concert.imageUrl}

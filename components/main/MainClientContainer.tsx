@@ -65,7 +65,7 @@ const MainClientContainer = () => {
       </Suspense>
 
       <Suspense fallback={<ConcertSkeleton />}>
-        <ConcertContainer isMobile={isMobile} />
+        <ConcertContainer />
       </Suspense>
       <Suspense fallback={<MainJobSkeleton />}>
         <MainJobsContainer isMobile={isMobile} />
