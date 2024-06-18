@@ -1,13 +1,10 @@
 "use client";
 
-import { ScrollApiResponse } from "@/interface";
 import { queries } from "@/lib/queries";
-import { LESSON } from "@/types/lessons";
-import { useInfiniteQuery, useQuery } from "@tanstack/react-query";
+import { useQuery } from "@tanstack/react-query";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
-import { useInView } from "react-intersection-observer";
 import ListSearchForm from "../common/ListSearchForm";
-import { useEffect, useMemo, useState } from "react";
+import { Suspense, useMemo, useState } from "react";
 import { Button } from "../ui/button";
 import { Badge } from "../ui/badge";
 import CloseIcon from "../icons/CloseIcon";
@@ -15,33 +12,15 @@ import ProvinceDialog from "../dialog/ProvinceDialog";
 import MajorCheckBoxes from "../common/MajorCheckBoxes";
 import MobileFilterTab from "../common/MobileFIlterTab";
 import LessonCard from "./LessonCard";
+import LessonList from "./LessonList";
+import LessonListSkeleton from "../skeleton/LessonListSkeleton";
 
-const LessonListContainer = () => {
+const LessonsContainer = () => {
   const searchParams = useSearchParams();
-  const majorIds = searchParams.getAll("majorId") as string[];
-  const keyword = searchParams.get("keyword") as string;
   const provinceIds = searchParams.getAll("provinceId") as string[];
   const router = useRouter();
   const [isProvinceDialog, setIsProvinceDialog] = useState(false);
   const pathname = usePathname();
-
-  const {
-    data: lessons,
-    hasNextPage,
-    fetchNextPage,
-  } = useInfiniteQuery<ScrollApiResponse<LESSON, "lessons">>({
-    ...queries.lessons.infiniteList({
-      size: 10,
-      keyword,
-      majorIds: majorIds.map((id) => Number(id)),
-      provinceIds: provinceIds.map((id) => Number(id)),
-    }),
-    initialPageParam: 1,
-    getNextPageParam: (lastPage) => {
-      if (!lastPage.isLast) return lastPage.nextPage;
-      return null;
-    },
-  });
 
   const { data: majors } = useQuery(queries.majors.list());
 
@@ -71,17 +50,6 @@ const LessonListContainer = () => {
       scroll: false,
     });
   };
-
-  const [ref, inView] = useInView({
-    delay: 100,
-    threshold: 0.5,
-  });
-
-  useEffect(() => {
-    if (inView && hasNextPage) {
-      fetchNextPage();
-    }
-  }, [inView, hasNextPage]);
 
   return (
     <div className="max-w-screen-lg mx-auto px-4">
@@ -129,22 +97,9 @@ const LessonListContainer = () => {
             provinces={provinceList?.provinces}
             page="LESSON"
           />
-          <div className="mt-4 grid grid-cols-2 md:grid-cols-3 gap-4 md:gap-10">
-            {lessons?.pages?.map((page) =>
-              page?.lessons?.map((lesson, index) => {
-                return (
-                  <LessonCard
-                    lesson={lesson}
-                    key={lesson.id}
-                    ref={ref}
-                    isLastPage={
-                      !(hasNextPage && index === page.lessons.length - 5)
-                    }
-                  />
-                );
-              })
-            )}
-          </div>
+          <Suspense fallback={<LessonListSkeleton />}>
+            <LessonList />
+          </Suspense>
         </div>
         <ProvinceDialog
           provinces={provinceList?.provinces}
@@ -157,4 +112,4 @@ const LessonListContainer = () => {
   );
 };
 
-export default LessonListContainer;
+export default LessonsContainer;
