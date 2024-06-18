@@ -7,11 +7,7 @@ import Image from "next/image";
 import Link from "next/link";
 import React from "react";
 
-interface Props {
-  isMobile: boolean;
-}
-
-const MainJobsContainer = ({ isMobile }: Props) => {
+const MainJobsContainer = () => {
   const { data } = useSuspenseQuery(
     queries.jobs.list({
       page: 1,

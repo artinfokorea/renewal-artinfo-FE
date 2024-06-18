@@ -1,28 +1,16 @@
 "use client";
 
-import React, { Suspense, useEffect, useState } from "react";
+import React, { Suspense } from "react";
 import BannerContainer from "@/components/banner/BannerContainer";
 import ConcertContainer from "@/components/concert/MainConcertContainer";
 import MainObriContainer from "@/components/obri/MainObriContainer";
 import MainJobsContainer from "@/components/jobs/MainJobsContainer";
-import { queries } from "@/lib/queries";
-import { AdvertisementType } from "@/types/ads";
-import { JobType } from "@/types/jobs";
-import {
-  useQueries,
-  useSuspenseQueries,
-  useSuspenseQuery,
-} from "@tanstack/react-query";
-import Loading from "../common/Loading";
 import BannerSkeleton from "../skeleton/BannerSkeleton";
-import { Skeleton } from "../ui/skeleton";
 import ConcertSkeleton from "../skeleton/ConcertSkeleton";
 import MainJobSkeleton from "../skeleton/MainJobSkeleton";
 import MainObirSkeleton from "../skeleton/MainObirSkeleton";
-// import Loading from "@/app/(site)/loading";
 
 const MainClientContainer = () => {
-  const [isMobile, setIsMobile] = useState(true);
   // const [
   //   { data: ads, isLoading: isAdsLoading },
   //   { data: concerts, isLoading: isConcertsLoading },
@@ -41,34 +29,29 @@ const MainClientContainer = () => {
   //   ],
   // });
 
-  useEffect(() => {
-    const mediaQuery = window.matchMedia("(min-width: 768px)");
-    const handleMediaQueryChange = (event: any) => {
-      setIsMobile(!event.matches);
-    };
+  // useEffect(() => {
+  //   const mediaQuery = window.matchMedia("(min-width: 768px)");
+  //   const handleMediaQueryChange = (event: any) => {
+  //     setIsMobile(!event.matches);
+  //   };
 
-    mediaQuery.addEventListener("change", handleMediaQueryChange);
-    handleMediaQueryChange(mediaQuery);
-    return () => {
-      mediaQuery.removeEventListener("change", handleMediaQueryChange);
-    };
-  }, []);
-
-  // if (isAdsLoading || isConcertsLoading || isJobsLoading || isObriesLoading) {
-  //   return <Loading />;
-  // }
+  //   mediaQuery.addEventListener("change", handleMediaQueryChange);
+  //   handleMediaQueryChange(mediaQuery);
+  //   return () => {
+  //     mediaQuery.removeEventListener("change", handleMediaQueryChange);
+  //   };
+  // }, []);
 
   return (
     <div className="max-w-screen-lg mx-auto h-full px-2">
       <Suspense fallback={<BannerSkeleton />}>
         <BannerContainer />
       </Suspense>
-
       <Suspense fallback={<ConcertSkeleton />}>
         <ConcertContainer />
       </Suspense>
       <Suspense fallback={<MainJobSkeleton />}>
-        <MainJobsContainer isMobile={isMobile} />
+        <MainJobsContainer />
       </Suspense>
 
       <article className="bg-whitesmoke h-[100px] md:h-[120px] rounded-xl">
