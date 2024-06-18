@@ -1,6 +1,6 @@
 import { getAds } from "@/apis/ad";
-import { getInfiniteJobs, getJob, getJobs } from "@/apis/jobs";
-import { getInfiniteLessons, getLesson } from "@/apis/lessons";
+import { getInfiniteJobs, getJob, getJobs, getJobsCount } from "@/apis/jobs";
+import { getInfiniteLessons, getLesson, getLessonsCount } from "@/apis/lessons";
 import { getMajors, getProvinces } from "@/apis/system";
 import { getMe } from "@/apis/users";
 import { JobsRequest } from "@/interface/jobs";
@@ -46,6 +46,10 @@ const lessons = createQueryKeys("lessons", {
     queryFn: ({ pageParam }: { pageParam: number }) =>
       getInfiniteLessons({ ...filters, page: pageParam }),
   }),
+  count: () => ({
+    queryKey: ["count"],
+    queryFn: () => getLessonsCount(),
+  }),
 });
 
 const users = createQueryKeys("users", {
@@ -68,6 +72,10 @@ const jobs = createQueryKeys("jobs", {
     queryKey: ["infiniteList", { filters }],
     queryFn: ({ pageParam }: { pageParam: number }) =>
       getInfiniteJobs({ ...filters, page: pageParam }),
+  }),
+  count: () => ({
+    queryKey: ["count"],
+    queryFn: () => getJobsCount(),
   }),
 });
 

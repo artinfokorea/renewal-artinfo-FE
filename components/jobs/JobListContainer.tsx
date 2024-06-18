@@ -8,7 +8,11 @@ import { JobType, JOB } from "@/types/jobs";
 import { Button } from "../ui/button";
 import { Badge } from "../ui/badge";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
-import { useInfiniteQuery, useQuery } from "@tanstack/react-query";
+import {
+  useInfiniteQuery,
+  useQuery,
+  useSuspenseInfiniteQuery,
+} from "@tanstack/react-query";
 import { queries } from "@/lib/queries";
 import { ScrollApiResponse } from "@/interface";
 import JobCard from "./JobCard";
@@ -55,15 +59,13 @@ const ListContainer = () => {
 
   const { data: provinceList } = useQuery(queries.provinces.list());
 
+  const { data: jobsCount } = useQuery(queries.jobs.count());
+
   const selectedProvinces = useMemo(() => {
     return provinceList?.provinces?.filter((province) =>
       provinceIds.includes(province.id.toString())
     );
   }, [provinceIds]);
-
-  const totalCount = jobs?.pages?.reduce((acc, page) => {
-    return acc + page.totalCount;
-  }, 0);
 
   const deleteProvince = (provinceId: string) => {
     const locationParams = new URLSearchParams(window.location.search);
@@ -91,7 +93,7 @@ const ListContainer = () => {
   return (
     <div className="max-w-screen-lg mx-auto px-4">
       <ListSearchForm
-        totalCount={totalCount}
+        totalCount={jobsCount?.totalCount}
         title="개의 채용이
         진행중이에요."
       />

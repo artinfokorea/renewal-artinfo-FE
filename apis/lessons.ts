@@ -69,3 +69,14 @@ export const getLessonQualification = async (): Promise<SuccessResponse> => {
     );
   }
 };
+
+export const getLessonsCount = async (): Promise<{ totalCount: number }> => {
+  try {
+    const response = await apiRequest.get<
+      DetailApiResponse<{ totalCount: number }>
+    >("/lessons/count");
+    return response.item;
+  } catch (error) {
+    throw new Error(exceptionHandler(error, "API getLessonsCount error"));
+  }
+};

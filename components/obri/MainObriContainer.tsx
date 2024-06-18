@@ -1,14 +1,16 @@
 "use client";
 
+import { queries } from "@/lib/queries";
 import { JOB, JobType } from "@/types/jobs";
+import { useSuspenseQuery } from "@tanstack/react-query";
 import Link from "next/link";
 import React from "react";
 
-interface Props {
-  jobs?: JOB[];
-}
+const MainObriContainer = () => {
+  const { data } = useSuspenseQuery(
+    queries.jobs.list({ page: 1, size: 5, types: [JobType.PART_TIME] })
+  );
 
-const MainObriContainer = ({ jobs }: Props) => {
   return (
     <section className="my-8 md:my-12">
       <div className="flex justify-between">
@@ -19,7 +21,7 @@ const MainObriContainer = ({ jobs }: Props) => {
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-2 md:gap-6 mt-4 mb-12">
-        {jobs?.map((job) => (
+        {data?.jobs.map((job) => (
           <Link key={job.id} href={`/jobs/${job.id}`}>
             <div className="border border-lightgrey rounded-md py-5 flex items-center">
               <div className="grid grid-cols-4 px-4 gap-3">

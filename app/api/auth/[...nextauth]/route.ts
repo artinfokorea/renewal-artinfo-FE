@@ -1,3 +1,5 @@
+import { DetailApiResponse } from "@/interface";
+import { USER } from "@/types/users";
 import NextAuth, { User } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
 
@@ -41,6 +43,10 @@ const handler = NextAuth({
     signIn: "/auth/sign-in",
     signOut: "/auth/sign-in",
     // error: "/auth/sign-in",
+  },
+  session: {
+    strategy: "jwt",
+    maxAge: 60 * 60 * 24 * 7,
   },
   secret: process.env.NEXTAUTH_SECRET,
   providers: [
@@ -200,16 +206,18 @@ const handler = NextAuth({
       if (token) {
         session.token = token;
 
-        const getMe = await fetch(`${process.env.REST_API_BASE_URL}/users/me`, {
-          method: "GET",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token.accessToken}`,
-          },
-        })
+        const getMe: DetailApiResponse<USER> = await fetch(
+          `${process.env.REST_API_BASE_URL}/users/me`,
+          {
+            method: "GET",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${token.accessToken}`,
+            },
+          }
+        )
           .then((res) => res.json())
           .catch((error) => console.log("getMe error", error));
-
         session.user = getMe.item;
       }
 

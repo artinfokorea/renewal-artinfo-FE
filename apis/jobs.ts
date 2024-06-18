@@ -152,3 +152,14 @@ export const updateReligion = async (
     throw new Error(exceptionHandler(error, "API updateReligion error"));
   }
 };
+
+export const getJobsCount = async (): Promise<{ totalCount: number }> => {
+  try {
+    const response = await apiRequest.get<
+      DetailApiResponse<{ totalCount: number }>
+    >("/jobs/count");
+    return response.item;
+  } catch (error) {
+    throw new Error(exceptionHandler(error, "API getJobsCount error"));
+  }
+};

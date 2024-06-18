@@ -1,9 +1,9 @@
-import { SCHOOL } from '@/types/users';
+import { SCHOOL } from "@/types/users";
 
 export interface UserPayload {
-  phone: string;
-  iconImageUrl: string;
-  birth: Date;
-  majorIds: number[];
-  schools: SCHOOL[];
+  phone?: string;
+  iconImageUrl?: string;
+  birth?: string;
+  majorIds?: number[];
+  schools?: SCHOOL[];
 }

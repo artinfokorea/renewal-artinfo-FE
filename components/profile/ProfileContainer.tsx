@@ -12,14 +12,21 @@ import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
 import MajorDialog from "../dialog/MajorDialog";
 import { MAJOR } from "@/types";
 import FileUploader from "../common/FileUploader";
-import PhotoIcon from "../icons/PhotoIcon";
 import { Button } from "../ui/button";
 import { useLoading } from "@toss/use-loading";
-import { uploadImages } from "@/apis/system";
+import {
+  sendPhoneVerificationCode,
+  uploadImages,
+  verifyPhoneCode,
+} from "@/apis/system";
 import useToast from "@/hooks/useToast";
 import CloseIcon from "../icons/CloseIcon";
 import { Badge } from "../ui/badge";
 import { Input } from "@headlessui/react";
+import { updateUser } from "@/apis/users";
+import { SchoolType } from "@/types/lessons";
+import CameraIcon from "../icons/CameraIcon";
+import PhoneDialog from "../dialog/PhoneDialog";
 
 const phoneRegExp =
   /^((\\+[1-9]{1,4}[ \\-]*)|(\\([0-9]{2,3}\\)[ \\-]*)|([0-9]{2,4})[ \\-]*)*?[0-9]{3,4}?[ \\-]*[0-9]{3,4}?$/;
@@ -27,11 +34,7 @@ const phoneRegExp =
 const schema = yup
   .object({
     birth: yup.string().required("이메일을 입력해주세요."),
-    nickName: yup.string().required("닉네임을 입력해주세요."),
-    phone: yup
-      .string()
-      .matches(phoneRegExp, "유효한 핸드폰 번호를 입력해주세요")
-      .required("핸드폰 번호를 입력해주세요"),
+    // nickName: yup.string().required("닉네임을 입력해주세요."),
     majors: yup.array(),
     bachellor: yup.string().nullable(),
     master: yup.string().nullable(),
@@ -44,13 +47,15 @@ const schema = yup
 type ProfileFormData = yup.InferType<typeof schema>;
 
 const ProfileContainer = () => {
-  const { data } = useSession();
+  const { data, update } = useSession();
   const pathname = usePathname();
   const [isMajorDialog, setIsMajorDialog] = useState(false);
   const fileUploader = useRef<HTMLInputElement>(null);
   const [isImageUploadLoading, imageStartTransition] = useLoading();
   const { successToast, errorToast } = useToast();
   const [isUpdateForm, setIsUpdateForm] = useState(false);
+  const [isUpdateProfileLoading, updateProfileStartTransition] = useLoading();
+  const [isPhoneDialog, setIsPhoneDialog] = useState(false);
 
   const {
     register,
@@ -97,10 +102,65 @@ const ProfileContainer = () => {
     }
   };
 
-  const updateProfile = async (payload: ProfileFormData) => {};
+  const updateProfile = async (payload: ProfileFormData) => {
+    const { bachellor, master, doctor, birth, imageUrl, majors } = payload;
+
+    const schools = [];
+    if (bachellor)
+      schools.push({ type: SchoolType.UNDERGRADUATE, name: payload.bachellor });
+    if (master) schools.push({ type: SchoolType.MASTER, name: payload.master });
+    if (doctor) schools.push({ type: SchoolType.DOCTOR, name: payload.doctor });
+
+    const request = {
+      birth,
+      iconImageUrl: imageUrl || undefined,
+      majorIds: majors?.map((major) => major.id),
+      schools:
+        schools.length > 0
+          ? schools.map((school) => ({
+              type: school.type,
+              name: school.name || "",
+            }))
+          : undefined,
+    };
+
+    try {
+      await updateProfileStartTransition(updateUser(request));
+      await update(request);
+    } catch (error: any) {
+      errorToast(error.message);
+      console.log(error);
+    }
+  };
+
+  const sendPhoneCode = async (phone: string) => {
+    try {
+      await sendPhoneVerificationCode(phone);
+      successToast("인증번호가 발송되었습니다.");
+    } catch (error: any) {
+      errorToast(error.message);
+      console.log(error);
+    }
+  };
+
+  const checkPhoneVerificationCode = async (
+    phone: string,
+    verification: string
+  ) => {
+    try {
+      await verifyPhoneCode({ phone, verification });
+      successToast("휴대폰 인증이 완료되었습니다.");
+    } catch (error: any) {
+      errorToast(error.message);
+      console.log(error);
+    }
+  };
 
   return (
-    <form className="flex mt-12 md:gap-48">
+    <form
+      className="flex mt-12 md:gap-48"
+      onSubmit={handleSubmit(updateProfile)}
+    >
       <div className="hidden md:flex flex-col gap-4 p-4 md:p-8 whitespace-nowrap">
         <ul>
           <li>
@@ -119,29 +179,38 @@ const ProfileContainer = () => {
       </div>
       <div className="flex-1 px-8 py-6">
         <div className="flex flex-col md:flex-row md:gap-20">
-          <div className="flex flex-col items-center">
+          <div className="flex flex-col items-center relative h-[150px]">
             <div className="relative h-[100px]">
-              <Avatar className="w-[100px] h-[100px]">
+              <Avatar className="w-[150px] h-[150px]">
                 <AvatarImage
-                  src="/img/placeholder-user.png"
+                  src={watch("imageUrl") || "/img/placeholder-user.png"}
                   alt="user_profile_image"
+                  className="w-[150px] h-[150px] rounded-full object-cover"
                 />
                 <AvatarFallback>CN</AvatarFallback>
               </Avatar>
             </div>
-            <Button
-              onClick={() => setValue("imageUrl", "")}
-              className="bg-white text-lg mt-2 text-primary font-semibold h-8 px-6"
-            >
-              이미지 삭제
-            </Button>
-            <Button
-              disabled={isImageUploadLoading}
-              className="bg-white text-lg mt-2 text-silver font-medium h-8 px-6"
-              onClick={openFileUploader}
-            >
-              이미지 등록
-            </Button>
+            {watch("imageUrl") && isUpdateForm && (
+              <Button
+                type="button"
+                onClick={() => setValue("imageUrl", "")}
+                className="bg-white opacity-55 text-lg text-black font-semibold
+                absolute top-0 right-0 rounded-full p-2
+                "
+              >
+                <CloseIcon className="w-6 h-6" />
+              </Button>
+            )}
+            {isUpdateForm && (
+              <button
+                type="button"
+                disabled={isImageUploadLoading}
+                className="mt-12 bg-blue-500 p-[5px] rounded-full absolute bottom-0 right-4 border-white border"
+                onClick={openFileUploader}
+              >
+                <CameraIcon className="w-6 h-6 text-white" />
+              </button>
+            )}
           </div>
 
           <div className="flex-col text-base md:text-lg">
@@ -152,7 +221,7 @@ const ProfileContainer = () => {
                 alt="email_icon"
                 className="w-6 h-6"
               />
-              {/* <span>{data?.user?.email}</span> */}
+              <span>{data?.user?.email}</span>
             </div>
             <div className="flex gap-4 items-center mb-2 font-semibold">
               <img
@@ -173,12 +242,19 @@ const ProfileContainer = () => {
                 alt="phone_icon"
                 className="w-6 h-6"
               />
+              <Button
+                type="button"
+                onClick={() => setIsPhoneDialog(!isPhoneDialog)}
+                className="text-main border text-base font-semibold h-8"
+              >
+                휴대폰 번호 등록
+              </Button>
               {/* <span>{data?.user?.email}</span> */}
-              <Input
+              {/* <Input
                 {...register("phone")}
                 className="border px-2 py-1 rounded-lg focus:outline-none  w-full  md:w-[200px]"
                 placeholder="010-0000-0000"
-              />
+              /> */}
             </div>
           </div>
         </div>
@@ -188,7 +264,7 @@ const ProfileContainer = () => {
             <div className="flex gap-2 items-center">
               <button
                 onClick={() => setIsMajorDialog(!isMajorDialog)}
-                className="text-main border px-2 py-[2px] rounded-lg whitespace-nowrap"
+                className="text-main font-semibold border px-2 h-8 rounded-lg whitespace-nowrap"
               >
                 전공 등록
               </button>
@@ -199,7 +275,10 @@ const ProfileContainer = () => {
                     className="text-main text-xs md:text-sm bg-aliceblue rounded-xl mx-1"
                   >
                     <span>{major.koName}</span>
-                    <button onClick={() => handleSelectMajor(major)}>
+                    <button
+                      type="button"
+                      onClick={() => handleSelectMajor(major)}
+                    >
                       <CloseIcon className="w-4 h-4 ml-1 pb-[2px]" />
                     </button>
                   </Badge>
@@ -289,12 +368,14 @@ const ProfileContainer = () => {
         {isUpdateForm ? (
           <div className="flex justify-end gap-4">
             <Button
+              type="button"
               onClick={() => setIsUpdateForm(false)}
               className="border-[3px] rounded-full font-semibold w-[70px]"
             >
               취소
             </Button>
             <Button
+              type="submit"
               onClick={() => setIsUpdateForm(true)}
               className="bg-main text-white rounded-full font-semibold w-[70px]"
             >
@@ -303,10 +384,14 @@ const ProfileContainer = () => {
           </div>
         ) : (
           <div className="flex justify-end gap-4">
-            <Button className="border-[3px] rounded-full font-semibold">
+            <Button
+              type="button"
+              className="border-[3px] rounded-full font-semibold"
+            >
               비밀번호 변경
             </Button>
             <Button
+              type="button"
               onClick={() => setIsUpdateForm(true)}
               className="bg-main text-white rounded-full font-semibold px-6"
             >
@@ -322,6 +407,12 @@ const ProfileContainer = () => {
         selectedMajors={watch("majors") || []}
         handleSelectMajor={handleSelectMajor}
         multiple={true}
+      />
+      <PhoneDialog
+        open={isPhoneDialog}
+        close={() => setIsPhoneDialog(!isPhoneDialog)}
+        sendCode={sendPhoneCode}
+        checkCode={checkPhoneVerificationCode}
       />
     </form>
   );

@@ -9,16 +9,22 @@ import {
 } from "@/components/ui/carousel";
 import Image from "next/image";
 import { AspectRatio } from "../ui/aspect-ratio";
-import { AD } from "@/types/ads";
+import { AD, AdvertisementType } from "@/types/ads";
 import Link from "next/link";
+import { useSuspenseQuery } from "@tanstack/react-query";
+import { queries } from "@/lib/queries";
 
-interface Props {
-  ads?: AD[];
-}
+// interface Props {
+//   ads?: AD[];
+// }
 
-const BannerContainer = ({ ads }: Props) => {
+const BannerContainer = () => {
   const plugin = useRef(
     Autoplay({ delay: 5000, stopOnInteraction: true, loop: true })
+  );
+
+  const { data: ads } = useSuspenseQuery(
+    queries.ads.list(AdvertisementType.BANNER)
   );
 
   return (

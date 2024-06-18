@@ -47,6 +47,8 @@ const LessonListContainer = () => {
 
   const { data: provinceList } = useQuery(queries.provinces.list());
 
+  const { data: lessonsCount } = useQuery(queries.lessons.count());
+
   const selectedProvinces = useMemo(() => {
     return provinceList?.provinces?.filter((province) =>
       provinceIds.includes(province.id.toString())
@@ -75,10 +77,6 @@ const LessonListContainer = () => {
     threshold: 0.5,
   });
 
-  const totalCount = lessons?.pages?.reduce((acc, page) => {
-    return acc + page.totalCount;
-  }, 0);
-
   useEffect(() => {
     if (inView && hasNextPage) {
       fetchNextPage();
@@ -88,7 +86,7 @@ const LessonListContainer = () => {
   return (
     <div className="max-w-screen-lg mx-auto px-4">
       <ListSearchForm
-        totalCount={totalCount}
+        totalCount={lessonsCount?.totalCount}
         title="명의의 전문가가
         준비중이에요."
       />
@@ -138,6 +136,7 @@ const LessonListContainer = () => {
                   <LessonCard
                     lesson={lesson}
                     key={lesson.id}
+                    ref={ref}
                     isLastPage={
                       !(hasNextPage && index === page.lessons.length - 5)
                     }

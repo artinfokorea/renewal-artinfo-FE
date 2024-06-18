@@ -1,16 +1,24 @@
-'use client';
+"use client";
 
-import { JOB } from '@/types/jobs';
-import Image from 'next/image';
-import Link from 'next/link';
-import React from 'react';
+import { queries } from "@/lib/queries";
+import { JOB, JobType } from "@/types/jobs";
+import { useSuspenseQuery } from "@tanstack/react-query";
+import Image from "next/image";
+import Link from "next/link";
+import React from "react";
 
 interface Props {
   isMobile: boolean;
-  jobs?: JOB[];
 }
 
-const MainJobsContainer = ({ isMobile, jobs }: Props) => {
+const MainJobsContainer = ({ isMobile }: Props) => {
+  const { data } = useSuspenseQuery(
+    queries.jobs.list({
+      page: 1,
+      size: 5,
+      types: [JobType.ART_ORGANIZATION, JobType.LECTURER],
+    })
+  );
   return (
     <section>
       <div className="flex justify-between">
@@ -20,7 +28,7 @@ const MainJobsContainer = ({ isMobile, jobs }: Props) => {
         </Link>
       </div>
       <div className="grid grid-cols-2 md:grid-cols-3 gap-4 md:gap-8 mt-4 mb-12 ">
-        {jobs?.slice(0, isMobile ? 2 : 3).map((job) => (
+        {data?.jobs?.slice(0, isMobile ? 2 : 3).map((job) => (
           <Link key={job.title} href={`/jobs/${job.id}`}>
             <div className="border-2 border-whitesmoke h-[130px] md:h-[185px] relative">
               <Image

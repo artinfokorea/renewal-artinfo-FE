@@ -3,15 +3,19 @@
 import React, { useEffect, useRef, useState } from "react";
 
 import Image from "next/image";
-import { AD } from "@/types/ads";
+import { AD, AdvertisementType } from "@/types/ads";
 import Link from "next/link";
+import { useSuspenseQuery } from "@tanstack/react-query";
+import { queries } from "@/lib/queries";
 
 interface Props {
   isMobile: boolean;
-  concerts?: AD[];
 }
 
-const MainConcertContainer = ({ isMobile, concerts }: Props) => {
+const MainConcertContainer = ({ isMobile }: Props) => {
+  const { data: concerts } = useSuspenseQuery(
+    queries.ads.list(AdvertisementType.CONCERT)
+  );
   return (
     <section className="py-6 gap-8 lg:gap-12 grid grid-cols-2 md:grid-cols-4">
       {concerts?.slice(0, isMobile ? 2 : 4).map((concert) => (

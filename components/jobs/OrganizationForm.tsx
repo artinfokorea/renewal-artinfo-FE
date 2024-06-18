@@ -150,6 +150,7 @@ const OrganizationForm = ({ handleFullTimeJob, isLoading }: Props) => {
               </h5>
             </div>
             <Button
+              type="button"
               className="bg-white text-silver font-medium h-8 px-6"
               onClick={openFileUploader}
             >
