@@ -1,7 +1,12 @@
+import LessonForm from "@/components/lessons/LessonForm";
 import React from "react";
 
 const page = () => {
-  return <div>hi</div>;
+  return (
+    <section className="max-w-screen-lg mx-auto">
+      <LessonForm />
+    </section>
+  );
 };
 
 export default page;
