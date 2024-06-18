@@ -1,6 +1,6 @@
-import JobListContainer from '@/components/jobs/JobListContainer';
-import { Metadata } from 'next';
-import React from 'react';
+import JobsContainer from "@/components/jobs/JobsContainer";
+import { Metadata } from "next";
+import React from "react";
 
 export const metadata: Metadata = {
   title: `채용 | 아트인포`,
@@ -9,14 +9,14 @@ export const metadata: Metadata = {
     title: `채용 | 아트인포`,
     description: `채용 | 아트인포`,
     images: {
-      url: 'https://ycuajmirzlqpgzuonzca.supabase.co/storage/v1/object/public/artinfo/concerts/288/1694427064047.jpg',
-      alt: '아트인포-ARTINFO',
+      url: "https://ycuajmirzlqpgzuonzca.supabase.co/storage/v1/object/public/artinfo/concerts/288/1694427064047.jpg",
+      alt: "아트인포-ARTINFO",
     },
   },
 };
 
 const page = () => {
-  return <JobListContainer />;
+  return <JobsContainer />;
 };
 
 export default page;

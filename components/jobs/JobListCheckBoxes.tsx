@@ -1,6 +1,6 @@
-import { MAJOR, MajorCategory, MajorCategoryValues } from '@/types';
-import JobTypeCheckBoxes from './JobTypeCheckBoxes';
-import MajorCheckBoxes from '../common/MajorCheckBoxes';
+import { MAJOR, MajorCategory, MajorCategoryValues } from "@/types";
+import JobTypeCheckBoxes from "./JobTypeCheckBoxes";
+import MajorCheckBoxes from "../common/MajorCheckBoxes";
 
 interface Props {
   majors?: MAJOR[];

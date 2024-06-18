@@ -6,7 +6,7 @@ const ConcertSkeleton = () => {
       {Array.from({ length: 4 }, (_, index) => index).map((index) => (
         <div
           key={index}
-          className={`h-[240px] md:h-[280px] bg-gray-200 animate-pulse rounded-md ${
+          className={`h-[240px] md:h-[280px] skeleton-list-item rounded-md ${
             index < 2 ? "block" : "hidden md:block"
           }`}
         />

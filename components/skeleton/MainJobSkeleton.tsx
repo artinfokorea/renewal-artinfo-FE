@@ -8,7 +8,7 @@ const MainJobSkeleton = () => {
         {Array.from({ length: 3 }, (_, index) => index).map((index) => (
           <div
             key={index}
-            className={`h-[130px] md:h-[185px] w-full bg-gray-200 animate-pulse ${
+            className={`h-[130px] md:h-[185px] w-full skeleton-list-item ${
               index < 2 ? "block" : "hidden md:block"
             }`}
           />

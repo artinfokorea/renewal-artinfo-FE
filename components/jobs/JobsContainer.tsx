@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useState, useMemo } from "react";
+import React, { useEffect, useState, useMemo, Suspense } from "react";
 import ListSearchForm from "../common/ListSearchForm";
 import JobListCheckBoxes from "./JobListCheckBoxes";
 import { useInView } from "react-intersection-observer";
@@ -8,7 +8,11 @@ import { JobType, JOB } from "@/types/jobs";
 import { Button } from "../ui/button";
 import { Badge } from "../ui/badge";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
-import { useInfiniteQuery, useQuery } from "@tanstack/react-query";
+import {
+  useInfiniteQuery,
+  useQuery,
+  useSuspenseInfiniteQuery,
+} from "@tanstack/react-query";
 import { queries } from "@/lib/queries";
 import { ScrollApiResponse } from "@/interface";
 import JobCard from "./JobCard";
@@ -16,12 +20,11 @@ import ObriCard from "./ObriCard";
 import ProvinceDialog from "../dialog/ProvinceDialog";
 import CloseIcon from "../icons/CloseIcon";
 import MobileFilterTab from "../common/MobileFIlterTab";
+import JobsList from "./JobsList";
+import JobListSkeleton from "../skeleton/JobListSkeleton";
 
-const ListContainer = () => {
+const JobsContainer = () => {
   const searchParams = useSearchParams();
-  const recruits = searchParams.getAll("recruit") as JobType[];
-  const majorIds = searchParams.getAll("majorId") as string[];
-  const keyword = searchParams.get("keyword") as string;
   const provinceIds = searchParams.getAll("provinceId") as string[];
   const router = useRouter();
   const pathname = usePathname();
@@ -30,25 +33,6 @@ const ListContainer = () => {
   const [ref, inView] = useInView({
     delay: 100,
     threshold: 0.5,
-  });
-
-  const {
-    data: jobs,
-    hasNextPage,
-    fetchNextPage,
-  } = useInfiniteQuery<ScrollApiResponse<JOB, "jobs">>({
-    ...queries.jobs.infiniteList({
-      size: 10,
-      types: recruits,
-      keyword,
-      categoryIds: majorIds.map((id) => Number(id)),
-      provinceIds: provinceIds.map((id) => Number(id)),
-    }),
-    initialPageParam: 1,
-    getNextPageParam: (lastPage) => {
-      if (!lastPage.isLast) return lastPage.nextPage;
-      return null;
-    },
   });
 
   const { data: majors } = useQuery(queries.majors.list());
@@ -80,11 +64,11 @@ const ListContainer = () => {
     });
   };
 
-  useEffect(() => {
-    if (inView && hasNextPage) {
-      fetchNextPage();
-    }
-  }, [inView, hasNextPage]);
+  // useEffect(() => {
+  //   if (inView && hasNextPage) {
+  //     fetchNextPage();
+  //   }
+  // }, [inView, hasNextPage]);
 
   return (
     <div className="max-w-screen-lg mx-auto px-4">
@@ -130,7 +114,11 @@ const ListContainer = () => {
             provinces={provinceList?.provinces}
             page="JOB"
           />
-          <div className="mt-4">
+          <Suspense fallback={<JobListSkeleton />}>
+            <JobsList />
+          </Suspense>
+          {/* <JobListSkeleton /> */}
+          {/* <div className="mt-4">
             {jobs?.pages?.map((page) =>
               page?.jobs?.map((job, index) => {
                 return job.type === JobType.PART_TIME ? (
@@ -154,7 +142,7 @@ const ListContainer = () => {
                 );
               })
             )}
-          </div>
+          </div> */}
         </div>
         <ProvinceDialog
           provinces={provinceList?.provinces}
@@ -167,4 +155,4 @@ const ListContainer = () => {
   );
 };
 
-export default ListContainer;
+export default JobsContainer;
