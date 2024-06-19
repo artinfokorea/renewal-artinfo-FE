@@ -16,13 +16,15 @@ export const getMe = async (): Promise<USER> => {
 export const updateUser = async (
   payload: UserPayload
 ): Promise<SuccessResponse> => {
-  try {
-    const response = await apiRequest.put<SuccessResponse>(
-      "/users/me",
-      payload
-    );
-    return response;
-  } catch (error) {
-    throw new Error(exceptionHandler(error, "API updateUser error"));
-  }
+  const response = await apiRequest.put<SuccessResponse>("/users/me", payload);
+  return response;
+};
+
+export const updateUserPhone = async (
+  phone: string
+): Promise<SuccessResponse> => {
+  const response = await apiRequest.put<SuccessResponse>("/users/me/phone", {
+    phone,
+  });
+  return response;
 };

@@ -24,31 +24,21 @@ export const getProvinces = async (
 export const sendPhoneVerificationCode = async (
   phone: string
 ): Promise<SuccessResponse> => {
-  try {
-    const response = await apiRequest.post<SuccessResponse>(
-      "/verifications/mobile",
-      { phone }
-    );
-    return response;
-  } catch (error) {
-    throw new Error(
-      exceptionHandler(error, "API sendPhoneVerificationCode error")
-    );
-  }
+  const response = await apiRequest.post<SuccessResponse>(
+    "/verifications/mobile",
+    { phone }
+  );
+  return response;
 };
 
 export const verifyPhoneCode = async (
   payload: VerifyPhoneCodePayload
 ): Promise<SuccessResponse> => {
-  try {
-    const response = await apiRequest.put<SuccessResponse>(
-      "/verifications/mobile",
-      payload
-    );
-    return response;
-  } catch (error) {
-    throw new Error(exceptionHandler(error, "API verifyPhoneCode error"));
-  }
+  const response = await apiRequest.put<SuccessResponse>(
+    "/verifications/mobile",
+    payload
+  );
+  return response;
 };
 
 export const uploadImages = async (
@@ -58,21 +48,17 @@ export const uploadImages = async (
   imageFiles.forEach((file) => formData.append("imageFiles", file));
   formData.append("target", "USER");
 
-  try {
-    const response = await apiRequest.post<ListApiResponse<IMAGE, "images">>(
-      "/system/upload/images",
-      formData,
-      {
-        headers: {
-          "Content-Type": "multipart/form-data",
-        },
-      }
-    );
+  const response = await apiRequest.post<ListApiResponse<IMAGE, "images">>(
+    "/system/upload/images",
+    formData,
+    {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+    }
+  );
 
-    return response.item;
-  } catch (error) {
-    throw new Error(exceptionHandler(error, "API uploadImages error"));
-  }
+  return response.item;
 };
 
 export const getMajors = async (): Promise<ListResponse<MAJOR, "majors">> => {

@@ -2,7 +2,7 @@
 
 import { queries } from "@/lib/queries";
 import { useSuspenseQuery } from "@tanstack/react-query";
-import { useParams } from "next/navigation";
+import { useParams, usePathname, useRouter } from "next/navigation";
 import React, { Suspense, useState } from "react";
 import Loading from "../common/Loading";
 import Image from "next/image";
@@ -12,12 +12,21 @@ import useToast from "@/hooks/useToast";
 import { clipboard } from "@toss/utils";
 import { SchoolType, SchoolTypeValues } from "@/types/lessons";
 import { Badge } from "../ui/badge";
+import { Button } from "@headlessui/react";
+import EditIcon from "../icons/EditIcon";
+import TrashIcon from "../icons/TrashIcon";
+import { useSession } from "next-auth/react";
+import { deleteLesson } from "@/apis/lessons";
+import ItemManageBox from "../common/ItemManageBox";
 
 const LessonDetailContainer = () => {
   const [isPhoneShow, setIsPhoneShow] = useState(false);
   const params = useParams();
   const filter = filters();
-  const { successToast } = useToast();
+  const { successToast, errorToast } = useToast();
+  const { data } = useSession();
+  const router = useRouter();
+  const pathname = usePathname();
 
   const { data: lesson } = useSuspenseQuery(
     queries.lessons.detail(Number(params.id))
@@ -30,6 +39,20 @@ const LessonDetailContainer = () => {
       successToast("연락처가 복사되었습니다.");
     }
   };
+
+  const handleDeleteLesson = async () => {
+    try {
+      await deleteLesson(Number(params.id));
+      successToast("레슨이 삭제되었습니다.");
+      router.push(pathname.slice(0, pathname.lastIndexOf("/")));
+    } catch (error: any) {
+      errorToast(error.message);
+      console.log("error", error);
+    }
+  };
+
+  const handleEditLesson = () => {};
+
   return (
     <div className="mt-8 md:mt-16">
       <div className="flex flex-col md:flex-row md:gap-24">
@@ -133,6 +156,10 @@ const LessonDetailContainer = () => {
           </div>
         </div>
       </div>
+      <ItemManageBox
+        handleEdit={handleEditLesson}
+        handleDelete={handleDeleteLesson}
+      />
       <div className="flex flex-col px-4 gap-4 md:flex-row md:gap-8 mt-6 md:mt-12">
         <div className="md:w-1/2 bg-whitesmoke rounded-md p-8 min-h-[200px] md:h-[380px] overflow-y-auto">
           <p className="text-coolgray font-semibold text-lg mb-6">

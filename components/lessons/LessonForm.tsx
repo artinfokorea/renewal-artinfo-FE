@@ -1,10 +1,10 @@
 "use client";
 
-import React, { useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import * as yup from "yup";
 import FileUploader from "../common/FileUploader";
 import Image from "next/image";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { ErrorMessage } from "@hookform/error-message";
@@ -14,6 +14,11 @@ import { useLoading } from "@toss/use-loading";
 import { Button, Input, Textarea } from "@headlessui/react";
 import PhotoIcon from "../icons/PhotoIcon";
 import CloseIcon from "../icons/CloseIcon";
+import { useQuery } from "@tanstack/react-query";
+import { queries } from "@/lib/queries";
+import { createLesson, getLessonQualification } from "@/apis/lessons";
+import { AxiosError } from "axios";
+import ConfirmDialog from "../common/ConfirmDialog";
 
 const schema = yup
   .object({
@@ -34,6 +39,10 @@ const LessonForm = () => {
   const fileUploader = useRef<HTMLInputElement>(null);
   const { successToast, errorToast } = useToast();
   const [isImageUploadLoading, imageStartTransition] = useLoading();
+  const [isHandleFormLoading, handleFormTransition] = useLoading();
+  const [isQualificationDialog, setIsQualificationDialog] = useState(false);
+  const router = useRouter();
+  const pathname = usePathname();
 
   const {
     register,
@@ -44,10 +53,12 @@ const LessonForm = () => {
     formState: { errors },
   } = useForm<LessonFormData>({
     resolver: yupResolver(schema),
-    defaultValues: {
-      imageUrl: "/img/placeholder-user.png",
-    },
+    // defaultValues: {
+    //   imageUrl: "/img/placeholder-user.png",
+    // },
   });
+
+  const { data: provinceList } = useQuery(queries.provinces.list());
 
   const openFileUploader = () => {
     fileUploader.current?.click();
@@ -65,6 +76,25 @@ const LessonForm = () => {
       console.log(error);
     }
   };
+
+  const handleLessonForm = async (payload: LessonFormData) => {
+    try {
+      await handleFormTransition(createLesson(payload));
+    } catch (error: any) {
+      errorToast(error.message);
+      console.log(error);
+    }
+  };
+
+  useEffect(() => {
+    getLessonQualification()
+      .then((res) => console.log("res", res))
+      .catch((error: AxiosError) => {
+        if (error.response?.status === 403) {
+          setIsQualificationDialog(true);
+        }
+      });
+  }, []);
 
   return (
     <form className="mt-8 md:mt-16 px-4">
@@ -109,19 +139,19 @@ const LessonForm = () => {
           </div>
         )}
 
-        <div className="flex-1 p-6 md:p-0">
+        <div className="flex-1 p-2 md:p-0">
           <h4 className="text-xl md:text-2xl font-bold">레슨 등록</h4>
           <div className="mt-6 flex flex-col gap-4">
             <div className="flex gap-6 text-base md:text-lg items-center">
               <span className="font-bold">가격</span>
-              <div>
+              <div className="flex whitespace-nowrap items-center">
                 <Input
                   {...register("pay")}
                   type="number"
                   className="border px-2 py-1 mr-1 rounded-lg focus:outline-none w-full md:w-[200px]"
                 />
                 <span className="text-lg">원</span>
-                <span className="text-xs">(1회)</span>
+                <span className="text-xs leading-6">(1회)</span>
               </div>
             </div>
             <div className="flex gap-6 items-center text-base md:text-lg">
@@ -156,19 +186,28 @@ const LessonForm = () => {
       </div>
       <div className="flex justify-end gap-4 mt-8">
         <Button
+          onClick={() =>
+            router.push(pathname.slice(0, pathname.lastIndexOf("/")))
+          }
           type="button"
           className="border-[3px] rounded-full font-semibold w-20 py-1"
         >
           취소
         </Button>
         <Button
-          type="button"
+          disabled={isHandleFormLoading}
           className="bg-main text-white rounded-full font-semibold px-6 w-20"
         >
           등록
         </Button>
       </div>
       <FileUploader ref={fileUploader} uploadedFiles={handleUploadedFiles} />
+      <ConfirmDialog
+        title="레슨 등록 권한이 없습니다."
+        description="내 프로필에서 학력, 전공 등의 정보를 입력해주세요."
+        isOpen={isQualificationDialog}
+        handleDialog={() => router.push("/my-profile")}
+      />
     </form>
   );
 };

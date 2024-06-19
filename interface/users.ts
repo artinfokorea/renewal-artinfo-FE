@@ -7,3 +7,10 @@ export interface UserPayload {
   majorIds?: number[];
   schools?: SCHOOL[];
 }
+
+export interface SignUpPayload {
+  email: string;
+  password: string;
+  name: string;
+  nickname: string;
+}

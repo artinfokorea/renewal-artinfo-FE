@@ -13,6 +13,7 @@ import Link from "next/link";
 import { signIn } from "next-auth/react";
 import useToast from "@/hooks/useToast";
 import { useLoading } from "@toss/use-loading";
+import { useSearchParams } from "next/navigation";
 
 const schema = yup
   .object({
@@ -38,6 +39,8 @@ const SignInForm = () => {
   const [isLoading, startTransition] = useLoading();
   const [isConfirmDialogOpen, setIsConfirmDialogOpen] = useState(false);
   const { errorToast } = useToast();
+  const searchParams = useSearchParams();
+  const error = searchParams.get("error");
 
   const {
     register,
@@ -62,6 +65,50 @@ const SignInForm = () => {
       console.log(error);
       setIsConfirmDialogOpen(true);
     }
+  };
+
+  const kakaoInit = () => {
+    const kakao = (window as any).Kakao;
+    if (!kakao.isInitialized()) {
+      kakao.init(process.env.NEXT_PUBLIC_KAKAO_API_KEY);
+    }
+
+    return kakao;
+  };
+
+  const kakaoLogin = async () => {
+    const kakao = kakaoInit();
+
+    kakao.Auth.authorize({
+      redirectUri: `http://localhost:3000/auth/callback`,
+      state: "kakao",
+      prompts: "login",
+    });
+  };
+
+  const handleNaverLogin = () => {
+    const NaverIdLogin = (window as any).naver;
+    // console.log(NaverIdLogin)
+    const naverLogin = new NaverIdLogin.LoginWithNaverId({
+      clientId: process.env.NEXT_PUBLIC_NAVER_CLIENT_ID,
+      callbackUrl: `http://localhost:3000/auth/callback?state=naver`,
+      state: "naver",
+      callbackHandle: true,
+    });
+    naverLogin.init();
+    naverLogin.reprompt();
+  };
+
+  const handleGoogleLogin = () => {
+    let url = "https://accounts.google.com/o/oauth2/v2/auth";
+    url += `?client_id=${process.env.NEXT_PUBLIC_GOOGLE_API_KEY}`;
+    url += `&redirect_uri=http://localhost:3000/auth/callback`;
+    url += "&prompt=consent";
+    url += "&scope=email";
+    url += "&state=google";
+    url += "&response_type=token";
+    url += "&include_granted_scopes=true";
+    window.open(url, "_self");
   };
 
   return (
@@ -123,12 +170,12 @@ const SignInForm = () => {
         <span className="whitespace-nowrap mx-4 font-semibold">간편로그인</span>
         <div className="border-b-2 w-full border-grey mb-3" />
       </div>
-      {/* <div className="flex justify-between w-[200px] mx-auto mt-4">
+      <div className="flex justify-between w-[200px] mx-auto mt-4">
         <Button
           type="button"
           className="p-1 bg-white w-[48px] h-[48px] rounded-lg transition ease-in-out duration-150 inline-flex items-center justify-center  text-white shadow-md  focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 disabled:opacity-50 "
           disabled={isLoading}
-          //   onClick={signInWithGoogle}
+          onClick={handleGoogleLogin}
         >
           <img src="/google_logo.png" alt="google_logo" />
         </Button>
@@ -136,7 +183,7 @@ const SignInForm = () => {
           type="button"
           className="w-[48px] h-[48px] rounded-lg transition ease-in-out duration-150 inline-flex items-center justify-center  text-white shadow-md  focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 disabled:opacity-50 "
           disabled={isLoading}
-          //   onClick={signInWithGoogle}
+          onClick={handleNaverLogin}
         >
           <img src="/naver_logo.png" alt="naver_logo" />
         </button>
@@ -144,11 +191,11 @@ const SignInForm = () => {
           type="button"
           className="w-[48px] h-[48px] rounded-lg transition ease-in-out duration-150 inline-flex items-center justify-center bg-[#FEE500]  text-white shadow-md  focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 disabled:opacity-50 "
           disabled={isLoading}
-          //   onClick={signInWithGoogle}
+          onClick={kakaoLogin}
         >
           <img src="/kakao_logo.png" alt="kakao_logo" />
         </button>
-      </div> */}
+      </div>
       <ConfirmDialog
         title="로그인 실패"
         description="이메일 또는 비밀번호가 일치하지 않습니다."

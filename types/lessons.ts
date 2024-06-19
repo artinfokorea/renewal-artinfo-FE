@@ -8,6 +8,7 @@ export type LESSON = {
   imageUrl: string;
   areas: string[];
   majors: string[];
+  authorId: number;
   schools: School[];
 };
 

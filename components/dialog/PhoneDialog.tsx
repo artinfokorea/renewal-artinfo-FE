@@ -74,7 +74,7 @@ const PhoneDialog = ({ open, close, sendCode, checkCode }: Props) => {
     >
       <div className="fixed inset-0 bg-black/30" aria-hidden="true" />
       <form className="fixed inset-0 flex w-screen items-center justify-center p-4">
-        <DialogPanel className="z-10 w-full md:max-w-[450px] h-[350px] bg-white rounded-xl py-4 overflow-auto mx-auto">
+        <DialogPanel className="z-10 w-full md:max-w-[450px] h-[370px] bg-white rounded-xl py-4 overflow-auto mx-auto">
           <div className="relative mb-4">
             <DialogTitle className=" flex-1 md:text-lg text-center font-semibold ">
               휴대폰 번호등록

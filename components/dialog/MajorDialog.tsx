@@ -57,6 +57,7 @@ const MajorDialog = ({
                     return (
                       major.enGroup === key && (
                         <Button
+                          type="button"
                           key={major.id}
                           onClick={() => selectMajor(major)}
                           className={`text-white text-sm h-6 md:text-base md:h-7 px-3 rounded-xl
@@ -78,6 +79,7 @@ const MajorDialog = ({
           {multiple && (
             <div className="flex justify-center">
               <Button
+                type="button"
                 className={` text-white rounded-lg text-sm bg-main h-8`}
                 onClick={close}
               >

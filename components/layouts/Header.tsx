@@ -113,20 +113,22 @@ const Header = () => {
             <DropdownMenu>
               <DropdownMenuTrigger className="flex items-center">
                 <Avatar>
-                  <AvatarImage src="/img/placeholder-user.png" />
+                  <AvatarImage
+                    src={data.user.iconImageUrl || "/img/placeholder-user.png"}
+                  />
                   <AvatarFallback>CN</AvatarFallback>
                 </Avatar>
-                <span className="mx-2 hidden md:block">{user?.name}님</span>
+                <span className="mx-2 hidden md:block">{user?.nickname}님</span>
               </DropdownMenuTrigger>
               <DropdownMenuContent>
                 <Link href="/my-profile" prefetch={false}>
-                  <DropdownMenuItem className="cursor-pointer">
+                  <DropdownMenuItem className="cursor-pointer hover:bg-whitesmoke">
                     내 프로필
                   </DropdownMenuItem>
                 </Link>
                 <DropdownMenuItem
                   onClick={handleSign}
-                  className="cursor-pointer"
+                  className="cursor-pointer hover:bg-whitesmoke"
                 >
                   로그아웃
                 </DropdownMenuItem>

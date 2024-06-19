@@ -1,12 +1,7 @@
 import { SuccessResponse } from "@/interface";
 import { apiRequest } from ".";
 import { exceptionHandler } from "./exception-handler";
-
-interface SignUpPayload {
-  email: string;
-  password: string;
-  name: string;
-}
+import { SignUpPayload } from "@/interface/users";
 
 export const signUp = async (payload: SignUpPayload) => {
   const response = await apiRequest.post("/auths/sign-up", payload);
@@ -30,32 +25,20 @@ export const isDuplicateEmail = async (email: string) => {
 };
 
 export const sendEmailVerificationCode = async (email: string) => {
-  try {
-    const response = await apiRequest.post<SuccessResponse>(
-      `/verifications/email`,
-      { email }
-    );
-    return response;
-  } catch (error) {
-    throw new Error(
-      exceptionHandler(error, "API sendEmailVerificationCode error")
-    );
-  }
+  const response = await apiRequest.post<SuccessResponse>(
+    `/verifications/email`,
+    { email }
+  );
+  return response;
 };
 
 export const checkEmailVerificationCode = async (
   email: string,
-  code: string
+  verification: string
 ) => {
-  try {
-    const response = await apiRequest.put<SuccessResponse>(
-      `/verifications/email`,
-      { email, code }
-    );
-    return response;
-  } catch (error) {
-    throw new Error(
-      exceptionHandler(error, "API checkEmailVerificationCode error")
-    );
-  }
+  const response = await apiRequest.put<SuccessResponse>(
+    `/verifications/email`,
+    { email, verification }
+  );
+  return response;
 };

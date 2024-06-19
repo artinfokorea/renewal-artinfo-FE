@@ -1,3 +1,4 @@
+import { MAJOR } from ".";
 import { SchoolType } from "./lessons";
 
 export type USER = {
@@ -8,7 +9,7 @@ export type USER = {
   birth?: string;
   nickname?: string;
   iconImageUrl?: string;
-  majorIds?: number[];
+  majors?: MAJOR[];
   schools?: SCHOOL[];
 };
 

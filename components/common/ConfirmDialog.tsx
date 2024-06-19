@@ -40,7 +40,7 @@ const ConfirmDialog = ({
 
         <DialogFooter>
           <DialogClose asChild>
-            <Button type="button" variant="secondary">
+            <Button type="button" className="bg-main text-white">
               확인
             </Button>
           </DialogClose>

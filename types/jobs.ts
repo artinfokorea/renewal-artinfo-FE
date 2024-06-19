@@ -87,6 +87,7 @@ export type JOB = {
   type: JobType;
   isActive: true;
   fee: number;
+  authorId: number;
   startAt: Date;
   endAt: Date;
   createdAt: Date;

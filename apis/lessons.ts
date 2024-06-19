@@ -1,11 +1,12 @@
 import { LESSON } from "@/types/lessons";
 import { apiRequest } from ".";
 import { exceptionHandler } from "./exception-handler";
-import { LessonsRequest } from "@/interface/lessons";
+import { LessonPayload, LessonsRequest } from "@/interface/lessons";
 import {
   DetailApiResponse,
   ListApiResponse,
   ListResponse,
+  PostResponse,
   ScrollApiResponse,
   SuccessResponse,
 } from "@/interface";
@@ -58,16 +59,10 @@ export const getInfiniteLessons = async (
 };
 
 export const getLessonQualification = async (): Promise<SuccessResponse> => {
-  try {
-    const response = await apiRequest.get<SuccessResponse>(
-      "/lessons/qualification"
-    );
-    return response;
-  } catch (error) {
-    throw new Error(
-      exceptionHandler(error, "API getLessonQualification error")
-    );
-  }
+  const response = await apiRequest.get<SuccessResponse>(
+    "/lessons/qualification"
+  );
+  return response;
 };
 
 export const getLessonsCount = async (): Promise<{ totalCount: number }> => {
@@ -79,4 +74,23 @@ export const getLessonsCount = async (): Promise<{ totalCount: number }> => {
   } catch (error) {
     throw new Error(exceptionHandler(error, "API getLessonsCount error"));
   }
+};
+
+export const createLesson = async (
+  payload: LessonPayload
+): Promise<PostResponse> => {
+  const response = await apiRequest.post<PostResponse>(`/lessons`, payload);
+  return response;
+};
+
+export const updateLesson = async (
+  payload: LessonPayload
+): Promise<SuccessResponse> => {
+  const response = await apiRequest.put<SuccessResponse>(`/lessons`, payload);
+  return response;
+};
+
+export const deleteLesson = async (id: number): Promise<SuccessResponse> => {
+  const response = await apiRequest.delete<SuccessResponse>(`/lessons`, id);
+  return response;
 };

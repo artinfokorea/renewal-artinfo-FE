@@ -42,7 +42,7 @@ const handler = NextAuth({
   pages: {
     signIn: "/auth/sign-in",
     signOut: "/auth/sign-in",
-    // error: "/auth/sign-in",
+    error: "/auth/sign-in",
   },
   session: {
     strategy: "jwt",
@@ -218,7 +218,7 @@ const handler = NextAuth({
         )
           .then((res) => res.json())
           .catch((error) => console.log("getMe error", error));
-        session.user = getMe.item;
+        if (getMe.item) session.user = getMe.item;
       }
 
       return session;
