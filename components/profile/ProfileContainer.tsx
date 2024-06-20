@@ -12,8 +12,6 @@ import Link from "next/link";
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
 import MajorDialog from "../dialog/MajorDialog";
 import { MAJOR } from "@/types";
-import FileUploader from "../common/FileUploader";
-import { Button } from "../ui/button";
 import { useLoading } from "@toss/use-loading";
 import {
   sendPhoneVerificationCode,
