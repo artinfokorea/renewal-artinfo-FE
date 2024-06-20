@@ -26,9 +26,9 @@ const majors = createQueryKeys("majors", {
 });
 
 const provinces = createQueryKeys("provinces", {
-  list: (depth?: number) => ({
-    queryKey: [depth],
-    queryFn: () => getProvinces(depth),
+  list: (parentId?: number) => ({
+    queryKey: [parentId],
+    queryFn: () => getProvinces(parentId),
   }),
 });
 

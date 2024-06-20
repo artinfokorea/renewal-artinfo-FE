@@ -17,7 +17,7 @@ interface Props {
   isOpen: boolean;
   handleDialog: () => void;
   title: string;
-  description: string;
+  description?: string;
   error?: boolean;
 }
 
@@ -32,8 +32,10 @@ const ConfirmDialog = ({
     <Dialog open={isOpen} onOpenChange={handleDialog}>
       <DialogContent className="sm:max-w-md">
         <DialogHeader>
-          <DialogTitle className="text-primary">{title}</DialogTitle>
-          <DialogDescription className={error ? "text-error" : ""}>
+          <DialogTitle className="text-primary font-bold">{title}</DialogTitle>
+          <DialogDescription
+            className={`font-semibolde text-base ${error ? "text-error" : ""}`}
+          >
             {description}
           </DialogDescription>
         </DialogHeader>
