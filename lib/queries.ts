@@ -53,8 +53,8 @@ const lessons = createQueryKeys("lessons", {
 });
 
 const users = createQueryKeys("users", {
-  profile: (UserId: number) => ({
-    queryKey: [UserId],
+  detail: () => ({
+    queryKey: [""],
     queryFn: () => getMe(),
   }),
 });

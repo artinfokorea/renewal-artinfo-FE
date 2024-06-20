@@ -1,42 +1,7 @@
 import { DetailApiResponse } from "@/interface";
 import { USER } from "@/types/users";
-import NextAuth, { User } from "next-auth";
+import NextAuth from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
-
-const handleRefreshToken = async ({
-  accessToken,
-  refreshToken,
-}: {
-  accessToken: string;
-  refreshToken: string;
-}) => {
-  if (!accessToken || !refreshToken) return console.log("no token");
-  try {
-    const res = await fetch(
-      `${process.env.REST_API_BASE_URL}/auths/refresh/access-token`,
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          accessToken,
-          refreshToken,
-        }),
-      }
-    )
-      .then((res) => res.json())
-      .catch((error) => console.log("refresh error", error));
-
-    if (!res.success && res.code) {
-      throw new Error(res.code);
-    }
-
-    return res.data;
-  } catch (error) {
-    console.log("error", error);
-  }
-};
 
 const handler = NextAuth({
   pages: {

@@ -7,7 +7,7 @@ export type USER = {
   email: string;
   phone?: string;
   birth?: string;
-  nickname?: string;
+  nickname: string;
   iconImageUrl?: string;
   majors?: MAJOR[];
   schools?: SCHOOL[];

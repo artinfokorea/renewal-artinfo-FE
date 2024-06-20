@@ -13,9 +13,16 @@ interface Props {
   close: () => void;
   sendCode: (phone: string) => void;
   checkCode: (phone: string, code: string) => void;
+  isLoading: boolean;
 }
 
-const PhoneDialog = ({ open, close, sendCode, checkCode }: Props) => {
+const PhoneDialog = ({
+  open,
+  close,
+  sendCode,
+  checkCode,
+  isLoading,
+}: Props) => {
   const [phone, setPhone] = useState("");
   const [code, setCode] = useState("");
   const [time, setTime] = useState(180);
@@ -127,7 +134,7 @@ const PhoneDialog = ({ open, close, sendCode, checkCode }: Props) => {
                 />
                 <Button
                   type="button"
-                  disabled={code.length !== 6}
+                  disabled={code.length !== 6 || isLoading}
                   onClick={() => {
                     checkCode(phone, code);
                   }}
