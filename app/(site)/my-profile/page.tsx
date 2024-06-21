@@ -33,7 +33,6 @@ const schema = yup
     imageUrl: yup.string().nullable(),
     phone: yup.string().nullable(),
   })
-
   .required();
 
 export type ProfileFormData = yup.InferType<typeof schema>;
@@ -49,10 +48,7 @@ const page = () => {
   const filter = filters();
   const queryClient = useQueryClient();
 
-  const { data: user } = useQuery({
-    ...queries.users.detail(),
-    enabled: !!data?.user,
-  });
+  const { data: user } = useQuery(queries.users.detail());
 
   const {
     register,
