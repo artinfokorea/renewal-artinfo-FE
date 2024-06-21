@@ -1,45 +1,46 @@
-"use client";
+'use client';
 
-import { usePathname, useRouter } from "next/navigation";
-import React, { useEffect, useState } from "react";
+import { usePathname, useRouter } from 'next/navigation';
+import React, { useEffect, useState } from 'react';
 import {
   NavigationMenu,
   NavigationMenuItem,
   NavigationMenuList,
-} from "@/components/ui/navigation-menu";
-import { Button } from "../ui/button";
-import Link from "next/link";
-import { signOut, useSession } from "next-auth/react";
+} from '@/components/ui/navigation-menu';
+import { Button } from '../ui/button';
+import Link from 'next/link';
+import { signOut, useSession } from 'next-auth/react';
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
+} from '@/components/ui/dropdown-menu';
 import {
   Menu,
   MenuButton,
   MenuItem,
   MenuItems,
   Transition,
-} from "@headlessui/react";
+} from '@headlessui/react';
 
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import HamburgerIcon from "../icons/HamburgerIcon";
-import { USER } from "@/types/users";
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import HamburgerIcon from '../icons/HamburgerIcon';
+import { useQuery } from '@tanstack/react-query';
+import { queries } from '@/lib/queries';
 
 const NavItems = [
   {
-    href: "/jobs",
-    label: "채용",
+    href: '/jobs',
+    label: '채용',
   },
   {
-    href: "/lessons",
-    label: "레슨",
+    href: '/lessons',
+    label: '레슨',
   },
   {
-    href: "/inquiry",
-    label: "문의",
+    href: '/inquiry',
+    label: '문의',
   },
 ];
 
@@ -47,10 +48,14 @@ const Header = () => {
   const pathname = usePathname();
   const router = useRouter();
   const { data } = useSession();
-  const user = data?.user as USER | undefined;
   const [isTopScroll, setIsTopScroll] = useState(true);
   const [isBarOpen, setIsBarOpen] = useState(false);
   const [scrollY, setScrollY] = useState(0);
+
+  const { data: user } = useQuery({
+    ...queries.users.detail(),
+    enabled: !!data?.user,
+  });
 
   useEffect(() => {
     const handleScroll = () => {
@@ -59,8 +64,8 @@ const Header = () => {
       setScrollY(window.scrollY);
     };
 
-    window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
   useEffect(() => {
@@ -69,16 +74,16 @@ const Header = () => {
 
   const handleSign = () => {
     if (data?.user) {
-      signOut({ callbackUrl: "/auth/sign-in" });
+      signOut({ callbackUrl: '/auth/sign-in' });
     } else {
-      router.push("/auth/sign-in");
+      router.push('/auth/sign-in');
     }
   };
 
   return (
     <header
       className={`sticky top-0 left-0 z-50 h-14 py-2 px-4 bg-white ${
-        (!isTopScroll || isBarOpen) && "shadow-md"
+        (!isTopScroll || isBarOpen) && 'shadow-md'
       }
       `}
     >
@@ -97,7 +102,7 @@ const Header = () => {
                       href={href}
                       key={href}
                       className={`mx-4 font-semibold ${
-                        isActive && "text-main"
+                        isActive && 'text-main'
                       }`}
                     >
                       {label}
@@ -109,12 +114,12 @@ const Header = () => {
           </NavigationMenu>
         </div>
         <div className="hidden md:flex">
-          {data?.user ? (
+          {user ? (
             <DropdownMenu>
               <DropdownMenuTrigger className="flex items-center">
                 <Avatar>
                   <AvatarImage
-                    src={data.user.iconImageUrl || "/img/placeholder-user.png"}
+                    src={user?.iconImageUrl || '/img/placeholder-user.png'}
                   />
                   <AvatarFallback>CN</AvatarFallback>
                 </Avatar>
@@ -170,7 +175,7 @@ const Header = () => {
                     <Link
                       href={href}
                       className={`py-2 font-semibold w-full ${
-                        isActive && "text-main"
+                        isActive && 'text-main'
                       }`}
                     >
                       {label}

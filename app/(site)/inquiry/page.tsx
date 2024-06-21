@@ -1,7 +1,12 @@
-import React from "react";
+import InquiryForm from '@/components/inquiry/InquiryForm';
+import React from 'react';
 
 const page = () => {
-  return <div>문의</div>;
+  return (
+    <section className="max-w-screen-lg mx-auto">
+      <InquiryForm />
+    </section>
+  );
 };
 
 export default page;

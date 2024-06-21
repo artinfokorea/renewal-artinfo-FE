@@ -1,27 +1,27 @@
-import Link from "next/link";
-import { usePathname } from "next/navigation";
-import React, { useRef } from "react";
-import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
-import { Input } from "@headlessui/react";
-import CloseIcon from "../icons/CloseIcon";
-import CameraIcon from "../icons/CameraIcon";
-import CalendarIcon from "../icons/CalendarIcon";
-import { ErrorMessage } from "@hookform/error-message";
-import filters from "@/lib/filters";
-import Image from "next/image";
-import FileUploader from "../common/FileUploader";
+import Link from 'next/link';
+import { usePathname } from 'next/navigation';
+import React, { useRef } from 'react';
+import { Avatar, AvatarFallback, AvatarImage } from '../ui/avatar';
+import { Input } from '@headlessui/react';
+import CloseIcon from '../icons/CloseIcon';
+import CameraIcon from '../icons/CameraIcon';
+import CalendarIcon from '../icons/CalendarIcon';
+import { ErrorMessage } from '@hookform/error-message';
+import filters from '@/lib/filters';
+import Image from 'next/image';
+import FileUploader from '../common/FileUploader';
 import {
   FieldErrors,
   UseFormRegister,
   UseFormWatch,
   UseFormSetValue,
-} from "react-hook-form";
-import { ProfileFormData } from "./ProfileContainer";
-import { MAJOR } from "@/types";
-import { USER } from "@/types/users";
-import { Badge } from "../ui/badge";
-import { SchoolTypeValues } from "@/types/lessons";
-import { Button } from "../ui/button";
+} from 'react-hook-form';
+import { MAJOR } from '@/types';
+import { USER } from '@/types/users';
+import { Badge } from '../ui/badge';
+import { SchoolTypeValues } from '@/types/lessons';
+import { Button } from '../ui/button';
+import { ProfileFormData } from '@/app/(site)/my-profile/page';
 
 interface Props {
   user?: USER;
@@ -74,7 +74,7 @@ const ProfileForm = ({
             <Link
               href="/my-profile"
               className={`my-4 font-semibold text-lg ${
-                pathname === "/my-profile" && "text-main"
+                pathname === '/my-profile' && 'text-main'
               }`}
             >
               프로필
@@ -90,17 +90,17 @@ const ProfileForm = ({
             <div className="relative h-[100px]">
               <Avatar className="w-[150px] h-[150px]">
                 <AvatarImage
-                  src={watch("imageUrl") || "/img/placeholder-user.png"}
+                  src={watch('imageUrl') || '/img/placeholder-user.png'}
                   alt="user_profile_image"
                   className="w-[150px] h-[150px] rounded-full object-cover"
                 />
                 <AvatarFallback>CN</AvatarFallback>
               </Avatar>
             </div>
-            {watch("imageUrl") && isUpdateForm && (
+            {watch('imageUrl') && isUpdateForm && (
               <Button
                 type="button"
-                onClick={() => setValue("imageUrl", "")}
+                onClick={() => setValue('imageUrl', '')}
                 className="bg-white opacity-55 text-lg text-black font-semibold
                 absolute top-0 right-0 rounded-full p-2
                 "
@@ -136,7 +136,7 @@ const ProfileForm = ({
               {isUpdateForm ? (
                 <>
                   <Input
-                    {...register("birth")}
+                    {...register('birth')}
                     type="date"
                     className="border px-2 py-1 rounded-lg focus:outline-none w-full md:w-[200px]"
                     placeholder="1945.08.15"
@@ -163,7 +163,7 @@ const ProfileForm = ({
               {isUpdateForm ? (
                 <>
                   <Input
-                    {...register("nickname")}
+                    {...register('nickname')}
                     className="border px-2 py-1 rounded-lg focus:outline-none w-full md:w-[200px]"
                     placeholder="닉네임을 입력해주세요."
                   />
@@ -186,8 +186,8 @@ const ProfileForm = ({
                 width={24}
                 height={24}
               />
-              {watch("phone") ? (
-                <span>{watch("phone")}</span>
+              {watch('phone') ? (
+                <span>{watch('phone')}</span>
               ) : (
                 <Button
                   type="button"
@@ -214,7 +214,7 @@ const ProfileForm = ({
                 </button>
               )}
               <div className="flex gap-2 flex-wrap">
-                {watch("majors")?.map((major) => (
+                {watch('majors')?.map((major) => (
                   <Badge
                     key={major.id}
                     className="text-main text-xs md:text-sm bg-aliceblue rounded-xl mx-1"
@@ -254,7 +254,7 @@ const ProfileForm = ({
                   <div className="flex items-center gap-2">
                     <span className="text-sm whitespace-nowrap">학사</span>
                     <Input
-                      {...register("bachellor")}
+                      {...register('bachellor')}
                       placeholder="대학교 명을 입력해주세요."
                       className="border px-2 py-1 rounded-lg focus:outline-none w-full md:w-[350px]"
                     />
@@ -270,7 +270,7 @@ const ProfileForm = ({
                   <div className="flex items-center gap-2">
                     <span className="text-sm whitespace-nowrap">석사</span>
                     <Input
-                      {...register("master")}
+                      {...register('master')}
                       placeholder="대학원 명을 입력해주세요."
                       className="border px-2 py-1 rounded-lg focus:outline-none w-full md:w-[350px]"
                     />
@@ -286,7 +286,7 @@ const ProfileForm = ({
                   <div className="flex items-center gap-2">
                     <span className="text-sm whitespace-nowrap">박사</span>
                     <Input
-                      {...register("doctor")}
+                      {...register('doctor')}
                       placeholder="대학원 명을 입력해주세요."
                       className="border px-2 py-1 rounded-lg focus:outline-none w-full md:w-[350px]"
                     />
@@ -295,7 +295,7 @@ const ProfileForm = ({
               </div>
             ) : (
               <div className="min-h-[200px]">
-                {watch("bachellor") && (
+                {watch('bachellor') && (
                   <div className="flex items-center gap-6 md:gap-12 mb-2">
                     <Image
                       src="/icon/bachelor.png"
@@ -305,7 +305,7 @@ const ProfileForm = ({
                     />
                     <div>
                       <h5 className="font-semibold text-base text-primary">
-                        {watch("bachellor")}
+                        {watch('bachellor')}
                       </h5>
                       <p className="text-coolgray text-sm">
                         {SchoolTypeValues.UNDERGRADUATE}
@@ -313,7 +313,7 @@ const ProfileForm = ({
                     </div>
                   </div>
                 )}
-                {watch("master") && (
+                {watch('master') && (
                   <div className="flex items-center gap-6 md:gap-12 mb-2">
                     <Image
                       src="/icon/master.png"
@@ -323,7 +323,7 @@ const ProfileForm = ({
                     />
                     <div>
                       <h5 className="font-semibold text-base text-primary">
-                        {watch("master")}
+                        {watch('master')}
                       </h5>
                       <p className="text-coolgray text-sm">
                         {SchoolTypeValues.MASTER}
@@ -331,7 +331,7 @@ const ProfileForm = ({
                     </div>
                   </div>
                 )}
-                {watch("doctor") && (
+                {watch('doctor') && (
                   <div className="flex items-center gap-6 md:gap-12 mb-2">
                     <Image
                       src="/icon/doctor.png"
@@ -341,7 +341,7 @@ const ProfileForm = ({
                     />
                     <div>
                       <h5 className="font-semibold text-base text-primary">
-                        {watch("doctor")}
+                        {watch('doctor')}
                       </h5>
                       <p className="text-coolgray text-sm">
                         {SchoolTypeValues.DOCTOR}
