@@ -1,11 +1,11 @@
-import React, { useEffect, useState } from "react";
-import { Dialog, DialogPanel, DialogTitle } from "@headlessui/react";
-import { Button } from "../ui/button";
-import CloseIcon from "../icons/CloseIcon";
-import { useQuery } from "@tanstack/react-query";
-import { queries } from "@/lib/queries";
-import { PROVINCE } from "@/types";
-import LeftIcon from "../icons/LeftIcon";
+import React, { useEffect, useState } from 'react';
+import { Dialog, DialogPanel, DialogTitle } from '@headlessui/react';
+import { Button } from '../ui/button';
+import CloseIcon from '../icons/CloseIcon';
+import { useQuery } from '@tanstack/react-query';
+import { queries } from '@/lib/queries';
+import { PROVINCE } from '@/types';
+import LeftIcon from '../icons/LeftIcon';
 
 interface Props {
   open: boolean;

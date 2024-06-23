@@ -1,25 +1,26 @@
-"use client";
+'use client';
 
-import React, { useState } from "react";
-import { JobType } from "@/types/jobs";
-import useToast from "@/hooks/useToast";
+import React, { useState } from 'react';
+import { JobType } from '@/types/jobs';
+import useToast from '@/hooks/useToast';
 import {
   createFullTimeJob,
   createPartTimeJob,
   createReligionJob,
-} from "@/apis/jobs";
-import { usePathname, useRouter, useSearchParams } from "next/navigation";
-import OrganizationForm, { CreateJobFormData } from "./OrganizationForm";
-import ReligionForm, { CreateReligionFormData } from "./ReligionForm";
-import JobTypeSelectDialog from "./JobTypeSelectDIalog";
-import { useLoading } from "@toss/use-loading";
-import { uploadImages } from "@/apis/system";
-import ObriForm, { CreateObriFormData } from "./ObriForm";
-import { useQueryClient } from "@tanstack/react-query";
+} from '@/apis/jobs';
+import { usePathname, useRouter, useSearchParams } from 'next/navigation';
+import OrganizationForm, { CreateJobFormData } from './OrganizationForm';
+import ReligionForm, { CreateReligionFormData } from './ReligionForm';
+import JobTypeSelectDialog from './JobTypeSelectDIalog';
+import { useLoading } from '@toss/use-loading';
+import { uploadImages } from '@/apis/system';
+import ObriForm, { CreateObriFormData } from './ObriForm';
+import { useQueryClient } from '@tanstack/react-query';
+import { queries } from '@/lib/queries';
 
 const CreateContainer = () => {
   const searchParams = useSearchParams();
-  const jobType = searchParams.get("jobType");
+  const jobType = searchParams.get('jobType');
   const pathname = usePathname();
   const router = useRouter();
   const { errorToast, successToast } = useToast();
@@ -51,10 +52,10 @@ const CreateContainer = () => {
           contents,
         })
       );
-      successToast("채용이 등록되었습니다.");
-      router.push(pathname.slice(0, pathname.lastIndexOf("/")));
+      successToast('채용이 등록되었습니다.');
+      router.push(pathname.slice(0, pathname.lastIndexOf('/')));
       queryClient.invalidateQueries({
-        queryKey: ["jobs", "infiniteList"],
+        queryKey: queries.jobs._def,
       });
     } catch (error: any) {
       errorToast(error.message);
@@ -83,10 +84,10 @@ const CreateContainer = () => {
           fee,
         })
       );
-      successToast("채용이 등록되었습니다.");
-      router.push(pathname.slice(0, pathname.lastIndexOf("/")));
+      successToast('채용이 등록되었습니다.');
+      router.push(pathname.slice(0, pathname.lastIndexOf('/')));
       queryClient.invalidateQueries({
-        queryKey: ["jobs", "infiniteList"],
+        queryKey: queries.jobs._def,
       });
     } catch (error: any) {
       errorToast(error.message);
@@ -119,10 +120,10 @@ const CreateContainer = () => {
           fee,
         })
       );
-      successToast("채용이 등록되었습니다.");
-      router.push(pathname.slice(0, pathname.lastIndexOf("/")));
+      successToast('채용이 등록되었습니다.');
+      router.push(pathname.slice(0, pathname.lastIndexOf('/')));
       queryClient.invalidateQueries({
-        queryKey: ["jobs", "infiniteList"],
+        queryKey: queries.jobs._def,
       });
     } catch (error: any) {
       errorToast(error.message);

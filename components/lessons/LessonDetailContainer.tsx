@@ -1,57 +1,44 @@
-"use client";
+'use client';
 
-import { queries } from "@/lib/queries";
-import { useSuspenseQuery } from "@tanstack/react-query";
-import { useParams, usePathname, useRouter } from "next/navigation";
-import React, { Suspense, useState } from "react";
-import Loading from "../common/Loading";
-import Image from "next/image";
-import filters from "@/lib/filters";
-import ClipBoardIcon from "../icons/ClipBoardIcon";
-import useToast from "@/hooks/useToast";
-import { clipboard } from "@toss/utils";
-import { SchoolType, SchoolTypeValues } from "@/types/lessons";
-import { Badge } from "../ui/badge";
-import { Button } from "@headlessui/react";
-import EditIcon from "../icons/EditIcon";
-import TrashIcon from "../icons/TrashIcon";
-import { useSession } from "next-auth/react";
-import { deleteLesson } from "@/apis/lessons";
-import ItemManageBox from "../common/ItemManageBox";
+import { queries } from '@/lib/queries';
+import { useQuery } from '@tanstack/react-query';
+import React, { useState } from 'react';
+import Image from 'next/image';
+import filters from '@/lib/filters';
+import ClipBoardIcon from '../icons/ClipBoardIcon';
+import useToast from '@/hooks/useToast';
+import { clipboard } from '@toss/utils';
+import { LESSON, SchoolType, SchoolTypeValues } from '@/types/lessons';
+import { Badge } from '../ui/badge';
+import { useSession } from 'next-auth/react';
+import ItemManageBox from '../common/ItemManageBox';
+import { usePathname, useRouter } from 'next/navigation';
 
-const LessonDetailContainer = () => {
+interface Props {
+  lesson: LESSON;
+  deleteLesson: () => void;
+}
+
+const LessonDetailContainer = ({ lesson, deleteLesson }: Props) => {
   const [isPhoneShow, setIsPhoneShow] = useState(false);
-  const params = useParams();
   const filter = filters();
-  const { successToast, errorToast } = useToast();
+  const { successToast } = useToast();
   const { data } = useSession();
   const router = useRouter();
   const pathname = usePathname();
 
-  const { data: lesson } = useSuspenseQuery(
-    queries.lessons.detail(Number(params.id))
-  );
+  const { data: user } = useQuery({
+    ...queries.users.detail(),
+    enabled: !!data?.user,
+  });
 
   const copyToPhone = async () => {
     const isSuccess = await clipboard.writeText(lesson?.phone as string);
 
     if (isSuccess) {
-      successToast("연락처가 복사되었습니다.");
+      successToast('연락처가 복사되었습니다.');
     }
   };
-
-  const handleDeleteLesson = async () => {
-    try {
-      await deleteLesson(Number(params.id));
-      successToast("레슨이 삭제되었습니다.");
-      router.push(pathname.slice(0, pathname.lastIndexOf("/")));
-    } catch (error: any) {
-      errorToast(error.message);
-      console.log("error", error);
-    }
-  };
-
-  const handleEditLesson = () => {};
 
   return (
     <div className="mt-8 md:mt-16">
@@ -104,10 +91,10 @@ const LessonDetailContainer = () => {
                   <img
                     src={
                       school.type === SchoolType.UNDERGRADUATE
-                        ? "/icon/bachelor.png"
+                        ? '/icon/bachelor.png'
                         : school.type === SchoolType.MASTER
-                        ? "/icon/master.png"
-                        : "/icon/doctor.png"
+                        ? '/icon/master.png'
+                        : '/icon/doctor.png'
                     }
                     alt="school_image"
                     className="w-[30px] h-[30px]"
@@ -156,20 +143,26 @@ const LessonDetailContainer = () => {
           </div>
         </div>
       </div>
-      <ItemManageBox
-        handleEdit={handleEditLesson}
-        handleDelete={handleDeleteLesson}
-      />
+      {user?.id === lesson?.authorId && (
+        <ItemManageBox
+          handleEdit={() => router.push(`${pathname}?type=edit`)}
+          handleDelete={deleteLesson}
+        />
+      )}
       <div className="flex flex-col px-4 gap-4 md:flex-row md:gap-8 mt-6 md:mt-12">
         <div className="md:w-1/2 bg-whitesmoke rounded-md p-8 min-h-[200px] md:h-[380px] overflow-y-auto">
           <p className="text-coolgray font-semibold text-lg mb-6">
             전문가 소개
           </p>
-          {lesson?.introduction}
+          <p className="min-h-[120px] md:h-[260px] bg-white rounded-lg p-2">
+            {lesson?.introduction}
+          </p>
         </div>
         <div className="md:w-1/2 bg-whitesmoke rounded-md p-8 min-h-[200px] md:h-[380px] overflow-y-auto">
           <p className="text-coolgray font-semibold text-lg mb-6">경력</p>
-          {lesson?.career}
+          <p className="min-h-[120px] md:h-[260px] bg-white rounded-lg p-2">
+            {lesson?.career}
+          </p>
         </div>
       </div>
     </div>
