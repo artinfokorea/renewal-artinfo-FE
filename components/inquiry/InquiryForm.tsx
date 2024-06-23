@@ -7,6 +7,7 @@ import { Input, Textarea } from '@headlessui/react';
 import { ErrorMessage } from '@hookform/error-message';
 import { Button } from '../ui/button';
 import { useRouter } from 'next/navigation';
+import InputField from '../common/InputField';
 
 const schema = yup
   .object({
@@ -52,50 +53,27 @@ const InquiryForm = ({ user, handleInquiry, isLoading }: Props) => {
   return (
     <form className="p-6 md:p-12" onSubmit={handleSubmit(handleInquiry)}>
       <h2 className="text-xl font-bold ">문의하기</h2>
-      <div className="mt-4">
-        <label
-          htmlFor="title"
-          className="block text-sm font-medium text-gray-700"
-        >
-          제목
-        </label>
-        <Input
-          type="text"
-          id="title"
-          {...register('title')}
-          placeholder="제목 내용을 입력해주세요."
-          className="mt-1 p-2 w-full border border-gray-300 rounded-md focus:outline-none"
-        />
-        <ErrorMessage
-          errors={errors}
-          name="title"
-          render={({ message }) => (
-            <p className="text-error font-semibold">{message}</p>
-          )}
-        />
-      </div>
-      <div className="mt-4">
-        <label
-          htmlFor="title"
-          className="block text-sm font-medium text-gray-700"
-        >
-          이메일
-        </label>
-        <Input
-          type="email"
-          id="email"
-          placeholder="답변받으실 이메일을 입력해주세요."
-          {...register('email')}
-          className="mt-1 p-2 w-full border border-gray-300 rounded-md focus:outline-none"
-        />
-        <ErrorMessage
-          errors={errors}
-          name="email"
-          render={({ message }) => (
-            <p className="text-error font-semibold">{message}</p>
-          )}
-        />
-      </div>
+      <p className="mt-2 text-sm text-gray-500">
+        문의사항이 있으시면 아래 양식을 작성해주세요.
+      </p>
+      <InputField
+        label="제목"
+        id="title"
+        type="text"
+        register={register}
+        errors={errors.title}
+        placeholder="제목 내용을 입력해주세요"
+        className="py-3"
+      />
+      <InputField
+        label="이메일"
+        id="email"
+        type="email"
+        register={register}
+        errors={errors.email}
+        placeholder="답변받으실 이메일을 입력해주세요."
+        className="py-3"
+      />
       <div className="mt-4">
         <label
           htmlFor="title"
