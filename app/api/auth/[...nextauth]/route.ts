@@ -168,9 +168,7 @@ const handler = NextAuth({
     },
 
     async session({ session, token }: any) {
-      if (token) {
-        session.token = token;
-      }
+      session.token = token;
 
       return session;
     },
