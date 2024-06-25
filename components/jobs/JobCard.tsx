@@ -20,17 +20,23 @@ const JobCard = forwardRef<HTMLDivElement, Props>(
       <Link href={`${pathname}/${job.id}`}>
         <div className="hover:bg-whitesmoke rounded-xl h-[130px] md:h-[192px]  flex items-center">
           <div className="flex items-center md:px-4">
-            {job.imageUrl && (
+            {job.imageUrl ? (
               <div className="relative h-[100px] md:h-[140px] w-[170px] md:w-[230px] border-whitesmoke border-2 rounded-xl">
                 <Image
                   src={job.imageUrl}
-                  alt="job_imgge"
+                  alt="job_image"
                   fill
                   className="rounded-xl"
                   quality={100}
                   priority
                   sizes="(max-width: 768px) 100px 180px, (max-width: 1200px) 200px, 200px"
                 />
+              </div>
+            ) : (
+              <div className="h-[100px] md:h-[140px] w-[170px] md:w-[230px] border-whitesmoke border-2 rounded-xl flex justify-center items-center">
+                <span className="font-bold text-lg md:text-2xl">
+                  {job.companyName}
+                </span>
               </div>
             )}
             <div className="ml-4 md:ml-12 py-2 flex-1">
