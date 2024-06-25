@@ -1,35 +1,35 @@
-'use client';
+"use client";
 
-import React, { useState } from 'react';
-import { useForm } from 'react-hook-form';
-import { yupResolver } from '@hookform/resolvers/yup';
-import { ErrorMessage } from '@hookform/error-message';
-import * as yup from 'yup';
-import { Label } from '../ui/label';
-import { Input } from '../ui/input';
-import { Button } from '../ui/button';
-import ConfirmDialog from '../common/ConfirmDialog';
-import Link from 'next/link';
-import { signIn } from 'next-auth/react';
-import useToast from '@/hooks/useToast';
-import { useLoading } from '@toss/use-loading';
-import { useSearchParams } from 'next/navigation';
-import InputField from '../common/InputField';
+import React, { useState } from "react";
+import { useForm } from "react-hook-form";
+import { yupResolver } from "@hookform/resolvers/yup";
+import { ErrorMessage } from "@hookform/error-message";
+import * as yup from "yup";
+import { Label } from "../ui/label";
+import { Input } from "../ui/input";
+import { Button } from "../ui/button";
+import ConfirmDialog from "../common/ConfirmDialog";
+import Link from "next/link";
+import { signIn } from "next-auth/react";
+import useToast from "@/hooks/useToast";
+import { useLoading } from "@toss/use-loading";
+import { useSearchParams } from "next/navigation";
+import InputField from "../common/InputField";
 
 const schema = yup
   .object({
     email: yup
       .string()
-      .email('이메일 형식이 아닙니다.')
-      .required('이메일을 입력해주세요.'),
+      .email("이메일 형식이 아닙니다.")
+      .required("이메일을 입력해주세요."),
     password: yup
       .string()
-      .min(8, '8자 이상 12자 이하로 영문, 숫자, 특수문자를 포함해주세요.')
-      .max(12, '8자 이상 12자 이하로 영문, 숫자, 특수문자를 포함해주세요.')
+      .min(8, "8자 이상 12자 이하로 영문, 숫자, 특수문자를 포함해주세요.")
+      .max(12, "8자 이상 12자 이하로 영문, 숫자, 특수문자를 포함해주세요.")
       .required()
       .matches(
         /^(?=.*[0-9])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{8,12}$/,
-        '8자 이상 12자 이하로 영문, 숫자, 특수문자를 포함해주세요.'
+        "8자 이상 12자 이하로 영문, 숫자, 특수문자를 포함해주세요."
       ),
   })
   .required();
@@ -41,7 +41,7 @@ const SignInForm = () => {
   const [isConfirmDialogOpen, setIsConfirmDialogOpen] = useState(false);
   const { errorToast } = useToast();
   const searchParams = useSearchParams();
-  const error = searchParams.get('error');
+  const error = searchParams.get("error");
 
   const {
     register,
@@ -56,9 +56,9 @@ const SignInForm = () => {
   const handleSignIn = async (payload: FormData) => {
     try {
       await startTransition(
-        signIn('signin-email', {
+        signIn("signin-email", {
           ...payload,
-          callbackUrl: '/',
+          callbackUrl: "/",
         })
       );
     } catch (error: any) {
@@ -82,8 +82,8 @@ const SignInForm = () => {
 
     kakao.Auth.authorize({
       redirectUri: `http://localhost:3000/auth/callback`,
-      state: 'kakao',
-      prompts: 'login',
+      state: "kakao",
+      prompts: "login",
     });
   };
 
@@ -93,7 +93,7 @@ const SignInForm = () => {
     const naverLogin = new NaverIdLogin.LoginWithNaverId({
       clientId: process.env.NEXT_PUBLIC_NAVER_CLIENT_ID,
       callbackUrl: `http://localhost:3000/auth/callback?state=naver`,
-      state: 'naver',
+      state: "naver",
       callbackHandle: true,
     });
     naverLogin.init();
@@ -101,20 +101,20 @@ const SignInForm = () => {
   };
 
   const handleGoogleLogin = () => {
-    let url = 'https://accounts.google.com/o/oauth2/v2/auth';
+    let url = "https://accounts.google.com/o/oauth2/v2/auth";
     url += `?client_id=${process.env.NEXT_PUBLIC_GOOGLE_API_KEY}`;
     url += `&redirect_uri=http://localhost:3000/auth/callback`;
-    url += '&prompt=consent';
-    url += '&scope=email';
-    url += '&state=google';
-    url += '&response_type=token';
-    url += '&include_granted_scopes=true';
-    window.open(url, '_self');
+    url += "&prompt=consent";
+    url += "&scope=email";
+    url += "&state=google";
+    url += "&response_type=token";
+    url += "&include_granted_scopes=true";
+    window.open(url, "_self");
   };
 
   return (
     <form
-      className="max-w-[500px] mx-auto mt-20 md:mt-40 px-4 "
+      className="max-w-[500px] mx-auto mt-20 md:mt-40 px-4"
       onSubmit={handleSubmit(handleSignIn)}
     >
       <h2 className="text-4xl font-bold text-main text-center">ARTINFO</h2>
@@ -138,12 +138,12 @@ const SignInForm = () => {
       />
       <Button
         type="submit"
-        className="bg-main w-full my-4 hover:bg-main text-white"
+        className="bg-main w-full my-6 hover:bg-main text-white"
         disabled={isLoading}
       >
         로그인
       </Button>
-      <p className="text-primary text-center">
+      <p className="text-primary text-center mt-2">
         아직 회원이 아니신가요?
         <Link href="/auth/sign-up">
           <span className="text-main cursor-pointer"> 회원가입</span>
@@ -152,12 +152,12 @@ const SignInForm = () => {
       <Link href="/auth/sign-up">
         <p className="text-center text-main">아이디 또는 비밀번호 찾기</p>
       </Link>
-      <div className="flex text-grey mt-2">
+      <div className="flex text-grey mt-4">
         <div className="border-b-2 w-full border-grey mb-3" />
         <span className="whitespace-nowrap mx-4 font-semibold">간편로그인</span>
         <div className="border-b-2 w-full border-grey mb-3" />
       </div>
-      <div className="flex justify-between w-[200px] mx-auto mt-4">
+      <div className="flex justify-between w-[200px] mx-auto mt-6">
         <Button
           type="button"
           className="p-1 bg-white w-[48px] h-[48px] rounded-lg transition ease-in-out duration-150 inline-flex items-center justify-center  text-white shadow-md  focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 disabled:opacity-50 "

@@ -1,27 +1,28 @@
-import Link from 'next/link';
-import { usePathname } from 'next/navigation';
-import React, { useRef } from 'react';
-import { Avatar, AvatarFallback, AvatarImage } from '../ui/avatar';
-import { Input } from '@headlessui/react';
-import CloseIcon from '../icons/CloseIcon';
-import CameraIcon from '../icons/CameraIcon';
-import CalendarIcon from '../icons/CalendarIcon';
-import { ErrorMessage } from '@hookform/error-message';
-import filters from '@/lib/filters';
-import Image from 'next/image';
-import FileUploader from '../common/FileUploader';
+import Link from "next/link";
+import { usePathname } from "next/navigation";
+import React, { useRef } from "react";
+import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
+import { Input } from "@headlessui/react";
+import CloseIcon from "../icons/CloseIcon";
+import CameraIcon from "../icons/CameraIcon";
+import CalendarIcon from "../icons/CalendarIcon";
+import { ErrorMessage } from "@hookform/error-message";
+import filters from "@/lib/filters";
+import Image from "next/image";
+import FileUploader from "../common/FileUploader";
 import {
   FieldErrors,
   UseFormRegister,
   UseFormWatch,
   UseFormSetValue,
-} from 'react-hook-form';
-import { MAJOR } from '@/types';
-import { USER } from '@/types/users';
-import { Badge } from '../ui/badge';
-import { SchoolTypeValues } from '@/types/lessons';
-import { Button } from '../ui/button';
-import { ProfileFormData } from '@/app/(site)/my-profile/page';
+} from "react-hook-form";
+import { MAJOR } from "@/types";
+import { USER } from "@/types/users";
+import { Badge } from "../ui/badge";
+import { SchoolTypeValues } from "@/types/lessons";
+import { Button } from "../ui/button";
+import { ProfileFormData } from "@/app/(site)/my-profile/page";
+import StarIcon from "../icons/StarIcon";
 
 interface Props {
   user?: USER;
@@ -67,14 +68,14 @@ const ProfileForm = ({
   };
 
   return (
-    <form className="flex mt-12 md:gap-48">
-      <div className="hidden md:flex flex-col gap-4 p-4 md:p-8 whitespace-nowrap">
+    <form className="flex mt-12">
+      <div className="hidden md:flex flex-col gap-4 p-4 md:p-8 whitespace-nowrap border-r-2 border-whitesmoke w-[250px]">
         <ul>
           <li>
             <Link
               href="/my-profile"
               className={`my-4 font-semibold text-lg ${
-                pathname === '/my-profile' && 'text-main'
+                pathname === "/my-profile" && "text-main"
               }`}
             >
               프로필
@@ -82,7 +83,6 @@ const ProfileForm = ({
           </li>
           <li className="my-4 font-semibold text-lg">내 활동</li>
         </ul>
-        <span className="mt-4 font-semibold text-lg">로그아웃</span>
       </div>
       <div className="flex-1 px-4 py-2 md:px-8 md:py-6">
         <div className="flex flex-col md:flex-row md:gap-20">
@@ -90,39 +90,91 @@ const ProfileForm = ({
             <div className="relative h-[100px]">
               <Avatar className="w-[150px] h-[150px]">
                 <AvatarImage
-                  src={watch('imageUrl') || '/img/placeholder-user.png'}
+                  src={watch("imageUrl") || "/img/placeholder-user.png"}
                   alt="user_profile_image"
                   className="w-[150px] h-[150px] rounded-full object-cover"
                 />
-                <AvatarFallback>CN</AvatarFallback>
+                <AvatarFallback>
+                  <AvatarImage
+                    src={"/img/placeholder-user.png"}
+                    alt="user_profile_image"
+                    className="w-[150px] h-[150px] rounded-full object-cover"
+                  />
+                </AvatarFallback>
               </Avatar>
-            </div>
-            {watch('imageUrl') && isUpdateForm && (
-              <Button
-                type="button"
-                onClick={() => setValue('imageUrl', '')}
-                className="bg-white opacity-55 text-lg text-black font-semibold
+              {watch("imageUrl") && isUpdateForm && (
+                <Button
+                  type="button"
+                  onClick={() => setValue("imageUrl", "")}
+                  className="bg-white opacity-55 text-lg text-black font-semibold
                 absolute top-0 right-0 rounded-full p-2
                 "
-              >
-                <CloseIcon className="w-6 h-6" />
-              </Button>
-            )}
-            {isUpdateForm && (
-              <button
-                type="button"
-                disabled={isImageUploadLoading}
-                className="mt-12 bg-blue-500 p-[5px] rounded-full absolute bottom-0 right-4 border-white border"
-                onClick={openFileUploader}
-              >
-                <CameraIcon className="w-6 h-6 text-white" />
-              </button>
-            )}
+                >
+                  <CloseIcon className="w-6 h-6" />
+                </Button>
+              )}
+              {isUpdateForm && (
+                <button
+                  type="button"
+                  disabled={isImageUploadLoading}
+                  className="mt-12 bg-blue-500 -bottom-12 right-0 p-[5px] rounded-full absolute border-white border"
+                  onClick={openFileUploader}
+                >
+                  <CameraIcon className="w-6 h-6 text-white" />
+                </button>
+              )}
+            </div>
           </div>
 
-          <div className="flex-col text-base md:text-lg">
-            <h4 className="text-lg font-bold mb-3">{user?.name}</h4>
-            <div className="flex gap-4 items-center mb-2 font-semibold ">
+          <div className="flex-col mt-4 md:mt-0 text-base md:text-lg">
+            <div className="flex gap-4 items-center mb-2 font-medium">
+              <Image
+                src="/icon/user-profile.png"
+                alt="user_icon"
+                width={24}
+                height={24}
+              />
+              {isUpdateForm ? (
+                <>
+                  <Input
+                    {...register("name")}
+                    className="border px-2 py-1 rounded-lg focus:outline-none w-full md:w-[200px]"
+                    placeholder="닉네임을 입력해주세요."
+                  />
+                  <ErrorMessage
+                    errors={errors}
+                    name="name"
+                    render={({ message }) => (
+                      <p className="text-error font-semibold">{message}</p>
+                    )}
+                  />
+                </>
+              ) : (
+                <span>{user?.name}</span>
+              )}
+            </div>
+            <div className="flex gap-4 items-center mb-2 font-medium">
+              <StarIcon className="w-6 h-6" />
+              {isUpdateForm ? (
+                <>
+                  <Input
+                    {...register("nickname")}
+                    className="border px-2 py-1 rounded-lg focus:outline-none w-full md:w-[200px]"
+                    placeholder="닉네임을 입력해주세요."
+                  />
+                  <ErrorMessage
+                    errors={errors}
+                    name="nickname"
+                    render={({ message }) => (
+                      <p className="text-error font-semibold">{message}</p>
+                    )}
+                  />
+                </>
+              ) : (
+                <span>{user?.nickname}</span>
+              )}
+            </div>
+            <div className="flex gap-4 items-center mb-2 font-medium ">
               <Image
                 src="/icon/email.png"
                 alt="email_icon"
@@ -131,12 +183,12 @@ const ProfileForm = ({
               />
               <span>{user?.email}</span>
             </div>
-            <div className="flex gap-4 items-center mb-2 font-semibold">
+            <div className="flex gap-4 items-center mb-2 font-medium">
               <CalendarIcon className="w-6 h-6" />
               {isUpdateForm ? (
                 <>
                   <Input
-                    {...register('birth')}
+                    {...register("birth")}
                     type="date"
                     className="border px-2 py-1 rounded-lg focus:outline-none w-full md:w-[200px]"
                     placeholder="1945.08.15"
@@ -153,41 +205,15 @@ const ProfileForm = ({
                 <span>{filter.YYYYMMDD(user?.birth)}</span>
               )}
             </div>
-            <div className="flex gap-4 items-center mb-2 font-semibold">
-              <Image
-                src="/icon/user-profile.png"
-                alt="user_icon"
-                width={24}
-                height={24}
-              />
-              {isUpdateForm ? (
-                <>
-                  <Input
-                    {...register('nickname')}
-                    className="border px-2 py-1 rounded-lg focus:outline-none w-full md:w-[200px]"
-                    placeholder="닉네임을 입력해주세요."
-                  />
-                  <ErrorMessage
-                    errors={errors}
-                    name="nickname"
-                    render={({ message }) => (
-                      <p className="text-error font-semibold">{message}</p>
-                    )}
-                  />
-                </>
-              ) : (
-                <span>{user?.nickname}</span>
-              )}
-            </div>
-            <div className="flex gap-4 items-center mb-2 font-semibold">
+            <div className="flex gap-4 items-center mb-2 font-medium">
               <Image
                 src="/icon/phone.png"
                 alt="phone_icon"
                 width={24}
                 height={24}
               />
-              {watch('phone') ? (
-                <span>{watch('phone')}</span>
+              {watch("phone") ? (
+                <span>{watch("phone")}</span>
               ) : (
                 <Button
                   type="button"
@@ -214,7 +240,7 @@ const ProfileForm = ({
                 </button>
               )}
               <div className="flex gap-2 flex-wrap">
-                {watch('majors')?.map((major) => (
+                {watch("majors")?.map((major) => (
                   <Badge
                     key={major.id}
                     className="text-main text-xs md:text-sm bg-aliceblue rounded-xl mx-1"
@@ -254,7 +280,7 @@ const ProfileForm = ({
                   <div className="flex items-center gap-2">
                     <span className="text-sm whitespace-nowrap">학사</span>
                     <Input
-                      {...register('bachellor')}
+                      {...register("bachellor")}
                       placeholder="대학교 명을 입력해주세요."
                       className="border px-2 py-1 rounded-lg focus:outline-none w-full md:w-[350px]"
                     />
@@ -270,7 +296,7 @@ const ProfileForm = ({
                   <div className="flex items-center gap-2">
                     <span className="text-sm whitespace-nowrap">석사</span>
                     <Input
-                      {...register('master')}
+                      {...register("master")}
                       placeholder="대학원 명을 입력해주세요."
                       className="border px-2 py-1 rounded-lg focus:outline-none w-full md:w-[350px]"
                     />
@@ -286,7 +312,7 @@ const ProfileForm = ({
                   <div className="flex items-center gap-2">
                     <span className="text-sm whitespace-nowrap">박사</span>
                     <Input
-                      {...register('doctor')}
+                      {...register("doctor")}
                       placeholder="대학원 명을 입력해주세요."
                       className="border px-2 py-1 rounded-lg focus:outline-none w-full md:w-[350px]"
                     />
@@ -295,7 +321,7 @@ const ProfileForm = ({
               </div>
             ) : (
               <div className="min-h-[200px]">
-                {watch('bachellor') && (
+                {watch("bachellor") && (
                   <div className="flex items-center gap-6 md:gap-12 mb-2">
                     <Image
                       src="/icon/bachelor.png"
@@ -305,7 +331,7 @@ const ProfileForm = ({
                     />
                     <div>
                       <h5 className="font-semibold text-base text-primary">
-                        {watch('bachellor')}
+                        {watch("bachellor")}
                       </h5>
                       <p className="text-coolgray text-sm">
                         {SchoolTypeValues.UNDERGRADUATE}
@@ -313,7 +339,7 @@ const ProfileForm = ({
                     </div>
                   </div>
                 )}
-                {watch('master') && (
+                {watch("master") && (
                   <div className="flex items-center gap-6 md:gap-12 mb-2">
                     <Image
                       src="/icon/master.png"
@@ -323,7 +349,7 @@ const ProfileForm = ({
                     />
                     <div>
                       <h5 className="font-semibold text-base text-primary">
-                        {watch('master')}
+                        {watch("master")}
                       </h5>
                       <p className="text-coolgray text-sm">
                         {SchoolTypeValues.MASTER}
@@ -331,7 +357,7 @@ const ProfileForm = ({
                     </div>
                   </div>
                 )}
-                {watch('doctor') && (
+                {watch("doctor") && (
                   <div className="flex items-center gap-6 md:gap-12 mb-2">
                     <Image
                       src="/icon/doctor.png"
@@ -341,7 +367,7 @@ const ProfileForm = ({
                     />
                     <div>
                       <h5 className="font-semibold text-base text-primary">
-                        {watch('doctor')}
+                        {watch("doctor")}
                       </h5>
                       <p className="text-coolgray text-sm">
                         {SchoolTypeValues.DOCTOR}
@@ -358,7 +384,7 @@ const ProfileForm = ({
             <Button
               type="button"
               onClick={handleUpdateForm}
-              className="border-[3px] rounded-full font-semibold w-[70px]"
+              className="border rounded-full font-semibold w-[70px]"
             >
               취소
             </Button>
@@ -373,11 +399,7 @@ const ProfileForm = ({
           </div>
         ) : (
           <div className="flex justify-end gap-4">
-            <Button
-              disabled
-              type="button"
-              className="border-[3px] rounded-full font-semibold"
-            >
+            <Button type="button" className="border rounded-full font-semibold">
               비밀번호 변경
             </Button>
             <Button

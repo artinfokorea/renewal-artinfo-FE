@@ -6,6 +6,7 @@ export interface UserPayload {
   birth?: string;
   majorIds?: number[];
   schools?: SCHOOL[];
+  name?: string;
 }
 
 export interface SignUpPayload {

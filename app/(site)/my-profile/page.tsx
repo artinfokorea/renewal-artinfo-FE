@@ -1,32 +1,39 @@
-'use client';
+"use client";
 
-import { useForm } from 'react-hook-form';
-import { yupResolver } from '@hookform/resolvers/yup';
-import * as yup from 'yup';
-import { useSession } from 'next-auth/react';
-import React, { useEffect, useRef, useState } from 'react';
-import { MAJOR } from '@/types';
-import { useLoading } from '@toss/use-loading';
+import { useForm } from "react-hook-form";
+import { yupResolver } from "@hookform/resolvers/yup";
+import * as yup from "yup";
+import { useSession } from "next-auth/react";
+import React, { useEffect, useState } from "react";
+import { MAJOR } from "@/types";
+import { useLoading } from "@toss/use-loading";
 import {
   sendPhoneVerificationCode,
   uploadImages,
   verifyPhoneCode,
-} from '@/apis/system';
-import useToast from '@/hooks/useToast';
-import { updateUser, updateUserPhone } from '@/apis/users';
-import { SchoolType } from '@/types/lessons';
-import filters from '@/lib/filters';
-import { useQuery, useQueryClient } from '@tanstack/react-query';
-import { queries } from '@/lib/queries';
-import MajorDialog from '@/components/dialog/MajorDialog';
-import PhoneDialog from '@/components/dialog/PhoneDialog';
-import ProfileForm from '@/components/profile/ProfileForm';
+} from "@/apis/system";
+import useToast from "@/hooks/useToast";
+import { updateUser, updateUserPhone } from "@/apis/users";
+import { SchoolType } from "@/types/lessons";
+import filters from "@/lib/filters";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
+import { queries } from "@/lib/queries";
+import MajorDialog from "@/components/dialog/MajorDialog";
+import PhoneDialog from "@/components/dialog/PhoneDialog";
+import ProfileForm from "@/components/profile/ProfileForm";
 
 const schema = yup
   .object({
-    birth: yup.string().required('생년월일을 입력해주세요.'),
-    nickname: yup.string().required('닉네임을 입력해주세요.'),
-    majors: yup.array().max(2, '최대 2개까지 선택 가능합니다.').nullable(),
+    name: yup
+      .string()
+      .min(2, "이름은 2글자 이상 입력해주세요.")
+      .required("이름을 입력해주세요."),
+    birth: yup.string().required("생년월일을 입력해주세요."),
+    nickname: yup
+      .string()
+      .min(2, "닉네임은 2글자 이상 입력해주세요.")
+      .required("닉네임을 입력해주세요."),
+    majors: yup.array().max(2, "최대 2개까지 선택 가능합니다.").nullable(),
     bachellor: yup.string().nullable(),
     master: yup.string().nullable(),
     doctor: yup.string().nullable(),
@@ -62,27 +69,28 @@ const page = () => {
 
   useEffect(() => {
     if (user) {
-      setValue('majors', user?.majors);
+      setValue("majors", user?.majors);
       setValue(
-        'bachellor',
+        "bachellor",
         user?.schools?.filter(
           (item) => item.type === SchoolType.UNDERGRADUATE
         )[0]?.name
       );
       setValue(
-        'master',
+        "master",
         user?.schools?.filter((item) => item.type === SchoolType.MASTER)[0]
           ?.name
       );
       setValue(
-        'doctor',
+        "doctor",
         user?.schools?.filter((item) => item.type === SchoolType.DOCTOR)[0]
           ?.name
       );
-      setValue('imageUrl', user?.iconImageUrl);
-      setValue('nickname', user?.nickname || '');
-      setValue('phone', user?.phone);
-      setValue('birth', filter.YYYYMMDD(user?.birth) || '');
+      setValue("imageUrl", user?.iconImageUrl);
+      setValue("nickname", user?.nickname || "");
+      setValue("name", user?.name);
+      setValue("phone", user?.phone);
+      setValue("birth", filter.YYYYMMDD(user?.birth) || "");
     }
   }, [user]);
 
@@ -91,8 +99,8 @@ const page = () => {
       const uploadResponse = await imageStartTransition(
         uploadImages(files as File[])
       );
-      successToast('프로필 이미지가 등록되었습니다.');
-      setValue('imageUrl', uploadResponse.images[0].url as string);
+      successToast("프로필 이미지가 등록되었습니다.");
+      setValue("imageUrl", uploadResponse.images[0].url as string);
     } catch (error: any) {
       errorToast(error.message);
       console.log(error);
@@ -100,22 +108,30 @@ const page = () => {
   };
 
   const handleSelectMajor = (selectedMajor: MAJOR) => {
-    const majorIds = watch('majors')?.map((major) => major.id);
+    const majorIds = watch("majors")?.map((major) => major.id);
 
     if (majorIds?.includes(selectedMajor.id)) {
       setValue(
-        'majors',
-        watch('majors')?.filter((major) => major.id !== selectedMajor.id)
+        "majors",
+        watch("majors")?.filter((major) => major.id !== selectedMajor.id)
       );
     } else {
-      const currentMajors = watch('majors') || [];
-      setValue('majors', [...currentMajors, selectedMajor]);
+      const currentMajors = watch("majors") || [];
+      setValue("majors", [...currentMajors, selectedMajor]);
     }
   };
 
   const updateProfile = async (payload: ProfileFormData) => {
-    const { bachellor, master, doctor, birth, imageUrl, majors, nickname } =
-      payload;
+    const {
+      bachellor,
+      master,
+      doctor,
+      birth,
+      imageUrl,
+      majors,
+      nickname,
+      name,
+    } = payload;
 
     const schools = [];
     if (bachellor)
@@ -128,18 +144,19 @@ const page = () => {
       nickname,
       iconImageUrl: imageUrl || undefined,
       majorIds: majors?.map((major) => major.id),
+      name,
       schools:
         schools.length > 0
           ? schools.map((school) => ({
               type: school.type,
-              name: school.name || '',
+              name: school.name || "",
             }))
           : undefined,
     };
 
     try {
       await updateProfileStartTransition(updateUser(request));
-      successToast('프로필이 수정되었습니다.');
+      successToast("프로필이 수정되었습니다.");
       await queryClient.invalidateQueries({
         queryKey: queries.users.detail().queryKey,
       });
@@ -153,7 +170,7 @@ const page = () => {
   const sendPhoneCode = async (phone: string) => {
     try {
       await sendPhoneVerificationCode(phone);
-      successToast('인증번호가 발송되었습니다.');
+      successToast("인증번호가 발송되었습니다.");
     } catch (error: any) {
       errorToast(error.message);
       console.log(error);
@@ -172,7 +189,7 @@ const page = () => {
       await queryClient.invalidateQueries({
         queryKey: queries.users.detail().queryKey,
       });
-      successToast('휴대폰 인증이 완료되었습니다.');
+      successToast("휴대폰 인증이 완료되었습니다.");
       setIsPhoneDialog(!isPhoneDialog);
     } catch (error: any) {
       errorToast(error.message);
@@ -202,7 +219,7 @@ const page = () => {
       <MajorDialog
         open={isMajorDialog}
         close={() => setIsMajorDialog(!isMajorDialog)}
-        selectedMajors={watch('majors') || []}
+        selectedMajors={watch("majors") || []}
         handleSelectMajor={handleSelectMajor}
         multiple={true}
       />
