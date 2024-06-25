@@ -28,7 +28,7 @@ const MainObriContainer = () => {
                 <span className="text-main font-medium basis-1/4">
                   {job.majors}
                 </span>
-                <span className="basis-1/4">{job.province}</span>
+                <span className="basis-1/4">{job.address}</span>
                 <span className="whitespace-nowrap text-ellipsis overflow-hidden font-bold basis-2/4">
                   {job.title}
                 </span>
