@@ -1,7 +1,5 @@
 import React from "react";
 import { Label } from "../ui/label";
-import { JobType } from "@/types/jobs";
-import { MajorCategory } from "@/types";
 
 interface Props<T> {
   value?: T;

@@ -1,5 +1,4 @@
 import { useEffect, useMemo, useState } from "react";
-import { Label } from "../ui/label";
 import { useRouter, useSearchParams } from "next/navigation";
 import { MAJOR, MajorCategory, MajorCategoryValues } from "@/types";
 import RightIcon from "../icons/RightIcon";
@@ -19,7 +18,7 @@ const MajorCheckBoxes = ({ majors }: Props) => {
     acc[curr.key] = false;
     return acc;
   }, {});
-  const [checkedMajorIds, setCheckedMajorIds] = useState<string[]>([]);
+  const [checkedMajorIds, setCheckedMajorIds] = useState<string[]>(majorIds);
   const [isMajorCategoryDetail, setIsMajorCategoryDetail] =
     useState(initialState);
   const [isMajorCategoryChecked, setIsMajorCategoryChecked] =

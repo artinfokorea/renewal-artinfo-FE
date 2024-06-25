@@ -12,7 +12,7 @@ const JobTypeCheckBoxes = () => {
 
   const handleRecruitChange = (value: JobType) => {
     if (checkedState.includes(value)) {
-      setCheckedState(recruits.filter((v) => v !== value));
+      setCheckedState(checkedState.filter((v) => v !== value));
     } else {
       setCheckedState([...recruits, value]);
     }

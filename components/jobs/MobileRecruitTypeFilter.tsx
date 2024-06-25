@@ -1,28 +1,30 @@
 import { JobType, JobTypeList } from "@/types/jobs";
 import { useRouter, useSearchParams } from "next/navigation";
-import React from "react";
+import React, { useEffect, useState } from "react";
 
 const MobileRecruitTypeFilter = () => {
   const searchParams = useSearchParams();
   const recruits = searchParams.getAll("recruit") as JobType[];
   const router = useRouter();
+  const [selectedRecruits, setSelectedRecruits] = useState<JobType[]>(recruits);
 
   const selecteRecruit = (recruit: JobType) => {
-    const locationParams = new URLSearchParams(window.location.search);
-    if (recruits.includes(recruit)) {
-      locationParams.delete("recruit");
-      const newRecruits = recruits.filter((r) => r !== recruit);
-      newRecruits.forEach((recruit) => {
-        locationParams.append("recruit", recruit);
-      });
+    if (selectedRecruits.includes(recruit)) {
+      setSelectedRecruits(selectedRecruits.filter((v) => v !== recruit));
     } else {
-      locationParams.append("recruit", recruit);
+      setSelectedRecruits([...recruits, recruit]);
     }
+  };
+
+  useEffect(() => {
+    const locationParams = new URLSearchParams(window.location.search);
+    locationParams.delete("recruit");
+    selectedRecruits.forEach((v) => locationParams.append("recruit", v));
     const newUrl = `${window.location.pathname}?${locationParams.toString()}`;
     router.push(newUrl, {
       scroll: false,
     });
-  };
+  }, [selectedRecruits]);
 
   return (
     <div className="py-4 px-2 flex flex-col gap-1">
@@ -31,7 +33,7 @@ const MobileRecruitTypeFilter = () => {
           key={value}
           onClick={() => selecteRecruit(value)}
           className={`text-coolgray font-semibold py-2 px-4 text-left rounded-lg
-          ${recruits.includes(value) && "bg-whitesmoke"}`}
+          ${selectedRecruits.includes(value) && "bg-whitesmoke"}`}
         >
           {title}
         </button>
