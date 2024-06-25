@@ -1,51 +1,44 @@
-import React from 'react';
-import { useForm } from 'react-hook-form';
-import { yupResolver } from '@hookform/resolvers/yup';
-import * as yup from 'yup';
-import { USER } from '@/types/users';
-import { Input, Textarea } from '@headlessui/react';
-import { ErrorMessage } from '@hookform/error-message';
-import { Button } from '../ui/button';
-import { useRouter } from 'next/navigation';
-import InputField from '../common/InputField';
+import React from "react";
+import { useForm } from "react-hook-form";
+import { yupResolver } from "@hookform/resolvers/yup";
+import * as yup from "yup";
+import { Input, Textarea } from "@headlessui/react";
+import { ErrorMessage } from "@hookform/error-message";
+import { Button } from "../ui/button";
+import { useRouter } from "next/navigation";
+import InputField from "../common/InputField";
 
 const schema = yup
   .object({
     title: yup
       .string()
-      .min(3, '제목은 3글자이상 입력해주세요.')
-      .required('제목은 필수입력사항 입니다.'),
+      .min(3, "제목은 3글자이상 입력해주세요.")
+      .required("제목은 필수입력사항 입니다."),
     email: yup
       .string()
-      .email('이메일 형식이 아닙니다.')
-      .required('이메일을 입력해주세요.'),
+      .email("이메일 형식이 아닙니다.")
+      .required("이메일을 입력해주세요."),
     contents: yup
       .string()
-      .min(3, '내용은 10글자이상 입력해주세요.')
-      .required('내용은 필수입력사항 입니다.'),
+      .min(3, "내용은 10글자이상 입력해주세요.")
+      .required("내용은 필수입력사항 입니다."),
   })
   .required();
 
 export type InquiryFormData = yup.InferType<typeof schema>;
 
 interface Props {
-  user?: USER;
   handleInquiry: (payload: InquiryFormData) => void;
   isLoading: boolean;
 }
 
-const InquiryForm = ({ user, handleInquiry, isLoading }: Props) => {
+const InquiryForm = ({ handleInquiry, isLoading }: Props) => {
   const {
     register,
     handleSubmit,
-    watch,
-    setValue,
-    formState: { errors, isDirty },
+    formState: { errors },
   } = useForm<InquiryFormData>({
     resolver: yupResolver(schema),
-    defaultValues: {
-      email: user?.email,
-    },
   });
 
   const router = useRouter();
@@ -83,7 +76,7 @@ const InquiryForm = ({ user, handleInquiry, isLoading }: Props) => {
         </label>
         <Textarea
           id="contents"
-          {...register('contents')}
+          {...register("contents")}
           placeholder="문의 내용을 입력해주세요."
           className="mt-1 p-2 w-full border border-gray-300 rounded-md focus:outline-none resize-none h-[200px]"
         />
@@ -95,18 +88,18 @@ const InquiryForm = ({ user, handleInquiry, isLoading }: Props) => {
           )}
         />
       </div>
-      <div className="flex justify-end gap-4">
+      <div className="flex justify-end gap-4 mt-4">
         <Button
-          onClick={() => router.push('/')}
+          onClick={() => router.push("/")}
           type="button"
-          className="border-[3px] rounded-full font-semibold"
+          className="border rounded-full font-semibold w-20"
         >
           취소
         </Button>
         <Button
           disabled={isLoading}
           type="submit"
-          className="bg-main text-white rounded-full font-semibold px-6"
+          className="bg-main text-white rounded-full font-semibold w-20"
         >
           등록
         </Button>
