@@ -18,11 +18,13 @@ const ObriCard = forwardRef<HTMLDivElement, Props>(
     const pathname = usePathname();
     return (
       <Link href={`${pathname}/${job.id}`}>
-        <ul className="flex flex-col border-whitesmoke border my-4 md:my-6 md:mx-4 rounded-lg">
-          <li className="flex justify-between items-center h-12 md:h-12 border-whitespace border-b px-4">
-            <h4 className="font-bold text-sm md:text-base">{job.title}</h4>
-            <div className="text-xs md:text-sm flex gap-4 items-center">
-              <span className="text-main font-semibold">{job.majors[0]}</span>
+        <ul className="flex flex-col border-whitesmoke border my-4 md:my-6 md:mx-4 rounded-lg text-xs md:text-base">
+          <li className="flex items-center h-12 md:h-12 border-whitespace border-b px-4">
+            <h5 className="text-main font-semibold basis-2/5 md:basis-1/3">
+              {job.majors[0]}
+            </h5>
+            <div className="basis-3/5 md:basis-2/3 flex justify-between">
+              <h4 className="font-bold">{job.title}</h4>
               {job.endAt < new Date() ? (
                 <button
                   disabled
@@ -37,15 +39,17 @@ const ObriCard = forwardRef<HTMLDivElement, Props>(
               )}
             </div>
           </li>
-          <li className="grid grid-cols-5 text-xs md:text-sm items-center h-12 md:h-12 border-whitespace border-b px-4">
-            <span className="font-bold col-span-2">페이 {job.fee}만원</span>
-            <span className="col-span-3">{job.province}</span>
+          <li className="flex items-center h-12 md:h-12 border-whitespace border-b px-4">
+            <span className="font-bold basis-2/5 md:basis-1/3">
+              페이 {job.fee}만원
+            </span>
+            <span className="basis-3/5 md:basis-2/3">{job.province}</span>
           </li>
-          <li className="h-12 md:h-12 border-whitespace border-b px-4 flex justify-center items-center text-xs md:text-sm gap-4 md:gap-8">
+          <li className="h-12 md:h-12 border-whitespace border-b px-4 flex justify-center items-center gap-4 md:gap-8">
             <span>{filter.YYYYMMDD(job.startAt, "YYYY.MM.DD(ddd) hh:mm")}</span>{" "}
             -<span>{filter.YYYYMMDD(job.endAt, "YYYY.MM.DD(ddd) hh:mm")}</span>
           </li>
-          <li className="h-12 md:h-12 px-6 flex items-center text-xs md:text-sm">
+          <li className="h-12 md:h-12 px-6 flex items-center ">
             <span className="w-[6px] h-[6px] bg-primary rounded-full mr-2 " />
             {job.contents}
           </li>
