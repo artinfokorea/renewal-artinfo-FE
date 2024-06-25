@@ -11,7 +11,6 @@ import CloseIcon from "../icons/CloseIcon";
 import ProvinceDialog from "../dialog/ProvinceDialog";
 import MajorCheckBoxes from "../common/MajorCheckBoxes";
 import MobileFilterTab from "../common/MobileFIlterTab";
-import LessonCard from "./LessonCard";
 import LessonList from "./LessonList";
 import LessonListSkeleton from "../skeleton/LessonListSkeleton";
 

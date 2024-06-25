@@ -43,7 +43,7 @@ const MainClientContainer = () => {
   // }, []);
 
   return (
-    <div className="max-w-screen-lg mx-auto h-full px-2">
+    <div className="max-w-screen-lg mx-auto h-full px-4">
       <Suspense fallback={<BannerSkeleton />}>
         <BannerContainer />
       </Suspense>
