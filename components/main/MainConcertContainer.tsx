@@ -10,6 +10,7 @@ import { queries } from "@/lib/queries"
 import { Swiper, SwiperSlide } from "swiper/react"
 import "swiper/css"
 import { Pagination } from "swiper/modules"
+import { AspectRatio } from "../ui/aspect-ratio"
 
 const MainConcertContainer = () => {
   const { data: concerts } = useSuspenseQuery(
@@ -27,7 +28,7 @@ const MainConcertContainer = () => {
               index < 2 ? "block" : index < 4 ? "hidden md:block" : "hidden"
             }`}
           >
-            <div className="h-[240px] md:h-[300px] relative">
+            <AspectRatio ratio={2 / 3} className="relative cursor-pointer">
               <Image
                 src={concert.imageUrl}
                 alt="concert_image"
@@ -37,16 +38,16 @@ const MainConcertContainer = () => {
                 sizes="(max-width: 768px) 100px 180px, 198px 280px"
                 className="rounded-md"
               />
-            </div>
+            </AspectRatio>
           </Link>
         ))}
       </section>
       <section className="mt-4 flex md:hidden overflow-x-auto">
         <Swiper spaceBetween={10} slidesPerView="auto" modules={[Pagination]}>
           {concerts?.map(concert => (
-            <SwiperSlide key={concert.id} style={{ width: "220px" }}>
+            <SwiperSlide key={concert.id} style={{ width: "200px" }}>
               <Link key={concert.id} href={concert.redirectUrl} target="_blank">
-                <div className="h-[300px] relative">
+                <AspectRatio ratio={2 / 3} className="relative cursor-pointer">
                   <Image
                     src={concert.imageUrl}
                     alt="concert_image"
@@ -56,7 +57,7 @@ const MainConcertContainer = () => {
                     sizes="(max-width: 768px) 100px 180px, 198px 280px"
                     className="rounded-md"
                   />
-                </div>
+                </AspectRatio>
               </Link>
             </SwiperSlide>
           ))}

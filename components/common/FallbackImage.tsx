@@ -1,17 +1,17 @@
-import Image, { ImageProps } from "next/image";
-import React, { useState } from "react";
+import Image, { ImageProps } from "next/image"
+import React, { useState } from "react"
 
 interface Props extends Omit<ImageProps, "src"> {
-  src: string;
-  fallbackText?: string;
+  src: string
+  fallbackText?: string
 }
 
 const FallbackImage = ({ src, alt, fallbackText, ...props }: Props) => {
-  const [isError, setIsError] = useState(false);
+  const [isError, setIsError] = useState(false)
 
   const handleError = () => {
-    setIsError(!isError);
-  };
+    setIsError(!isError)
+  }
 
   return (
     <>
@@ -31,7 +31,7 @@ const FallbackImage = ({ src, alt, fallbackText, ...props }: Props) => {
         />
       )}
     </>
-  );
-};
+  )
+}
 
-export default FallbackImage;
+export default FallbackImage

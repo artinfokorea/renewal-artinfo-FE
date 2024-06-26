@@ -13,6 +13,7 @@ import { Badge } from "../ui/badge"
 import { useSession } from "next-auth/react"
 import ItemManageBox from "../common/ItemManageBox"
 import { usePathname, useRouter } from "next/navigation"
+import { AspectRatio } from "../ui/aspect-ratio"
 
 interface Props {
   lesson: LESSON
