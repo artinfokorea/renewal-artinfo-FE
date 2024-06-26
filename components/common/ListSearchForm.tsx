@@ -37,7 +37,7 @@ const ListSearchForm = ({ totalCount, title }: Props) => {
         <Input
           value={searchInput}
           onChange={(e) => setSearchInput(e.target.value)}
-          className="w-full md:text-lg text-black border-gray-400 border placeholder-gray-400 rounded-3xl px-14 md:py-6"
+          className="w-full text-base text-black border-main border-2 placeholder-gray-400  rounded-3xl px-14 md:py-6"
           placeholder="직군, 전공, 분야 등을 검색해보세요."
         />
         <button type="submit">

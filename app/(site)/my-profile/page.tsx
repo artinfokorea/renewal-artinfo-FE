@@ -3,7 +3,6 @@
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
-import { useSession } from "next-auth/react";
 import React, { useEffect, useState } from "react";
 import { MAJOR } from "@/types";
 import { useLoading } from "@toss/use-loading";
@@ -20,7 +19,6 @@ import { queries } from "@/lib/queries";
 import MajorDialog from "@/components/dialog/MajorDialog";
 import PhoneDialog from "@/components/dialog/PhoneDialog";
 import ProfileForm from "@/components/profile/ProfileForm";
-import dayjs from "dayjs";
 import filters from "@/lib/filters";
 
 const schema = yup
@@ -45,7 +43,6 @@ const schema = yup
 
 export type ProfileFormData = yup.InferType<typeof schema>;
 const page = () => {
-  const { data } = useSession();
   const [isMajorDialog, setIsMajorDialog] = useState(false);
   const [isImageUploadLoading, imageStartTransition] = useLoading();
   const { successToast, errorToast } = useToast();
