@@ -1,47 +1,47 @@
-'use client';
+"use client"
 
-import React, { useRef, useState } from 'react';
-import FileUploader from '../common/FileUploader';
-import Image from 'next/image';
-import { Button, Input, Textarea } from '@headlessui/react';
-import PhotoIcon from '../icons/PhotoIcon';
-import CloseIcon from '../icons/CloseIcon';
-import { useForm } from 'react-hook-form';
-import { yupResolver } from '@hookform/resolvers/yup';
-import { usePathname, useRouter } from 'next/navigation';
-import * as yup from 'yup';
-import DistrictDialog from '../dialog/DistrictDialog';
-import useToast from '@/hooks/useToast';
-import { uploadImages } from '@/apis/system';
-import { LESSON } from '@/types/lessons';
+import React, { useRef, useState } from "react"
+import FileUploader from "../common/FileUploader"
+import Image from "next/image"
+import { Button, Input, Textarea } from "@headlessui/react"
+import PhotoIcon from "../icons/PhotoIcon"
+import CloseIcon from "../icons/CloseIcon"
+import { useForm } from "react-hook-form"
+import { yupResolver } from "@hookform/resolvers/yup"
+import { usePathname, useRouter } from "next/navigation"
+import * as yup from "yup"
+import DistrictDialog from "../dialog/DistrictDialog"
+import useToast from "@/hooks/useToast"
+import { uploadImages } from "@/apis/system"
+import { LESSON } from "@/types/lessons"
 
 const schema = yup
   .object({
-    introduction: yup.string().required('소개를 입력해주세요.'),
-    career: yup.string().required('경력 사항을 입력해주세요.'),
-    pay: yup.number().required('1회당 금액을 입력해주세요.'),
+    introduction: yup.string().required("소개를 입력해주세요."),
+    career: yup.string().required("경력 사항을 입력해주세요."),
+    pay: yup.number().required("1회당 금액을 입력해주세요."),
     areas: yup
       .array()
-      .min(1, '한개 이상의 지역을 등록해주세요.')
-      .required('레슨 가능한 지역을 등록해주세요.'),
-    imageUrl: yup.string().required('이미지를 등록해주세요.'),
+      .min(1, "한개 이상의 지역을 등록해주세요.")
+      .required("레슨 가능한 지역을 등록해주세요."),
+    imageUrl: yup.string().required("이미지를 등록해주세요."),
   })
-  .required();
+  .required()
 
-export type LessonFormData = yup.InferType<typeof schema>;
+export type LessonFormData = yup.InferType<typeof schema>
 
 interface Props {
-  isFormLoading: boolean;
-  handleLesson: (payload: LessonFormData) => void;
-  lesson?: LESSON;
+  isFormLoading: boolean
+  handleLesson: (payload: LessonFormData) => void
+  lesson?: LESSON
 }
 
 const LessonForm = ({ handleLesson, isFormLoading, lesson }: Props) => {
-  const fileUploader = useRef<HTMLInputElement>(null);
-  const router = useRouter();
-  const pathname = usePathname();
-  const { successToast, errorToast } = useToast();
-  const [isDistrictDialog, setIsDistrictDialog] = useState(false);
+  const fileUploader = useRef<HTMLInputElement>(null)
+  const router = useRouter()
+  const pathname = usePathname()
+  const { successToast, errorToast } = useToast()
+  const [isDistrictDialog, setIsDistrictDialog] = useState(false)
 
   const {
     register,
@@ -59,42 +59,42 @@ const LessonForm = ({ handleLesson, isFormLoading, lesson }: Props) => {
       introduction: lesson?.introduction,
       career: lesson?.career,
     },
-  });
+  })
 
   const handleArea = (area: string) => {
-    if (watch('areas').includes(area)) {
-      const filteredAreas = watch('areas').filter(
-        (prev: string) => prev !== area
-      );
-      setValue('areas', filteredAreas);
+    if (watch("areas").includes(area)) {
+      const filteredAreas = watch("areas").filter(
+        (prev: string) => prev !== area,
+      )
+      setValue("areas", filteredAreas)
     } else {
-      setValue('areas', [...watch('areas'), area]);
+      setValue("areas", [...watch("areas"), area])
     }
-  };
+  }
 
   const openFileUploader = () => {
-    fileUploader.current?.click();
-  };
+    fileUploader.current?.click()
+  }
 
   const handleUploadedFiles = async (files: File[]) => {
     try {
-      const uploadResponse = await uploadImages(files as File[]);
-      successToast('프로필 이미지가 등록되었습니다.');
-      setValue('imageUrl', uploadResponse.images[0].url as string);
+      const uploadResponse = await uploadImages(files as File[])
+      successToast("프로필 이미지가 등록되었습니다.")
+      setValue("imageUrl", uploadResponse.images[0].url as string)
     } catch (error: any) {
-      errorToast(error.message);
-      console.log(error);
+      errorToast(error.message)
+      console.log(error)
     }
-  };
+  }
 
   return (
     <>
       <form className="mt-8 md:mt-16 px-4">
         <div className="flex flex-col md:flex-row md:gap-24">
-          {watch('imageUrl') ? (
+          {watch("imageUrl") ? (
             <div className="h-[360px] md:h-[300px] relative w-[300px] md:w-[240px] mx-auto">
               <Image
-                src={watch('imageUrl')}
+                src={watch("imageUrl")}
                 alt="lesson_image"
                 fill
                 quality={100}
@@ -103,7 +103,7 @@ const LessonForm = ({ handleLesson, isFormLoading, lesson }: Props) => {
               />
               <Button
                 className="absolute top-2 right-2 rounded-full opacity-40 bg-white p-2"
-                onClick={() => setValue('imageUrl', '')}
+                onClick={() => setValue("imageUrl", "")}
               >
                 <CloseIcon className="w-6 h-6 text-primary" />
               </Button>
@@ -138,7 +138,7 @@ const LessonForm = ({ handleLesson, isFormLoading, lesson }: Props) => {
                 <span className="font-bold">가격</span>
                 <div className="flex whitespace-nowrap items-center">
                   <Input
-                    {...register('pay')}
+                    {...register("pay")}
                     type="number"
                     className="border px-2 py-1 mr-1 rounded-lg focus:outline-none w-full md:w-[200px]"
                   />
@@ -156,9 +156,9 @@ const LessonForm = ({ handleLesson, isFormLoading, lesson }: Props) => {
                 </Button>
               </div>
               <ul className="border rounded-lg h-32 w-full md:w-1/2 p-2">
-                {watch('areas')?.map((area: string) => (
+                {watch("areas")?.map((area: string) => (
                   <li key={area} className="flex items-center gap-2">
-                    <span>{area}</span>{' '}
+                    <span>{area}</span>{" "}
                     <button onClick={() => handleArea(area)}>
                       <CloseIcon className="w-4 h-4" />
                     </button>
@@ -168,21 +168,24 @@ const LessonForm = ({ handleLesson, isFormLoading, lesson }: Props) => {
             </div>
           </div>
         </div>
-        <div className="flex flex-col gap-4 md:flex-row md:gap-8 mt-6 md:mt-12">
-          <div className="md:w-1/2 bg-whitesmoke rounded-md py-8 px-10 h-[380px] overflow-y-auto">
-            <p className="text-coolgray font-semibold text-lg mb-6">
+        <div className="border-whitesmoke border-b-2 my-8 " />
+        <div className="flex flex-col gap-4 md:flex-row md:gap-8">
+          <div className="md:w-1/2 bg-whitesmoke rounded-md p-4 md:p-8 h-[380px] overflow-y-auto">
+            <p className="text-coolgray font-semibold text-lg mb-3 md:mb-6">
               전문가 소개
             </p>
             <Textarea
-              {...register('introduction')}
+              {...register("introduction")}
               placeholder="전문가 소개를 입력해주세요."
               className="border p-3 rounded-lg resize-none focus:outline-none w-full h-4/5"
             />
           </div>
-          <div className="md:w-1/2 bg-whitesmoke rounded-md py-8 px-10 h-[380px] overflow-y-auto">
-            <p className="text-coolgray font-semibold text-lg mb-6">경력</p>
+          <div className="md:w-1/2 bg-whitesmoke rounded-md p-4 md:p-8 h-[380px] overflow-y-auto">
+            <p className="text-coolgray font-semibold text-lg mb-3 md:mb-6">
+              경력
+            </p>
             <Textarea
-              {...register('career')}
+              {...register("career")}
               placeholder="경력 사항을 입력해주세요."
               className="border p-3 rounded-lg resize-none focus:outline-none w-full h-4/5"
             />
@@ -191,7 +194,7 @@ const LessonForm = ({ handleLesson, isFormLoading, lesson }: Props) => {
         <div className="flex justify-end gap-4 mt-8">
           <Button
             onClick={() =>
-              router.push(pathname.slice(0, pathname.lastIndexOf('/')))
+              router.push(pathname.slice(0, pathname.lastIndexOf("/")))
             }
             type="button"
             className="border-[3px] rounded-full font-semibold w-20 py-1"
@@ -215,7 +218,7 @@ const LessonForm = ({ handleLesson, isFormLoading, lesson }: Props) => {
         handleArea={handleArea}
       />
     </>
-  );
-};
+  )
+}
 
-export default LessonForm;
+export default LessonForm

@@ -1,44 +1,44 @@
-'use client';
+"use client"
 
-import { queries } from '@/lib/queries';
-import { useQuery } from '@tanstack/react-query';
-import React, { useState } from 'react';
-import Image from 'next/image';
-import filters from '@/lib/filters';
-import ClipBoardIcon from '../icons/ClipBoardIcon';
-import useToast from '@/hooks/useToast';
-import { clipboard } from '@toss/utils';
-import { LESSON, SchoolType, SchoolTypeValues } from '@/types/lessons';
-import { Badge } from '../ui/badge';
-import { useSession } from 'next-auth/react';
-import ItemManageBox from '../common/ItemManageBox';
-import { usePathname, useRouter } from 'next/navigation';
+import { queries } from "@/lib/queries"
+import { useQuery } from "@tanstack/react-query"
+import React, { useState } from "react"
+import Image from "next/image"
+import filters from "@/lib/filters"
+import ClipBoardIcon from "../icons/ClipBoardIcon"
+import useToast from "@/hooks/useToast"
+import { clipboard } from "@toss/utils"
+import { LESSON, SchoolType, SchoolTypeValues } from "@/types/lessons"
+import { Badge } from "../ui/badge"
+import { useSession } from "next-auth/react"
+import ItemManageBox from "../common/ItemManageBox"
+import { usePathname, useRouter } from "next/navigation"
 
 interface Props {
-  lesson: LESSON;
-  deleteLesson: () => void;
+  lesson: LESSON
+  deleteLesson: () => void
 }
 
 const LessonDetailContainer = ({ lesson, deleteLesson }: Props) => {
-  const [isPhoneShow, setIsPhoneShow] = useState(false);
-  const filter = filters();
-  const { successToast } = useToast();
-  const { data } = useSession();
-  const router = useRouter();
-  const pathname = usePathname();
+  const [isPhoneShow, setIsPhoneShow] = useState(false)
+  const filter = filters()
+  const { successToast } = useToast()
+  const { data } = useSession()
+  const router = useRouter()
+  const pathname = usePathname()
 
   const { data: user } = useQuery({
     ...queries.users.detail(),
     enabled: !!data?.user,
-  });
+  })
 
   const copyToPhone = async () => {
-    const isSuccess = await clipboard.writeText(lesson?.phone as string);
+    const isSuccess = await clipboard.writeText(lesson?.phone as string)
 
     if (isSuccess) {
-      successToast('연락처가 복사되었습니다.');
+      successToast("연락처가 복사되었습니다.")
     }
-  };
+  }
 
   return (
     <div className="mt-8 md:mt-16">
@@ -55,7 +55,7 @@ const LessonDetailContainer = ({ lesson, deleteLesson }: Props) => {
             />
           </div>
         )}
-        <div className="flex-1 p-6 md:p-0">
+        <div className="flex-1 p-4 md:p-0">
           <h4 className="text-xl md:text-2xl font-bold">{lesson?.name}</h4>
           <div className="mt-6 grid md:grid-cols-2 gap-y-4 gap-x-10">
             <div className="flex  gap-4 text-base md:text-lg items-center">
@@ -83,7 +83,7 @@ const LessonDetailContainer = ({ lesson, deleteLesson }: Props) => {
             <div className="flex flex-col gap-4 text-base md:text-lg">
               <span className="font-bold">학력</span>
 
-              {lesson?.schools?.map((school) => (
+              {lesson?.schools?.map(school => (
                 <div
                   key={school.id}
                   className="flex items-center gap-6 md:gap-12 mb-2"
@@ -91,10 +91,10 @@ const LessonDetailContainer = ({ lesson, deleteLesson }: Props) => {
                   <img
                     src={
                       school.type === SchoolType.UNDERGRADUATE
-                        ? '/icon/bachelor.png'
+                        ? "/icon/bachelor.png"
                         : school.type === SchoolType.MASTER
-                        ? '/icon/master.png'
-                        : '/icon/doctor.png'
+                        ? "/icon/master.png"
+                        : "/icon/doctor.png"
                     }
                     alt="school_image"
                     className="w-[30px] h-[30px]"
@@ -133,7 +133,7 @@ const LessonDetailContainer = ({ lesson, deleteLesson }: Props) => {
                 <span className="font-bold">지역</span>
                 <div>
                   {lesson?.areas?.map((area, index) => (
-                    <span key={area}>
+                    <span key={area} className="text-sm">
                       {index === lesson.areas.length - 1 ? area : `${area}, `}
                     </span>
                   ))}
@@ -149,24 +149,27 @@ const LessonDetailContainer = ({ lesson, deleteLesson }: Props) => {
           handleDelete={deleteLesson}
         />
       )}
-      <div className="flex flex-col px-4 gap-4 md:flex-row md:gap-8 mt-6 md:mt-12">
-        <div className="md:w-1/2 bg-whitesmoke rounded-md p-8 min-h-[200px] md:h-[380px] overflow-y-auto">
-          <p className="text-coolgray font-semibold text-lg mb-6">
+      <div className="border-whitesmoke border-b-2 my-8 mx-4 md:mx-0" />
+      <div className="flex flex-col px-4 md:px-0 gap-4 md:flex-row md:gap-8">
+        <div className="md:w-1/2 bg-whitesmoke rounded-md p-4 md:p-8 min-h-[200px] md:h-[380px] overflow-y-auto">
+          <p className="text-coolgray font-semibold text-lg mb-3 md:mb-6">
             전문가 소개
           </p>
-          <p className="min-h-[120px] md:h-[260px] bg-white rounded-lg p-2">
+          <p className="min-h-[120px] md:h-[260px] rounded-lg p-2">
             {lesson?.introduction}
           </p>
         </div>
-        <div className="md:w-1/2 bg-whitesmoke rounded-md p-8 min-h-[200px] md:h-[380px] overflow-y-auto">
-          <p className="text-coolgray font-semibold text-lg mb-6">경력</p>
-          <p className="min-h-[120px] md:h-[260px] bg-white rounded-lg p-2">
+        <div className="md:w-1/2 bg-whitesmoke rounded-md p-4 md:p-8 min-h-[200px] md:h-[380px] overflow-y-auto">
+          <p className="text-coolgray font-semibold text-lg mb-3 md:mb-6">
+            경력
+          </p>
+          <p className="min-h-[120px] md:h-[260px] rounded-lg p-2">
             {lesson?.career}
           </p>
         </div>
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default LessonDetailContainer;
+export default LessonDetailContainer
