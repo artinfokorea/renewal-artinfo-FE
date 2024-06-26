@@ -23,14 +23,14 @@ const page = () => {
         <MainJobsContainer />
       </Suspense>
 
-      <article className="bg-whitesmoke h-[100px] md:h-[120px] rounded-xl">
-        <div className="max-w-screen-md mx-auto  relative flex justify-center md:justify-end items-center h-full">
+      <article className="hidden md:flex bg-whitesmoke h-[100px] md:h-[120px] rounded-xl">
+        <div className="max-w-screen-md mx-auto relative flex justify-center  items-center h-full">
           <img
             src="/img/instruments.png"
             alt="instruments_image"
             className="w-40 h-40 bottom-2 left-0 hidden md:block absolute"
           />
-          <div className="flex justify-between">
+          <div className="flex justify-between md:ml-40">
             <h4 className="font-bold text-base md:text-lg mx-4 md:mx-12">
               많은 학생들이 레슨 받으려고 <br />
               기다리고 있어요.
@@ -41,6 +41,24 @@ const page = () => {
               </button>
             </a>
           </div>
+        </div>
+      </article>
+      <article className="flex md:hidden bg-whitesmoke h-[100px] md:h-[120px] rounded-xl">
+        <div className="px-6 py-4 flex justify-between items-center w-full">
+          <div className="text-sm flex flex-col gap-2">
+            <h4 className="font-medium">
+              많은 학생들이 레슨 받으려고 <br />
+              기다리고 있어요.
+            </h4>
+            <a href="/lessons/create" className="text-main font-bold">
+              레슨 등록하기
+            </a>
+          </div>
+          <img
+            src="/img/instruments.png"
+            alt="instruments_image"
+            className="w-32 h-32"
+          />
         </div>
       </article>
       <Suspense fallback={<MainObirSkeleton />}>

@@ -1,60 +1,60 @@
-"use client";
+"use client"
 
-import { queries } from "@/lib/queries";
-import { useQuery } from "@tanstack/react-query";
-import { usePathname, useRouter, useSearchParams } from "next/navigation";
-import ListSearchForm from "../common/ListSearchForm";
-import { Suspense, useMemo, useState } from "react";
-import { Button } from "../ui/button";
-import { Badge } from "../ui/badge";
-import CloseIcon from "../icons/CloseIcon";
-import ProvinceDialog from "../dialog/ProvinceDialog";
-import MajorCheckBoxes from "../common/MajorCheckBoxes";
-import MobileFilterTab from "../common/MobileFIlterTab";
-import LessonList from "./LessonList";
-import LessonListSkeleton from "../skeleton/LessonListSkeleton";
+import { queries } from "@/lib/queries"
+import { useQuery } from "@tanstack/react-query"
+import { usePathname, useRouter, useSearchParams } from "next/navigation"
+import ListSearchForm from "../common/ListSearchForm"
+import { Suspense, useMemo, useState } from "react"
+import { Button } from "../ui/button"
+import { Badge } from "../ui/badge"
+import CloseIcon from "../icons/CloseIcon"
+import ProvinceDialog from "../dialog/ProvinceDialog"
+import MajorCheckBoxes from "../common/MajorCheckBoxes"
+import MobileFilterTab from "../common/MobileFIlterTab"
+import LessonList from "./LessonList"
+import LessonListSkeleton from "../skeleton/LessonListSkeleton"
 
 const LessonsContainer = () => {
-  const searchParams = useSearchParams();
-  const provinceIds = searchParams.getAll("provinceId") as string[];
-  const router = useRouter();
-  const [isProvinceDialog, setIsProvinceDialog] = useState(false);
-  const pathname = usePathname();
+  const searchParams = useSearchParams()
+  const provinceIds = searchParams.getAll("provinceId") as string[]
+  const router = useRouter()
+  const [isProvinceDialog, setIsProvinceDialog] = useState(false)
+  const pathname = usePathname()
 
-  const { data: majors } = useQuery(queries.majors.list());
+  const { data: majors } = useQuery(queries.majors.list())
 
-  const { data: provinceList } = useQuery(queries.provinces.list());
+  const { data: provinceList } = useQuery(queries.provinces.list())
 
-  const { data: lessonsCount } = useQuery(queries.lessons.count());
+  const { data: lessonsCount } = useQuery(queries.lessons.count())
 
   const selectedProvinces = useMemo(() => {
-    return provinceList?.provinces?.filter((province) =>
-      provinceIds.includes(province.id.toString())
-    );
-  }, [provinceIds]);
+    return provinceList?.provinces?.filter(province =>
+      provinceIds.includes(province.id.toString()),
+    )
+  }, [provinceIds])
 
   const deleteProvince = (provinceId: string) => {
-    const locationParams = new URLSearchParams(window.location.search);
+    const locationParams = new URLSearchParams(window.location.search)
     if (provinceIds.includes(provinceId)) {
-      const newProvinceIds = provinceIds.filter((id) => id !== provinceId);
+      const newProvinceIds = provinceIds.filter(id => id !== provinceId)
 
-      locationParams.delete("provinceId");
-      newProvinceIds.forEach((id) => {
-        locationParams.append("provinceId", id);
-      });
+      locationParams.delete("provinceId")
+      newProvinceIds.forEach(id => {
+        locationParams.append("provinceId", id)
+      })
     }
 
-    const newUrl = `${window.location.pathname}?${locationParams.toString()}`;
+    const newUrl = `${window.location.pathname}?${locationParams.toString()}`
     router.push(newUrl, {
       scroll: false,
-    });
-  };
+    })
+  }
 
   return (
     <div className="max-w-screen-lg mx-auto px-4">
       <ListSearchForm
         totalCount={lessonsCount?.totalCount}
-        title="명의의 전문가가
+        title="명의 전문가가
         준비중이에요."
       />
       <section className="flex">
@@ -70,7 +70,7 @@ const LessonsContainer = () => {
               >
                 지역선택
               </Button>
-              {selectedProvinces?.map((province) => (
+              {selectedProvinces?.map(province => (
                 <Badge
                   key={province.id}
                   className="text-main text-sm border-lightgray rounded h-7 flex items-center"
@@ -108,7 +108,7 @@ const LessonsContainer = () => {
         />
       </section>
     </div>
-  );
-};
+  )
+}
 
-export default LessonsContainer;
+export default LessonsContainer
