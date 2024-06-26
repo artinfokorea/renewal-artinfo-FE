@@ -188,14 +188,14 @@ const OrganizationForm = ({ handleFullTimeJob, isLoading }: Props) => {
             />
           </div>
           <div className="my-2 flex md:items-center gap-2">
-            <button
+            <Button
               type="button"
               onClick={() => setIsMajorDialog(!isMajorDialog)}
-              className="border-main rounded-2xl border px-3 h-8 flex items-center bg-main"
+              className="border text-main h-8 text-sm rounded-full flex gap-1"
             >
-              <PlusIcon className="w-4 h-4 text-white" />
-              <span className="text-white">전공</span>
-            </button>
+              <PlusIcon className="w-4 h-4 text-main" />
+              <span>전공</span>
+            </Button>
             {watch("majors").map((major) => (
               <Badge key={major.id} className="bg-main text-white text-sm h-8">
                 {major.koName}
@@ -219,7 +219,7 @@ const OrganizationForm = ({ handleFullTimeJob, isLoading }: Props) => {
             <Button
               type="button"
               onClick={() => setIsPostDialog(!isPostDialog)}
-              className="border text-main h-[36px]"
+              className="border text-main h-8 text-sm"
             >
               주소검색
             </Button>

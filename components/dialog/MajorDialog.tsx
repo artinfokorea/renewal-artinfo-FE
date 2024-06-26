@@ -48,9 +48,9 @@ const MajorDialog = ({
             </Button>
           </div>
           <div className="border-b-2 border-whitesmoke" />
-          <div className="p-4 md:p-8">
+          <div className="p-4 md:px-8">
             {MajorCategoryValues.map(({ key, value }) => (
-              <div key={key} className="flex flex-col gap-2 my-2">
+              <div key={key} className="flex flex-col gap-3 my-3">
                 <span className="text-coolgray font-bold">{value}</span>
                 <div className="flex flex-wrap gap-2">
                   {data?.majors.map((major) => {
