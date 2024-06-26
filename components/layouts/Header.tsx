@@ -1,35 +1,21 @@
-"use client";
+"use client"
 
-import { usePathname, useRouter } from "next/navigation";
-import React, { useEffect, useState } from "react";
+import { usePathname, useRouter } from "next/navigation"
+import React, { useEffect, useState } from "react"
 import {
   NavigationMenu,
   NavigationMenuItem,
   NavigationMenuList,
-} from "@/components/ui/navigation-menu";
-import { Button } from "../ui/button";
-import Link from "next/link";
-import { signOut, useSession } from "next-auth/react";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-import {
-  Menu,
-  MenuButton,
-  MenuItem,
-  MenuItems,
-  Transition,
-} from "@headlessui/react";
+} from "@/components/ui/navigation-menu"
+import { Button } from "../ui/button"
+import Link from "next/link"
+import { signOut, useSession } from "next-auth/react"
+import { useQuery } from "@tanstack/react-query"
+import { queries } from "@/lib/queries"
+import MobileDropDown from "./MobileDropDown"
+import DeskTopDropDown from "./DeskTopDropDown"
 
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import HamburgerIcon from "../icons/HamburgerIcon";
-import { useQuery } from "@tanstack/react-query";
-import { queries } from "@/lib/queries";
-
-const NavItems = [
+export const NavItems = [
   {
     href: "/jobs",
     label: "채용",
@@ -42,43 +28,43 @@ const NavItems = [
     href: "/inquiry",
     label: "문의",
   },
-];
+]
 
 const Header = () => {
-  const pathname = usePathname();
-  const router = useRouter();
-  const { data } = useSession();
-  const [isTopScroll, setIsTopScroll] = useState(true);
-  const [isBarOpen, setIsBarOpen] = useState(false);
-  const [scrollY, setScrollY] = useState(0);
+  const pathname = usePathname()
+  const router = useRouter()
+  const { data } = useSession()
+  const [isTopScroll, setIsTopScroll] = useState(true)
+  const [isBarOpen, setIsBarOpen] = useState(false)
+  const [scrollY, setScrollY] = useState(0)
 
   const { data: user } = useQuery({
     ...queries.users.detail(),
     enabled: !!data?.user,
-  });
+  })
 
   useEffect(() => {
     const handleScroll = () => {
-      const isTop = window.scrollY === 0;
-      setIsTopScroll(isTop);
-      setScrollY(window.scrollY);
-    };
+      const isTop = window.scrollY === 0
+      setIsTopScroll(isTop)
+      setScrollY(window.scrollY)
+    }
 
-    window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
+    window.addEventListener("scroll", handleScroll)
+    return () => window.removeEventListener("scroll", handleScroll)
+  }, [])
 
   useEffect(() => {
-    setIsBarOpen(false);
-  }, [scrollY, pathname]);
+    setIsBarOpen(false)
+  }, [scrollY, pathname])
 
   const handleSign = () => {
     if (data?.user) {
-      signOut({ callbackUrl: "/auth/sign-in" });
+      signOut({ callbackUrl: "/auth/sign-in" })
     } else {
-      router.push("/auth/sign-in");
+      router.push("/auth/sign-in")
     }
-  };
+  }
 
   return (
     <header
@@ -96,7 +82,7 @@ const Header = () => {
             <NavigationMenuList>
               <NavigationMenuItem>
                 {NavItems.map(({ href, label }) => {
-                  const isActive = pathname.includes(href);
+                  const isActive = pathname.includes(href)
                   return (
                     <Link
                       href={href}
@@ -107,7 +93,7 @@ const Header = () => {
                     >
                       {label}
                     </Link>
-                  );
+                  )
                 })}
               </NavigationMenuItem>
             </NavigationMenuList>
@@ -115,30 +101,7 @@ const Header = () => {
         </div>
         <div className="hidden md:flex">
           {user ? (
-            <DropdownMenu>
-              <DropdownMenuTrigger className="flex items-center">
-                <Avatar>
-                  <AvatarImage
-                    src={user?.iconImageUrl || "/img/placeholder-user.png"}
-                  />
-                  <AvatarFallback>CN</AvatarFallback>
-                </Avatar>
-                <span className="mx-2 hidden md:block">{user?.nickname}님</span>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent>
-                <Link href="/my-profile" prefetch={false}>
-                  <DropdownMenuItem className="cursor-pointer hover:bg-whitesmoke">
-                    내 프로필
-                  </DropdownMenuItem>
-                </Link>
-                <DropdownMenuItem
-                  onClick={handleSign}
-                  className="cursor-pointer hover:bg-whitesmoke"
-                >
-                  로그아웃
-                </DropdownMenuItem>
-              </DropdownMenuContent>
-            </DropdownMenu>
+            <DeskTopDropDown user={user} handleSign={handleSign} />
           ) : (
             <Button
               className="bg-white text-main border-main border text-sm h-8 hover:bg-white"
@@ -148,64 +111,15 @@ const Header = () => {
             </Button>
           )}
         </div>
-        <Menu>
-          <MenuButton
-            className="flex md:hidden"
-            onClick={() => setIsBarOpen(!isBarOpen)}
-          >
-            <HamburgerIcon className="w-7 h-7 text-dimgray" />
-          </MenuButton>
-          <Transition
-            show={isBarOpen}
-            enter="transition-opacity duration-500"
-            enterFrom="opacity-0"
-            enterTo="opacity-100"
-            leave="transition-opacity duration-300"
-            leaveFrom="opacity-100"
-            leaveTo="opacity-0"
-          >
-            <MenuItems
-              anchor="bottom"
-              className="bg-white w-screen mt-3 p-4 flex flex-col gap-3"
-            >
-              {NavItems.map(({ href, label }) => {
-                const isActive = pathname.includes(href);
-                return (
-                  <MenuItem key={href}>
-                    <Link
-                      href={href}
-                      className={`py-2 font-semibold w-full ${
-                        isActive && "text-main"
-                      }`}
-                    >
-                      {label}
-                    </Link>
-                  </MenuItem>
-                );
-              })}
-              <div className="border-b-[1px] my-4 border-whitesmoke w-full mx-auto" />
-              <MenuItem>
-                <Link href="/my-profile" className="my-2 font-bold w-full">
-                  내정보
-                </Link>
-              </MenuItem>
-              <MenuItem>
-                {data?.user ? (
-                  <span className="py-2 font-bold" onClick={handleSign}>
-                    로그아웃
-                  </span>
-                ) : (
-                  <Link href="/auth/sign-in" className="py-2 font-bold w-full">
-                    로그인
-                  </Link>
-                )}
-              </MenuItem>
-            </MenuItems>
-          </Transition>
-        </Menu>
+        <MobileDropDown
+          isBarOpen={isBarOpen}
+          handleBar={() => setIsBarOpen(!isBarOpen)}
+          items={NavItems}
+          handleSign={handleSign}
+        />
       </div>
     </header>
-  );
-};
+  )
+}
 
-export default Header;
+export default Header

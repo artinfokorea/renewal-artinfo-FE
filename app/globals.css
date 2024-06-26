@@ -134,3 +134,7 @@
     ); /* 4개의 아이템 보여주기 */
   }
 }
+
+.swiper {
+  z-index: 0 !important;
+}
