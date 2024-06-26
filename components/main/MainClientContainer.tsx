@@ -1,10 +1,10 @@
 "use client";
 
 import React, { Suspense } from "react";
-import BannerContainer from "@/components/banner/BannerContainer";
-import ConcertContainer from "@/components/concert/MainConcertContainer";
-import MainObriContainer from "@/components/obri/MainObriContainer";
-import MainJobsContainer from "@/components/jobs/MainJobsContainer";
+import BannerContainer from "@/components/main/BannerContainer";
+import ConcertContainer from "@/components/main/MainConcertContainer";
+import MainObriContainer from "@/components/main/MainObriContainer";
+import MainJobsContainer from "@/components/main/MainJobsContainer";
 import BannerSkeleton from "../skeleton/BannerSkeleton";
 import ConcertSkeleton from "../skeleton/ConcertSkeleton";
 import MainJobSkeleton from "../skeleton/MainJobSkeleton";

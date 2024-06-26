@@ -16,7 +16,7 @@ const MainJobsContainer = () => {
     })
   );
   return (
-    <section>
+    <section className="my-8 md:my-12">
       <div className="flex justify-between">
         <h3 className="text-xl font-bold">#채용</h3>
         <Link href="/jobs">
@@ -32,13 +32,14 @@ const MainJobsContainer = () => {
               index < 2 ? "block" : index < 3 ? "hidden md:block" : "hidden"
             }`}
           >
-            <div className="border-2 border-whitesmoke h-[130px] md:h-[185px] relative">
+            <div className="border-2 border-whitesmoke h-[130px] md:h-[185px] relative rounded-lg">
               <Image
                 src={job.imageUrl}
                 alt="job_image"
                 fill
                 quality={100}
                 sizes="(max-width: 768px) 100px 130px, (max-width: 1200px) 200px, 185px"
+                className="rounded-lg"
               />
             </div>
           </Link>

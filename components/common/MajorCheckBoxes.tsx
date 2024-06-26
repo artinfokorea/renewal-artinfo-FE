@@ -166,6 +166,7 @@ const MajorCheckBoxes = ({ majors }: Props) => {
                       key={major.id}
                       value={major.id}
                       title={major.koName}
+                      child={true}
                       checked={
                         checkedMajorIds.includes(major.id.toString()) || false
                       }

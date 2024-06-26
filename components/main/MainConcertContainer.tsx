@@ -13,7 +13,7 @@ const MainConcertContainer = () => {
     queries.ads.list(AdvertisementType.CONCERT)
   );
   return (
-    <section className="py-6 gap-8 lg:gap-12 grid grid-cols-2 md:grid-cols-4">
+    <section className="gap-8 mt-4 lg:gap-12 grid grid-cols-2 md:grid-cols-4">
       {concerts?.map((concert, index) => (
         <Link
           key={concert.id}
