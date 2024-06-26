@@ -1,22 +1,13 @@
 "use client";
 
-import React, { useEffect, useState, useMemo, Suspense } from "react";
+import React, { useState, useMemo, Suspense } from "react";
 import ListSearchForm from "../common/ListSearchForm";
 import JobListCheckBoxes from "./JobListCheckBoxes";
-import { useInView } from "react-intersection-observer";
-import { JobType, JOB } from "@/types/jobs";
 import { Button } from "../ui/button";
 import { Badge } from "../ui/badge";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
-import {
-  useInfiniteQuery,
-  useQuery,
-  useSuspenseInfiniteQuery,
-} from "@tanstack/react-query";
+import { useQuery } from "@tanstack/react-query";
 import { queries } from "@/lib/queries";
-import { ScrollApiResponse } from "@/interface";
-import JobCard from "./JobCard";
-import ObriCard from "./ObriCard";
 import ProvinceDialog from "../dialog/ProvinceDialog";
 import CloseIcon from "../icons/CloseIcon";
 import MobileFilterTab from "../common/MobileFIlterTab";
@@ -29,11 +20,6 @@ const JobsContainer = () => {
   const router = useRouter();
   const pathname = usePathname();
   const [isProvinceDialog, setIsProvinceDialog] = useState(false);
-
-  const [ref, inView] = useInView({
-    delay: 100,
-    threshold: 0.5,
-  });
 
   const { data: majors } = useQuery(queries.majors.list());
 
@@ -63,12 +49,6 @@ const JobsContainer = () => {
       scroll: false,
     });
   };
-
-  // useEffect(() => {
-  //   if (inView && hasNextPage) {
-  //     fetchNextPage();
-  //   }
-  // }, [inView, hasNextPage]);
 
   return (
     <div className="max-w-screen-lg mx-auto px-4">
@@ -117,32 +97,6 @@ const JobsContainer = () => {
           <Suspense fallback={<JobListSkeleton />}>
             <JobsList />
           </Suspense>
-          {/* <JobListSkeleton /> */}
-          {/* <div className="mt-4">
-            {jobs?.pages?.map((page) =>
-              page?.jobs?.map((job, index) => {
-                return job.type === JobType.PART_TIME ? (
-                  <ObriCard
-                    key={job.id}
-                    job={job}
-                    ref={ref}
-                    isLastPage={
-                      !(hasNextPage && index === page.jobs.length - 5)
-                    }
-                  />
-                ) : (
-                  <JobCard
-                    key={job.id}
-                    job={job}
-                    ref={ref}
-                    isLastPage={
-                      !(hasNextPage && index === page.jobs.length - 5)
-                    }
-                  />
-                );
-              })
-            )}
-          </div> */}
         </div>
         <ProvinceDialog
           provinces={provinceList?.provinces}

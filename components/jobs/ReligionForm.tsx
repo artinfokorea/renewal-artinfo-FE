@@ -15,6 +15,7 @@ import { Badge } from "../ui/badge";
 import CloseIcon from "../icons/CloseIcon";
 import MajorDialog from "../dialog/MajorDialog";
 import PostCodeDialog from "../dialog/PostCodeDialog";
+import PlusIcon from "../icons/PlusIcon";
 
 const ToastEditor = dynamic(() => import("../editor/ToastEditor"), {
   ssr: false,
@@ -123,9 +124,10 @@ const ReligionForm = ({ handleReligionJob, isLoading }: Props) => {
           <Button
             type="button"
             onClick={() => setIsMajorDialog(!isMajorDialog)}
-            className="text-sm font-medium bg-main text-white rounded-full px-3 h-8"
+            className="border text-main h-8 text-sm rounded-full flex gap-1"
           >
-            전공추가
+            <PlusIcon className="w-4 h-4 text-main" />
+            <span>전공</span>
           </Button>
           {watch("majors").map((major) => (
             <Badge key={major.id} className="bg-main text-white text-sm h-8">

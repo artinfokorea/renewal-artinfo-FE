@@ -9,6 +9,7 @@ import React from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
 import { Pagination } from "swiper/modules";
+import FallbackImage from "../common/FallbackImage";
 
 const MainJobsContainer = () => {
   const { data } = useSuspenseQuery(
@@ -36,10 +37,11 @@ const MainJobsContainer = () => {
             }`}
           >
             <div className="border-2 border-whitesmoke h-[130px] md:h-[185px] relative rounded-lg">
-              <Image
+              <FallbackImage
                 src={job.imageUrl}
                 alt="job_image"
                 fill
+                fallbackText={job.companyName}
                 quality={100}
                 sizes="(max-width: 768px) 100px 130px, (max-width: 1200px) 200px, 185px"
                 className="rounded-lg"
@@ -54,11 +56,12 @@ const MainJobsContainer = () => {
             <SwiperSlide key={job.id} style={{ width: "150px" }}>
               <Link key={job.id} href={`/jobs/${job.id}`} target="_blank">
                 <div className="border-2 border-whitesmoke h-[100px] md:h-[185px] relative rounded-lg">
-                  <Image
+                  <FallbackImage
                     src={job.imageUrl}
                     alt="job_image"
                     fill
                     priority
+                    fallbackText={job.companyName}
                     quality={100}
                     sizes="(max-width: 768px) 100px 180px, 198px 280px"
                     className="rounded-md"
