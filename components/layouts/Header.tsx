@@ -92,7 +92,7 @@ const Header = () => {
           <Link href="/">
             <h1 className="font-bold text-2xl text-main">ARTINFO</h1>
           </Link>
-          <NavigationMenu className="ml-20 hidden md:flex">
+          <NavigationMenu className="ml-12 hidden md:flex">
             <NavigationMenuList>
               <NavigationMenuItem>
                 {NavItems.map(({ href, label }) => {
@@ -101,7 +101,7 @@ const Header = () => {
                     <Link
                       href={href}
                       key={href}
-                      className={`mx-4 font-semibold ${
+                      className={`mx-3 font-semibold ${
                         isActive && "text-main"
                       }`}
                     >

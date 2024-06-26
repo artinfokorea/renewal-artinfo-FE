@@ -15,12 +15,13 @@ import {
 import useToast from "@/hooks/useToast";
 import { updateUser, updateUserPhone } from "@/apis/users";
 import { SchoolType } from "@/types/lessons";
-import filters from "@/lib/filters";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { queries } from "@/lib/queries";
 import MajorDialog from "@/components/dialog/MajorDialog";
 import PhoneDialog from "@/components/dialog/PhoneDialog";
 import ProfileForm from "@/components/profile/ProfileForm";
+import dayjs from "dayjs";
+import filters from "@/lib/filters";
 
 const schema = yup
   .object({
@@ -52,8 +53,8 @@ const page = () => {
   const [isUpdateProfileLoading, updateProfileStartTransition] = useLoading();
   const [isUpdatePhoneLoading, updatePhoneStartTransition] = useLoading();
   const [isPhoneDialog, setIsPhoneDialog] = useState(false);
-  const filter = filters();
   const queryClient = useQueryClient();
+  const filter = filters();
 
   const { data: user } = useQuery(queries.users.detail());
 
@@ -69,6 +70,8 @@ const page = () => {
 
   useEffect(() => {
     if (user) {
+      const birthDate = filter.YYYYMMDD(user?.birth, "YYYY-MM-DD");
+      if (birthDate) setValue("birth", birthDate);
       setValue("majors", user?.majors);
       setValue(
         "bachellor",
@@ -90,7 +93,6 @@ const page = () => {
       setValue("nickname", user?.nickname || "");
       setValue("name", user?.name);
       setValue("phone", user?.phone);
-      setValue("birth", filter.YYYYMMDD(user?.birth) || "");
     }
   }, [user]);
 

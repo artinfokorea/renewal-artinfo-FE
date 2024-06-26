@@ -22,7 +22,6 @@ import { Badge } from "../ui/badge";
 import { SchoolTypeValues } from "@/types/lessons";
 import { Button } from "../ui/button";
 import { ProfileFormData } from "@/app/(site)/my-profile/page";
-import StarIcon from "../icons/StarIcon";
 
 interface Props {
   user?: USER;
@@ -69,7 +68,7 @@ const ProfileForm = ({
 
   return (
     <form className="flex mt-12">
-      <div className="hidden md:flex flex-col gap-4 p-4 md:p-8 whitespace-nowrap border-r-2 border-whitesmoke w-[250px]">
+      <div className="hidden md:flex flex-col gap-4 p-4 md:p-8 whitespace-nowrap border-r-2 border-whitesmoke w-[300px]">
         <ul>
           <li>
             <Link
@@ -84,7 +83,7 @@ const ProfileForm = ({
           <li className="my-4 font-semibold text-lg">내 활동</li>
         </ul>
       </div>
-      <div className="flex-1 px-4 py-2 md:px-8 md:py-6">
+      <div className="flex-1 md:ml-12 px-8 py-2 md:py-6">
         <div className="flex flex-col md:flex-row md:gap-20">
           <div className="flex flex-col items-center relative h-[150px]">
             <div className="relative h-[100px]">
@@ -126,20 +125,14 @@ const ProfileForm = ({
             </div>
           </div>
 
-          <div className="flex-col mt-4 md:mt-0 text-base md:text-lg">
-            <div className="flex gap-4 items-center mb-2 font-medium">
-              <Image
-                src="/icon/user-profile.png"
-                alt="user_icon"
-                width={24}
-                height={24}
-              />
+          <div className="flex-col flex gap-2 md:gap-0 mt-4 md:mt-0 text-base md:text-lg">
+            <div className="flex gap-4 items-center mb-2 font-medium mt-8">
               {isUpdateForm ? (
                 <>
                   <Input
                     {...register("name")}
-                    className="border px-2 py-1 rounded-lg focus:outline-none w-full md:w-[200px]"
-                    placeholder="닉네임을 입력해주세요."
+                    className="border px-2 py-1 rounded-lg focus:outline-none w-[100px] md:w-[200px] mx-auto md:ml-10"
+                    placeholder="이름을 입력해주세요."
                   />
                   <ErrorMessage
                     errors={errors}
@@ -150,16 +143,58 @@ const ProfileForm = ({
                   />
                 </>
               ) : (
-                <span>{user?.name}</span>
+                <h4 className="mx-auto md:ml-10 text-xl font-bold">
+                  {user?.name}
+                </h4>
               )}
             </div>
+            {isUpdateForm ? (
+              <div className="flex md:hidden justify-center gap-4 my-8 ">
+                <Button
+                  type="button"
+                  onClick={handleUpdateForm}
+                  className="border rounded-full font-semibold w-[70px]"
+                >
+                  취소
+                </Button>
+                <Button
+                  disabled={isUpdateProfileLoading || !isDirty}
+                  type="button"
+                  onClick={handleSubmit}
+                  className="bg-main text-white rounded-full font-semibold w-[70px]"
+                >
+                  확인
+                </Button>
+              </div>
+            ) : (
+              <div className="flex md:hidden justify-center gap-4 my-8">
+                <Button
+                  type="button"
+                  className="border rounded-full font-semibold"
+                >
+                  비밀번호 변경
+                </Button>
+                <Button
+                  type="button"
+                  onClick={handleUpdateForm}
+                  className="bg-main text-white rounded-full font-semibold px-6"
+                >
+                  내정보 수정
+                </Button>
+              </div>
+            )}
             <div className="flex gap-4 items-center mb-2 font-medium">
-              <StarIcon className="w-6 h-6" />
+              <Image
+                src="/icon/user-profile.png"
+                alt="user_icon"
+                width={24}
+                height={24}
+              />
               {isUpdateForm ? (
                 <>
                   <Input
                     {...register("nickname")}
-                    className="border px-2 py-1 rounded-lg focus:outline-none w-full md:w-[200px]"
+                    className="border px-2 py-1 rounded-lg focus:outline-none w-[120px] md:w-[200px]"
                     placeholder="닉네임을 입력해주세요."
                   />
                   <ErrorMessage
@@ -202,7 +237,7 @@ const ProfileForm = ({
                   />
                 </>
               ) : (
-                <span>{filter.YYYYMMDD(user?.birth)}</span>
+                <span>{filter.YYYYMMDD(user?.birth, "YYYY-MM-DD")}</span>
               )}
             </div>
             <div className="flex gap-4 items-center mb-2 font-medium">
@@ -234,7 +269,7 @@ const ProfileForm = ({
                 <button
                   type="button"
                   onClick={handleMajorDialog}
-                  className="text-main font-semibold border px-2 h-8 rounded-lg whitespace-nowrap"
+                  className="text-main text-sm font-semibold border px-2 h-8 rounded-lg whitespace-nowrap"
                 >
                   전공 등록
                 </button>
@@ -380,7 +415,7 @@ const ProfileForm = ({
           </div>
         </div>
         {isUpdateForm ? (
-          <div className="flex justify-end gap-4 mt-8">
+          <div className="hidden md:flex justify-end gap-4 mt-8  ">
             <Button
               type="button"
               onClick={handleUpdateForm}
@@ -398,7 +433,7 @@ const ProfileForm = ({
             </Button>
           </div>
         ) : (
-          <div className="flex justify-end gap-4">
+          <div className="hidden md:flex justify-end gap-4">
             <Button type="button" className="border rounded-full font-semibold">
               비밀번호 변경
             </Button>
