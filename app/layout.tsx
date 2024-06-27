@@ -1,11 +1,12 @@
-import { Inter } from "next/font/google";
-import "./globals.css";
-import Header from "@/components/layouts/Header";
-import BottomNavigation from "@/components/layouts/BottomNavigation";
-import ClientProvider from "@/components/provider/ClientProvider";
-import { Metadata, Viewport } from "next";
+import { Inter } from "next/font/google"
+import "./globals.css"
+import Header from "@/components/layouts/Header"
+import BottomNavigation from "@/components/layouts/BottomNavigation"
+import ClientProvider from "@/components/provider/ClientProvider"
+import { Metadata, Viewport } from "next"
+import Script from "next/script"
 
-const inter = Inter({ subsets: ["latin"] });
+const inter = Inter({ subsets: ["latin"] })
 
 export const viewport: Viewport = {
   width: "device-width",
@@ -13,7 +14,7 @@ export const viewport: Viewport = {
   maximumScale: 1,
   userScalable: false,
   viewportFit: "cover",
-};
+}
 
 export const metadata: Metadata = {
   title: "아트인포-ARTINFO",
@@ -37,21 +38,26 @@ export const metadata: Metadata = {
     ],
   },
   manifest: "/manifest.json",
+
   // verification: {
   //   other: {
   //     "naver-site-verification": ["eb1c30e483eed014548bceaa3325c74cc15490db"],
   //     "google-adsense-account": ["ca-pub-7139698395080232"],
   //   },
   // },
-};
+}
 
 export default function RootLayout({
   children,
 }: {
-  children: React.ReactNode;
+  children: React.ReactNode
 }) {
   return (
     <html lang="en">
+      <head>
+        <Script src="https://developers.kakao.com/sdk/js/kakao.js" />
+        <Script src="https://static.nid.naver.com/js/naveridlogin_js_sdk_2.0.2.js" />
+      </head>
       <body
         className={`${inter.className} touch-manipulation`}
         style={{ height: "calc(100vh - 156px)" }}
@@ -64,5 +70,5 @@ export default function RootLayout({
         </ClientProvider>
       </body>
     </html>
-  );
+  )
 }
