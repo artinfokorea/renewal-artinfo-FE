@@ -1,54 +1,59 @@
-import { Dialog, DialogPanel, DialogTitle } from '@headlessui/react';
-import React, { useEffect, useState } from 'react';
-import CloseIcon from '../icons/CloseIcon';
-import { Button } from '../ui/button';
-import { useRouter, useSearchParams } from 'next/navigation';
-import { PROVINCE } from '@/types';
+import { Dialog, DialogPanel, DialogTitle } from "@headlessui/react"
+import React, { useEffect, useState } from "react"
+import CloseIcon from "../icons/CloseIcon"
+import { Button } from "../ui/button"
+import { useRouter, useSearchParams } from "next/navigation"
+import { PROVINCE } from "@/types"
+import { useDidUpdate } from "@toss/react"
 
 interface Props {
-  provinces?: PROVINCE[];
-  open: boolean;
-  close: () => void;
-  multiple?: boolean;
+  provinces?: PROVINCE[]
+  open: boolean
+  close: () => void
+  multiple?: boolean
 }
 
 const ProvinceDialog = ({ open, close, multiple, provinces }: Props) => {
-  const searchParams = useSearchParams();
-  const provinceIds = searchParams.getAll('provinceId');
-  const router = useRouter();
-  const [selectedProvinceIds, setSelectedProvinceIds] = useState<string[]>([]);
+  const searchParams = useSearchParams()
+  const provinceIds = searchParams.getAll("provinceId")
+  const router = useRouter()
+  const [selectedProvinceIds, setSelectedProvinceIds] = useState<string[]>([])
 
   useEffect(() => {
-    if (open) setSelectedProvinceIds(provinceIds);
-  }, [open]);
+    if (open) setSelectedProvinceIds(provinceIds)
+  }, [open])
 
   const selectProvince = (provinceId: string) => {
     if (selectedProvinceIds.includes(provinceId)) {
       setSelectedProvinceIds(
-        selectedProvinceIds.filter((id) => id !== provinceId)
-      );
+        selectedProvinceIds.filter(id => id !== provinceId),
+      )
     } else {
-      setSelectedProvinceIds([...selectedProvinceIds, provinceId]);
+      setSelectedProvinceIds([...selectedProvinceIds, provinceId])
     }
-  };
+  }
 
-  const selectComplete = () => {
-    const locationParams = new URLSearchParams(window.location.search);
+  useDidUpdate(() => {
+    const locationParams = new URLSearchParams(window.location.search)
 
     if (selectedProvinceIds.length > 0) {
-      locationParams.delete('provinceId');
-      selectedProvinceIds.forEach((id) => {
-        locationParams.append('provinceId', id);
-      });
+      locationParams.delete("provinceId")
+      selectedProvinceIds.forEach(id => {
+        locationParams.append("provinceId", id)
+      })
     } else {
-      locationParams.delete('provinceId');
+      locationParams.delete("provinceId")
     }
-    const newUrl = `${window.location.pathname}?${locationParams.toString()}`;
+    const newUrl = `${window.location.pathname}?${locationParams.toString()}`
+
     router.push(newUrl, {
       scroll: false,
-    });
-    close();
-  };
+    })
+  }, [selectedProvinceIds])
+
+  useDidUpdate(() => {
+    close()
+  }, [searchParams])
 
   return (
     <Dialog
@@ -70,17 +75,17 @@ const ProvinceDialog = ({ open, close, multiple, provinces }: Props) => {
           <div className="border-b-2 border-whitesmoke" />
           <div className="p-4 md:p-8 flex justify-center">
             <div className="grid grid-cols-4 md:grid-cols-6 gap-3 md:gap-4">
-              {provinces?.map((province) => (
+              {provinces?.map(province => (
                 <Button
                   key={province.id}
                   onClick={() => selectProvince(province.id.toString())}
                   className={`text-white text-sm h-6 md:text-base md:h-7 px-3 rounded-xl
                     ${
                       !multiple
-                        ? 'bg-main'
+                        ? "bg-main"
                         : selectedProvinceIds.includes(province.id.toString())
-                        ? 'bg-main'
-                        : 'bg-indigo-100'
+                        ? "bg-main"
+                        : "bg-indigo-100"
                     }    
                           `}
                 >
@@ -93,8 +98,9 @@ const ProvinceDialog = ({ open, close, multiple, provinces }: Props) => {
           {multiple && (
             <div className="flex justify-center">
               <Button
+                type="button"
                 className={` text-white rounded-lg text-sm bg-main h-8`}
-                onClick={selectComplete}
+                onClick={close}
               >
                 선택 완료
               </Button>
@@ -103,7 +109,7 @@ const ProvinceDialog = ({ open, close, multiple, provinces }: Props) => {
         </DialogPanel>
       </div>
     </Dialog>
-  );
-};
+  )
+}
 
-export default ProvinceDialog;
+export default ProvinceDialog

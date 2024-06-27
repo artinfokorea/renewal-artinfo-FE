@@ -1044,7 +1044,7 @@
   dependencies:
     regenerator-runtime "^0.14.0"
 
-"@babel/runtime@^7.18.3", "@babel/runtime@^7.23.9", "@babel/runtime@^7.24.6", "@babel/runtime@^7.5.5", "@babel/runtime@^7.8.7":
+"@babel/runtime@^7.18.3", "@babel/runtime@^7.19.0", "@babel/runtime@^7.23.9", "@babel/runtime@^7.24.6", "@babel/runtime@^7.5.5", "@babel/runtime@^7.8.7":
   version "7.24.7"
   resolved "https://registry.yarnpkg.com/@babel/runtime/-/runtime-7.24.7.tgz#f4f0d5530e8dbdf59b3451b9b3e594b6ba082e12"
   integrity sha512-UwgBRMjJP+xv857DCngvqXI3Iq6J4v0wXmwc6sapg+zyhbwmQX67LUEFrkK5tbyJ30jGuG3ZvWpBiB9LCy1kWw==
@@ -2546,6 +2546,25 @@
   resolved "https://registry.yarnpkg.com/@tootallnate/once/-/once-2.0.0.tgz#f544a148d3ab35801c1f633a7441fd87c2e484bf"
   integrity sha512-XCuKFP5PS55gnMVu3dty8KPatLqUoy/ZYzDzAGCQ8JNFCkLXzmI7vNHCR+XpbZaMWQK/vQubr7PkYq8g470J/A==
 
+"@toss/react@^1.7.0":
+  version "1.7.0"
+  resolved "https://registry.yarnpkg.com/@toss/react/-/react-1.7.0.tgz#2f6e92ef5600264c210fede16a574d2f0845c22a"
+  integrity sha512-aD6pIPUdCyxj4QK2HmLCC6HESgZeqIi5Slzc84Sw/r/PJaRKRG+ukV/Vft7c2NXzqG7TXdFvTzgc4dtfjT3ieA==
+  dependencies:
+    "@babel/runtime" "^7.14.8"
+    "@toss/storage" "^1.4.0"
+    "@toss/utils" "^1.5.0"
+    classnames "^2.3.1"
+    lodash.debounce "^4.0.8"
+    lodash.throttle "^4.1.1"
+
+"@toss/storage@^1.4.0":
+  version "1.4.0"
+  resolved "https://registry.yarnpkg.com/@toss/storage/-/storage-1.4.0.tgz#a33158fab8d265573fa18b7110cfbf7da24386a0"
+  integrity sha512-rT0AKWS41hX/JmPQ2JZZ7GdicJZM1DPO5VFeiZwDbNFhfgHMGuEAc6w5qDN8+a8R+sQi5jG1oMFd3QNM/EcpRA==
+  dependencies:
+    "@babel/runtime" "^7.19.0"
+
 "@toss/use-loading@^1.2.0":
   version "1.2.0"
   resolved "https://registry.yarnpkg.com/@toss/use-loading/-/use-loading-1.2.0.tgz#863d7e6ffc2dc77b213fd877143a7408d5fd5d9b"
@@ -3394,6 +3413,11 @@ classnames@2.3.2:
   version "2.3.2"
   resolved "https://registry.yarnpkg.com/classnames/-/classnames-2.3.2.tgz#351d813bf0137fcc6a76a16b88208d2560a0d924"
   integrity sha512-CSbhY4cFEJRe6/GQzIk5qXZ4Jeg5pcsP7b5peFSDpffpe1cqjASH/n9UTjBwOp6XpMSTwQ8Za2K5V02ueA7Tmw==
+
+classnames@^2.3.1:
+  version "2.5.1"
+  resolved "https://registry.yarnpkg.com/classnames/-/classnames-2.5.1.tgz#ba774c614be0f016da105c858e7159eae8e7687b"
+  integrity sha512-saHYOzhIQs6wy2sVxTM6bUDsQO4F50V9RQ22qBpEdCW+I+/Wmke2HOl6lS6dTpdxVhb88/I6+Hs+438c3lfUow==
 
 clean-webpack-plugin@^4.0.0:
   version "4.0.0"
@@ -5759,6 +5783,11 @@ lodash.sortby@^4.7.0:
   version "4.7.0"
   resolved "https://registry.yarnpkg.com/lodash.sortby/-/lodash.sortby-4.7.0.tgz#edd14c824e2cc9c1e0b0a1b42bb5210516a42438"
   integrity sha512-HDWXG8isMntAyRF5vZ7xKuEvOhT4AhlRt/3czTSjvGUxjYCBVRQY48ViDHyfYz9VIoBkW4TMGQNapx+l3RUwdA==
+
+lodash.throttle@^4.1.1:
+  version "4.1.1"
+  resolved "https://registry.yarnpkg.com/lodash.throttle/-/lodash.throttle-4.1.1.tgz#c23e91b710242ac70c37f1e1cda9274cc39bf2f4"
+  integrity sha512-wIkUCfVKpVsWo3JSZlc+8MB5it+2AN5W8J7YVMST30UrvcQNZ1Okbj+rbVniijTWE6FGYy4XJq/rHkas8qJMLQ==
 
 lodash@^4.17.20, lodash@^4.17.21:
   version "4.17.21"

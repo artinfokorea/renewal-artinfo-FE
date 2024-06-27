@@ -36,6 +36,7 @@
     "@tanstack/react-query-devtools": "^5.36.0",
     "@toast-ui/editor-plugin-color-syntax": "^3.1.0",
     "@toast-ui/react-editor": "^3.2.3",
+    "@toss/react": "^1.7.0",
     "@toss/use-loading": "^1.2.0",
     "@toss/utils": "^1.5.0",
     "axios": "^1.6.8",

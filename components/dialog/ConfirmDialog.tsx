@@ -1,6 +1,6 @@
-"use client";
+"use client"
 
-import React from "react";
+import React from "react"
 import {
   Dialog,
   DialogContent,
@@ -10,15 +10,15 @@ import {
   DialogTrigger,
   DialogFooter,
   DialogClose,
-} from "@/components/ui/dialog";
-import { Button } from "@/components/ui/button";
+} from "@/components/ui/dialog"
+import { Button } from "@/components/ui/button"
 
 interface Props {
-  isOpen: boolean;
-  handleDialog: () => void;
-  title: string;
-  description?: string;
-  error?: boolean;
+  isOpen: boolean
+  handleDialog: () => void
+  title: string
+  description?: string
+  action: () => void
 }
 
 const ConfirmDialog = ({
@@ -26,16 +26,14 @@ const ConfirmDialog = ({
   handleDialog,
   title,
   description,
-  error,
+  action,
 }: Props) => {
   return (
     <Dialog open={isOpen} onOpenChange={handleDialog}>
       <DialogContent className="sm:max-w-md">
         <DialogHeader>
           <DialogTitle className="text-primary font-bold">{title}</DialogTitle>
-          <DialogDescription
-            className={`font-semibolde text-base ${error ? "text-error" : ""}`}
-          >
+          <DialogDescription className="font-semibolde text-base">
             {description}
           </DialogDescription>
         </DialogHeader>
@@ -43,13 +41,20 @@ const ConfirmDialog = ({
         <DialogFooter>
           <DialogClose asChild>
             <Button type="button" className="bg-main text-white">
-              확인
+              취소
             </Button>
           </DialogClose>
+          <Button
+            onClick={action}
+            type="button"
+            className="bg-error text-white"
+          >
+            확인
+          </Button>
         </DialogFooter>
       </DialogContent>
     </Dialog>
-  );
-};
+  )
+}
 
-export default ConfirmDialog;
+export default ConfirmDialog

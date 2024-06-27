@@ -13,6 +13,7 @@ import MajorCheckBoxes from "../common/MajorCheckBoxes"
 import MobileFilterTab from "../common/MobileFIlterTab"
 import LessonList from "./LessonList"
 import LessonListSkeleton from "../skeleton/LessonListSkeleton"
+import ConfirmDialog from "../dialog/ConfirmDialog"
 
 const LessonsContainer = () => {
   const searchParams = useSearchParams()
@@ -64,12 +65,14 @@ const LessonsContainer = () => {
         <div className="md:flex-1 w-full flex flex-col md:ml-12 md:mt-4">
           <div className="hidden lg:flex justify-between items-center">
             <div className="flex gap-2 flex-wrap">
-              <Button
-                onClick={() => setIsProvinceDialog(!isProvinceDialog)}
-                className="text-main text-sm border border-lightgray rounded px-4 h-7"
-              >
-                지역선택
-              </Button>
+              {selectedProvinces?.length === 0 && (
+                <Button
+                  onClick={() => setIsProvinceDialog(!isProvinceDialog)}
+                  className="text-main text-sm border border-lightgray rounded px-4 h-7"
+                >
+                  지역선택
+                </Button>
+              )}
               {selectedProvinces?.map(province => (
                 <Badge
                   key={province.id}
@@ -104,7 +107,7 @@ const LessonsContainer = () => {
           provinces={provinceList?.provinces}
           open={isProvinceDialog}
           close={() => setIsProvinceDialog(false)}
-          multiple
+          multiple={false}
         />
       </section>
     </div>

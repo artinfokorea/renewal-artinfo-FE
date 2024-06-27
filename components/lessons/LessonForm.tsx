@@ -14,6 +14,9 @@ import DistrictDialog from "../dialog/DistrictDialog"
 import useToast from "@/hooks/useToast"
 import { uploadImages } from "@/apis/system"
 import { LESSON } from "@/types/lessons"
+import { useLoading } from "@toss/use-loading"
+import Loading from "../common/Loading"
+import { ErrorMessage } from "@hookform/error-message"
 
 const schema = yup
   .object({
@@ -42,6 +45,7 @@ const LessonForm = ({ handleLesson, isFormLoading, lesson }: Props) => {
   const pathname = usePathname()
   const { successToast, errorToast } = useToast()
   const [isDistrictDialog, setIsDistrictDialog] = useState(false)
+  const [isImageLoading, imageLoadingTransition] = useLoading()
 
   const {
     register,
@@ -53,7 +57,7 @@ const LessonForm = ({ handleLesson, isFormLoading, lesson }: Props) => {
   } = useForm<LessonFormData>({
     resolver: yupResolver(schema),
     defaultValues: {
-      areas: lesson?.areas,
+      areas: lesson?.areas || [],
       pay: lesson?.pay,
       imageUrl: lesson?.imageUrl,
       introduction: lesson?.introduction,
@@ -62,13 +66,13 @@ const LessonForm = ({ handleLesson, isFormLoading, lesson }: Props) => {
   })
 
   const handleArea = (area: string) => {
-    if (watch("areas").includes(area)) {
+    if (watch("areas")?.includes(area)) {
       const filteredAreas = watch("areas").filter(
         (prev: string) => prev !== area,
       )
       setValue("areas", filteredAreas)
     } else {
-      setValue("areas", [...watch("areas"), area])
+      setValue("areas", [...(watch("areas") as []), area])
     }
   }
 
@@ -78,7 +82,9 @@ const LessonForm = ({ handleLesson, isFormLoading, lesson }: Props) => {
 
   const handleUploadedFiles = async (files: File[]) => {
     try {
-      const uploadResponse = await uploadImages(files as File[])
+      const uploadResponse = await imageLoadingTransition(
+        uploadImages(files as File[]),
+      )
       successToast("프로필 이미지가 등록되었습니다.")
       setValue("imageUrl", uploadResponse.images[0].url as string)
     } catch (error: any) {
@@ -108,11 +114,15 @@ const LessonForm = ({ handleLesson, isFormLoading, lesson }: Props) => {
                 <CloseIcon className="w-6 h-6 text-primary" />
               </Button>
             </div>
+          ) : isImageLoading ? (
+            <div className="h-[360px] md:h-[300px] w-[300px] md:w-[240px] flex justify-center items-center">
+              <Loading className="w-10 h-10" />
+            </div>
           ) : (
             <div
               className="h-[360px] md:h-[300px] w-[300px] md:w-[240px] mx-auto bg-whitesmoke rounded
-      flex flex-col items-center justify-center gap-6
-      "
+  flex flex-col items-center justify-center gap-6
+  "
             >
               <div className="flex flex-col items-center gap-2">
                 <PhotoIcon className="w-14 h-14 text-dimgray" />
@@ -179,6 +189,15 @@ const LessonForm = ({ handleLesson, isFormLoading, lesson }: Props) => {
               placeholder="전문가 소개를 입력해주세요."
               className="border p-3 rounded-lg resize-none focus:outline-none w-full h-4/5"
             />
+            <ErrorMessage
+              errors={errors}
+              name="introduction"
+              render={({ message }) => (
+                <p className="text-error text-xs font-semibold md:basis-1/2">
+                  {message}
+                </p>
+              )}
+            />
           </div>
           <div className="md:w-1/2 bg-whitesmoke rounded-md p-4 md:p-8 h-[380px] overflow-y-auto">
             <p className="text-coolgray font-semibold text-lg mb-3 md:mb-6">
@@ -188,6 +207,15 @@ const LessonForm = ({ handleLesson, isFormLoading, lesson }: Props) => {
               {...register("career")}
               placeholder="경력 사항을 입력해주세요."
               className="border p-3 rounded-lg resize-none focus:outline-none w-full h-4/5"
+            />
+            <ErrorMessage
+              errors={errors}
+              name="career"
+              render={({ message }) => (
+                <p className="text-error text-xs font-semibold md:basis-1/2">
+                  {message}
+                </p>
+              )}
             />
           </div>
         </div>
@@ -207,7 +235,13 @@ const LessonForm = ({ handleLesson, isFormLoading, lesson }: Props) => {
             disabled={isFormLoading}
             className="bg-main text-white rounded-full font-semibold px-6 w-20"
           >
-            등록
+            {isFormLoading ? (
+              <Loading className="w-6 h-6" />
+            ) : lesson ? (
+              "수정"
+            ) : (
+              "등록"
+            )}
           </Button>
         </div>
         <FileUploader ref={fileUploader} uploadedFiles={handleUploadedFiles} />

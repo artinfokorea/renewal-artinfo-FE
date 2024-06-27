@@ -1,22 +1,22 @@
-import { JOB, JobType } from "@/types/jobs";
-import Link from "next/link";
-import { usePathname } from "next/navigation";
-import React, { forwardRef } from "react";
-import Image from "next/image";
-import filters from "@/lib/filters";
-import { Badge } from "../ui/badge";
-import FallbackImage from "../common/FallbackImage";
+import { JOB, JobType } from "@/types/jobs"
+import Link from "next/link"
+import { usePathname } from "next/navigation"
+import React, { forwardRef } from "react"
+import Image from "next/image"
+import filters from "@/lib/filters"
+import { Badge } from "../ui/badge"
+import FallbackImage from "../common/FallbackImage"
 
 interface Props {
-  job: JOB;
-  isLastPage: boolean;
+  job: JOB
+  isLastPage: boolean
 }
 
 const JobCard = forwardRef<HTMLDivElement, Props>(
   ({ job, isLastPage }, ref) => {
-    const pathname = usePathname();
-    const filter = filters();
-    console.log("job", job);
+    const pathname = usePathname()
+    const filter = filters()
+
     return (
       <Link href={`${pathname}/${job.id}`}>
         <div className="hover:bg-whitesmoke rounded-xl h-[130px] md:h-[192px]  flex items-center">
@@ -48,7 +48,7 @@ const JobCard = forwardRef<HTMLDivElement, Props>(
               <div className="flex my-2 items-center text-xs md:text-sm">
                 <span className="mr-2">{job.province as string}</span>
                 <div className="flex gap-2">
-                  {job.majors?.map((major) => (
+                  {job.majors?.map(major => (
                     <Badge
                       key={major}
                       className="text-main text-[10px] md:text-sm bg-aliceblue rounded-xl"
@@ -67,10 +67,10 @@ const JobCard = forwardRef<HTMLDivElement, Props>(
         </div>
         {!isLastPage && <div ref={ref} />}
       </Link>
-    );
-  }
-);
+    )
+  },
+)
 
-JobCard.displayName = "JobCard";
+JobCard.displayName = "JobCard"
 
-export default JobCard;
+export default JobCard

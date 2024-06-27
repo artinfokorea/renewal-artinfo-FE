@@ -1,43 +1,49 @@
-import React, { useEffect, useState } from 'react';
-import { Dialog, DialogPanel, DialogTitle } from '@headlessui/react';
-import { Button } from '../ui/button';
-import CloseIcon from '../icons/CloseIcon';
-import { useQuery } from '@tanstack/react-query';
-import { queries } from '@/lib/queries';
-import { PROVINCE } from '@/types';
-import LeftIcon from '../icons/LeftIcon';
+import React, { useEffect, useState } from "react"
+import { Dialog, DialogPanel, DialogTitle } from "@headlessui/react"
+import { Button } from "../ui/button"
+import CloseIcon from "../icons/CloseIcon"
+import { useQuery } from "@tanstack/react-query"
+import { queries } from "@/lib/queries"
+import { PROVINCE } from "@/types"
+import LeftIcon from "../icons/LeftIcon"
 
 interface Props {
-  open: boolean;
-  close: () => void;
-  handleArea: (area: string) => void;
+  open: boolean
+  close: () => void
+  handleArea: (area: string) => void
 }
 
 const DistrictDialog = ({ open, close, handleArea }: Props) => {
-  const [step, setStep] = useState(0);
-  const [selectedProvince, setSelectedProvince] = useState<PROVINCE>();
+  const [step, setStep] = useState(0)
+  const [selectedProvince, setSelectedProvince] = useState<PROVINCE>()
 
-  const { data: step1 } = useQuery(queries.provinces.list());
+  const { data: step1 } = useQuery(queries.provinces.list())
 
-  const { data: step2 } = useQuery(
-    queries.provinces.list(selectedProvince?.id)
-  );
+  const { data: step2 } = useQuery(queries.provinces.list(selectedProvince?.id))
 
   const selectProvince = (province: PROVINCE) => {
-    setSelectedProvince(province);
-    setStep((prev) => prev + 1);
-  };
+    setSelectedProvince(province)
+    setStep(prev => prev + 1)
+  }
 
   const selectDistrict = (district: PROVINCE) => {
-    handleArea(`${selectedProvince?.name} ${district.name}`);
-    setSelectedProvince(undefined);
-    setStep(0);
-    close();
-  };
+    handleArea(`${selectedProvince?.name} ${district.name}`)
+    setSelectedProvince(undefined)
+    setStep(0)
+    close()
+  }
 
   const handleSelect = (province: PROVINCE) => {
-    step === 0 ? selectProvince(province) : selectDistrict(province);
-  };
+    step === 0 ? selectProvince(province) : selectDistrict(province)
+  }
+
+  useEffect(() => {
+    if (step2?.provinces && step2.provinces.length === 0 && selectedProvince) {
+      handleArea(selectedProvince.name)
+      setStep(0)
+      close()
+    }
+  }, [step2])
 
   return (
     <Dialog
@@ -48,10 +54,10 @@ const DistrictDialog = ({ open, close, handleArea }: Props) => {
       <div className="fixed inset-0 bg-black/30" aria-hidden="true" />
       <div className="fixed inset-0 flex w-screen items-center justify-center p-4">
         <DialogPanel className="z-10 min-w-[300px] max-w-[650px] min-h-[350px] bg-white rounded-xl py-4 mx-auto">
-          <div className="relative mb-4">
+          <div className="relative mb-4 w-full">
             {step === 1 && (
               <Button
-                onClick={() => setStep((prev) => prev - 1)}
+                onClick={() => setStep(prev => prev - 1)}
                 className="absolute -top-[6px] left-2"
               >
                 <LeftIcon className=" w-6 h-6 text-silver" />
@@ -66,9 +72,9 @@ const DistrictDialog = ({ open, close, handleArea }: Props) => {
           </div>
           <div className="border-b-2 border-whitesmoke" />
           <div className="p-4 md:p-8 flex justify-center">
-            <div className="grid grid-cols-5 md:grid-cols-6 gap-3 md:gap-4 overflow-y-auto">
+            <div className="grid grid-cols-5 md:grid-cols-6 gap-3 md:gap-4 overflow-y-auto w-full">
               {step === 0
-                ? step1?.provinces.map((province) => (
+                ? step1?.provinces.map(province => (
                     <Button
                       key={province.id}
                       onClick={() => handleSelect(province)}
@@ -77,7 +83,7 @@ const DistrictDialog = ({ open, close, handleArea }: Props) => {
                       {province.name.slice(0, 2)}
                     </Button>
                   ))
-                : step2?.provinces.map((province) => (
+                : step2?.provinces.map(province => (
                     <Button
                       key={province.id}
                       onClick={() => handleSelect(province)}
@@ -91,7 +97,7 @@ const DistrictDialog = ({ open, close, handleArea }: Props) => {
         </DialogPanel>
       </div>
     </Dialog>
-  );
-};
+  )
+}
 
-export default DistrictDialog;
+export default DistrictDialog

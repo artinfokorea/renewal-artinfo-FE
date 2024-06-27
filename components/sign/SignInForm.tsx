@@ -1,20 +1,17 @@
-"use client";
+"use client"
 
-import React, { useState } from "react";
-import { useForm } from "react-hook-form";
-import { yupResolver } from "@hookform/resolvers/yup";
-import { ErrorMessage } from "@hookform/error-message";
-import * as yup from "yup";
-import { Label } from "../ui/label";
-import { Input } from "../ui/input";
-import { Button } from "../ui/button";
-import ConfirmDialog from "../common/ConfirmDialog";
-import Link from "next/link";
-import { signIn } from "next-auth/react";
-import useToast from "@/hooks/useToast";
-import { useLoading } from "@toss/use-loading";
-import { useSearchParams } from "next/navigation";
-import InputField from "../common/InputField";
+import React, { useState } from "react"
+import { useForm } from "react-hook-form"
+import { yupResolver } from "@hookform/resolvers/yup"
+import * as yup from "yup"
+import { Button } from "../ui/button"
+import Link from "next/link"
+import { signIn } from "next-auth/react"
+import useToast from "@/hooks/useToast"
+import { useLoading } from "@toss/use-loading"
+import { useSearchParams } from "next/navigation"
+import InputField from "../common/InputField"
+import AlertDialog from "../dialog/AlertDialog"
 
 const schema = yup
   .object({
@@ -29,19 +26,19 @@ const schema = yup
       .required()
       .matches(
         /^(?=.*[0-9])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{8,12}$/,
-        "8자 이상 12자 이하로 영문, 숫자, 특수문자를 포함해주세요."
+        "8자 이상 12자 이하로 영문, 숫자, 특수문자를 포함해주세요.",
       ),
   })
-  .required();
+  .required()
 
-type FormData = yup.InferType<typeof schema>;
+type FormData = yup.InferType<typeof schema>
 
 const SignInForm = () => {
-  const [isLoading, startTransition] = useLoading();
-  const [isConfirmDialogOpen, setIsConfirmDialogOpen] = useState(false);
-  const { errorToast } = useToast();
-  const searchParams = useSearchParams();
-  const error = searchParams.get("error");
+  const [isLoading, startTransition] = useLoading()
+  const [isConfirmDialogOpen, setIsConfirmDialogOpen] = useState(false)
+  const { errorToast } = useToast()
+  const searchParams = useSearchParams()
+  const error = searchParams.get("error")
 
   const {
     register,
@@ -49,9 +46,9 @@ const SignInForm = () => {
     formState: { errors },
   } = useForm<FormData>({
     resolver: yupResolver(schema),
-  });
+  })
 
-  const handleDialog = () => setIsConfirmDialogOpen(!isConfirmDialogOpen);
+  const handleDialog = () => setIsConfirmDialogOpen(!isConfirmDialogOpen)
 
   const handleSignIn = async (payload: FormData) => {
     try {
@@ -59,58 +56,58 @@ const SignInForm = () => {
         signIn("signin-email", {
           ...payload,
           callbackUrl: "/",
-        })
-      );
+        }),
+      )
     } catch (error: any) {
-      errorToast(error.message);
-      console.log(error);
-      setIsConfirmDialogOpen(true);
+      errorToast(error.message)
+      console.log(error)
+      setIsConfirmDialogOpen(true)
     }
-  };
+  }
 
   const kakaoInit = () => {
-    const kakao = (window as any).Kakao;
+    const kakao = (window as any).Kakao
     if (!kakao.isInitialized()) {
-      kakao.init(process.env.NEXT_PUBLIC_KAKAO_API_KEY);
+      kakao.init(process.env.NEXT_PUBLIC_KAKAO_API_KEY)
     }
 
-    return kakao;
-  };
+    return kakao
+  }
 
   const kakaoLogin = async () => {
-    const kakao = kakaoInit();
+    const kakao = kakaoInit()
 
     kakao.Auth.authorize({
       redirectUri: `http://localhost:3000/auth/callback`,
       state: "kakao",
       prompts: "login",
-    });
-  };
+    })
+  }
 
   const handleNaverLogin = () => {
-    const NaverIdLogin = (window as any).naver;
+    const NaverIdLogin = (window as any).naver
     // console.log(NaverIdLogin)
     const naverLogin = new NaverIdLogin.LoginWithNaverId({
       clientId: process.env.NEXT_PUBLIC_NAVER_CLIENT_ID,
       callbackUrl: `http://localhost:3000/auth/callback?state=naver`,
       state: "naver",
       callbackHandle: true,
-    });
-    naverLogin.init();
-    naverLogin.reprompt();
-  };
+    })
+    naverLogin.init()
+    naverLogin.reprompt()
+  }
 
   const handleGoogleLogin = () => {
-    let url = "https://accounts.google.com/o/oauth2/v2/auth";
-    url += `?client_id=${process.env.NEXT_PUBLIC_GOOGLE_API_KEY}`;
-    url += `&redirect_uri=http://localhost:3000/auth/callback`;
-    url += "&prompt=consent";
-    url += "&scope=email";
-    url += "&state=google";
-    url += "&response_type=token";
-    url += "&include_granted_scopes=true";
-    window.open(url, "_self");
-  };
+    let url = "https://accounts.google.com/o/oauth2/v2/auth"
+    url += `?client_id=${process.env.NEXT_PUBLIC_GOOGLE_API_KEY}`
+    url += `&redirect_uri=http://localhost:3000/auth/callback`
+    url += "&prompt=consent"
+    url += "&scope=email"
+    url += "&state=google"
+    url += "&response_type=token"
+    url += "&include_granted_scopes=true"
+    window.open(url, "_self")
+  }
 
   return (
     <form
@@ -185,7 +182,7 @@ const SignInForm = () => {
           <img src="/kakao_logo.png" alt="kakao_logo" />
         </button>
       </div>
-      <ConfirmDialog
+      <AlertDialog
         title="로그인 실패"
         description="이메일 또는 비밀번호가 일치하지 않습니다."
         error
@@ -193,7 +190,7 @@ const SignInForm = () => {
         handleDialog={handleDialog}
       />
     </form>
-  );
-};
+  )
+}
 
-export default SignInForm;
+export default SignInForm

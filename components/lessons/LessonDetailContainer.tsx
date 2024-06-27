@@ -14,6 +14,7 @@ import { useSession } from "next-auth/react"
 import ItemManageBox from "../common/ItemManageBox"
 import { usePathname, useRouter } from "next/navigation"
 import { AspectRatio } from "../ui/aspect-ratio"
+import ConfirmDialog from "../dialog/ConfirmDialog"
 
 interface Props {
   lesson: LESSON
@@ -22,6 +23,7 @@ interface Props {
 
 const LessonDetailContainer = ({ lesson, deleteLesson }: Props) => {
   const [isPhoneShow, setIsPhoneShow] = useState(false)
+  const [isDeleteConfirmDialog, setIsDeleteConfirmDialog] = useState(false)
   const filter = filters()
   const { successToast } = useToast()
   const { data } = useSession()
@@ -144,13 +146,11 @@ const LessonDetailContainer = ({ lesson, deleteLesson }: Props) => {
           </div>
         </div>
       </div>
-      {user?.id === lesson?.authorId && (
-        <ItemManageBox
-          handleEdit={() => router.push(`${pathname}?type=edit`)}
-          handleDelete={deleteLesson}
-        />
-      )}
-      <div className="border-whitesmoke border-b-2 my-8 mx-4 md:mx-0" />
+      <ItemManageBox
+        show={user?.id === lesson?.authorId}
+        handleEdit={() => router.push(`${pathname}?type=edit`)}
+        handleDelete={() => setIsDeleteConfirmDialog(!isDeleteConfirmDialog)}
+      />
       <div className="flex flex-col px-4 md:px-0 gap-4 md:flex-row md:gap-8">
         <div className="md:w-1/2 bg-whitesmoke rounded-md p-4 md:p-8 min-h-[200px] md:h-[380px] overflow-y-auto">
           <p className="text-coolgray font-semibold text-lg mb-3 md:mb-6">
@@ -169,6 +169,14 @@ const LessonDetailContainer = ({ lesson, deleteLesson }: Props) => {
           </p>
         </div>
       </div>
+
+      <ConfirmDialog
+        isOpen={isDeleteConfirmDialog}
+        handleDialog={() => setIsDeleteConfirmDialog(!isDeleteConfirmDialog)}
+        title="레슨 삭제"
+        description="레슨을 삭제하시겠습니까?"
+        action={deleteLesson}
+      />
     </div>
   )
 }
