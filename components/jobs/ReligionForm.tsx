@@ -1,21 +1,21 @@
-"use client";
+"use client"
 
-import { useRouter } from "next/navigation";
-import React, { useEffect, useState } from "react";
-import { Input } from "@headlessui/react";
-import dynamic from "next/dynamic";
-import Loading from "../common/Loading";
-import { Button } from "../ui/button";
-import * as yup from "yup";
-import { yupResolver } from "@hookform/resolvers/yup";
-import { ErrorMessage } from "@hookform/error-message";
-import { useForm } from "react-hook-form";
-import { MAJOR } from "@/types";
-import { Badge } from "../ui/badge";
-import CloseIcon from "../icons/CloseIcon";
-import MajorDialog from "../dialog/MajorDialog";
-import PostCodeDialog from "../dialog/PostCodeDialog";
-import PlusIcon from "../icons/PlusIcon";
+import { useRouter } from "next/navigation"
+import React, { useEffect, useState } from "react"
+import { Input } from "@headlessui/react"
+import dynamic from "next/dynamic"
+import Loading from "../common/Loading"
+import { Button } from "../ui/button"
+import * as yup from "yup"
+import { yupResolver } from "@hookform/resolvers/yup"
+import { ErrorMessage } from "@hookform/error-message"
+import { useForm } from "react-hook-form"
+import { MAJOR } from "@/types"
+import { Badge } from "../ui/badge"
+import CloseIcon from "../icons/CloseIcon"
+import MajorDialog from "../dialog/MajorDialog"
+import PostCodeDialog from "../dialog/PostCodeDialog"
+import PlusIcon from "../icons/PlusIcon"
 
 const ToastEditor = dynamic(() => import("../editor/ToastEditor"), {
   ssr: false,
@@ -24,7 +24,7 @@ const ToastEditor = dynamic(() => import("../editor/ToastEditor"), {
       <Loading className="w-8 h-8" />
     </div>
   ),
-});
+})
 
 const schema = yup
   .object({
@@ -51,19 +51,19 @@ const schema = yup
       .typeError("숫자만 입력 가능합니다.")
       .required("사례비를 입력해주세요."),
   })
-  .required();
+  .required()
 
-export type CreateReligionFormData = yup.InferType<typeof schema>;
+export type CreateReligionFormData = yup.InferType<typeof schema>
 
 interface Props {
-  handleReligionJob: (payload: CreateReligionFormData) => void;
-  isLoading: boolean;
+  handleReligionJob: (payload: CreateReligionFormData) => void
+  isLoading: boolean
 }
 
 const ReligionForm = ({ handleReligionJob, isLoading }: Props) => {
-  const router = useRouter();
-  const [isMajorDialog, setIsMajorDialog] = useState(false);
-  const [isPostDialog, setIsPostDialog] = useState(false);
+  const router = useRouter()
+  const [isMajorDialog, setIsMajorDialog] = useState(false)
+  const [isPostDialog, setIsPostDialog] = useState(false)
 
   const {
     register,
@@ -77,25 +77,25 @@ const ReligionForm = ({ handleReligionJob, isLoading }: Props) => {
     defaultValues: {
       majors: [],
     },
-  });
+  })
 
   useEffect(() => {
     if (watch("majors").length > 1) {
-      setValue("majors", [watch("majors")[watch("majors").length - 1]]);
+      setValue("majors", [watch("majors")[watch("majors").length - 1]])
     }
-    clearErrors("majors");
-  }, [watch("majors")]);
+    clearErrors("majors")
+  }, [watch("majors")])
 
   const handleSelectMajor = (selectedMajor: MAJOR) => {
     if (watch("majors").includes(selectedMajor)) {
       setValue(
         "majors",
-        watch("majors").filter((major) => major !== selectedMajor)
-      );
+        watch("majors").filter(major => major !== selectedMajor),
+      )
     } else {
-      setValue("majors", [...watch("majors"), selectedMajor]);
+      setValue("majors", [...watch("majors"), selectedMajor])
     }
-  };
+  }
 
   return (
     <form
@@ -115,7 +115,7 @@ const ReligionForm = ({ handleReligionJob, isLoading }: Props) => {
           errors={errors}
           name="title"
           render={({ message }) => (
-            <p className="text-error font-semibold">{message}</p>
+            <p className="text-error text-xs font-semibold">{message}</p>
           )}
         />
       </div>
@@ -129,7 +129,7 @@ const ReligionForm = ({ handleReligionJob, isLoading }: Props) => {
             <PlusIcon className="w-4 h-4 text-main" />
             <span>전공</span>
           </Button>
-          {watch("majors").map((major) => (
+          {watch("majors").map(major => (
             <Badge key={major.id} className="bg-main text-white text-sm h-8">
               {major.koName}
               <button onClick={() => handleSelectMajor(major)} className="ml-1">
@@ -141,7 +141,7 @@ const ReligionForm = ({ handleReligionJob, isLoading }: Props) => {
             errors={errors}
             name="majors"
             render={({ message }) => (
-              <p className="text-error font-semibold">{message}</p>
+              <p className="text-error text-xs font-semibold">{message}</p>
             )}
           />
         </div>
@@ -161,7 +161,7 @@ const ReligionForm = ({ handleReligionJob, isLoading }: Props) => {
             errors={errors}
             name="companyName"
             render={({ message }) => (
-              <p className="text-error font-semibold">{message}</p>
+              <p className="text-error text-xs font-semibold">{message}</p>
             )}
           />
         </div>
@@ -180,7 +180,7 @@ const ReligionForm = ({ handleReligionJob, isLoading }: Props) => {
             errors={errors}
             name="fee"
             render={({ message }) => (
-              <p className="text-error font-semibold">{message}</p>
+              <p className="text-error text-xs font-semibold">{message}</p>
             )}
           />
         </div>
@@ -209,7 +209,7 @@ const ReligionForm = ({ handleReligionJob, isLoading }: Props) => {
           errors={errors}
           name="province"
           render={({ message }) => (
-            <p className="text-error font-semibold">{message}</p>
+            <p className="text-error text-xs font-semibold">{message}</p>
           )}
         />
       </div>
@@ -227,7 +227,7 @@ const ReligionForm = ({ handleReligionJob, isLoading }: Props) => {
       <PostCodeDialog
         isOpen={isPostDialog}
         close={() => setIsPostDialog(!isPostDialog)}
-        setValue={(address) => setValue("province", address)}
+        setValue={address => setValue("province", address)}
       />
       <div className="flex justify-end gap-2">
         <Button
@@ -246,7 +246,7 @@ const ReligionForm = ({ handleReligionJob, isLoading }: Props) => {
         </Button>
       </div>
     </form>
-  );
-};
+  )
+}
 
-export default ReligionForm;
+export default ReligionForm

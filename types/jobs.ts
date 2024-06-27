@@ -29,10 +29,10 @@ export const JobTypeList = [
     title: "연주단체",
     value: JobType.ART_ORGANIZATION,
   },
-  {
-    title: "오브리",
-    value: JobType.PART_TIME,
-  },
+  // {
+  //   title: "오브리",
+  //   value: JobType.PART_TIME,
+  // },
   {
     title: "종교",
     value: JobType.RELIGION,
@@ -41,14 +41,14 @@ export const JobTypeList = [
     title: "강사",
     value: JobType.LECTURER,
   },
-];
+]
 
 export const JobTypeValues: { [key in JobType]: string } = JobTypeList.reduce<{
-  [key in JobType]: string;
+  [key in JobType]: string
 }>((acc, curr) => {
-  acc[curr.value] = curr.title;
-  return acc;
-}, {} as { [key in JobType]: string });
+  acc[curr.value] = curr.title
+  return acc
+}, {} as { [key in JobType]: string })
 
 export const MajorValues = [
   {
@@ -75,25 +75,25 @@ export const MajorValues = [
   { title: "행정", value: MajorType.ADMINISTRATION },
   { title: "실용음악", value: MajorType.APPLIED_MUSIC },
   { title: "국악", value: MajorType.TRADITIONAL_MUSIC },
-];
+]
 
 export type JOB = {
-  id: number;
-  title: string;
-  contents: string;
-  province: string;
-  imageUrl: string;
-  majors: MajorType[];
-  type: JobType;
-  isActive: true;
-  fee: number;
-  authorId: number;
-  startAt: Date;
-  endAt: Date;
-  createdAt: Date;
-  companyName: string;
-  address?: string;
-};
+  id: number
+  title: string
+  contents: string
+  province: string
+  imageUrl: string
+  majors: MajorType[]
+  type: JobType
+  isActive: true
+  fee: number
+  authorId: number
+  startAt: Date
+  endAt: Date
+  createdAt: Date
+  companyName: string
+  address?: string
+}
 
 export enum SearchType {
   REGION = "REGION",

@@ -1,31 +1,31 @@
-'use client';
+"use client"
 
-import React, { useState } from 'react';
-import { JobType } from '@/types/jobs';
-import useToast from '@/hooks/useToast';
+import React, { useState } from "react"
+import { JobType } from "@/types/jobs"
+import useToast from "@/hooks/useToast"
 import {
   createFullTimeJob,
   createPartTimeJob,
   createReligionJob,
-} from '@/apis/jobs';
-import { usePathname, useRouter, useSearchParams } from 'next/navigation';
-import OrganizationForm, { CreateJobFormData } from './OrganizationForm';
-import ReligionForm, { CreateReligionFormData } from './ReligionForm';
-import JobTypeSelectDialog from './JobTypeSelectDIalog';
-import { useLoading } from '@toss/use-loading';
-import { uploadImages } from '@/apis/system';
-import ObriForm, { CreateObriFormData } from './ObriForm';
-import { useQueryClient } from '@tanstack/react-query';
-import { queries } from '@/lib/queries';
+} from "@/apis/jobs"
+import { usePathname, useRouter, useSearchParams } from "next/navigation"
+import OrganizationForm, { CreateJobFormData } from "./OrganizationForm"
+import ReligionForm, { CreateReligionFormData } from "./ReligionForm"
+import JobTypeSelectDialog from "./JobTypeSelectDIalog"
+import { useLoading } from "@toss/use-loading"
+import { uploadImages } from "@/apis/system"
+import ObriForm, { CreateObriFormData } from "./ObriForm"
+import { useQueryClient } from "@tanstack/react-query"
+import { queries } from "@/lib/queries"
 
 const CreateContainer = () => {
-  const searchParams = useSearchParams();
-  const jobType = searchParams.get('jobType');
-  const pathname = usePathname();
-  const router = useRouter();
-  const { errorToast, successToast } = useToast();
-  const [isLoading, startTransition] = useLoading();
-  const queryClient = useQueryClient();
+  const searchParams = useSearchParams()
+  const jobType = searchParams.get("jobType")
+  const pathname = usePathname()
+  const router = useRouter()
+  const { errorToast, successToast } = useToast()
+  const [isLoading, startTransition] = useLoading()
+  const queryClient = useQueryClient()
 
   const handleFullTimeJob = async (payload: CreateJobFormData) => {
     const {
@@ -36,32 +36,32 @@ const CreateContainer = () => {
       imageFile,
       majors,
       contents,
-    } = payload;
+    } = payload
     try {
       const uploadResponse = await startTransition(
-        uploadImages([imageFile] as File[])
-      );
+        uploadImages([imageFile] as File[]),
+      )
 
       await startTransition(
         createFullTimeJob({
           title,
           companyName,
-          province: `${province} ${detailAddress}`,
+          address: `${province} ${detailAddress}`,
           imageUrl: uploadResponse.images[0].url as string,
-          majorIds: majors.map((major) => major.id),
+          majorIds: majors.map(major => major.id),
           contents,
-        })
-      );
-      successToast('채용이 등록되었습니다.');
-      router.push(pathname.slice(0, pathname.lastIndexOf('/')));
+        }),
+      )
+      successToast("채용이 등록되었습니다.")
+      router.push(pathname.slice(0, pathname.lastIndexOf("/")))
       queryClient.invalidateQueries({
         queryKey: queries.jobs._def,
-      });
+      })
     } catch (error: any) {
-      errorToast(error.message);
-      console.log(error);
+      errorToast(error.message)
+      console.log(error)
     }
-  };
+  }
 
   const handleReligionJob = async (payload: CreateReligionFormData) => {
     const {
@@ -72,7 +72,7 @@ const CreateContainer = () => {
       detailAddress,
       majors,
       fee,
-    } = payload;
+    } = payload
     try {
       await startTransition(
         createReligionJob({
@@ -82,18 +82,18 @@ const CreateContainer = () => {
           majorId: majors[0].id as number,
           contents,
           fee,
-        })
-      );
-      successToast('채용이 등록되었습니다.');
-      router.push(pathname.slice(0, pathname.lastIndexOf('/')));
+        }),
+      )
+      successToast("채용이 등록되었습니다.")
+      router.push(pathname.slice(0, pathname.lastIndexOf("/")))
       queryClient.invalidateQueries({
         queryKey: queries.jobs._def,
-      });
+      })
     } catch (error: any) {
-      errorToast(error.message);
-      console.log(error);
+      errorToast(error.message)
+      console.log(error)
     }
-  };
+  }
 
   const handlePartTimeJob = async (payload: CreateObriFormData) => {
     const {
@@ -106,7 +106,7 @@ const CreateContainer = () => {
       detailAddress,
       address,
       companyName,
-    } = payload;
+    } = payload
     try {
       await startTransition(
         createPartTimeJob({
@@ -118,18 +118,18 @@ const CreateContainer = () => {
           majorId: majors[0].id as number,
           contents,
           fee,
-        })
-      );
-      successToast('채용이 등록되었습니다.');
-      router.push(pathname.slice(0, pathname.lastIndexOf('/')));
+        }),
+      )
+      successToast("채용이 등록되었습니다.")
+      router.push(pathname.slice(0, pathname.lastIndexOf("/")))
       queryClient.invalidateQueries({
         queryKey: queries.jobs._def,
-      });
+      })
     } catch (error: any) {
-      errorToast(error.message);
-      console.log(error);
+      errorToast(error.message)
+      console.log(error)
     }
-  };
+  }
 
   return (
     <section>
@@ -157,7 +157,7 @@ const CreateContainer = () => {
         />
       )}
     </section>
-  );
-};
+  )
+}
 
-export default CreateContainer;
+export default CreateContainer

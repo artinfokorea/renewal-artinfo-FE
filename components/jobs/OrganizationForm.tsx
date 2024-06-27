@@ -1,22 +1,22 @@
-import { ErrorMessage } from "@hookform/error-message";
-import React, { useContext, useMemo, useRef, useState } from "react";
-import { Dialog, DialogPanel, Input } from "@headlessui/react";
-import Image from "next/image";
-import { useRouter } from "next/navigation";
-import { useForm } from "react-hook-form";
-import { yupResolver } from "@hookform/resolvers/yup";
-import dynamic from "next/dynamic";
-import * as yup from "yup";
-import FileUploader from "../common/FileUploader";
-import CloseIcon from "../icons/CloseIcon";
-import { Button } from "../ui/button";
-import PhotoIcon from "../icons/PhotoIcon";
-import PlusIcon from "../icons/PlusIcon";
-import Loading from "../common/Loading";
-import MajorDialog from "../dialog/MajorDialog";
-import { MAJOR } from "@/types";
-import { Badge } from "../ui/badge";
-import PostCodeDialog from "../dialog/PostCodeDialog";
+import { ErrorMessage } from "@hookform/error-message"
+import React, { useContext, useEffect, useMemo, useRef, useState } from "react"
+import { Dialog, DialogPanel, Input } from "@headlessui/react"
+import Image from "next/image"
+import { useRouter } from "next/navigation"
+import { useForm } from "react-hook-form"
+import { yupResolver } from "@hookform/resolvers/yup"
+import dynamic from "next/dynamic"
+import * as yup from "yup"
+import FileUploader from "../common/FileUploader"
+import CloseIcon from "../icons/CloseIcon"
+import { Button } from "../ui/button"
+import PhotoIcon from "../icons/PhotoIcon"
+import PlusIcon from "../icons/PlusIcon"
+import Loading from "../common/Loading"
+import MajorDialog from "../dialog/MajorDialog"
+import { MAJOR } from "@/types"
+import { Badge } from "../ui/badge"
+import PostCodeDialog from "../dialog/PostCodeDialog"
 
 const ToastEditor = dynamic(() => import("../editor/ToastEditor"), {
   ssr: false,
@@ -25,7 +25,7 @@ const ToastEditor = dynamic(() => import("../editor/ToastEditor"), {
       <Loading className="w-8 h-8" />
     </div>
   ),
-});
+})
 
 const schema = yup
   .object({
@@ -44,31 +44,31 @@ const schema = yup
     detailAddress: yup.string().required("상세 주소를 입력해주세요."),
     imageFile: yup
       .mixed()
-      .test("fileType", "이미지 파일만 등록할 수 있습니다.", (value) => {
-        if (!value) return false; // 값이 없으면 유효성 검사 실패
-        return value instanceof File;
+      .test("fileType", "이미지 파일만 등록할 수 있습니다.", value => {
+        if (!value) return false // 값이 없으면 유효성 검사 실패
+        return value instanceof File
       })
       .required("이미지를 등록해주세요."),
     majors: yup
       .array()
       .min(1, "전공을 최소 1개 선택해야 합니다.")
-      .max(10, "전공은 하나만 선택할 수 있습니다.")
+      .max(3, "전공은 최대 3개까지 선택 할 수 있습니다.")
       .required("전공을 선택해주세요."),
   })
-  .required();
+  .required()
 
-export type CreateJobFormData = yup.InferType<typeof schema>;
+export type CreateJobFormData = yup.InferType<typeof schema>
 
 interface Props {
-  handleFullTimeJob: (payload: CreateJobFormData) => void;
-  isLoading: boolean;
+  handleFullTimeJob: (payload: CreateJobFormData) => void
+  isLoading: boolean
 }
 
 const OrganizationForm = ({ handleFullTimeJob, isLoading }: Props) => {
-  const router = useRouter();
-  const fileUploader = useRef<HTMLInputElement>(null);
-  const [isMajorDialog, setIsMajorDialog] = useState(false);
-  const [isPostDialog, setIsPostDialog] = useState(false);
+  const router = useRouter()
+  const fileUploader = useRef<HTMLInputElement>(null)
+  const [isMajorDialog, setIsMajorDialog] = useState(false)
+  const [isPostDialog, setIsPostDialog] = useState(false)
 
   const {
     register,
@@ -82,37 +82,39 @@ const OrganizationForm = ({ handleFullTimeJob, isLoading }: Props) => {
     defaultValues: {
       majors: [],
     },
-  });
+  })
 
   const openFileUploader = () => {
-    fileUploader.current?.click();
-  };
+    fileUploader.current?.click()
+  }
 
   const handleUploadedFiles = (files: File[]) => {
-    setValue("imageFile", files[0]);
-  };
+    setValue("imageFile", files[0])
+  }
 
   const imageUrl = useMemo(() => {
-    const file = watch("imageFile") as File;
+    const file = watch("imageFile") as File
     if (file) {
-      return URL.createObjectURL(file);
+      return URL.createObjectURL(file)
     }
-    return undefined;
-  }, [watch("imageFile")]);
+    return undefined
+  }, [watch("imageFile")])
 
   const handleSelectMajor = (selectedMajor: MAJOR) => {
-    const majorIds = watch("majors")?.map((major) => major.id);
+    const majorIds = watch("majors")?.map(major => major.id)
 
     if (majorIds?.includes(selectedMajor.id)) {
       setValue(
         "majors",
-        watch("majors")?.filter((major) => major.id !== selectedMajor.id)
-      );
+        watch("majors")?.filter(major => major.id !== selectedMajor.id),
+      )
     } else {
-      const currentMajors = watch("majors") || [];
-      setValue("majors", [...currentMajors, selectedMajor]);
+      const mergedMajors = [...watch("majors"), selectedMajor]
+
+      setValue("majors", mergedMajors.slice(-3))
     }
-  };
+  }
+
   return (
     <form
       className="max-w-screen-lg mx-auto py-4 px-2"
@@ -169,7 +171,7 @@ const OrganizationForm = ({ handleFullTimeJob, isLoading }: Props) => {
               errors={errors}
               name="title"
               render={({ message }) => (
-                <p className="text-error font-semibold">{message}</p>
+                <p className="text-error text-xs font-semibold">{message}</p>
               )}
             />
           </div>
@@ -183,11 +185,11 @@ const OrganizationForm = ({ handleFullTimeJob, isLoading }: Props) => {
               errors={errors}
               name="companyName"
               render={({ message }) => (
-                <p className="text-error font-semibold">{message}</p>
+                <p className="text-error text-xs font-semibold">{message}</p>
               )}
             />
           </div>
-          <div className="my-2 flex md:items-center gap-2">
+          <div className="my-2 flex items-center gap-1 md:gap-2">
             <Button
               type="button"
               onClick={() => setIsMajorDialog(!isMajorDialog)}
@@ -196,8 +198,16 @@ const OrganizationForm = ({ handleFullTimeJob, isLoading }: Props) => {
               <PlusIcon className="w-4 h-4 text-main" />
               <span>전공</span>
             </Button>
-            {watch("majors").map((major) => (
-              <Badge key={major.id} className="bg-main text-white text-sm h-8">
+            {!errors.majors && watch("majors").length == 0 && (
+              <span className="text-silver text-sm">
+                전공은 최대 3개까지 선택 가능합니다.
+              </span>
+            )}
+            {watch("majors").map(major => (
+              <Badge
+                key={major.id}
+                className="bg-main text-white text-xs md:text-sm h-8 whitespace-nowrap"
+              >
                 {major.koName}
                 <button
                   onClick={() => handleSelectMajor(major)}
@@ -211,7 +221,7 @@ const OrganizationForm = ({ handleFullTimeJob, isLoading }: Props) => {
               errors={errors}
               name="majors"
               render={({ message }) => (
-                <p className="text-error font-semibold">{message}</p>
+                <p className="text-error text-xs font-semibold">{message}</p>
               )}
             />
           </div>
@@ -233,7 +243,9 @@ const OrganizationForm = ({ handleFullTimeJob, isLoading }: Props) => {
                   errors={errors}
                   name="province"
                   render={({ message }) => (
-                    <p className="text-error font-semibold">{message}</p>
+                    <p className="text-error text-xs font-semibold">
+                      {message}
+                    </p>
                   )}
                 />
                 <Input
@@ -245,7 +257,9 @@ const OrganizationForm = ({ handleFullTimeJob, isLoading }: Props) => {
                   errors={errors}
                   name="detailAddress"
                   render={({ message }) => (
-                    <p className="text-error font-semibold">{message}</p>
+                    <p className="text-error text-xs font-semibold">
+                      {message}
+                    </p>
                   )}
                 />
               </div>
@@ -283,13 +297,13 @@ const OrganizationForm = ({ handleFullTimeJob, isLoading }: Props) => {
       <PostCodeDialog
         isOpen={isPostDialog}
         close={() => setIsPostDialog(!isPostDialog)}
-        setValue={(address) => {
-          setValue("province", address);
-          clearErrors("province");
+        setValue={address => {
+          setValue("province", address)
+          clearErrors("province")
         }}
       />
     </form>
-  );
-};
+  )
+}
 
-export default OrganizationForm;
+export default OrganizationForm

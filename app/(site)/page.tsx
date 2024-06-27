@@ -61,9 +61,9 @@ const page = () => {
           />
         </div>
       </article>
-      <Suspense fallback={<MainObirSkeleton />}>
+      {/* <Suspense fallback={<MainObirSkeleton />}>
         <MainObriContainer />
-      </Suspense>
+      </Suspense> */}
     </div>
   )
 }
