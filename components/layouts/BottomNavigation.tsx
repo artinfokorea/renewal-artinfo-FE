@@ -1,12 +1,12 @@
-"use client";
+"use client"
 
-import React, { useEffect, useState } from "react";
-import NewsPaperIcon from "../icons/NewsPaperIcon";
-import BookIcon from "../icons/BookIcon";
-import HomeIcon from "../icons/HomeIcon";
-import UserIcon from "../icons/UserIcon";
-import Link from "next/link";
-import { usePathname } from "next/navigation";
+import React, { useEffect, useState } from "react"
+import NewsPaperIcon from "../icons/NewsPaperIcon"
+import BookIcon from "../icons/BookIcon"
+import HomeIcon from "../icons/HomeIcon"
+import UserIcon from "../icons/UserIcon"
+import Link from "next/link"
+import { usePathname } from "next/navigation"
 
 const NavItems = [
   {
@@ -34,19 +34,19 @@ const NavItems = [
     icon: UserIcon,
     prefetch: false,
   },
-];
+]
 
 const BottomNavigation = () => {
-  const [isIPhone, setIsIPhone] = useState(false);
-  const pathname = usePathname();
+  const [isIPhone, setIsIPhone] = useState(false)
+  const pathname = usePathname()
 
   useEffect(() => {
-    const userAgent = navigator.userAgent.toLowerCase();
+    const userAgent = navigator.userAgent.toLowerCase()
 
     if (userAgent.indexOf("iphone") > -1) {
-      setIsIPhone(true);
+      setIsIPhone(true)
     }
-  }, []);
+  }, [])
 
   return (
     <footer
@@ -57,14 +57,14 @@ const BottomNavigation = () => {
       <div className="h-full grid grid-cols-4 mx-auto">
         {NavItems.map(({ href, title, prefetch, icon }) => {
           const isActive =
-            href === "/" ? pathname === href : pathname.startsWith(href);
+            href === "/" ? pathname === href : pathname.startsWith(href)
 
           return (
             <Link
               href={href}
               key={title}
               prefetch={prefetch}
-              className={`flex flex-col items-center hover:bg-gray-50 h-full text-gray-500 ${
+              className={`flex flex-col items-center hover:bg-gray-50 h-full text-gray-500 focus:outline-none ${
                 isActive ? "text-main" : "text-gray-500"
               }`}
             >
@@ -73,11 +73,11 @@ const BottomNavigation = () => {
               })}
               <span className="text-sm mt-[2px] font-medium">{title}</span>
             </Link>
-          );
+          )
         })}
       </div>
     </footer>
-  );
-};
+  )
+}
 
-export default BottomNavigation;
+export default BottomNavigation

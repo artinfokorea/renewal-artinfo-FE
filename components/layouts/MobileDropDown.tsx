@@ -24,7 +24,10 @@ const MobileDropDown = ({ isBarOpen, handleBar, items, handleSign }: Props) => {
 
   return (
     <Menu>
-      <MenuButton className="flex md:hidden" onClick={handleBar}>
+      <MenuButton
+        className="flex md:hidden focus:outline-none"
+        onClick={handleBar}
+      >
         <HamburgerIcon className="w-7 h-7 text-dimgray" />
       </MenuButton>
       <Transition
@@ -38,7 +41,7 @@ const MobileDropDown = ({ isBarOpen, handleBar, items, handleSign }: Props) => {
       >
         <MenuItems
           anchor="bottom"
-          className="bg-white w-screen mt-3 p-4 flex flex-col gap-3 mobile-dropdown shadow-sm"
+          className="bg-white w-screen mt-3 p-4 flex flex-col gap-3 mobile-dropdown shadow-sm focus:outline-none"
         >
           {items.map(({ href, label }) => {
             const isActive = pathname.includes(href)
