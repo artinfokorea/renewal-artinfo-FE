@@ -1,178 +1,170 @@
-import { DetailApiResponse } from '@/interface';
-import { USER } from '@/types/users';
-import NextAuth from 'next-auth';
-import CredentialsProvider from 'next-auth/providers/credentials';
+import { User } from "next-auth"
+import NextAuth from "next-auth"
+import CredentialsProvider from "next-auth/providers/credentials"
+
+const handleRefreshToken = async ({
+  accessToken,
+  refreshToken,
+}: {
+  accessToken: string
+  refreshToken: string
+}) => {
+  const result = await fetch(`${process.env.REST_API_BASE_URL}/auths/refresh`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      accessToken,
+      refreshToken,
+    }),
+  })
+    .then(res => res.json())
+    .catch(error => console.log("refreshToken error", error))
+
+  if (result.item) {
+    return {
+      accessToken: result.item.accessToken,
+      refreshToken: result.item.refreshToken,
+      accessTokenExpiresIn: result.item.accessTokenExpiresIn,
+      refreshTokenExpiresIn: result.item.refreshTokenExpiresIn,
+    }
+  }
+
+  return null
+}
 
 const handler = NextAuth({
   pages: {
-    signIn: '/auth/sign-in',
-    signOut: '/auth/sign-in',
-    error: '/auth/sign-in',
+    signIn: "/auth/sign-in",
+    signOut: "/auth/sign-in",
+    error: "/auth/sign-in",
   },
   session: {
-    strategy: 'jwt',
-    maxAge: 60 * 60 * 24 * 7,
+    strategy: "jwt",
+    maxAge: 60 * 60 * 24 * 60,
   },
   secret: process.env.NEXTAUTH_SECRET,
   providers: [
     CredentialsProvider({
-      id: 'signin-email',
+      id: "signin-email",
       credentials: {
-        email: { label: 'email', type: 'text' },
-        password: { label: 'password', type: 'password' },
+        email: { label: "email", type: "text" },
+        password: { label: "password", type: "password" },
       },
-      async authorize(credentials): Promise<any> {
-        const signInResult = await fetch(
+      async authorize(credentials): Promise<User | null> {
+        const response = await fetch(
           `${process.env.REST_API_BASE_URL}/auths/login/email`,
           {
-            method: 'POST',
+            method: "POST",
             headers: {
-              'Content-Type': 'application/json',
+              "Content-Type": "application/json",
             },
             body: JSON.stringify({
               email: credentials?.email,
               password: credentials?.password,
             }),
-          }
+          },
         )
-          .then((res) => res.json())
-          .catch((error) => console.log('signIn error', error));
-        if (signInResult.item) {
+
+        const result = await response.json()
+
+        if (result.item) {
           return {
-            accessToken: signInResult.item.accessToken,
-            refreshToken: signInResult.item.refreshToken,
-            accessTokenExpiresIn: signInResult.item.accessTokenExpiresIn,
-            refreshTokenExpiresIn: signInResult.item.refreshTokenExpiresIn,
-          };
+            id: "",
+            accessToken: result.item.accessToken,
+            refreshToken: result.item.refreshToken,
+            accessTokenExpiresIn: result.item.accessTokenExpiresIn,
+            refreshTokenExpiresIn: result.item.refreshTokenExpiresIn,
+          }
         }
-        return null;
+        return null
       },
     }),
     CredentialsProvider({
-      id: 'signup',
+      id: "sns",
       credentials: {
-        name: { label: 'name', type: 'text' },
-        email: { label: 'email', type: 'text' },
-        password: { label: 'password', type: 'password' },
+        accessToken: { label: "Access Token", type: "text" },
+        type: { label: "SNS Type", type: "text" },
       },
-      async authorize(credentials): Promise<any> {
-        const signUpResult = await fetch(
-          `${process.env.REST_API_BASE_URL}/auths/sign-up`,
-          {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-              email: credentials?.email,
-              password: credentials?.password,
-              name: credentials?.name,
-              clinicId: 1,
-            }),
-          }
-        )
-          .then((res) => res.json())
-          .catch((error) => console.log('signUp error', error));
-        if (signUpResult.data) {
-          return {
-            accessToken: signUpResult.data.accessToken.token,
-            refreshToken: signUpResult.data.refreshToken.token,
-            accessTokenExpiresIn: signUpResult.data.accessToken.expiresIn,
-            refreshTokenExpiresIn: signUpResult.data.refreshToken.expiresIn,
-          };
+      async authorize(credentials): Promise<User | null> {
+        if (!credentials?.accessToken || !credentials.type) {
+          return null
         }
-
-        return null;
-      },
-    }),
-    CredentialsProvider({
-      id: 'sns',
-      credentials: {
-        name: { label: 'name', type: 'text' },
-        phone: { label: 'phone', type: 'text' },
-        smsAuthCode: {
-          label: 'smsAuthCode',
-          type: 'password',
-          placeholder: '000000',
-        },
-      },
-      async authorize({ accessToken, snsType }: any) {
-        const verifySns = await fetch(
-          `${process.env.NEXT_PUBLIC_REST_API}/verification/sns/verify`,
-          {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-              snsType,
-              accessToken: accessToken,
-              deviceType: 'WEB',
-              idToken: '',
-            }),
-          }
-        )
-          .then((res) => res.json())
-          .catch((e) => console.log('e', e));
-
-        if (verifySns.data) {
-          const snsSignIn = await fetch(
-            `${process.env.NEXT_PUBLIC_REST_API}/sign-in/by-sns`,
+        try {
+          const response = await fetch(
+            `${process.env.NEXT_PUBLIC_REST_API}/auths/login/sns`,
             {
-              method: 'POST',
+              method: "POST",
               headers: {
-                'Content-Type': 'application/json',
+                "Content-Type": "application/json",
               },
               body: JSON.stringify({
-                snsVerifiedToken: verifySns.data.snsVerifiedToken,
-                device: {
-                  deviceType: 'WEB',
-                },
+                type: credentials.type,
+                accessToken: credentials.accessToken,
               }),
-            }
+            },
           )
-            .then((res) => res.json())
-            .catch((e) => console.log('e', e));
 
-          return snsSignIn;
+          if (!response.ok) {
+            throw new Error("Network response was not ok")
+          }
+
+          const result = await response.json()
+
+          if (result.item) {
+            return {
+              id: "",
+              accessToken: result.item.accessToken,
+              refreshToken: result.item.refreshToken,
+              accessTokenExpiresIn: result.item.accessTokenExpiresIn,
+              refreshTokenExpiresIn: result.item.refreshTokenExpiresIn,
+            }
+          } else {
+            console.error("Unexpected API response structure:", result)
+            return null
+          }
+        } catch (error) {
+          console.error("SNS sign-in error", error)
+          return null
         }
-
-        return null;
       },
     }),
   ],
   callbacks: {
-    async jwt({ token, user }: any) {
+    async jwt({ token, user }: { token: any; user: User }) {
       if (user) {
-        token.accessToken = user?.accessToken;
-        token.refreshToken = user?.refreshToken;
-        token.accessTokenExpiresIn = user?.accessTokenExpiresIn;
-        token.refreshTokenExpiresIn = user?.refreshTokenExpiresIn;
+        token.accessToken = user?.accessToken
+        token.refreshToken = user?.refreshToken
+        token.accessTokenExpiresIn = user?.accessTokenExpiresIn
+        token.refreshTokenExpiresIn = user?.refreshTokenExpiresIn
       }
 
-      // if (new Date() > new Date(token.accessTokenExpiresIn)) {
-      //   const result = await handleRefreshToken({
-      //     accessToken: token.accessToken,
-      //     refreshToken: token.refreshToken,
-      //   });
+      if (new Date() > new Date(token.accessTokenExpiresIn)) {
+        const result = await handleRefreshToken({
+          accessToken: token.accessToken,
+          refreshToken: token.refreshToken,
+        })
 
-      //   if (result) {
-      //     token.accessToken = result.token;
-      //     token.accessTokenExpiresIn = result.expiresIn;
-      //   }
+        if (result) {
+          token.accessToken = result.accessToken
+          token.refreshToken = result.refreshToken
+          token.accessTokenExpiresIn = result.accessTokenExpiresIn
+          token.refreshTokenExpiresIn = result.refreshTokenExpiresIn
+        }
 
-      //   return token;
-      // }
+        return token
+      }
 
-      return token;
+      return token
     },
 
     async session({ session, token }: any) {
-      session.token = token;
+      session.token = token
 
-      return session;
+      return session
     },
   },
-});
+})
 
-export { handler as GET, handler as POST };
+export { handler as GET, handler as POST }

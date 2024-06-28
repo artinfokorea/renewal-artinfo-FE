@@ -51,7 +51,7 @@ const BottomNavigation = () => {
   return (
     <footer
       className={`fixed md:hidden bottom-0 left-0 w-full z-50 border-t-[1px] bg-white ${
-        isIPhone ? "h-16 safe-area" : "h-12"
+        isIPhone ? "h-16 safe-area py-4" : "h-12"
       }`}
     >
       <div className="h-full grid grid-cols-4 mx-auto">
