@@ -1,44 +1,45 @@
-import Link from "next/link";
-import { usePathname } from "next/navigation";
-import React, { useRef } from "react";
-import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
-import { Input } from "@headlessui/react";
-import CloseIcon from "../icons/CloseIcon";
-import CameraIcon from "../icons/CameraIcon";
-import CalendarIcon from "../icons/CalendarIcon";
-import { ErrorMessage } from "@hookform/error-message";
-import filters from "@/lib/filters";
-import Image from "next/image";
-import FileUploader from "../common/FileUploader";
+import Link from "next/link"
+import { usePathname } from "next/navigation"
+import React, { useRef } from "react"
+import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar"
+import { Input } from "@headlessui/react"
+import CloseIcon from "../icons/CloseIcon"
+import CameraIcon from "../icons/CameraIcon"
+import CalendarIcon from "../icons/CalendarIcon"
+import { ErrorMessage } from "@hookform/error-message"
+import filters from "@/lib/filters"
+import Image from "next/image"
+import FileUploader from "../common/FileUploader"
 import {
   FieldErrors,
   UseFormRegister,
   UseFormWatch,
   UseFormSetValue,
-} from "react-hook-form";
-import { MAJOR } from "@/types";
-import { USER } from "@/types/users";
-import { Badge } from "../ui/badge";
-import { SchoolTypeValues } from "@/types/lessons";
-import { Button } from "../ui/button";
-import { ProfileFormData } from "@/app/(site)/my-profile/page";
+} from "react-hook-form"
+import { MAJOR } from "@/types"
+import { USER } from "@/types/users"
+import { Badge } from "../ui/badge"
+import { SchoolTypeValues } from "@/types/lessons"
+import { Button } from "../ui/button"
+import { ProfileFormData } from "@/app/(site)/my-profile/page"
 
 interface Props {
-  user?: USER;
-  isUpdateForm: boolean;
-  isImageUploadLoading: boolean;
-  isUpdateProfileLoading: boolean;
-  isDirty: boolean;
-  handleUpdateForm: () => void;
-  handleUploadedFiles: (files: File[]) => void;
-  handlePhoneDialog: () => void;
-  handleMajorDialog: () => void;
-  handleSelectMajor: (major: MAJOR) => void;
-  handleSubmit: () => void;
-  register: UseFormRegister<ProfileFormData>;
-  errors: FieldErrors<ProfileFormData>;
-  watch: UseFormWatch<ProfileFormData>;
-  setValue: UseFormSetValue<ProfileFormData>;
+  user?: USER
+  isUpdateForm: boolean
+  isImageUploadLoading: boolean
+  isUpdateProfileLoading: boolean
+  isDirty: boolean
+  handleUpdateForm: () => void
+  handleUploadedFiles: (files: File[]) => void
+  handlePhoneDialog: () => void
+  handleMajorDialog: () => void
+  handleSelectMajor: (major: MAJOR) => void
+  handleSubmit: () => void
+  handlePasswordDialog: () => void
+  register: UseFormRegister<ProfileFormData>
+  errors: FieldErrors<ProfileFormData>
+  watch: UseFormWatch<ProfileFormData>
+  setValue: UseFormSetValue<ProfileFormData>
 }
 
 const ProfileForm = ({
@@ -57,14 +58,15 @@ const ProfileForm = ({
   handleSubmit,
   handleSelectMajor,
   handleUploadedFiles,
+  handlePasswordDialog,
 }: Props) => {
-  const pathname = usePathname();
-  const fileUploader = useRef<HTMLInputElement>(null);
-  const filter = filters();
+  const pathname = usePathname()
+  const fileUploader = useRef<HTMLInputElement>(null)
+  const filter = filters()
 
   const openFileUploader = () => {
-    fileUploader.current?.click();
-  };
+    fileUploader.current?.click()
+  }
 
   return (
     <form className="flex mt-12">
@@ -275,7 +277,7 @@ const ProfileForm = ({
                 </button>
               )}
               <div className="flex gap-2 flex-wrap">
-                {watch("majors")?.map((major) => (
+                {watch("majors")?.map(major => (
                   <Badge
                     key={major.id}
                     className="text-main text-xs md:text-sm bg-aliceblue rounded-xl mx-1"
@@ -434,7 +436,11 @@ const ProfileForm = ({
           </div>
         ) : (
           <div className="hidden md:flex justify-end gap-4">
-            <Button type="button" className="border rounded-full font-semibold">
+            <Button
+              onClick={handlePasswordDialog}
+              type="button"
+              className="border rounded-full font-semibold"
+            >
               비밀번호 변경
             </Button>
             <Button
@@ -449,7 +455,7 @@ const ProfileForm = ({
       </div>
       <FileUploader ref={fileUploader} uploadedFiles={handleUploadedFiles} />
     </form>
-  );
-};
+  )
+}
 
-export default ProfileForm;
+export default ProfileForm

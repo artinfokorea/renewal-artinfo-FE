@@ -12,7 +12,7 @@ import {
   verifyPhoneCode,
 } from "@/apis/system"
 import useToast from "@/hooks/useToast"
-import { updateUser, updateUserPhone } from "@/apis/users"
+import { updateUser, updateUserPassword, updateUserPhone } from "@/apis/users"
 import { SchoolType } from "@/types/lessons"
 import { useQuery, useQueryClient } from "@tanstack/react-query"
 import { queries } from "@/lib/queries"
@@ -20,6 +20,13 @@ import MajorDialog from "@/components/dialog/MajorDialog"
 import PhoneDialog from "@/components/dialog/PhoneDialog"
 import ProfileForm from "@/components/profile/ProfileForm"
 import filters from "@/lib/filters"
+import PasswordDialog, {
+  PasswordFormData,
+} from "@/components/dialog/PasswordDialog"
+import {
+  sendEmailVerificationCode,
+  checkEmailVerificationCode,
+} from "@/apis/auth"
 
 const schema = yup
   .object({
@@ -49,7 +56,9 @@ const page = () => {
   const [isUpdateForm, setIsUpdateForm] = useState(false)
   const [isUpdateProfileLoading, updateProfileStartTransition] = useLoading()
   const [isUpdatePhoneLoading, updatePhoneStartTransition] = useLoading()
+  const [isUpdatePasswordLoading, updatePasswordStartTransition] = useLoading()
   const [isPhoneDialog, setIsPhoneDialog] = useState(false)
+  const [isPasswordDialog, setIsPasswordDialog] = useState(true)
   const queryClient = useQueryClient()
   const filter = filters()
 
@@ -196,6 +205,47 @@ const page = () => {
     }
   }
 
+  const handleUserPassword = async (payload: PasswordFormData) => {
+    try {
+      await updatePasswordStartTransition(updateUserPassword(payload.password))
+      successToast("비밀번호 변경이 완료되었습니다.")
+      setIsPasswordDialog(!isPasswordDialog)
+    } catch (error: any) {
+      errorToast(error.message)
+      console.log(error)
+    }
+  }
+
+  const sendEmailVerifyCode = async () => {
+    if (!user?.email) {
+      errorToast("이메일을 확인 할 수 없습니다.")
+      return
+    }
+
+    try {
+      await sendEmailVerificationCode(user?.email),
+        successToast("인증코드가 전송되었습니다.")
+    } catch (error: any) {
+      errorToast(error.message)
+      console.log(error)
+    }
+  }
+
+  const checkEmailVerifyCode = async (verification: string) => {
+    if (!user?.email) {
+      errorToast("이메일을 확인 할 수 없습니다.")
+      return
+    }
+
+    try {
+      await checkEmailVerificationCode(user?.email, verification)
+      successToast("이메일 인증이 완료되었습니다.")
+    } catch (error: any) {
+      errorToast(error.message)
+      console.log(error)
+    }
+  }
+
   return (
     <section className="max-w-screen-lg mx-auto">
       <ProfileForm
@@ -208,6 +258,7 @@ const page = () => {
         handleMajorDialog={() => setIsMajorDialog(!isMajorDialog)}
         handlePhoneDialog={() => setIsPhoneDialog(!isPhoneDialog)}
         handleUpdateForm={() => setIsUpdateForm(!isUpdateForm)}
+        handlePasswordDialog={() => setIsPasswordDialog(!isPasswordDialog)}
         isDirty={isDirty}
         setValue={setValue}
         errors={errors}
@@ -228,6 +279,14 @@ const page = () => {
         sendCode={sendPhoneCode}
         checkCode={checkPhoneVerificationCode}
         isLoading={isUpdatePhoneLoading}
+      />
+      <PasswordDialog
+        open={isPasswordDialog}
+        close={() => setIsPasswordDialog(!isPasswordDialog)}
+        isLoading={isUpdatePhoneLoading}
+        handlePassword={handleUserPassword}
+        sendEmailVerifyCode={sendEmailVerifyCode}
+        checkEmailVerifyCode={checkEmailVerifyCode}
       />
     </section>
   )

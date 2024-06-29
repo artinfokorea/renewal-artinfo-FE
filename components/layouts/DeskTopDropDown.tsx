@@ -23,7 +23,9 @@ const DeskTopDropDown = ({ user, handleSign }: Props) => {
           <AvatarImage
             src={user?.iconImageUrl || "/img/placeholder-user.png"}
           />
-          <AvatarFallback>CN</AvatarFallback>
+          <AvatarFallback>
+            <AvatarImage src={"/img/placeholder-user.png"} />
+          </AvatarFallback>
         </Avatar>
         <span className="mx-2 hidden md:block">{user?.nickname}님</span>
       </DropdownMenuTrigger>

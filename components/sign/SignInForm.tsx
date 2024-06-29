@@ -148,8 +148,8 @@ const SignInForm = () => {
           <span className="text-main cursor-pointer"> 회원가입</span>
         </Link>
       </p>
-      <Link href="/auth/sign-up">
-        <p className="text-center text-main">아이디 또는 비밀번호 찾기</p>
+      <Link href="/auth/find-password" prefetch={false}>
+        <p className="text-center text-main">비밀번호 찾기</p>
       </Link>
       <div className="flex text-grey mt-4">
         <div className="border-b-2 w-full border-grey mb-3" />

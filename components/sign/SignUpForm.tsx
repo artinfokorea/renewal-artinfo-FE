@@ -1,71 +1,71 @@
-'use client';
+"use client"
 
-import React, { useEffect, useMemo, useState, useTransition } from 'react';
-import { useForm } from 'react-hook-form';
-import { yupResolver } from '@hookform/resolvers/yup';
-import { ErrorMessage } from '@hookform/error-message';
-import * as yup from 'yup';
-import { Label } from '../ui/label';
-import { Input } from '../ui/input';
-import { Button } from '../ui/button';
-import useToast from '@/hooks/useToast';
+import React, { useEffect, useMemo, useState, useTransition } from "react"
+import { useForm } from "react-hook-form"
+import { yupResolver } from "@hookform/resolvers/yup"
+import { ErrorMessage } from "@hookform/error-message"
+import * as yup from "yup"
+import { Label } from "../ui/label"
+import { Input } from "../ui/input"
+import { Button } from "../ui/button"
+import useToast from "@/hooks/useToast"
 import {
   checkEmailVerificationCode,
   isDuplicateEmail,
   sendEmailVerificationCode,
   signUp,
-} from '@/apis/auth';
-import { useRouter } from 'next/navigation';
-import { useLoading } from '@toss/use-loading';
-import InputField from '../common/InputField';
-import InputWithButton from '../common/InputWithButton';
+} from "@/apis/auth"
+import { useRouter } from "next/navigation"
+import { useLoading } from "@toss/use-loading"
+import InputField from "../common/InputField"
+import InputWithButton from "../common/InputWithButton"
 
 const schema = yup
   .object({
     email: yup
       .string()
-      .email('이메일 형식이 아닙니다.')
-      .required('이메일을 입력해주세요.'),
+      .email("이메일 형식이 아닙니다.")
+      .required("이메일을 입력해주세요."),
     password: yup
       .string()
-      .min(8, '8자 이상 12자 이하로 영문, 숫자, 특수문자를 포함해주세요.')
-      .max(12, '8자 이상 12자 이하로 영문, 숫자, 특수문자를 포함해주세요.')
+      .min(8, "8자 이상 12자 이하로 영문, 숫자, 특수문자를 포함해주세요.")
+      .max(12, "8자 이상 12자 이하로 영문, 숫자, 특수문자를 포함해주세요.")
       .required()
       .matches(
         /^(?=.*[0-9])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{8,12}$/,
-        '8자 이상 12자 이하로 영문, 숫자, 특수문자를 포함해주세요.'
+        "8자 이상 12자 이하로 영문, 숫자, 특수문자를 포함해주세요.",
       ),
     rePassword: yup
       .string()
-      .required('재확인 비밀번호를 입력해주세요.')
-      .oneOf([yup.ref('password')], '재확인 비밀번호가 일치 하지 않습니다.'),
+      .required("재확인 비밀번호를 입력해주세요.")
+      .oneOf([yup.ref("password")], "재확인 비밀번호가 일치 하지 않습니다."),
     name: yup
       .string()
-      .min(2, '이름은 2글자 이상 입력해주세요.')
-      .max(6, '이름은 6글자 이하로 입력해주세요.')
-      .required('이름을 입력해주세요.'),
+      .min(2, "이름은 2글자 이상 입력해주세요.")
+      .max(6, "이름은 6글자 이하로 입력해주세요.")
+      .required("이름을 입력해주세요."),
     nickname: yup
       .string()
-      .min(2, '닉네임은 2글자 이상 입력해주세요.')
-      .max(6, '닉네임은 12글자 이하로 입력해주세요.')
-      .required('닉네임을 입력해주세요.'),
+      .min(2, "닉네임은 2글자 이상 입력해주세요.")
+      .max(6, "닉네임은 12글자 이하로 입력해주세요.")
+      .required("닉네임을 입력해주세요."),
     isEmailVerified: yup
       .boolean()
-      .oneOf([true], '이메일 중복검사를 완료해주세요.')
+      .oneOf([true], "이메일 중복검사를 완료해주세요.")
       .default(false),
   })
-  .required();
+  .required()
 
-type FormData = yup.InferType<typeof schema>;
+type FormData = yup.InferType<typeof schema>
 
 const SignUpForm = () => {
-  const [isPending, startTransition] = useLoading();
-  const [isEmailDuplicateLoading, startEmailDuplicateTransition] = useLoading();
-  const [isEmailVerifiedLoading, startEmailVerifiedTransition] = useLoading();
-  const [isSendEmailVerifiedCode, setIsSendEmailVerifiedCode] = useState(false);
-  const [emailVerifiedCode, setEmailVerifiedCode] = useState('');
-  const [isEmailVerified, setIsEmailVerified] = useState(false);
-  const { successToast, errorToast } = useToast();
+  const [isPending, startTransition] = useLoading()
+  const [isEmailDuplicateLoading, startEmailDuplicateTransition] = useLoading()
+  const [isEmailVerifiedLoading, startEmailVerifiedTransition] = useLoading()
+  const [isSendEmailVerifiedCode, setIsSendEmailVerifiedCode] = useState(false)
+  const [emailVerifiedCode, setEmailVerifiedCode] = useState("")
+  const [isEmailVerified, setIsEmailVerified] = useState(false)
+  const { successToast, errorToast } = useToast()
   const {
     register,
     handleSubmit,
@@ -77,15 +77,15 @@ const SignUpForm = () => {
     formState: { errors, isValid },
   } = useForm<FormData>({
     resolver: yupResolver(schema),
-  });
-  const router = useRouter();
+  })
+  const router = useRouter()
 
   useEffect(() => {
-    clearErrors('isEmailVerified');
-  }, [watch('email')]);
+    clearErrors("isEmailVerified")
+  }, [watch("email")])
 
   const handleSignUp = async (payload: FormData) => {
-    const { email, password, nickname, name } = payload;
+    const { email, password, nickname, name } = payload
     try {
       await startTransition(
         signUp({
@@ -93,61 +93,61 @@ const SignUpForm = () => {
           email,
           password,
           nickname,
-        })
-      );
-      router.push('sign-in');
-      successToast('회원가입이 완료되었습니다. 로그인 해주세요.');
+        }),
+      )
+      router.push("sign-in")
+      successToast("회원가입이 완료되었습니다. 로그인 해주세요.")
     } catch (error: any) {
-      errorToast(error.message);
-      console.log(error.message);
+      errorToast(error.message)
+      console.log(error.message)
     }
-  };
+  }
 
   const isDuplicate = async () => {
     try {
       const response: { existence: boolean } =
-        await startEmailDuplicateTransition(isDuplicateEmail(watch('email')));
+        await startEmailDuplicateTransition(isDuplicateEmail(watch("email")))
       if (response.existence) {
-        errorToast('이미 사용중인 이메일입니다.');
-        return;
+        errorToast("이미 사용중인 이메일입니다.")
+        return
       }
       await startEmailDuplicateTransition(
-        sendEmailVerificationCode(watch('email'))
-      );
-      successToast('사용 가능한 이메일입니다.');
-      setIsSendEmailVerifiedCode(true);
+        sendEmailVerificationCode(watch("email")),
+      )
+      successToast("사용 가능한 이메일입니다.")
+      setIsSendEmailVerifiedCode(true)
     } catch (error: any) {
-      errorToast(error.message);
-      console.log(error.message);
+      errorToast(error.message)
+      console.log(error.message)
     }
-  };
+  }
 
   const checkEmailVerifiedCode = async () => {
     try {
       await startEmailVerifiedTransition(
-        checkEmailVerificationCode(watch('email'), emailVerifiedCode)
-      );
-      successToast('이메일 인증이 완료되었습니다.');
-      setValue('isEmailVerified', true);
-      setIsEmailVerified(true);
+        checkEmailVerificationCode(watch("email"), emailVerifiedCode),
+      )
+      successToast("이메일 인증이 완료되었습니다.")
+      setValue("isEmailVerified", true)
+      setIsEmailVerified(true)
     } catch (error: any) {
-      errorToast(error.message);
-      console.log(error.message);
+      errorToast(error.message)
+      console.log(error.message)
     }
-  };
+  }
 
   const emailIsValid = useMemo(() => {
-    const emailRegex = /^[a-zA-Z0-9+-\_.]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/;
-    return emailRegex.test(watch('email'));
-  }, [watch('email')]);
+    const emailRegex = /^[a-zA-Z0-9+-\_.]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/
+    return emailRegex.test(watch("email"))
+  }, [watch("email")])
 
   return (
     <form
       className="max-w-[500px] mx-auto mt-12 md:mt-20 px-4"
       onSubmit={handleSubmit(handleSignUp)}
     >
-      <h2 className="text-2xl font-bold text-main text-center mb-8">
-        회원가입
+      <h2 className="text-4xl font-bold text-main text-center mb-12 md:mb-16">
+        ARTINFO
       </h2>
       <InputField
         label="이름"
@@ -239,7 +239,7 @@ const SignUpForm = () => {
         회원가입
       </Button>
     </form>
-  );
-};
+  )
+}
 
-export default SignUpForm;
+export default SignUpForm
