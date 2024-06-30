@@ -26,18 +26,28 @@ const AlertDialog = ({
       className="relative z-50 flex items-center justify-center rounded-lg"
     >
       <div className="fixed inset-0 bg-black/30" aria-hidden="true" />
-      <DialogPanel className="fixed inset-0 bg-white z-10 w-[300px] h-[200px] rounded-xl flex">
-        <DialogTitle className="text-primary font-bold">{title}</DialogTitle>
-        <p className={`font-semibolde text-base ${error ? "text-error" : ""}`}>
-          {description}
-        </p>
+      <div className="fixed inset-0 flex items-center justify-center p-4">
+        <DialogPanel className="w-full max-w-[350px] bg-white rounded-xl flex flex-col p-4">
+          <DialogTitle className="text-primary font-bold md:text-lg">
+            {title}
+          </DialogTitle>
+          <p
+            className={`font-medium py-3 text-sm ${error ? "text-error" : ""}`}
+          >
+            {description}
+          </p>
 
-        <div className="flex justify-end">
-          <Button type="button" className="bg-main text-white">
-            확인
-          </Button>
-        </div>
-      </DialogPanel>
+          <div className="flex justify-end">
+            <Button
+              type="button"
+              onClick={handleDialog}
+              className="bg-main text-white"
+            >
+              확인
+            </Button>
+          </div>
+        </DialogPanel>
+      </div>
     </Dialog>
   )
 }

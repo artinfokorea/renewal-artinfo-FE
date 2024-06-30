@@ -61,7 +61,7 @@ const page = () => {
         handleDialog={() => router.push("/my-profile")}
       />
       <AlertDialog
-        title="이미 레슨이 등록되어 있습니다."
+        title="레슨 등록 제한"
         description={qualificationErrorMessages}
         error
         isOpen={isQualificationDialog}
