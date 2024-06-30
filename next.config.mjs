@@ -1,4 +1,4 @@
-import withPWA from "next-pwa";
+import withPWA from "next-pwa"
 // import { withSentryConfig } from '@sentry/nextjs';
 
 /** @type {import('next').NextConfig} */
@@ -7,6 +7,9 @@ const config = {
   env: {
     REST_API_BASE_URL: process.env.REST_API_BASE_URL,
     NEXTAUTH_SECRET: process.env.NEXTAUTH_SECRET,
+    KAKAO_API_KEY: process.env.KAKAO_API_KEY,
+    GOOGLE_CLIENT_ID: process.env.GOOGLE_CLIENT_ID,
+    NAVER_CLIENT_ID: process.env.NAVER_CLIENT_ID,
   },
   images: {
     remotePatterns: [
@@ -33,7 +36,7 @@ const config = {
     formats: ["image/webp"],
     minimumCacheTTL: 60 * 60 * 24 * 30,
   },
-};
+}
 
 // const nextConfig = withPWA({
 //   dest: "public",
@@ -53,6 +56,6 @@ const config = {
 //   automaticVercelMonitors: true,
 // };
 
-export default config;
+export default config
 
 // export default withSentryConfig(nextConfig);
