@@ -1,53 +1,53 @@
-import { MAJOR, MajorCategoryValues } from "@/types";
-import React, { useEffect, useState } from "react";
-import RightIcon from "../icons/RightIcon";
-import { useRouter, useSearchParams } from "next/navigation";
+import { MAJOR, MajorCategoryValues } from "@/types"
+import React, { useEffect, useState } from "react"
+import RightIcon from "../icons/RightIcon"
+import { useRouter, useSearchParams } from "next/navigation"
 
 interface Props {
-  majors?: MAJOR[];
+  majors?: MAJOR[]
 }
 
 const MobileMajorFilter = ({ majors }: Props) => {
-  const searchParams = useSearchParams();
-  const router = useRouter();
-  const majorIds = searchParams.getAll("majorId") as string[];
+  const searchParams = useSearchParams()
+  const router = useRouter()
+  const majorIds = searchParams.getAll("majorId") as string[]
   const initialState: { [key: string]: boolean } = MajorCategoryValues.reduce<{
-    [key: string]: boolean;
+    [key: string]: boolean
   }>((acc, curr) => {
-    acc[curr.key] = false;
-    return acc;
-  }, {});
+    acc[curr.key] = false
+    return acc
+  }, {})
   const [isMajorCategoryDetail, setIsMajorCategoryDetail] =
-    useState(initialState);
-  const [checkedMajorIds, setCheckedMajorIds] = useState<string[]>(majorIds);
+    useState(initialState)
+  const [checkedMajorIds, setCheckedMajorIds] = useState<string[]>(majorIds)
 
   useEffect(() => {
-    const locationParams = new URLSearchParams(window.location.search);
+    const locationParams = new URLSearchParams(window.location.search)
 
-    locationParams.delete("majorId");
-    checkedMajorIds.forEach((v) => locationParams.append("majorId", v));
-    const newUrl = `${window.location.pathname}?${locationParams.toString()}`;
+    locationParams.delete("majorId")
+    checkedMajorIds.forEach(v => locationParams.append("majorId", v))
+    const newUrl = `${window.location.pathname}?${locationParams.toString()}`
     router.push(newUrl, {
       scroll: false,
-    });
-  }, [majorIds]);
+    })
+  }, [majorIds])
 
   const handleMajorDetailBoxes = (key: string) => {
-    setIsMajorCategoryDetail((prev) => {
+    setIsMajorCategoryDetail(prev => {
       return {
         ...prev,
         [key]: !prev[key],
-      };
-    });
-  };
+      }
+    })
+  }
 
   const handleMajor = (majorId: string) => {
     if (checkedMajorIds.includes(majorId)) {
-      setCheckedMajorIds(checkedMajorIds.filter((v) => v !== majorId));
+      setCheckedMajorIds(checkedMajorIds.filter(v => v !== majorId))
     } else {
-      setCheckedMajorIds([...checkedMajorIds, majorId]);
+      setCheckedMajorIds([...checkedMajorIds, majorId])
     }
-  };
+  }
 
   return (
     <div className="py-4 px-2 flex flex-col gap-1">
@@ -79,7 +79,7 @@ const MobileMajorFilter = ({ majors }: Props) => {
               </button>
             </div>
             {isMajorCategoryDetail[key] &&
-              majors?.map((major) => {
+              majors?.map(major => {
                 if (major.enGroup === key) {
                   return (
                     <div className="ml-8 flex items-center my-2" key={major.id}>
@@ -93,14 +93,14 @@ const MobileMajorFilter = ({ majors }: Props) => {
                         {major.koName}
                       </button>
                     </div>
-                  );
+                  )
                 }
               })}
           </div>
-        );
+        )
       })}
     </div>
-  );
-};
+  )
+}
 
-export default MobileMajorFilter;
+export default MobileMajorFilter

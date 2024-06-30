@@ -1,6 +1,6 @@
 import { ScrollApiResponse } from "@/interface"
 import { queries } from "@/lib/queries"
-import { JOB, JobType } from "@/types/jobs"
+import { JOB, JobType, ProfessionalFieldTypes } from "@/types/jobs"
 import { useSuspenseInfiniteQuery } from "@tanstack/react-query"
 import { useSearchParams } from "next/navigation"
 import { useInView } from "react-intersection-observer"
@@ -12,7 +12,9 @@ import ReligionCard from "./ReligionCard"
 const JobsList = () => {
   const searchParams = useSearchParams()
   const recruits = searchParams.getAll("recruit") as JobType[]
-  const majorIds = searchParams.getAll("majorId") as string[]
+  const professionals = searchParams.getAll(
+    "professional",
+  ) as ProfessionalFieldTypes[]
   const keyword = searchParams.get("keyword") as string
   const provinceIds = searchParams.getAll("provinceId") as string[]
   const [ref, inView] = useInView({
@@ -32,7 +34,7 @@ const JobsList = () => {
           ? recruits
           : [JobType.ART_ORGANIZATION, JobType.LECTURER, JobType.RELIGION],
       keyword,
-      categoryIds: majorIds.map(id => Number(id)),
+      professionalFields: professionals.map(professional => professional),
       provinceIds: provinceIds.map(id => Number(id)),
     }),
     initialPageParam: 1,

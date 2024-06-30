@@ -1,11 +1,11 @@
-import { ListApiResponse, ListResponse, SuccessResponse } from "@/interface";
-import { apiRequest, baseInstance } from ".";
-import { exceptionHandler } from "./exception-handler";
-import { IMAGE, MAJOR, PROVINCE } from "@/types";
-import { VerifyPhoneCodePayload } from "@/interface/systems";
+import { ListApiResponse, ListResponse, SuccessResponse } from "@/interface"
+import { apiRequest } from "."
+import { exceptionHandler } from "./exception-handler"
+import { IMAGE, PROVINCE } from "@/types"
+import { VerifyPhoneCodePayload } from "@/interface/systems"
 
 export const getProvinces = async (
-  depth?: number
+  depth?: number,
 ): Promise<ListResponse<PROVINCE, "provinces">> => {
   try {
     const response = await apiRequest.get<
@@ -14,39 +14,39 @@ export const getProvinces = async (
       params: {
         parentId: depth,
       },
-    });
-    return response.item;
+    })
+    return response.item
   } catch (error) {
-    throw new Error(exceptionHandler(error, "API getProvince error"));
+    throw new Error(exceptionHandler(error, "API getProvince error"))
   }
-};
+}
 
 export const sendPhoneVerificationCode = async (
-  phone: string
+  phone: string,
 ): Promise<SuccessResponse> => {
   const response = await apiRequest.post<SuccessResponse>(
     "/verifications/mobile",
-    { phone }
-  );
-  return response;
-};
+    { phone },
+  )
+  return response
+}
 
 export const verifyPhoneCode = async (
-  payload: VerifyPhoneCodePayload
+  payload: VerifyPhoneCodePayload,
 ): Promise<SuccessResponse> => {
   const response = await apiRequest.put<SuccessResponse>(
     "/verifications/mobile",
-    payload
-  );
-  return response;
-};
+    payload,
+  )
+  return response
+}
 
 export const uploadImages = async (
-  imageFiles: File[]
+  imageFiles: File[],
 ): Promise<ListResponse<IMAGE, "images">> => {
-  const formData = new FormData();
-  imageFiles.forEach((file) => formData.append("imageFiles", file));
-  formData.append("target", "USER");
+  const formData = new FormData()
+  imageFiles.forEach(file => formData.append("imageFiles", file))
+  formData.append("target", "USER")
 
   const response = await apiRequest.post<ListApiResponse<IMAGE, "images">>(
     "/system/upload/images",
@@ -55,19 +55,8 @@ export const uploadImages = async (
       headers: {
         "Content-Type": "multipart/form-data",
       },
-    }
-  );
+    },
+  )
 
-  return response.item;
-};
-
-export const getMajors = async (): Promise<ListResponse<MAJOR, "majors">> => {
-  try {
-    const response = await apiRequest.get<ListApiResponse<MAJOR, "majors">>(
-      "/majors"
-    );
-    return response.item;
-  } catch (error) {
-    throw new Error(exceptionHandler(error, "API getMajors error"));
-  }
-};
+  return response.item
+}

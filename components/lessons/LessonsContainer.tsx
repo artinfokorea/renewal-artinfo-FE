@@ -9,11 +9,10 @@ import { Button } from "../ui/button"
 import { Badge } from "../ui/badge"
 import CloseIcon from "../icons/CloseIcon"
 import ProvinceDialog from "../dialog/ProvinceDialog"
-import MajorCheckBoxes from "../common/MajorCheckBoxes"
-import MobileFilterTab from "../common/MobileFIlterTab"
 import LessonList from "./LessonList"
 import LessonListSkeleton from "../skeleton/LessonListSkeleton"
-import ConfirmDialog from "../dialog/ConfirmDialog"
+import { ArtType } from "@/types/majors"
+import ProfessionalCheckBoxes from "../common/ProfessionalCheckBoxes"
 
 const LessonsContainer = () => {
   const searchParams = useSearchParams()
@@ -22,7 +21,9 @@ const LessonsContainer = () => {
   const [isProvinceDialog, setIsProvinceDialog] = useState(false)
   const pathname = usePathname()
 
-  const { data: majors } = useQuery(queries.majors.list())
+  const { data: artFiles } = useQuery(
+    queries.majors.artFields({ artCategories: [ArtType.MUSIC] }),
+  )
 
   const { data: provinceList } = useQuery(queries.provinces.list())
 
@@ -60,7 +61,7 @@ const LessonsContainer = () => {
       />
       <section className="flex">
         <form className="hidden lg:flex flex-col text-gray-400 min-w-[180px]">
-          <MajorCheckBoxes majors={majors?.majors} />
+          <ProfessionalCheckBoxes artFields={artFiles?.majorGroups} />
         </form>
         <div className="md:flex-1 w-full flex flex-col md:ml-12 md:mt-4">
           <div className="hidden lg:flex justify-between items-center">
@@ -94,11 +95,11 @@ const LessonsContainer = () => {
               등록
             </Button>
           </div>
-          <MobileFilterTab
+          {/* <MobileFilterTab
             majors={majors?.majors}
             provinces={provinceList?.provinces}
             page="LESSON"
-          />
+          /> */}
           <Suspense fallback={<LessonListSkeleton />}>
             <LessonList />
           </Suspense>

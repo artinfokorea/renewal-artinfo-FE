@@ -1,4 +1,5 @@
-import { JobType, ProfessionalFieldTypes } from "@/types/jobs"
+import { JobType } from "@/types/jobs"
+import { ProfessionalFieldTypes } from "@/types/majors"
 
 export interface JobsRequest {
   page?: number

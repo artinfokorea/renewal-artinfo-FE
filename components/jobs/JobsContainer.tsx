@@ -13,6 +13,7 @@ import CloseIcon from "../icons/CloseIcon"
 import MobileFilterTab from "../common/MobileFIlterTab"
 import JobsList from "./JobsList"
 import JobListSkeleton from "../skeleton/JobListSkeleton"
+import { ArtType } from "@/types/majors"
 
 const JobsContainer = () => {
   const searchParams = useSearchParams()
@@ -21,7 +22,9 @@ const JobsContainer = () => {
   const pathname = usePathname()
   const [isProvinceDialog, setIsProvinceDialog] = useState(false)
 
-  const { data: majors } = useQuery(queries.majors.list())
+  const { data: artFields } = useQuery(
+    queries.majors.artFields({ artCategories: [ArtType.MUSIC] }),
+  )
 
   const { data: provinceList } = useQuery(queries.provinces.list())
 
@@ -59,7 +62,7 @@ const JobsContainer = () => {
       />
 
       <section className="flex">
-        <JobListCheckBoxes majors={majors?.majors} />
+        <JobListCheckBoxes artFields={artFields?.majorGroups} />
         <div className="md:flex-1 w-full flex flex-col md:ml-12 md:mt-4">
           <div className="hidden lg:flex justify-between items-center">
             <div className="flex gap-2 flex-wrap">
@@ -93,9 +96,9 @@ const JobsContainer = () => {
             </Button>
           </div>
           <MobileFilterTab
-            majors={majors?.majors}
             provinces={provinceList?.provinces}
             page="JOB"
+            artFields={artFields?.majorGroups}
           />
           <Suspense fallback={<JobListSkeleton />}>
             <JobsList />

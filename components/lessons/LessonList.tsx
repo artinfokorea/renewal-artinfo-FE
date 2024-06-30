@@ -6,10 +6,13 @@ import { ScrollApiResponse } from "@/interface"
 import { useInView } from "react-intersection-observer"
 import { LESSON } from "@/types/lessons"
 import { queries } from "@/lib/queries"
+import { ProfessionalFieldTypes } from "@/types/majors"
 
 const LessonList = () => {
   const searchParams = useSearchParams()
-  const majorIds = searchParams.getAll("majorId") as string[]
+  const professionals = searchParams.getAll(
+    "professional",
+  ) as ProfessionalFieldTypes[]
   const keyword = searchParams.get("keyword") as string
   const provinceIds = searchParams.getAll("provinceId") as string[]
 
@@ -21,7 +24,7 @@ const LessonList = () => {
     ...queries.lessons.infiniteList({
       size: 10,
       keyword,
-      majorIds: majorIds.map(id => Number(id)),
+      professionalFields: professionals.map(professionals => professionals),
       provinceIds: provinceIds.map(id => Number(id)),
     }),
     initialPageParam: 1,

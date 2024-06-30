@@ -7,7 +7,7 @@ import {
   ProfessionalValues,
 } from "@/types"
 import RightIcon from "../icons/RightIcon"
-import CheckboxField from "./CheckboxField"
+import CheckboxField from "../common/CheckboxField"
 
 interface Props {
   majors?: MAJOR[]
@@ -40,43 +40,41 @@ const MajorCheckBoxes = ({ majors }: Props) => {
     })
   }, [majorIds])
 
-  // const majorCategoryIds = useMemo(() => {
-  //   return {
-  //     [MajorCategory.MUSIC_MAJOR_ETC]: majors
-  //       ?.filter((major) => major.enGroup === MajorCategory.MUSIC_MAJOR_ETC)
-  //       .map((major) => major.id.toString()),
-  //     [MajorCategory.MUSIC_MAJOR_KEYBOARD]: majors
-  //       ?.filter(
-  //         (major) => major.enGroup === MajorCategory.MUSIC_MAJOR_KEYBOARD
-  //       )
-  //       .map((major) => major.id.toString()),
-  //     [MajorCategory.MUSIC_MAJOR_VOCAL]: majors
-  //       ?.filter((major) => major.enGroup === MajorCategory.MUSIC_MAJOR_VOCAL)
-  //       .map((major) => major.id.toString()),
-  //     [MajorCategory.MUSIC_MAJOR_ADMINISTRATION]: majors
-  //       ?.filter(
-  //         (major) => major.enGroup === MajorCategory.MUSIC_MAJOR_ADMINISTRATION
-  //       )
-  //       .map((major) => major.id.toString()),
-  //     [MajorCategory.MUSIC_MAJOR_STRING]: majors
-  //       ?.filter((major) => major.enGroup === MajorCategory.MUSIC_MAJOR_STRING)
-  //       .map((major) => major.id.toString()),
-  //     [MajorCategory.MUSIC_MAJOR_BRASS]: majors
-  //       ?.filter((major) => major.enGroup === MajorCategory.MUSIC_MAJOR_BRASS)
-  //       .map((major) => major.id.toString()),
-  //     [MajorCategory.MUSIC_MAJOR_POPULAR_MUSIC]: majors
-  //       ?.filter(
-  //         (major) => major.enGroup === MajorCategory.MUSIC_MAJOR_POPULAR_MUSIC
-  //       )
-  //       .map((major) => major.id.toString()),
-  //     [MajorCategory.MUSIC_MAJOR_TRADITIONAL_MUSIC]: majors
-  //       ?.filter(
-  //         (major) =>
-  //           major.enGroup === MajorCategory.MUSIC_MAJOR_TRADITIONAL_MUSIC
-  //       )
-  //       .map((major) => major.id.toString()),
-  //   };
-  // }, [majors]);
+  const majorCategoryIds = useMemo(() => {
+    return {
+      [MajorCategory.MUSIC_MAJOR_ETC]: majors
+        ?.filter(major => major.enGroup === MajorCategory.MUSIC_MAJOR_ETC)
+        .map(major => major.id.toString()),
+      [MajorCategory.MUSIC_MAJOR_KEYBOARD]: majors
+        ?.filter(major => major.enGroup === MajorCategory.MUSIC_MAJOR_KEYBOARD)
+        .map(major => major.id.toString()),
+      [MajorCategory.MUSIC_MAJOR_VOCAL]: majors
+        ?.filter(major => major.enGroup === MajorCategory.MUSIC_MAJOR_VOCAL)
+        .map(major => major.id.toString()),
+      [MajorCategory.MUSIC_MAJOR_ADMINISTRATION]: majors
+        ?.filter(
+          major => major.enGroup === MajorCategory.MUSIC_MAJOR_ADMINISTRATION,
+        )
+        .map(major => major.id.toString()),
+      [MajorCategory.MUSIC_MAJOR_STRING]: majors
+        ?.filter(major => major.enGroup === MajorCategory.MUSIC_MAJOR_STRING)
+        .map(major => major.id.toString()),
+      [MajorCategory.MUSIC_MAJOR_BRASS]: majors
+        ?.filter(major => major.enGroup === MajorCategory.MUSIC_MAJOR_BRASS)
+        .map(major => major.id.toString()),
+      [MajorCategory.MUSIC_MAJOR_POPULAR_MUSIC]: majors
+        ?.filter(
+          major => major.enGroup === MajorCategory.MUSIC_MAJOR_POPULAR_MUSIC,
+        )
+        .map(major => major.id.toString()),
+      [MajorCategory.MUSIC_MAJOR_TRADITIONAL_MUSIC]: majors
+        ?.filter(
+          major =>
+            major.enGroup === MajorCategory.MUSIC_MAJOR_TRADITIONAL_MUSIC,
+        )
+        .map(major => major.id.toString()),
+    }
+  }, [majors])
 
   const handleMajorGroupChange = (key: MajorCategory) => {
     const categoryIds = majorCategoryIds[key] as string[]
@@ -140,7 +138,7 @@ const MajorCheckBoxes = ({ majors }: Props) => {
         checked={checkedMajorIds.length === 0}
         handleChange={handleIsAllMajorChecked}
       />
-      {ProfessionalValues.map(({ key, value }) => {
+      {MajorCategoryValues.map(({ key, value }) => {
         return (
           <div key={value}>
             <CheckboxField<MajorCategory>

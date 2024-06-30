@@ -1,39 +1,40 @@
-import { MAJOR, PROVINCE } from '@/types';
-import { SearchType } from '@/types/jobs';
-import React, { useState } from 'react';
-import MobileProvinceFilter from '../common/MobileProvinceFilter';
-import MobileMajorFilter from '../common/MobileMajorFilter';
-import MobileRecruitTypeFilter from '../jobs/MobileRecruitTypeFilter';
+import { PROVINCE } from "@/types"
+import { SearchType } from "@/types/jobs"
+import React, { useState } from "react"
+import MobileProvinceFilter from "../common/MobileProvinceFilter"
+import MobileProfessionalFilter from "./MobileProfessionalFilter"
+import MobileRecruitTypeFilter from "../jobs/MobileRecruitTypeFilter"
+import { ArtField } from "@/types/majors"
 
 interface Props {
-  majors?: MAJOR[];
-  provinces?: PROVINCE[];
-  page: 'LESSON' | 'JOB';
+  provinces?: PROVINCE[]
+  page: "LESSON" | "JOB"
+  artFields?: ArtField[]
 }
 
-const MobileFilterTab = ({ majors, provinces, page }: Props) => {
-  const [mobileSearchTab, setMobileSearchTab] = useState<SearchType>();
+const MobileFilterTab = ({ provinces, page, artFields }: Props) => {
+  const [mobileSearchTab, setMobileSearchTab] = useState<SearchType>()
 
   const handleSearchTab = (searchType: SearchType) => {
     if (mobileSearchTab === searchType) {
-      setMobileSearchTab(undefined);
+      setMobileSearchTab(undefined)
     } else {
-      setMobileSearchTab(searchType);
+      setMobileSearchTab(searchType)
     }
-  };
+  }
 
   return (
     <div className="flex flex-col lg:hidden border relative">
       <div
         className={`grid text-main text-sm ${
-          page === 'JOB' ? 'grid-cols-3' : 'grid-cols-2'
+          page === "JOB" ? "grid-cols-3" : "grid-cols-2"
         }`}
       >
-        {page === 'JOB' && (
+        {page === "JOB" && (
           <button
             onClick={() => handleSearchTab(SearchType.RECRUIT)}
             className={`py-2 rounded ${
-              mobileSearchTab === SearchType.RECRUIT && 'bg-whitesmoke'
+              mobileSearchTab === SearchType.RECRUIT && "bg-whitesmoke"
             }`}
           >
             직군
@@ -42,7 +43,7 @@ const MobileFilterTab = ({ majors, provinces, page }: Props) => {
         <button
           onClick={() => handleSearchTab(SearchType.REGION)}
           className={`py-2 rounded ${
-            mobileSearchTab === SearchType.REGION && 'bg-whitesmoke'
+            mobileSearchTab === SearchType.REGION && "bg-whitesmoke"
           }`}
         >
           지역
@@ -50,10 +51,10 @@ const MobileFilterTab = ({ majors, provinces, page }: Props) => {
         <button
           onClick={() => handleSearchTab(SearchType.MAJOR)}
           className={`py-2 rounded ${
-            mobileSearchTab === SearchType.MAJOR && 'bg-whitesmoke'
+            mobileSearchTab === SearchType.MAJOR && "bg-whitesmoke"
           }`}
         >
-          전공
+          분야
         </button>
       </div>
 
@@ -62,10 +63,10 @@ const MobileFilterTab = ({ majors, provinces, page }: Props) => {
         <MobileProvinceFilter provinces={provinces} />
       )}
       {mobileSearchTab === SearchType.MAJOR && (
-        <MobileMajorFilter majors={majors} />
+        <MobileProfessionalFilter artFields={artFields} />
       )}
     </div>
-  );
-};
+  )
+}
 
-export default MobileFilterTab;
+export default MobileFilterTab

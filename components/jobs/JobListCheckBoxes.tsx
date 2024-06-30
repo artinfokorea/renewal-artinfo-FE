@@ -1,18 +1,18 @@
-import { MAJOR, MajorCategory, MajorCategoryValues } from "@/types";
-import JobTypeCheckBoxes from "./JobTypeCheckBoxes";
-import MajorCheckBoxes from "../common/MajorCheckBoxes";
+import JobTypeCheckBoxes from "./JobTypeCheckBoxes"
+import ProfessionalCheckBoxes from "../common/ProfessionalCheckBoxes"
+import { ArtField } from "@/types/majors"
 
 interface Props {
-  majors?: MAJOR[];
+  artFields?: ArtField[]
 }
 
-const ListCheckBoxes = ({ majors }: Props) => {
+const ListCheckBoxes = ({ artFields }: Props) => {
   return (
     <form className="hidden lg:flex flex-col text-gray-400 min-w-[180px]">
       <JobTypeCheckBoxes />
-      <MajorCheckBoxes majors={majors} />
+      <ProfessionalCheckBoxes artFields={artFields} />
     </form>
-  );
-};
+  )
+}
 
-export default ListCheckBoxes;
+export default ListCheckBoxes
