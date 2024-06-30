@@ -50,6 +50,7 @@ const PasswordDialog = ({
   checkEmailVerifyCode,
 }: Props) => {
   const [isSendEmail, setIsSendEmail] = useState(false)
+  const [isVerifyEmail, setIsVerifyEmail] = useState(false)
   const [verifyCode, setVerifyCode] = useState("")
 
   const {
@@ -74,6 +75,7 @@ const PasswordDialog = ({
     try {
       checkEmailVerifyCode(verifyCode)
       setValue("isEmailVerified", true)
+      setIsVerifyEmail(true)
     } catch (error) {
       console.error("이메일 인증 코드 확인 실패:", error)
     }
@@ -124,7 +126,7 @@ const PasswordDialog = ({
                 <div className="flex gap-2">
                   <Button
                     type="button"
-                    disabled={verifyCode.length !== 6}
+                    disabled={verifyCode.length !== 6 || isVerifyEmail}
                     className="text-white bg-blue-800"
                     onClick={checkEmail}
                   >
