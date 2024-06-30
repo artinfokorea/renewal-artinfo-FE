@@ -11,10 +11,12 @@ import FindPasswordForm, {
 } from "@/components/sign/FIndPasswordForm"
 import useToast from "@/hooks/useToast"
 import { useLoading } from "@toss/use-loading"
+import { useRouter } from "next/navigation"
 
 const page = () => {
   const { successToast, errorToast } = useToast()
   const [isUpdatePasswordLoading, updatePasswordStartTransition] = useLoading()
+  const router = useRouter()
 
   const sendEmailVerifyCode = async (email: string) => {
     try {
@@ -49,6 +51,7 @@ const page = () => {
         updateUserPassword(payload.password, payload.email),
       )
       successToast("비밀번호 변경이 완료되었습니다.")
+      router.push("/")
     } catch (error: any) {
       errorToast(error.message)
       console.log(error)

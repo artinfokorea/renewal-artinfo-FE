@@ -48,8 +48,6 @@ const SignInForm = () => {
     resolver: yupResolver(schema),
   })
 
-  console.log("REST_API_BASE_URL", process.env.REST_API_BASE_URL)
-
   const handleDialog = () => setIsConfirmDialogOpen(!isConfirmDialogOpen)
 
   const handleSignIn = async (payload: FormData) => {
