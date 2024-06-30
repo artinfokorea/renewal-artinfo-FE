@@ -1,17 +1,17 @@
-import { queries } from "@/lib/queries";
-import { Dialog, DialogPanel, DialogTitle } from "@headlessui/react";
-import { useQuery } from "@tanstack/react-query";
-import React from "react";
-import CloseIcon from "../icons/CloseIcon";
-import { Button } from "../ui/button";
-import { MAJOR, MajorCategoryValues } from "@/types";
+import { queries } from "@/lib/queries"
+import { Dialog, DialogPanel, DialogTitle } from "@headlessui/react"
+import { useQuery } from "@tanstack/react-query"
+import React from "react"
+import CloseIcon from "../icons/CloseIcon"
+import { Button } from "../ui/button"
+import { MAJOR, MajorCategoryValues } from "@/types/majors"
 
 interface Props {
-  open: boolean;
-  close: () => void;
-  selectedMajors: MAJOR[];
-  handleSelectMajor: (major: MAJOR) => void;
-  multiple?: boolean;
+  open: boolean
+  close: () => void
+  selectedMajors: MAJOR[]
+  handleSelectMajor: (major: MAJOR) => void
+  multiple?: boolean
 }
 
 const MajorDialog = ({
@@ -21,14 +21,16 @@ const MajorDialog = ({
   handleSelectMajor,
   multiple,
 }: Props) => {
-  const { data } = useQuery(queries.majors.list());
+  const { data } = useQuery(queries.majors.list())
+
+  console.log("data", data)
 
   const selectMajor = (major: MAJOR) => {
-    handleSelectMajor(major);
-    if (!multiple) close();
-  };
+    handleSelectMajor(major)
+    if (!multiple) close()
+  }
 
-  const selectedMajorIds = selectedMajors.map((major) => major.id);
+  const selectedMajorIds = selectedMajors.map(major => major.id)
 
   return (
     <Dialog
@@ -53,9 +55,9 @@ const MajorDialog = ({
               <div key={key} className="flex flex-col gap-3 my-3">
                 <span className="text-coolgray font-bold">{value}</span>
                 <div className="flex flex-wrap gap-2">
-                  {data?.majors.map((major) => {
+                  {data?.majors.map(major => {
                     return (
-                      major.enGroup === key && (
+                      major.secondGroupEn === key && (
                         <Button
                           type="button"
                           key={major.id}
@@ -70,7 +72,7 @@ const MajorDialog = ({
                           {major.koName}
                         </Button>
                       )
-                    );
+                    )
                   })}
                 </div>
               </div>
@@ -90,7 +92,7 @@ const MajorDialog = ({
         </DialogPanel>
       </div>
     </Dialog>
-  );
-};
+  )
+}
 
-export default MajorDialog;
+export default MajorDialog

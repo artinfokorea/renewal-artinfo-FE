@@ -1,7 +1,7 @@
 "use client"
 
 import { queries } from "@/lib/queries"
-import { JobType, ProfessionalFieldTypes } from "@/types/jobs"
+import { JobType } from "@/types/jobs"
 import { useSuspenseQuery } from "@tanstack/react-query"
 import Link from "next/link"
 import React from "react"
@@ -10,6 +10,7 @@ import "swiper/css"
 import { Pagination } from "swiper/modules"
 import FallbackImage from "../common/FallbackImage"
 import { AspectRatio } from "../ui/aspect-ratio"
+import { ProfessionalFieldTypes } from "@/types/majors"
 
 const MainJobsContainer = () => {
   const { data } = useSuspenseQuery(
@@ -27,7 +28,7 @@ const MainJobsContainer = () => {
   )
 
   return (
-    <section className="my-8 md:my-12">
+    <section className="my-12 md:my-16">
       <div className="flex justify-between">
         <h3 className="text-xl font-bold">#채용</h3>
         <Link href="/jobs">

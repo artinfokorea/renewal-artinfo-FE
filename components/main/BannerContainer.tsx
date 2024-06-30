@@ -1,18 +1,18 @@
-"use client";
+"use client"
 
-import React, { useRef } from "react";
-import Autoplay from "embla-carousel-autoplay";
+import React, { useRef } from "react"
+import Autoplay from "embla-carousel-autoplay"
 import {
   Carousel,
   CarouselContent,
   CarouselItem,
-} from "@/components/ui/carousel";
-import Image from "next/image";
-import { AspectRatio } from "../ui/aspect-ratio";
-import { AD, AdvertisementType } from "@/types/ads";
-import Link from "next/link";
-import { useSuspenseQuery } from "@tanstack/react-query";
-import { queries } from "@/lib/queries";
+} from "@/components/ui/carousel"
+import Image from "next/image"
+import { AspectRatio } from "../ui/aspect-ratio"
+import { AD, AdvertisementType } from "@/types/ads"
+import Link from "next/link"
+import { useSuspenseQuery } from "@tanstack/react-query"
+import { queries } from "@/lib/queries"
 
 // interface Props {
 //   ads?: AD[];
@@ -20,22 +20,22 @@ import { queries } from "@/lib/queries";
 
 const BannerContainer = () => {
   const plugin = useRef(
-    Autoplay({ delay: 5000, stopOnInteraction: true, loop: true })
-  );
+    Autoplay({ delay: 5000, stopOnInteraction: true, loop: true }),
+  )
 
   const { data: ads } = useSuspenseQuery(
-    queries.ads.list(AdvertisementType.BANNER)
-  );
+    queries.ads.list(AdvertisementType.BANNER),
+  )
 
   return (
     <Carousel
-      className="w-full my-4"
+      className="w-full my-12 md:my-16"
       plugins={[plugin.current]}
       onMouseEnter={plugin.current.stop}
       onMouseLeave={plugin.current.reset}
     >
       <CarouselContent>
-        {ads?.map((ad) => (
+        {ads?.map(ad => (
           <CarouselItem key={ad.id}>
             <Link href={ad.redirectUrl} target="_blank">
               <AspectRatio ratio={4 / 1} className="relative cursor-pointer">
@@ -54,7 +54,7 @@ const BannerContainer = () => {
         ))}
       </CarouselContent>
     </Carousel>
-  );
-};
+  )
+}
 
-export default BannerContainer;
+export default BannerContainer

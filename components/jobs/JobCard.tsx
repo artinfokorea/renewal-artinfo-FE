@@ -19,7 +19,7 @@ const JobCard = forwardRef<HTMLDivElement, Props>(
 
     return (
       <Link href={`${pathname}/${job.id}`}>
-        <div className="hover:bg-whitesmoke rounded-xl h-[130px] md:h-[192px]  flex items-center">
+        <div className="md:hover:bg-whitesmoke rounded-xl h-[130px] md:h-[192px]  flex items-center">
           <div className="flex items-center md:px-4">
             {job.imageUrl ? (
               <div className="relative h-[100px] md:h-[140px] w-[170px] md:w-[230px] border-whitesmoke border-2 rounded-xl">

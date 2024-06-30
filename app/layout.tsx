@@ -54,20 +54,17 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <head>
-        <Script src="https://developers.kakao.com/sdk/js/kakao.js" />
-        <Script src="https://static.nid.naver.com/js/naveridlogin_js_sdk_2.0.2.js" />
-      </head>
       <body
         className={`${inter.className} touch-manipulation`}
         style={{ height: "calc(100vh - 156px)" }}
         suppressHydrationWarning
       >
-        <ClientProvider>
-          <Header />
-          <main className="pb-20 md:pb-8">{children}</main>
-          <BottomNavigation />
-        </ClientProvider>
+        <Script src="https://developers.kakao.com/sdk/js/kakao.js" />
+        <Script
+          src="https://static.nid.naver.com/js/naveridlogin_js_sdk_2.0.2.js"
+          strategy="beforeInteractive"
+        />
+        <ClientProvider>{children}</ClientProvider>
       </body>
     </html>
   )

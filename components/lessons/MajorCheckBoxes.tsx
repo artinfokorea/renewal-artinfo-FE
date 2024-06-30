@@ -1,11 +1,6 @@
 import { useEffect, useMemo, useState } from "react"
 import { useRouter, useSearchParams } from "next/navigation"
-import {
-  MAJOR,
-  MajorCategory,
-  MajorCategoryValues,
-  ProfessionalValues,
-} from "@/types"
+import { MAJOR, MajorCategory, MajorCategoryValues } from "@/types"
 import RightIcon from "../icons/RightIcon"
 import CheckboxField from "../common/CheckboxField"
 

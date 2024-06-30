@@ -15,6 +15,7 @@ const page = () => {
   const [qualificationErrorMessages, setQualificationErrorMessages] = useState()
   const [isHandleFormLoading, handleFormTransition] = useLoading()
   const [isQualificationDialog, setIsQualificationDialog] = useState(false)
+  const [isDuplicateDialog, setIsDuplicateDialog] = useState(false)
   const router = useRouter()
   const pathname = usePathname()
   const queryClient = useQueryClient()
@@ -37,7 +38,10 @@ const page = () => {
     getLessonQualification()
       .then(res => res.item)
       .catch((error: any) => {
-        if (error.response?.status === 403) {
+        if (error.response?.data?.code === "LESSON-OO3") {
+          setIsDuplicateDialog(true)
+          setQualificationErrorMessages(error.response?.data?.message)
+        } else {
           setIsQualificationDialog(true)
           setQualificationErrorMessages(error.response?.data?.message)
         }
@@ -55,6 +59,13 @@ const page = () => {
         error
         isOpen={isQualificationDialog}
         handleDialog={() => router.push("/my-profile")}
+      />
+      <AlertDialog
+        title="이미 레슨이 등록되어 있습니다."
+        description={qualificationErrorMessages}
+        error
+        isOpen={isQualificationDialog}
+        handleDialog={() => router.push("/lessons")}
       />
     </section>
   )

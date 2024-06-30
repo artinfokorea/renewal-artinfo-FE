@@ -13,6 +13,7 @@ import LessonList from "./LessonList"
 import LessonListSkeleton from "../skeleton/LessonListSkeleton"
 import { ArtType } from "@/types/majors"
 import ProfessionalCheckBoxes from "../common/ProfessionalCheckBoxes"
+import MobileFilterTab from "../common/MobileFIlterTab"
 
 const LessonsContainer = () => {
   const searchParams = useSearchParams()
@@ -21,7 +22,7 @@ const LessonsContainer = () => {
   const [isProvinceDialog, setIsProvinceDialog] = useState(false)
   const pathname = usePathname()
 
-  const { data: artFiles } = useQuery(
+  const { data: artFields } = useQuery(
     queries.majors.artFields({ artCategories: [ArtType.MUSIC] }),
   )
 
@@ -61,7 +62,7 @@ const LessonsContainer = () => {
       />
       <section className="flex">
         <form className="hidden lg:flex flex-col text-gray-400 min-w-[180px]">
-          <ProfessionalCheckBoxes artFields={artFiles?.majorGroups} />
+          <ProfessionalCheckBoxes artFields={artFields?.majorGroups} />
         </form>
         <div className="md:flex-1 w-full flex flex-col md:ml-12 md:mt-4">
           <div className="hidden lg:flex justify-between items-center">
@@ -95,11 +96,11 @@ const LessonsContainer = () => {
               등록
             </Button>
           </div>
-          {/* <MobileFilterTab
-            majors={majors?.majors}
+          <MobileFilterTab
+            artFields={artFields?.majorGroups}
             provinces={provinceList?.provinces}
             page="LESSON"
-          /> */}
+          />
           <Suspense fallback={<LessonListSkeleton />}>
             <LessonList />
           </Suspense>

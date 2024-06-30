@@ -105,50 +105,6 @@ export enum MajorCategory {
   MUSIC_MAJOR_TRADITIONAL_MUSIC = "MUSIC_MAJOR_TRADITIONAL_MUSIC",
 }
 
-export const MajorCategoryValues = [
-  {
-    key: MajorCategory.MUSIC_MAJOR_VOCAL,
-    value: "성악",
-  },
-  {
-    key: MajorCategory.MUSIC_MAJOR_STRING,
-    value: "현악기",
-  },
-  {
-    key: MajorCategory.MUSIC_MAJOR_BRASS,
-    value: "관악기",
-  },
-  {
-    key: MajorCategory.MUSIC_MAJOR_ETC,
-    value: "기타",
-  },
-  {
-    key: MajorCategory.MUSIC_MAJOR_KEYBOARD,
-    value: "건반",
-  },
-  {
-    key: MajorCategory.MUSIC_MAJOR_ADMINISTRATION,
-    value: "관리",
-  },
-
-  {
-    key: MajorCategory.MUSIC_MAJOR_POPULAR_MUSIC,
-    value: "실욤음악",
-  },
-  {
-    key: MajorCategory.MUSIC_MAJOR_TRADITIONAL_MUSIC,
-    value: "국악",
-  },
-]
-
-export type MAJOR = {
-  id: number
-  koGroup: string
-  enGroup: MajorCategory
-  koName: string
-  enName: MajorEnum
-}
-
 export type IMAGE = {
   id: number
   target: string

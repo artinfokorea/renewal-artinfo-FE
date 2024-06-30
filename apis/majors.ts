@@ -1,8 +1,7 @@
 import { ListApiResponse, ListResponse } from "@/interface"
-import { MAJOR } from "@/types"
 import { apiRequest } from "."
 import { exceptionHandler } from "./exception-handler"
-import { ArtField, MajorGroup } from "@/types/majors"
+import { ArtField, MAJOR, MajorGroup } from "@/types/majors"
 import { ArtFieldRequest } from "@/interface/majors"
 
 export const getMajors = async (): Promise<ListResponse<MAJOR, "majors">> => {

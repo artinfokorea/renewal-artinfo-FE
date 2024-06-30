@@ -4,7 +4,6 @@ import { useForm } from "react-hook-form"
 import { yupResolver } from "@hookform/resolvers/yup"
 import * as yup from "yup"
 import React, { useEffect, useState } from "react"
-import { MAJOR } from "@/types"
 import { useLoading } from "@toss/use-loading"
 import {
   sendPhoneVerificationCode,
@@ -27,6 +26,7 @@ import {
   sendEmailVerificationCode,
   checkEmailVerificationCode,
 } from "@/apis/auth"
+import { MAJOR } from "@/types/majors"
 
 const schema = yup
   .object({
@@ -58,7 +58,7 @@ const page = () => {
   const [isUpdatePhoneLoading, updatePhoneStartTransition] = useLoading()
   const [isUpdatePasswordLoading, updatePasswordStartTransition] = useLoading()
   const [isPhoneDialog, setIsPhoneDialog] = useState(false)
-  const [isPasswordDialog, setIsPasswordDialog] = useState(true)
+  const [isPasswordDialog, setIsPasswordDialog] = useState(false)
   const queryClient = useQueryClient()
   const filter = filters()
 

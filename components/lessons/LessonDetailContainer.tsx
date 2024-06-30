@@ -13,7 +13,6 @@ import { Badge } from "../ui/badge"
 import { useSession } from "next-auth/react"
 import ItemManageBox from "../common/ItemManageBox"
 import { usePathname, useRouter } from "next/navigation"
-import { AspectRatio } from "../ui/aspect-ratio"
 import ConfirmDialog from "../dialog/ConfirmDialog"
 
 interface Props {
@@ -52,6 +51,7 @@ const LessonDetailContainer = ({ lesson, deleteLesson }: Props) => {
               src={lesson?.imageUrl}
               alt="lesson_image"
               fill
+              priority
               quality={100}
               className="rounded-md"
               sizes="(max-width: 768px) 100px 180px, (max-width: 1200px) 200px, 200px"
@@ -59,7 +59,19 @@ const LessonDetailContainer = ({ lesson, deleteLesson }: Props) => {
           </div>
         )}
         <div className="flex-1 p-4 md:p-0">
-          <h4 className="text-xl md:text-2xl font-bold">{lesson?.name}</h4>
+          <h4 className="text-2xl font-bold mt-4 md:mt-0 text-center md:text-left">
+            {lesson?.name}
+          </h4>
+          {user?.id === lesson?.authorId && (
+            <ItemManageBox
+              handleEdit={() => router.push(`${pathname}?type=edit`)}
+              handleDelete={() =>
+                setIsDeleteConfirmDialog(!isDeleteConfirmDialog)
+              }
+              className="justify-end md:hidden"
+            />
+          )}
+
           <div className="mt-6 grid md:grid-cols-2 gap-y-4 gap-x-10">
             <div className="flex  gap-4 text-base md:text-lg items-center">
               <span className="font-bold">전공</span>
@@ -137,7 +149,9 @@ const LessonDetailContainer = ({ lesson, deleteLesson }: Props) => {
                 <div>
                   {lesson?.areas?.map((area, index) => (
                     <span key={area} className="text-sm">
-                      {index === lesson.areas.length - 1 ? area : `${area}, `}
+                      {index === (lesson.areas && lesson.areas?.length - 1)
+                        ? area
+                        : `${area}, `}
                     </span>
                   ))}
                 </div>
@@ -146,11 +160,19 @@ const LessonDetailContainer = ({ lesson, deleteLesson }: Props) => {
           </div>
         </div>
       </div>
-      <ItemManageBox
-        show={user?.id === lesson?.authorId}
-        handleEdit={() => router.push(`${pathname}?type=edit`)}
-        handleDelete={() => setIsDeleteConfirmDialog(!isDeleteConfirmDialog)}
-      />
+      {user?.id === lesson?.authorId && (
+        <div className="my-8 px-4 flex h-8 relative">
+          <div className="mx-auto border-b-2 border-whitesmoke w-3/5" />
+          <ItemManageBox
+            handleEdit={() => router.push(`${pathname}?type=edit`)}
+            handleDelete={() =>
+              setIsDeleteConfirmDialog(!isDeleteConfirmDialog)
+            }
+            className="absolute -bottom-4 right-5"
+          />
+        </div>
+      )}
+
       <div className="flex flex-col px-4 md:px-0 gap-4 md:flex-row md:gap-8">
         <div className="md:w-1/2 bg-whitesmoke rounded-md p-4 md:p-8 min-h-[200px] md:h-[380px] overflow-y-auto">
           <p className="text-coolgray font-semibold text-lg mb-3 md:mb-6">

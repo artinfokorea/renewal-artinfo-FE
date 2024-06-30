@@ -91,9 +91,10 @@ const handler = NextAuth({
         if (!credentials?.accessToken || !credentials.type) {
           return null
         }
+
         try {
           const response = await fetch(
-            `${process.env.NEXT_PUBLIC_REST_API}/auths/login/sns`,
+            `${process.env.REST_API_BASE_URL}/auths/login/sns`,
             {
               method: "POST",
               headers: {
@@ -101,7 +102,7 @@ const handler = NextAuth({
               },
               body: JSON.stringify({
                 type: credentials.type,
-                accessToken: credentials.accessToken,
+                token: credentials.accessToken,
               }),
             },
           )

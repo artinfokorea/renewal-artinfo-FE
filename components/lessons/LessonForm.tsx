@@ -72,7 +72,8 @@ const LessonForm = ({ handleLesson, isFormLoading, lesson }: Props) => {
       )
       setValue("areas", filteredAreas)
     } else {
-      setValue("areas", [...(watch("areas") as []), area])
+      const cuttedAreas = watch("areas").slice(0, 2)
+      setValue("areas", [...(cuttedAreas as []), area])
     }
   }
 
@@ -158,12 +159,17 @@ const LessonForm = ({ handleLesson, isFormLoading, lesson }: Props) => {
               </div>
               <div className="flex gap-6 items-center text-base md:text-lg">
                 <span className="font-bold">지역</span>
-                <Button
-                  onClick={() => setIsDistrictDialog(!isDistrictDialog)}
-                  className="text-main font-medium border px-2 h-8 rounded-lg"
-                >
-                  지역 등록
-                </Button>
+                <div className="flex items-center gap-4">
+                  <Button
+                    onClick={() => setIsDistrictDialog(!isDistrictDialog)}
+                    className="text-main font-medium border px-2 h-8 rounded-lg"
+                  >
+                    지역 등록
+                  </Button>
+                  <span className="text-silver font-medium text-sm">
+                    지역은 최대 3개까지 등록 가능합니다.
+                  </span>
+                </div>
               </div>
               <ul className="border rounded-lg h-32 w-full md:w-1/2 p-2">
                 {watch("areas")?.map((area: string) => (
