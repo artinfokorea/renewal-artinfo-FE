@@ -31,9 +31,11 @@ export const updateUserPhone = async (
 
 export const updateUserPassword = async (
   password: string,
+  email: string,
 ): Promise<SuccessResponse> => {
   const response = await apiRequest.put<SuccessResponse>("/users/me/password", {
     password,
+    email,
   })
   return response
 }

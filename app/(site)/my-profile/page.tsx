@@ -207,7 +207,9 @@ const page = () => {
 
   const handleUserPassword = async (payload: PasswordFormData) => {
     try {
-      await updatePasswordStartTransition(updateUserPassword(payload.password))
+      await updatePasswordStartTransition(
+        updateUserPassword(payload.password, user?.email as string),
+      )
       successToast("비밀번호 변경이 완료되었습니다.")
       setIsPasswordDialog(!isPasswordDialog)
     } catch (error: any) {

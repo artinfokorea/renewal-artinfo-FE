@@ -57,7 +57,7 @@ const PasswordDialog = ({
     handleSubmit,
     watch,
     setValue,
-    formState: { errors, isDirty },
+    formState: { errors },
   } = useForm<PasswordFormData>({
     resolver: yupResolver(schema),
   })

@@ -6,10 +6,10 @@ import {
   sendEmailVerificationCode,
 } from "@/apis/auth"
 import { updateUserPassword } from "@/apis/users"
-import { PasswordFormData } from "@/components/dialog/PasswordDialog"
-import FindPasswordForm from "@/components/sign/FIndPasswordForm"
+import FindPasswordForm, {
+  PasswordFormData,
+} from "@/components/sign/FIndPasswordForm"
 import useToast from "@/hooks/useToast"
-
 import { useLoading } from "@toss/use-loading"
 
 const page = () => {
@@ -45,7 +45,9 @@ const page = () => {
 
   const handleUserPassword = async (payload: PasswordFormData) => {
     try {
-      await updatePasswordStartTransition(updateUserPassword(payload.password))
+      await updatePasswordStartTransition(
+        updateUserPassword(payload.password, payload.email),
+      )
       successToast("비밀번호 변경이 완료되었습니다.")
     } catch (error: any) {
       errorToast(error.message)

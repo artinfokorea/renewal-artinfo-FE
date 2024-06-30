@@ -16,12 +16,12 @@ import {
   UseFormWatch,
   UseFormSetValue,
 } from "react-hook-form"
-import { MAJOR } from "@/types"
 import { USER } from "@/types/users"
 import { Badge } from "../ui/badge"
 import { SchoolTypeValues } from "@/types/lessons"
 import { Button } from "../ui/button"
 import { ProfileFormData } from "@/app/(site)/my-profile/page"
+import { MAJOR } from "@/types/majors"
 
 interface Props {
   user?: USER

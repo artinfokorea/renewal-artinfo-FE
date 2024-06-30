@@ -10,12 +10,12 @@ import * as yup from "yup"
 import { yupResolver } from "@hookform/resolvers/yup"
 import { ErrorMessage } from "@hookform/error-message"
 import { useForm } from "react-hook-form"
-import { MAJOR } from "@/types"
 import { Badge } from "../ui/badge"
 import CloseIcon from "../icons/CloseIcon"
 import MajorDialog from "../dialog/MajorDialog"
 import PostCodeDialog from "../dialog/PostCodeDialog"
 import PlusIcon from "../icons/PlusIcon"
+import { MAJOR } from "@/types/majors"
 
 const ToastEditor = dynamic(() => import("../editor/ToastEditor"), {
   ssr: false,

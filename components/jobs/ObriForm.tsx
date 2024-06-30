@@ -1,19 +1,19 @@
-import React, { useEffect, useState } from "react";
-import * as yup from "yup";
-import { useForm } from "react-hook-form";
-import { yupResolver } from "@hookform/resolvers/yup";
-import { ErrorMessage } from "@hookform/error-message";
-import { Button } from "../ui/button";
-import { useRouter } from "next/navigation";
-import MajorDialog from "../dialog/MajorDialog";
-import PostCodeDialog from "../dialog/PostCodeDialog";
-import { Input, Textarea } from "@headlessui/react";
-import { MAJOR } from "@/types";
-import { DemoContainer } from "@mui/x-date-pickers/internals/demo";
-import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
-import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
-import { DateTimePicker } from "@mui/x-date-pickers/DateTimePicker";
-import dayjs from "dayjs";
+import React, { useEffect, useState } from "react"
+import * as yup from "yup"
+import { useForm } from "react-hook-form"
+import { yupResolver } from "@hookform/resolvers/yup"
+import { ErrorMessage } from "@hookform/error-message"
+import { Button } from "../ui/button"
+import { useRouter } from "next/navigation"
+import MajorDialog from "../dialog/MajorDialog"
+import PostCodeDialog from "../dialog/PostCodeDialog"
+import { Input, Textarea } from "@headlessui/react"
+import { DemoContainer } from "@mui/x-date-pickers/internals/demo"
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs"
+import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider"
+import { DateTimePicker } from "@mui/x-date-pickers/DateTimePicker"
+import dayjs from "dayjs"
+import { MAJOR } from "@/types/majors"
 
 const schema = yup
   .object({
@@ -44,7 +44,7 @@ const schema = yup
       .test(
         "isAfterCurrentTime",
         "시작 시간은 현재 시간보다 이후여야 합니다.",
-        (value) => dayjs(value).isAfter(dayjs())
+        value => dayjs(value).isAfter(dayjs()),
       )
       .required("시작 시간을 선택해주세요."),
     endAt: yup
@@ -53,25 +53,25 @@ const schema = yup
         "isAfterStartAt",
         "종료 시간은 시작 시간보다 이후여야 합니다.",
         (value, context) => {
-          const { startAt } = context.parent;
-          return dayjs(value).isAfter(dayjs(startAt));
-        }
+          const { startAt } = context.parent
+          return dayjs(value).isAfter(dayjs(startAt))
+        },
       )
       .required("종료 시간을 선택해주세요."),
   })
-  .required();
+  .required()
 
-export type CreateObriFormData = yup.InferType<typeof schema>;
+export type CreateObriFormData = yup.InferType<typeof schema>
 
 interface Props {
-  isLoading: boolean;
-  handlePartTimeJob: (payload: CreateObriFormData) => void;
+  isLoading: boolean
+  handlePartTimeJob: (payload: CreateObriFormData) => void
 }
 
 const ObriForm = ({ isLoading, handlePartTimeJob }: Props) => {
-  const router = useRouter();
-  const [isMajorDialog, setIsMajorDialog] = useState(false);
-  const [isPostDialog, setIsPostDialog] = useState(false);
+  const router = useRouter()
+  const [isMajorDialog, setIsMajorDialog] = useState(false)
+  const [isPostDialog, setIsPostDialog] = useState(false)
 
   const {
     register,
@@ -87,25 +87,25 @@ const ObriForm = ({ isLoading, handlePartTimeJob }: Props) => {
       startAt: dayjs().format(),
       endAt: dayjs().format(),
     },
-  });
+  })
 
   useEffect(() => {
     if (watch("majors").length > 1) {
-      setValue("majors", [watch("majors")[watch("majors").length - 1]]);
+      setValue("majors", [watch("majors")[watch("majors").length - 1]])
     }
-    clearErrors("majors");
-  }, [watch("majors")]);
+    clearErrors("majors")
+  }, [watch("majors")])
 
   const handleSelectMajor = (selectedMajor: MAJOR) => {
     if (watch("majors").includes(selectedMajor)) {
       setValue(
         "majors",
-        watch("majors").filter((major) => major !== selectedMajor)
-      );
+        watch("majors").filter(major => major !== selectedMajor),
+      )
     } else {
-      setValue("majors", [...watch("majors"), selectedMajor]);
+      setValue("majors", [...watch("majors"), selectedMajor])
     }
-  };
+  }
 
   return (
     <form
@@ -124,7 +124,7 @@ const ObriForm = ({ isLoading, handlePartTimeJob }: Props) => {
               전공선택
             </Button>
             <div className="flex flex-col justify-center">
-              <span>{watch("majors").map((major) => major.koName)}</span>
+              <span>{watch("majors").map(major => major.koName)}</span>
               <ErrorMessage
                 errors={errors}
                 name="majors"
@@ -259,7 +259,7 @@ const ObriForm = ({ isLoading, handlePartTimeJob }: Props) => {
                     minDate={dayjs()}
                     value={dayjs(watch("startAt"))}
                     onChange={(newValue: any) => {
-                      setValue("startAt", dayjs(newValue.$d).format());
+                      setValue("startAt", dayjs(newValue.$d).format())
                     }}
                   />
                 </DemoContainer>
@@ -285,7 +285,7 @@ const ObriForm = ({ isLoading, handlePartTimeJob }: Props) => {
                     minDate={dayjs(watch("startAt"))}
                     value={dayjs(watch("endAt"))}
                     onChange={(newValue: any) => {
-                      setValue("endAt", dayjs(newValue.$d).format());
+                      setValue("endAt", dayjs(newValue.$d).format())
                     }}
                   />
                 </DemoContainer>
@@ -346,10 +346,10 @@ const ObriForm = ({ isLoading, handlePartTimeJob }: Props) => {
       <PostCodeDialog
         isOpen={isPostDialog}
         close={() => setIsPostDialog(!isPostDialog)}
-        setValue={(address) => setValue("address", address)}
+        setValue={address => setValue("address", address)}
       />
     </form>
-  );
-};
+  )
+}
 
-export default ObriForm;
+export default ObriForm

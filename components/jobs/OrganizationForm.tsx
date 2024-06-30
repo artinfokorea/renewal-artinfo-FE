@@ -14,9 +14,9 @@ import PhotoIcon from "../icons/PhotoIcon"
 import PlusIcon from "../icons/PlusIcon"
 import Loading from "../common/Loading"
 import MajorDialog from "../dialog/MajorDialog"
-import { MAJOR } from "@/types"
 import { Badge } from "../ui/badge"
 import PostCodeDialog from "../dialog/PostCodeDialog"
+import { MAJOR } from "@/types/majors"
 
 const ToastEditor = dynamic(() => import("../editor/ToastEditor"), {
   ssr: false,

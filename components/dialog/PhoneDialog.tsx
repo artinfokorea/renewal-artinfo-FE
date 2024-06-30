@@ -1,19 +1,18 @@
-import { queries } from "@/lib/queries";
-import { Dialog, DialogPanel, DialogTitle } from "@headlessui/react";
-import { useQuery } from "@tanstack/react-query";
-import React, { ChangeEvent, useEffect, useState } from "react";
-import CloseIcon from "../icons/CloseIcon";
-import { Button } from "../ui/button";
-import { MAJOR, MajorCategoryValues } from "@/types";
-import { Label } from "../ui/label";
-import { Input } from "../ui/input";
+import { queries } from "@/lib/queries"
+import { Dialog, DialogPanel, DialogTitle } from "@headlessui/react"
+import { useQuery } from "@tanstack/react-query"
+import React, { ChangeEvent, useEffect, useState } from "react"
+import CloseIcon from "../icons/CloseIcon"
+import { Button } from "../ui/button"
+import { Label } from "../ui/label"
+import { Input } from "../ui/input"
 
 interface Props {
-  open: boolean;
-  close: () => void;
-  sendCode: (phone: string) => void;
-  checkCode: (phone: string, code: string) => void;
-  isLoading: boolean;
+  open: boolean
+  close: () => void
+  sendCode: (phone: string) => void
+  checkCode: (phone: string, code: string) => void
+  isLoading: boolean
 }
 
 const PhoneDialog = ({
@@ -23,55 +22,53 @@ const PhoneDialog = ({
   checkCode,
   isLoading,
 }: Props) => {
-  const [phone, setPhone] = useState("");
-  const [code, setCode] = useState("");
-  const [time, setTime] = useState(180);
-  const [isCounting, setIsCounting] = useState(false);
+  const [phone, setPhone] = useState("")
+  const [code, setCode] = useState("")
+  const [time, setTime] = useState(180)
+  const [isCounting, setIsCounting] = useState(false)
 
-  const isValidPhone = /^01([0|1|6|7|8|9])-?([0-9]{4})-?([0-9]{4})$/.test(
-    phone
-  );
+  const isValidPhone = /^01([0|1|6|7|8|9])-?([0-9]{4})-?([0-9]{4})$/.test(phone)
 
   useEffect(() => {
-    let intervalId: NodeJS.Timeout | undefined;
+    let intervalId: NodeJS.Timeout | undefined
 
     if (isCounting && time > 0) {
       intervalId = setInterval(() => {
-        setTime((prevTime) => prevTime - 1);
-      }, 1000);
+        setTime(prevTime => prevTime - 1)
+      }, 1000)
     } else if (time === 0) {
-      clearInterval(intervalId);
-      setIsCounting(false);
+      clearInterval(intervalId)
+      setIsCounting(false)
     }
 
-    return () => clearInterval(intervalId);
-  }, [isCounting, time]);
+    return () => clearInterval(intervalId)
+  }, [isCounting, time])
 
   const handlePhoneChange = (e: ChangeEvent<HTMLInputElement>) => {
-    const unmaskedValue = e.target.value.replace(/\D/g, "");
+    const unmaskedValue = e.target.value.replace(/\D/g, "")
     const maskedValue = unmaskedValue.replace(
       /(\d{3})(\d{3,4})(\d{4})/g,
-      "$1-$2-$3"
-    );
+      "$1-$2-$3",
+    )
 
-    setPhone(maskedValue);
-  };
+    setPhone(maskedValue)
+  }
 
   const formatTime = (time: number) => {
-    const minutes = Math.floor(time / 60);
-    const seconds = time % 60;
+    const minutes = Math.floor(time / 60)
+    const seconds = time % 60
     return `${minutes.toString().padStart(2, "0")} : ${seconds
       .toString()
-      .padStart(2, "0")}`;
-  };
+      .padStart(2, "0")}`
+  }
 
   const closeDialog = () => {
-    setPhone("");
-    setCode("");
-    setTime(180);
-    setIsCounting(false);
-    close();
-  };
+    setPhone("")
+    setCode("")
+    setTime(180)
+    setIsCounting(false)
+    close()
+  }
 
   return (
     <Dialog
@@ -113,8 +110,8 @@ const PhoneDialog = ({
                     type="button"
                     disabled={!isValidPhone}
                     onClick={() => {
-                      sendCode(phone);
-                      setIsCounting(true);
+                      sendCode(phone)
+                      setIsCounting(true)
                     }}
                     className="absolute top-1 right-2 bg-main text-white rounded-lg h-8"
                   >
@@ -128,7 +125,7 @@ const PhoneDialog = ({
               <div className="relative">
                 <Input
                   value={code}
-                  onChange={(e) => setCode(e.target.value)}
+                  onChange={e => setCode(e.target.value)}
                   name="code"
                   placeholder="013211"
                 />
@@ -136,7 +133,7 @@ const PhoneDialog = ({
                   type="button"
                   disabled={code.length !== 6 || isLoading}
                   onClick={() => {
-                    checkCode(phone, code);
+                    checkCode(phone, code)
                   }}
                   className="absolute top-1 right-2 bg-main text-white rounded-lg h-8"
                 >
@@ -157,7 +154,7 @@ const PhoneDialog = ({
         </DialogPanel>
       </form>
     </Dialog>
-  );
-};
+  )
+}
 
-export default PhoneDialog;
+export default PhoneDialog

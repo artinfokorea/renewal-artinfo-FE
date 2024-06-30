@@ -1,6 +1,6 @@
 import { ScrollApiResponse } from "@/interface"
 import { queries } from "@/lib/queries"
-import { JOB, JobType, ProfessionalFieldTypes } from "@/types/jobs"
+import { JOB, JobType } from "@/types/jobs"
 import { useSuspenseInfiniteQuery } from "@tanstack/react-query"
 import { useSearchParams } from "next/navigation"
 import { useInView } from "react-intersection-observer"
@@ -8,6 +8,7 @@ import React, { useEffect } from "react"
 import ObriCard from "./ObriCard"
 import JobCard from "./JobCard"
 import ReligionCard from "./ReligionCard"
+import { ProfessionalFieldTypes } from "@/types/majors"
 
 const JobsList = () => {
   const searchParams = useSearchParams()

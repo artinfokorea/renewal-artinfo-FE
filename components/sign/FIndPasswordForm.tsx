@@ -11,7 +11,10 @@ import InputWithButton from "../common/InputWithButton"
 
 const schema = yup
   .object({
-    email: yup.string().email("이메일 형식이 아닙니다."),
+    email: yup
+      .string()
+      .email("이메일 형식이 아닙니다.")
+      .required("이메일은 필수입력 사항입니다."),
     isEmailVerified: yup
       .boolean()
       .oneOf([true], "이메일 인증을 완료해주세요.")
@@ -32,7 +35,7 @@ const schema = yup
   })
   .required()
 
-type PasswordFormData = yup.InferType<typeof schema>
+export type PasswordFormData = yup.InferType<typeof schema>
 
 interface Props {
   isLoading: boolean
