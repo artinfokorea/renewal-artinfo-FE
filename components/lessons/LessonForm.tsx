@@ -72,8 +72,16 @@ const LessonForm = ({ handleLesson, isFormLoading, lesson }: Props) => {
       )
       setValue("areas", filteredAreas)
     } else {
-      const cuttedAreas = watch("areas").slice(0, 2)
-      setValue("areas", [...(cuttedAreas as []), area])
+      const currentAreas = [...watch("areas"), area]
+      let newAreas
+
+      if (currentAreas.length >= 3) {
+        newAreas = [...currentAreas.slice(1), area].slice(0, 3)
+      } else {
+        newAreas = [...currentAreas, area].slice(0, 3)
+      }
+      console.log("cuttedAreas", newAreas)
+      setValue("areas", newAreas)
     }
   }
 

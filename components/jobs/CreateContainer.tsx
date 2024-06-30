@@ -41,7 +41,7 @@ const CreateContainer = () => {
       const uploadResponse = await startTransition(
         uploadImages([imageFile] as File[]),
       )
-
+      console.log("contest", contents)
       await startTransition(
         createFullTimeJob({
           title,

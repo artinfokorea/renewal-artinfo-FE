@@ -1,20 +1,18 @@
-"use client";
+"use client"
 
-import { queries } from "@/lib/queries";
-import { useSuspenseQuery } from "@tanstack/react-query";
-import { useParams } from "next/navigation";
-import React, { Suspense } from "react";
-import Image from "next/image";
-import { Badge } from "../ui/badge";
-import filters from "@/lib/filters";
+import { queries } from "@/lib/queries"
+import { useSuspenseQuery } from "@tanstack/react-query"
+import { useParams } from "next/navigation"
+import React, { Suspense } from "react"
+import Image from "next/image"
+import { Badge } from "../ui/badge"
+import filters from "@/lib/filters"
 
 const DetailContainer = () => {
-  const params = useParams();
-  const filter = filters();
+  const params = useParams()
+  const filter = filters()
 
-  const { data: job } = useSuspenseQuery(
-    queries.jobs.detail(Number(params.id))
-  );
+  const { data: job } = useSuspenseQuery(queries.jobs.detail(Number(params.id)))
 
   return (
     <div className="mt-4">
@@ -35,7 +33,7 @@ const DetailContainer = () => {
             {job?.title}
           </h4>
           <div className="flex my-2 items-center text-xs md:text-sm">
-            {job?.majors?.map((major) => (
+            {job?.majors?.map(major => (
               <Badge
                 key={major}
                 className="text-main text-xs md:text-sm bg-aliceblue rounded-xl mr-1"
@@ -50,12 +48,12 @@ const DetailContainer = () => {
           </div>
         </div>
       </div>
-      <div>button</div>
+      {/* <div>button</div> */}
       {job?.contents && (
         <div dangerouslySetInnerHTML={{ __html: job.contents }}></div>
       )}
     </div>
-  );
-};
+  )
+}
 
-export default DetailContainer;
+export default DetailContainer
