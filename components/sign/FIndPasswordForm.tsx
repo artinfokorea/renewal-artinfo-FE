@@ -8,6 +8,7 @@ import { Button } from "../ui/button"
 import { useState } from "react"
 import InputField from "../common/InputField"
 import InputWithButton from "../common/InputWithButton"
+import Link from "next/link"
 
 const schema = yup
   .object({
@@ -83,9 +84,11 @@ const FindPasswordForm = ({
 
   return (
     <form className="max-w-[500px] mx-auto mt-12 md:mt-20 px-4">
-      <h2 className="text-4xl font-bold text-main text-center mb-12 md:mb-16">
-        ARTINFO
-      </h2>
+      <Link href="/">
+        <h2 className="text-4xl font-bold text-main text-center mb-12 md:mb-16">
+          ARTINFO
+        </h2>
+      </Link>
       <InputWithButton
         label="이메일"
         id="email"

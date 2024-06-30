@@ -161,7 +161,7 @@ const LessonDetailContainer = ({ lesson, deleteLesson }: Props) => {
         </div>
       </div>
       {user?.id === lesson?.authorId && (
-        <div className="my-8 px-4 flex h-8 relative">
+        <div className="hidden md:flex my-8 px-4 h-8 relative">
           <div className="mx-auto border-b-2 border-whitesmoke w-3/5" />
           <ItemManageBox
             handleEdit={() => router.push(`${pathname}?type=edit`)}

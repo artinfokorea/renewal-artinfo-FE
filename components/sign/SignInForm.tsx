@@ -113,9 +113,11 @@ const SignInForm = () => {
       className="max-w-[500px] mx-auto mt-12 md:mt-28 px-4"
       onSubmit={handleSubmit(handleSignIn)}
     >
-      <h2 className="text-4xl font-bold text-main text-center mb-12 md:mb-16">
-        ARTINFO
-      </h2>
+      <Link href="/">
+        <h2 className="text-4xl font-bold text-main text-center mb-12 md:mb-16">
+          ARTINFO
+        </h2>
+      </Link>
       <InputField
         label="이메일"
         id="email"

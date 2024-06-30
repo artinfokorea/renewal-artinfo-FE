@@ -19,6 +19,7 @@ import { useRouter } from "next/navigation"
 import { useLoading } from "@toss/use-loading"
 import InputField from "../common/InputField"
 import InputWithButton from "../common/InputWithButton"
+import Link from "next/link"
 
 const schema = yup
   .object({
@@ -146,9 +147,11 @@ const SignUpForm = () => {
       className="max-w-[500px] mx-auto mt-12 md:mt-20 px-4"
       onSubmit={handleSubmit(handleSignUp)}
     >
-      <h2 className="text-4xl font-bold text-main text-center mb-12 md:mb-16">
-        ARTINFO
-      </h2>
+      <Link href="/">
+        <h2 className="text-4xl font-bold text-main text-center mb-12 md:mb-16">
+          ARTINFO
+        </h2>
+      </Link>
       <InputField
         label="이름"
         id="name"

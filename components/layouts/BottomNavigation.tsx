@@ -50,11 +50,11 @@ const BottomNavigation = () => {
 
   return (
     <footer
-      className={`fixed md:hidden bottom-0 left-0 w-full z-50 border-t-[1px] bg-white ${
-        isIPhone ? "h-20 safe-area pb-4" : "h-20"
+      className={`fixed md:hidden bottom-0 left-0 w-full z-50 border-t-[1px] h-20 bg-white safe-area ${
+        isIPhone && "h-24"
       }`}
     >
-      <div className="h-full grid grid-cols-4 mx-auto">
+      <div className={`h-full grid grid-cols-4 mx-auto mt-2`}>
         {NavItems.map(({ href, title, prefetch, icon }) => {
           const isActive =
             href === "/" ? pathname === href : pathname.startsWith(href)
