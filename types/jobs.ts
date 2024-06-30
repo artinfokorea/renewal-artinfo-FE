@@ -5,6 +5,13 @@ export enum JobType {
   LECTURER = "LECTURER",
 }
 
+export enum ProfessionalFieldTypes {
+  CLASSIC = "CLASSIC",
+  POPULAR_MUSIC = "POPULAR_MUSIC",
+  TRADITIONAL_MUSIC = "TRADITIONAL_MUSIC",
+  ADMINISTRATION = "ADMINISTRATION",
+}
+
 export enum MajorType {
   ALL = "ALL",
   VOCAL = "VOCAL",

@@ -1,131 +1,136 @@
-import { useEffect, useMemo, useState } from "react";
-import { useRouter, useSearchParams } from "next/navigation";
-import { MAJOR, MajorCategory, MajorCategoryValues } from "@/types";
-import RightIcon from "../icons/RightIcon";
-import CheckboxField from "./CheckboxField";
+import { useEffect, useMemo, useState } from "react"
+import { useRouter, useSearchParams } from "next/navigation"
+import {
+  MAJOR,
+  MajorCategory,
+  MajorCategoryValues,
+  ProfessionalValues,
+} from "@/types"
+import RightIcon from "../icons/RightIcon"
+import CheckboxField from "./CheckboxField"
 
 interface Props {
-  majors?: MAJOR[];
+  majors?: MAJOR[]
 }
 
 const MajorCheckBoxes = ({ majors }: Props) => {
-  const searchParams = useSearchParams();
-  const router = useRouter();
-  const majorIds = searchParams.getAll("majorId") as string[];
+  const searchParams = useSearchParams()
+  const router = useRouter()
+  const majorIds = searchParams.getAll("majorId") as string[]
   const initialState: { [key: string]: boolean } = MajorCategoryValues.reduce<{
-    [key: string]: boolean;
+    [key: string]: boolean
   }>((acc, curr) => {
-    acc[curr.key] = false;
-    return acc;
-  }, {});
-  const [checkedMajorIds, setCheckedMajorIds] = useState<string[]>(majorIds);
+    acc[curr.key] = false
+    return acc
+  }, {})
+  const [checkedMajorIds, setCheckedMajorIds] = useState<string[]>(majorIds)
   const [isMajorCategoryDetail, setIsMajorCategoryDetail] =
-    useState(initialState);
+    useState(initialState)
   const [isMajorCategoryChecked, setIsMajorCategoryChecked] =
-    useState(initialState);
+    useState(initialState)
 
   useEffect(() => {
-    const locationParams = new URLSearchParams(window.location.search);
+    const locationParams = new URLSearchParams(window.location.search)
 
-    locationParams.delete("majorId");
-    checkedMajorIds.forEach((v) => locationParams.append("majorId", v));
-    const newUrl = `${window.location.pathname}?${locationParams.toString()}`;
+    locationParams.delete("majorId")
+    checkedMajorIds.forEach(v => locationParams.append("majorId", v))
+    const newUrl = `${window.location.pathname}?${locationParams.toString()}`
     router.push(newUrl, {
       scroll: false,
-    });
-  }, [majorIds]);
+    })
+  }, [majorIds])
 
-  const majorCategoryIds = useMemo(() => {
-    return {
-      [MajorCategory.MUSIC_MAJOR_ETC]: majors
-        ?.filter((major) => major.enGroup === MajorCategory.MUSIC_MAJOR_ETC)
-        .map((major) => major.id.toString()),
-      [MajorCategory.MUSIC_MAJOR_KEYBOARD]: majors
-        ?.filter(
-          (major) => major.enGroup === MajorCategory.MUSIC_MAJOR_KEYBOARD
-        )
-        .map((major) => major.id.toString()),
-      [MajorCategory.MUSIC_MAJOR_VOCAL]: majors
-        ?.filter((major) => major.enGroup === MajorCategory.MUSIC_MAJOR_VOCAL)
-        .map((major) => major.id.toString()),
-      [MajorCategory.MUSIC_MAJOR_ADMINISTRATION]: majors
-        ?.filter(
-          (major) => major.enGroup === MajorCategory.MUSIC_MAJOR_ADMINISTRATION
-        )
-        .map((major) => major.id.toString()),
-      [MajorCategory.MUSIC_MAJOR_STRING]: majors
-        ?.filter((major) => major.enGroup === MajorCategory.MUSIC_MAJOR_STRING)
-        .map((major) => major.id.toString()),
-      [MajorCategory.MUSIC_MAJOR_BRASS]: majors
-        ?.filter((major) => major.enGroup === MajorCategory.MUSIC_MAJOR_BRASS)
-        .map((major) => major.id.toString()),
-      [MajorCategory.MUSIC_MAJOR_POPULAR_MUSIC]: majors
-        ?.filter(
-          (major) => major.enGroup === MajorCategory.MUSIC_MAJOR_POPULAR_MUSIC
-        )
-        .map((major) => major.id.toString()),
-      [MajorCategory.MUSIC_MAJOR_TRADITIONAL_MUSIC]: majors
-        ?.filter(
-          (major) =>
-            major.enGroup === MajorCategory.MUSIC_MAJOR_TRADITIONAL_MUSIC
-        )
-        .map((major) => major.id.toString()),
-    };
-  }, [majors]);
+  // const majorCategoryIds = useMemo(() => {
+  //   return {
+  //     [MajorCategory.MUSIC_MAJOR_ETC]: majors
+  //       ?.filter((major) => major.enGroup === MajorCategory.MUSIC_MAJOR_ETC)
+  //       .map((major) => major.id.toString()),
+  //     [MajorCategory.MUSIC_MAJOR_KEYBOARD]: majors
+  //       ?.filter(
+  //         (major) => major.enGroup === MajorCategory.MUSIC_MAJOR_KEYBOARD
+  //       )
+  //       .map((major) => major.id.toString()),
+  //     [MajorCategory.MUSIC_MAJOR_VOCAL]: majors
+  //       ?.filter((major) => major.enGroup === MajorCategory.MUSIC_MAJOR_VOCAL)
+  //       .map((major) => major.id.toString()),
+  //     [MajorCategory.MUSIC_MAJOR_ADMINISTRATION]: majors
+  //       ?.filter(
+  //         (major) => major.enGroup === MajorCategory.MUSIC_MAJOR_ADMINISTRATION
+  //       )
+  //       .map((major) => major.id.toString()),
+  //     [MajorCategory.MUSIC_MAJOR_STRING]: majors
+  //       ?.filter((major) => major.enGroup === MajorCategory.MUSIC_MAJOR_STRING)
+  //       .map((major) => major.id.toString()),
+  //     [MajorCategory.MUSIC_MAJOR_BRASS]: majors
+  //       ?.filter((major) => major.enGroup === MajorCategory.MUSIC_MAJOR_BRASS)
+  //       .map((major) => major.id.toString()),
+  //     [MajorCategory.MUSIC_MAJOR_POPULAR_MUSIC]: majors
+  //       ?.filter(
+  //         (major) => major.enGroup === MajorCategory.MUSIC_MAJOR_POPULAR_MUSIC
+  //       )
+  //       .map((major) => major.id.toString()),
+  //     [MajorCategory.MUSIC_MAJOR_TRADITIONAL_MUSIC]: majors
+  //       ?.filter(
+  //         (major) =>
+  //           major.enGroup === MajorCategory.MUSIC_MAJOR_TRADITIONAL_MUSIC
+  //       )
+  //       .map((major) => major.id.toString()),
+  //   };
+  // }, [majors]);
 
   const handleMajorGroupChange = (key: MajorCategory) => {
-    const categoryIds = majorCategoryIds[key] as string[];
+    const categoryIds = majorCategoryIds[key] as string[]
 
-    setIsMajorCategoryChecked((prev) => {
+    setIsMajorCategoryChecked(prev => {
       return {
         ...prev,
         [key]: !prev[key],
-      };
-    });
+      }
+    })
 
     if (!isMajorCategoryChecked[key]) {
-      setCheckedMajorIds((prev) => {
-        return [...prev, ...categoryIds.filter((id) => !majorIds.includes(id))];
-      });
+      setCheckedMajorIds(prev => {
+        return [...prev, ...categoryIds.filter(id => !majorIds.includes(id))]
+      })
     } else {
-      setCheckedMajorIds((prev) => {
-        return prev.filter((id) => !categoryIds.includes(id));
-      });
+      setCheckedMajorIds(prev => {
+        return prev.filter(id => !categoryIds.includes(id))
+      })
     }
-  };
+  }
 
   const handleMajorChange = (majorId: string) => {
     if (checkedMajorIds?.includes(majorId)) {
-      setCheckedMajorIds((prev) => {
-        return prev.filter((id) => id !== majorId);
-      });
+      setCheckedMajorIds(prev => {
+        return prev.filter(id => id !== majorId)
+      })
     } else {
-      setCheckedMajorIds((prev) => {
-        return [...prev, majorId];
-      });
+      setCheckedMajorIds(prev => {
+        return [...prev, majorId]
+      })
     }
-  };
+  }
 
   const handleMajorDetailBoxes = (key: string) => {
-    setIsMajorCategoryDetail((prev) => {
+    setIsMajorCategoryDetail(prev => {
       return {
         ...prev,
         [key]: !prev[key],
-      };
-    });
-  };
+      }
+    })
+  }
 
   const handleIsAllMajorChecked = () => {
     setIsMajorCategoryChecked(
       MajorCategoryValues.reduce<{
-        [key: string]: boolean;
+        [key: string]: boolean
       }>((acc, curr) => {
-        acc[curr.key] = false;
-        return acc;
-      }, {})
-    );
-    setCheckedMajorIds([]);
-  };
+        acc[curr.key] = false
+        return acc
+      }, {}),
+    )
+    setCheckedMajorIds([])
+  }
 
   return (
     <div className="mt-12">
@@ -135,15 +140,15 @@ const MajorCheckBoxes = ({ majors }: Props) => {
         checked={checkedMajorIds.length === 0}
         handleChange={handleIsAllMajorChecked}
       />
-      {MajorCategoryValues.map(({ key, value }) => {
+      {ProfessionalValues.map(({ key, value }) => {
         return (
           <div key={value}>
             <CheckboxField<MajorCategory>
               value={key}
               title={value}
               checked={
-                majorCategoryIds[key]?.every((id) =>
-                  checkedMajorIds.includes(id)
+                majorCategoryIds[key]?.every(id =>
+                  checkedMajorIds.includes(id),
                 ) || false
               }
               handleChange={() => handleMajorGroupChange(key)}
@@ -159,7 +164,7 @@ const MajorCheckBoxes = ({ majors }: Props) => {
               </button>
             </CheckboxField>
             {isMajorCategoryDetail[key] &&
-              majors?.map((major) => {
+              majors?.map(major => {
                 if (major.enGroup === key) {
                   return (
                     <CheckboxField<number>
@@ -175,14 +180,14 @@ const MajorCheckBoxes = ({ majors }: Props) => {
                       }
                       className="ml-8"
                     />
-                  );
+                  )
                 }
               })}
           </div>
-        );
+        )
       })}
     </div>
-  );
-};
+  )
+}
 
-export default MajorCheckBoxes;
+export default MajorCheckBoxes

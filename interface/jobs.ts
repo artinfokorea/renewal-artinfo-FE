@@ -1,10 +1,10 @@
-import { JobType } from "@/types/jobs"
+import { JobType, ProfessionalFieldTypes } from "@/types/jobs"
 
 export interface JobsRequest {
   page?: number
   size: number
   keyword?: string
-  categoryIds?: number[]
+  professionalFields?: ProfessionalFieldTypes[]
   types?: JobType[]
   provinceIds?: number[]
 }

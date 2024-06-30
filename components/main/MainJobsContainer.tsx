@@ -1,9 +1,8 @@
 "use client"
 
 import { queries } from "@/lib/queries"
-import { JobType } from "@/types/jobs"
+import { JobType, ProfessionalFieldTypes } from "@/types/jobs"
 import { useSuspenseQuery } from "@tanstack/react-query"
-import Image from "next/image"
 import Link from "next/link"
 import React from "react"
 import { Swiper, SwiperSlide } from "swiper/react"
@@ -18,8 +17,15 @@ const MainJobsContainer = () => {
       page: 1,
       size: 5,
       types: [JobType.ART_ORGANIZATION, JobType.LECTURER],
+      professionalFields: [
+        ProfessionalFieldTypes.CLASSIC,
+        ProfessionalFieldTypes.POPULAR_MUSIC,
+        ProfessionalFieldTypes.TRADITIONAL_MUSIC,
+        ProfessionalFieldTypes.ADMINISTRATION,
+      ],
     }),
   )
+
   return (
     <section className="my-8 md:my-12">
       <div className="flex justify-between">

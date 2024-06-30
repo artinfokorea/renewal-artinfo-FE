@@ -1,3 +1,5 @@
+import { ProfessionalFieldTypes } from "./jobs"
+
 export enum ProvinceEn {
   SEOUL = "서울",
   BUSAN = "부산",
@@ -39,10 +41,10 @@ export enum ProvinceKo {
 }
 
 export type PROVINCE = {
-  id: number;
-  depth: number;
-  name: string;
-};
+  id: number
+  depth: number
+  name: string
+}
 
 export enum MajorEnum {
   CONDUCTOR = "CONDUCTOR",
@@ -139,23 +141,59 @@ export const MajorCategoryValues = [
     key: MajorCategory.MUSIC_MAJOR_TRADITIONAL_MUSIC,
     value: "국악",
   },
-];
+]
+
+export const ProfessionalValues = [
+  {
+    key: ProfessionalFieldTypes.CLASSIC,
+    value: "클래식",
+  },
+  {
+    key: ProfessionalFieldTypes.POPULAR_MUSIC,
+    value: "실용음악",
+  },
+  {
+    key: ProfessionalFieldTypes.TRADITIONAL_MUSIC,
+    value: "국악",
+  },
+  {
+    key: ProfessionalFieldTypes.ADMINISTRATION,
+    value: "사무",
+  },
+  {
+    key: MajorCategory.MUSIC_MAJOR_KEYBOARD,
+    value: "건반",
+  },
+  {
+    key: MajorCategory.MUSIC_MAJOR_ADMINISTRATION,
+    value: "관리",
+  },
+
+  {
+    key: MajorCategory.MUSIC_MAJOR_POPULAR_MUSIC,
+    value: "실욤음악",
+  },
+  {
+    key: MajorCategory.MUSIC_MAJOR_TRADITIONAL_MUSIC,
+    value: "국악",
+  },
+]
 
 export type MAJOR = {
-  id: number;
-  koGroup: string;
-  enGroup: MajorCategory;
-  koName: string;
-  enName: MajorEnum;
-};
+  id: number
+  koGroup: string
+  enGroup: MajorCategory
+  koName: string
+  enName: MajorEnum
+}
 
 export type IMAGE = {
-  id: number;
-  target: string;
-  originalFilename: string;
-  mimeType: string;
-  width: number;
-  height: number;
-  size: number;
-  url: string;
-};
+  id: number
+  target: string
+  originalFilename: string
+  mimeType: string
+  width: number
+  height: number
+  size: number
+  url: string
+}
