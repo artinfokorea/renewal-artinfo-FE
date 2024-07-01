@@ -97,9 +97,11 @@ const SignInForm = () => {
   }
 
   const handleGoogleLogin = () => {
+    console.log("NEXTAUTH_URL", process.env.NEXT_PUBLIC_REDIRECT_URL)
+
     let url = "https://accounts.google.com/o/oauth2/v2/auth"
     url += `?client_id=${process.env.GOOGLE_CLIENT_ID}`
-    url += `&redirect_uri=${process.env.NEXTAUTH_URL}auth/callback`
+    url += `&redirect_uri=${process.env.NEXT_PUBLIC_REDIRECT_URL}auth/callback`
     url += "&prompt=consent"
     url += "&scope=email"
     url += "&state=google"
