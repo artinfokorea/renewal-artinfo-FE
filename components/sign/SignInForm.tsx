@@ -68,7 +68,7 @@ const SignInForm = () => {
   const kakaoInit = () => {
     const kakao = (window as any).Kakao
     if (!kakao.isInitialized()) {
-      kakao.init(process.env.KAKAO_API_KEY)
+      kakao.init(process.env.NEXT_PUBLIC_KAKAO_API_KEY)
     }
 
     return kakao
@@ -78,7 +78,7 @@ const SignInForm = () => {
     const kakao = kakaoInit()
 
     kakao.Auth.authorize({
-      redirectUri: `${process.env.NEXTAUTH_URL}auth/callback`,
+      redirectUri: `${process.env.NEXT_PUBLIC_REDIRECT_URL}auth/callback`,
       state: "kakao",
       prompts: "login",
     })
@@ -88,7 +88,7 @@ const SignInForm = () => {
     const NaverIdLogin = (window as any).naver
     const naverLogin = new NaverIdLogin.LoginWithNaverId({
       clientId: process.env.NAVER_CLIENT_ID,
-      callbackUrl: `${process.env.NEXTAUTH_URL}auth/callback?state=naver`,
+      callbackUrl: `${process.env.NEXT_PUBLIC_REDIRECT_URL}auth/callback?state=naver`,
       state: "naver",
       callbackHandle: true,
     })
@@ -97,8 +97,6 @@ const SignInForm = () => {
   }
 
   const handleGoogleLogin = () => {
-    console.log("NEXTAUTH_URL", process.env.NEXT_PUBLIC_REDIRECT_URL)
-
     let url = "https://accounts.google.com/o/oauth2/v2/auth"
     url += `?client_id=${process.env.GOOGLE_CLIENT_ID}`
     url += `&redirect_uri=${process.env.NEXT_PUBLIC_REDIRECT_URL}auth/callback`

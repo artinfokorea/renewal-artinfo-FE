@@ -22,7 +22,7 @@ const Callback = () => {
       naver = (window as any).naver
       naverLogin = new naver.LoginWithNaverId({
         clientId: process.env.NAVER_CLIENT_ID,
-        callbackUrl: process.env.NEXTAUTH_URL,
+        callbackUrl: process.env.NEXT_PUBLIC_REDIRECT_URL,
         isPopup: false,
       })
 
@@ -56,12 +56,12 @@ const Callback = () => {
   const checkKakaoLogin = async (code: string) => {
     const Kakao = (window as any).Kakao
     if (Kakao && !Kakao.isInitialized()) {
-      Kakao.init(process.env.KAKAO_API_KEY)
+      Kakao.init(process.env.NEXT_PUBLIC_KAKAO_API_KEY)
     }
 
     try {
       const res = await fetch(
-        `https://kauth.kakao.com/oauth/token?grant_type=authorization_code&client_id=${process.env.KAKAO_API_KEY}&redirect_uri=http://localhost:3000/auth/callback&code=${code}`,
+        `https://kauth.kakao.com/oauth/token?grant_type=authorization_code&client_id=${process.env.NEXT_PUBLIC_KAKAO_API_KEY}&redirect_uri=http://localhost:3000/auth/callback&code=${code}`,
         {
           method: "POST",
         },

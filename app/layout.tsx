@@ -59,7 +59,10 @@ export default function RootLayout({
         style={{ height: "calc(100vh - 156px)" }}
         suppressHydrationWarning
       >
-        <Script src="https://developers.kakao.com/sdk/js/kakao.js" />
+        <Script
+          src="https://developers.kakao.com/sdk/js/kakao.js"
+          strategy="beforeInteractive"
+        />
         <Script
           src="https://static.nid.naver.com/js/naveridlogin_js_sdk_2.0.2.js"
           strategy="beforeInteractive"
