@@ -21,7 +21,7 @@ const Callback = () => {
     if (state === "naver") {
       naver = (window as any).naver
       naverLogin = new naver.LoginWithNaverId({
-        clientId: process.env.NAVER_CLIENT_ID,
+        clientId: process.env.NEXT_PUBLIC_NAVER_CLIENT_ID,
         callbackUrl: process.env.NEXT_PUBLIC_REDIRECT_URL,
         isPopup: false,
       })

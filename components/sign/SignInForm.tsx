@@ -87,7 +87,7 @@ const SignInForm = () => {
   const handleNaverLogin = () => {
     const NaverIdLogin = (window as any).naver
     const naverLogin = new NaverIdLogin.LoginWithNaverId({
-      clientId: process.env.NAVER_CLIENT_ID,
+      clientId: process.env.NEXT_PUBLIC_NAVER_CLIENT_ID,
       callbackUrl: `${process.env.NEXT_PUBLIC_REDIRECT_URL}auth/callback?state=naver`,
       state: "naver",
       callbackHandle: true,
@@ -98,7 +98,7 @@ const SignInForm = () => {
 
   const handleGoogleLogin = () => {
     let url = "https://accounts.google.com/o/oauth2/v2/auth"
-    url += `?client_id=${process.env.GOOGLE_CLIENT_ID}`
+    url += `?client_id=${process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID}`
     url += `&redirect_uri=${process.env.NEXT_PUBLIC_REDIRECT_URL}auth/callback`
     url += "&prompt=consent"
     url += "&scope=email"
