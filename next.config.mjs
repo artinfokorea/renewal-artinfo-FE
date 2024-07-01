@@ -7,6 +7,7 @@ const config = {
   env: {
     REST_API_BASE_URL: process.env.REST_API_BASE_URL,
     NEXTAUTH_SECRET: process.env.NEXTAUTH_SECRET,
+    DEV_ENV: process.env.DEV_ENV,
   },
   images: {
     remotePatterns: [
@@ -37,21 +38,21 @@ const config = {
 
 const nextConfig = withPWA({
   dest: "public",
-  // disable: !isProduction,
+  disable: process.env.DEV_ENV === "development",
   runtimeCaching: [],
 })(config)
 
-const sentryWebpackPluginOptions = {
-  org: "artinfo",
-  project: "javascript-nextjs",
-  silent: true,
-  widenClientFileUpload: true,
-  transpileClientSDK: true,
-  tunnelRoute: "/monitoring",
-  hideSourceMaps: true,
-  disableLogger: true,
-  automaticVercelMonitors: true,
-}
+// const sentryWebpackPluginOptions = {
+//   org: "artinfo",
+//   project: "javascript-nextjs",
+//   silent: true,
+//   widenClientFileUpload: true,
+//   transpileClientSDK: true,
+//   tunnelRoute: "/monitoring",
+//   hideSourceMaps: true,
+//   disableLogger: true,
+//   automaticVercelMonitors: true,
+// }
 
 export default nextConfig
 

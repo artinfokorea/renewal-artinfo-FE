@@ -7,6 +7,7 @@ import { Button } from "../ui/button"
 import InputField from "../common/InputField"
 import { Label } from "../ui/label"
 import { useState } from "react"
+import { SuccessCode, SuccessResponse } from "@/interface"
 
 const schema = yup
   .object({
@@ -64,24 +65,15 @@ const PasswordDialog = ({
   })
 
   const sendEmail = async () => {
-    try {
-      setIsVerifyEmail(false)
-      sendEmailVerifyCode()
-      setIsSendEmail(true)
-    } catch (error) {
-      console.error("이메일 인증 코드 전송 실패:", error)
-    }
+    setIsVerifyEmail(false)
+    sendEmailVerifyCode()
+    setIsSendEmail(true)
   }
   const checkEmail = () => {
-    try {
-      setIsSendEmail(false)
-      checkEmailVerifyCode(verifyCode)
-      setValue("isEmailVerified", true)
-      setIsVerifyEmail(true)
-    } catch (error) {
-      setIsSendEmail(false)
-      console.error("이메일 인증 코드 확인 실패:", error)
-    }
+    setIsSendEmail(false)
+    checkEmailVerifyCode(verifyCode)
+    setValue("isEmailVerified", true)
+    setIsVerifyEmail(true)
   }
 
   return (
@@ -92,7 +84,7 @@ const PasswordDialog = ({
     >
       <div className="fixed inset-0 bg-black/30" aria-hidden="true" />
       <form className="fixed inset-0 flex w-screen items-center justify-center p-4">
-        <DialogPanel className="z-10 w-full md:max-w-[450px] h-[430px] bg-white rounded-xl py-4 mx-auto">
+        <DialogPanel className="z-10 w-full md:max-w-[450px] h-[460px] bg-white rounded-xl py-4 mx-auto">
           <div className="relative mb-4">
             <DialogTitle className=" flex-1 md:text-lg text-center font-semibold ">
               비밀번호 변경

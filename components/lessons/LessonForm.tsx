@@ -129,11 +129,7 @@ const LessonForm = ({ handleLesson, isFormLoading, lesson }: Props) => {
               <Loading className="w-10 h-10" />
             </div>
           ) : (
-            <div
-              className="h-[360px] md:h-[300px] w-[300px] md:w-[240px] mx-auto bg-whitesmoke rounded
-  flex flex-col items-center justify-center gap-6
-  "
-            >
+            <div className="h-[360px] md:h-[300px] w-[300px] md:w-[240px] mx-auto bg-whitesmoke rounded flex flex-col items-center justify-center gap-6">
               <div className="flex flex-col items-center gap-2">
                 <PhotoIcon className="w-14 h-14 text-dimgray" />
                 <h5 className="font-bold text-sm md:text-base text-center">

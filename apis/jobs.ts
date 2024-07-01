@@ -68,7 +68,7 @@ export const getJob = async (id: number): Promise<JOB> => {
 
 /* 채용 삭제 */
 export const deleteJob = async (id: number): Promise<SuccessResponse> => {
-  const response = await authApiRequest.delete<SuccessResponse>(`/jobs`, id)
+  const response = await authApiRequest.delete<SuccessResponse>(`/jobs/${id}`)
   return response
 }
 /* 오브리 생성 */

@@ -27,6 +27,7 @@ import {
   checkEmailVerificationCode,
 } from "@/apis/auth"
 import { MAJOR } from "@/types/majors"
+import { SuccessCode, SuccessResponse } from "@/interface"
 
 const schema = yup
   .object({
@@ -234,14 +235,10 @@ const ProfileContainer = () => {
   }
 
   const checkEmailVerifyCode = async (verification: string) => {
-    if (!user?.email) {
-      errorToast("이메일을 확인 할 수 없습니다.")
-      return
-    }
-
     try {
-      await checkEmailVerificationCode(user?.email, verification)
+      const result = await checkEmailVerificationCode(user?.email, verification)
       successToast("이메일 인증이 완료되었습니다.")
+      return result
     } catch (error: any) {
       errorToast(error.message)
       console.log(error)

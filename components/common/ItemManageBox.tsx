@@ -14,15 +14,15 @@ const ItemManageBox = ({ handleEdit, handleDelete, className }: Props) => {
     <div className={`flex gap-2 md:gap-4 ${className}`}>
       <Button
         onClick={handleEdit}
-        className="border p-2 border-whitesmoke rounded-lg"
+        className="border-2 p-2 border-whitesmoke rounded-lg"
       >
-        <EditIcon className="w-6 h-6" />
+        <EditIcon className="w-5 h-5 md:w-6 md:h-6" />
       </Button>
       <Button
         onClick={handleDelete}
-        className="border p-2 border-whitesmoke rounded-lg"
+        className="border-2 p-2 border-whitesmoke rounded-lg"
       >
-        <TrashIcon className="w-6 h-6" />
+        <TrashIcon className="w-5 h-5 md:w-6 md:h-6" />
       </Button>
     </div>
   )

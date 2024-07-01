@@ -2,14 +2,14 @@ import { getJob } from "@/apis/jobs"
 import type { Metadata } from "next"
 
 interface Props {
-  params: { id: string; lng?: string }
+  params: { id: string }
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { id } = params
   const data = await getJob(Number(id))
 
-  const pageTitle = data?.title.substring(0, 35)
+  const pageTitle = data?.title
   const pageImage = data?.imageUrl
 
   return {

@@ -18,12 +18,14 @@ const DeskTopDropDown = ({ user, handleSign }: Props) => {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger className="flex items-center">
-        <Image
-          src={user.iconImageUrl || "/img/placeholder-user.png"}
-          alt="user-icon-image"
-          width={40}
-          height={40}
-        />
+        <div className="w-10 h-10 relative">
+          <Image
+            src={user.iconImageUrl || "/img/placeholder-user.png"}
+            alt="user-icon-image"
+            fill
+            className="rounded-full"
+          />
+        </div>
         <span className="mx-2 hidden md:block">{user?.nickname}님</span>
       </DropdownMenuTrigger>
       <DropdownMenuContent>

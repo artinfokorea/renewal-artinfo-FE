@@ -17,7 +17,7 @@ export type RefreshTokenResponse = {
   expiresIn: Date
 }
 
-enum SuccessCode {
+export enum SuccessCode {
   OK = "OK",
 }
 

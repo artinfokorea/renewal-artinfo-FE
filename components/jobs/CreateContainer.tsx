@@ -33,21 +33,17 @@ const CreateContainer = () => {
       companyName,
       province,
       detailAddress,
-      imageFile,
+      imageUrl,
       majors,
       contents,
     } = payload
     try {
-      const uploadResponse = await startTransition(
-        uploadImages([imageFile] as File[]),
-      )
-      console.log("contest", contents)
       await startTransition(
         createFullTimeJob({
           title,
           companyName,
           address: `${province} ${detailAddress}`,
-          imageUrl: uploadResponse.images[0].url as string,
+          imageUrl,
           majorIds: majors.map(major => major.id),
           contents,
         }),

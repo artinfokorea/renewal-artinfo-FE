@@ -17,6 +17,10 @@ import MajorDialog from "../dialog/MajorDialog"
 import { Badge } from "../ui/badge"
 import PostCodeDialog from "../dialog/PostCodeDialog"
 import { MAJOR } from "@/types/majors"
+import { JOB } from "@/types/jobs"
+import { uploadImages } from "@/apis/system"
+import useToast from "@/hooks/useToast"
+import { useLoading } from "@toss/use-loading"
 
 const ToastEditor = dynamic(() => import("../editor/ToastEditor"), {
   ssr: false,
@@ -42,13 +46,7 @@ const schema = yup
       .required(),
     province: yup.string().required("지역을 선택해주세요."),
     detailAddress: yup.string().required("상세 주소를 입력해주세요."),
-    imageFile: yup
-      .mixed()
-      .test("fileType", "이미지 파일만 등록할 수 있습니다.", value => {
-        if (!value) return false // 값이 없으면 유효성 검사 실패
-        return value instanceof File
-      })
-      .required("이미지를 등록해주세요."),
+    imageUrl: yup.string().required("이미지를 등록해주세요."),
     majors: yup
       .array()
       .min(1, "전공을 최소 1개 선택해야 합니다.")
@@ -62,13 +60,16 @@ export type CreateJobFormData = yup.InferType<typeof schema>
 interface Props {
   handleFullTimeJob: (payload: CreateJobFormData) => void
   isLoading: boolean
+  job?: JOB
 }
 
-const OrganizationForm = ({ handleFullTimeJob, isLoading }: Props) => {
+const OrganizationForm = ({ handleFullTimeJob, isLoading, job }: Props) => {
   const router = useRouter()
   const fileUploader = useRef<HTMLInputElement>(null)
   const [isMajorDialog, setIsMajorDialog] = useState(false)
   const [isPostDialog, setIsPostDialog] = useState(false)
+  const [isImageLoading, imageLoadingTransition] = useLoading()
+  const { successToast, errorToast } = useToast()
 
   const {
     register,
@@ -80,7 +81,13 @@ const OrganizationForm = ({ handleFullTimeJob, isLoading }: Props) => {
   } = useForm<CreateJobFormData>({
     resolver: yupResolver(schema),
     defaultValues: {
-      majors: [],
+      majors: job?.majors || ([] as MAJOR[]),
+      title: job?.title || "",
+      companyName: job?.companyName || "",
+      detailAddress: job?.address?.split("")[1] || "",
+      contents: job?.contents || "",
+      province: job?.address?.split(" ")[0] || "",
+      imageUrl: job?.imageUrl || "",
     },
   })
 
@@ -88,17 +95,18 @@ const OrganizationForm = ({ handleFullTimeJob, isLoading }: Props) => {
     fileUploader.current?.click()
   }
 
-  const handleUploadedFiles = (files: File[]) => {
-    setValue("imageFile", files[0])
-  }
-
-  const imageUrl = useMemo(() => {
-    const file = watch("imageFile") as File
-    if (file) {
-      return URL.createObjectURL(file)
+  const handleUploadedFiles = async (files: File[]) => {
+    try {
+      const uploadResponse = await imageLoadingTransition(
+        uploadImages(files as File[]),
+      )
+      successToast("프로필 이미지가 등록되었습니다.")
+      setValue("imageUrl", uploadResponse.images[0].url as string)
+    } catch (error: any) {
+      errorToast(error.message)
+      console.log(error)
     }
-    return undefined
-  }, [watch("imageFile")])
+  }
 
   const handleSelectMajor = (selectedMajor: MAJOR) => {
     const majorIds = watch("majors")?.map(major => major.id)
@@ -124,10 +132,10 @@ const OrganizationForm = ({ handleFullTimeJob, isLoading }: Props) => {
         채용 등록
       </h2>
       <div className="flex flex-col md:flex-row">
-        {imageUrl ? (
+        {watch("imageUrl") ? (
           <div className="h-[190px] md:h-[244px] w-full md:w-[400px] rounded-md relative">
             <Image
-              src={imageUrl}
+              src={watch("imageUrl")}
               alt="job_create_image"
               fill
               quality={100}
@@ -135,10 +143,14 @@ const OrganizationForm = ({ handleFullTimeJob, isLoading }: Props) => {
             />
             <Button
               className="absolute top-2 right-2 rounded-full opacity-40 bg-white p-2"
-              onClick={() => setValue("imageFile", "")}
+              onClick={() => setValue("imageUrl", "")}
             >
               <CloseIcon className="w-6 h-6 text-primary" />
             </Button>
+          </div>
+        ) : isImageLoading ? (
+          <div className="h-[190px] md:h-[244px] w-full md:w-[400px] flex justify-center items-center">
+            <Loading className="w-10 h-10" />
           </div>
         ) : (
           <div
@@ -203,12 +215,12 @@ const OrganizationForm = ({ handleFullTimeJob, isLoading }: Props) => {
                 전공은 최대 3개까지 선택 가능합니다.
               </span>
             )}
-            {watch("majors").map(major => (
+            {watch("majors").map((major: MAJOR) => (
               <Badge
                 key={major.id}
                 className="bg-main text-white text-xs md:text-sm h-8 whitespace-nowrap"
               >
-                {major.koName}
+                {major.secondGroupKo}
                 <button
                   onClick={() => handleSelectMajor(major)}
                   className="ml-1"
@@ -268,7 +280,7 @@ const OrganizationForm = ({ handleFullTimeJob, isLoading }: Props) => {
         </div>
       </div>
       <div className="my-4 h-[300px] md:h-[500px]">
-        <ToastEditor setValue={setValue} />
+        <ToastEditor setValue={setValue} value={job?.contents} />
       </div>
       <div className="flex justify-end gap-2">
         <Button

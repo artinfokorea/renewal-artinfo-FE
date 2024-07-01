@@ -37,16 +37,7 @@ const NavItems = [
 ]
 
 const BottomNavigation = () => {
-  const [isIPhone, setIsIPhone] = useState(false)
   const pathname = usePathname()
-
-  useEffect(() => {
-    const userAgent = navigator.userAgent.toLowerCase()
-
-    if (userAgent.indexOf("iphone") > -1) {
-      setIsIPhone(true)
-    }
-  }, [])
 
   return (
     <footer

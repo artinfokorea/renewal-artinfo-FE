@@ -16,6 +16,7 @@ import MajorDialog from "../dialog/MajorDialog"
 import PostCodeDialog from "../dialog/PostCodeDialog"
 import PlusIcon from "../icons/PlusIcon"
 import { MAJOR } from "@/types/majors"
+import { JOB } from "@/types/jobs"
 
 const ToastEditor = dynamic(() => import("../editor/ToastEditor"), {
   ssr: false,
@@ -58,9 +59,10 @@ export type CreateReligionFormData = yup.InferType<typeof schema>
 interface Props {
   handleReligionJob: (payload: CreateReligionFormData) => void
   isLoading: boolean
+  job?: JOB
 }
 
-const ReligionForm = ({ handleReligionJob, isLoading }: Props) => {
+const ReligionForm = ({ handleReligionJob, isLoading, job }: Props) => {
   const router = useRouter()
   const [isMajorDialog, setIsMajorDialog] = useState(false)
   const [isPostDialog, setIsPostDialog] = useState(false)
@@ -75,7 +77,12 @@ const ReligionForm = ({ handleReligionJob, isLoading }: Props) => {
   } = useForm<CreateReligionFormData>({
     resolver: yupResolver(schema),
     defaultValues: {
-      majors: [],
+      majors: job?.majors || [],
+      title: job?.title || "",
+      companyName: job?.companyName || "",
+      detailAddress: job?.address?.split("")[1] || "",
+      contents: job?.contents || "",
+      province: job?.address?.split(" ")[0] || "",
     },
   })
 
