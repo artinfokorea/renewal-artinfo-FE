@@ -1,16 +1,16 @@
 import { SuccessResponse } from "@/interface"
-import { apiRequest } from "."
+import { publicApiRequest } from "."
 import { exceptionHandler } from "./exception-handler"
 import { SignUpPayload } from "@/interface/users"
 
 export const signUp = async (payload: SignUpPayload) => {
-  const response = await apiRequest.post("/auths/sign-up", payload)
+  const response = await publicApiRequest.post("/auths/sign-up", payload)
   return response
 }
 
 export const isDuplicateEmail = async (email: string) => {
   try {
-    const response = await apiRequest.get<SuccessResponse>(
+    const response = await publicApiRequest.get<SuccessResponse>(
       `/verifications/email/existence`,
       {
         params: {
@@ -25,7 +25,7 @@ export const isDuplicateEmail = async (email: string) => {
 }
 
 export const sendEmailVerificationCode = async (email: string) => {
-  const response = await apiRequest.post<SuccessResponse>(
+  const response = await publicApiRequest.post<SuccessResponse>(
     `/verifications/email`,
     { email },
   )
@@ -36,7 +36,7 @@ export const checkEmailVerificationCode = async (
   email: string,
   verification: string,
 ): Promise<SuccessResponse> => {
-  const response = await apiRequest.put<SuccessResponse>(
+  const response = await publicApiRequest.put<SuccessResponse>(
     `/verifications/email`,
     { email, verification },
   )

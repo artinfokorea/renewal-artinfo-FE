@@ -1,6 +1,6 @@
 "use client"
 
-import React, { useState } from "react"
+import React, { useEffect, useState } from "react"
 import { useForm } from "react-hook-form"
 import { yupResolver } from "@hookform/resolvers/yup"
 import * as yup from "yup"
@@ -36,6 +36,7 @@ type FormData = yup.InferType<typeof schema>
 const SignInForm = () => {
   const [isLoading, startTransition] = useLoading()
   const [isConfirmDialogOpen, setIsConfirmDialogOpen] = useState(false)
+  const [errorMessage, setErrorMessage] = useState("")
   const { errorToast } = useToast()
   const searchParams = useSearchParams()
   const error = searchParams.get("error")
@@ -50,8 +51,27 @@ const SignInForm = () => {
 
   const handleDialog = () => setIsConfirmDialogOpen(!isConfirmDialogOpen)
 
+  useEffect(() => {
+    if (error) {
+      setErrorMessage(getErrorMessage(error))
+    }
+  }, [error])
+
+  const getErrorMessage = (errorType: string) => {
+    switch (errorType) {
+      case "CredentialsSignin":
+        return "이메일 또는 비밀번호가 잘못되었습니다."
+      case "OAuthSignin":
+        return "소셜 로그인 중 오류가 발생했습니다."
+
+      default:
+        return "로그인 중 오류가 발생했습니다."
+    }
+  }
+
   const handleSignIn = async (payload: FormData) => {
     try {
+      setErrorMessage("")
       await startTransition(
         signIn("signin-email", {
           ...payload,
@@ -136,6 +156,7 @@ const SignInForm = () => {
         placeholder="비밀번호를 입력하세요."
         className="py-3"
       />
+      {errorMessage && <p className="text-xs text-error">{errorMessage}</p>}
       <Button
         type="submit"
         className="bg-main w-full my-6 hover:bg-main text-white"

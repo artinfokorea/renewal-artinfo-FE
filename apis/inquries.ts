@@ -1,11 +1,14 @@
-import { PostResponse } from '@/interface';
-import { apiRequest } from '.';
-import { InquiryPayload } from '@/interface/inquiries';
+import { PostResponse } from "@/interface"
+import { publicApiRequest } from "."
+import { InquiryPayload } from "@/interface/inquiries"
 
 /* 문의 생성 */
 export const createInquiry = async (
-  payload: InquiryPayload
+  payload: InquiryPayload,
 ): Promise<PostResponse> => {
-  const response = await apiRequest.post<PostResponse>(`/inquiries`, payload);
-  return response;
-};
+  const response = await publicApiRequest.post<PostResponse>(
+    `/inquiries`,
+    payload,
+  )
+  return response
+}

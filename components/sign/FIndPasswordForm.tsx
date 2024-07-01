@@ -5,7 +5,7 @@ import { yupResolver } from "@hookform/resolvers/yup"
 import * as yup from "yup"
 import { Label } from "../ui/label"
 import { Button } from "../ui/button"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import InputField from "../common/InputField"
 import InputWithButton from "../common/InputWithButton"
 import Link from "next/link"
@@ -40,8 +40,8 @@ export type PasswordFormData = yup.InferType<typeof schema>
 
 interface Props {
   isLoading: boolean
-  sendCode: (email: string) => void
-  checkCode: (email: string, code: string) => void
+  sendCode: (email: string) => Promise<void>
+  checkCode: (email: string, code: string) => Promise<void>
   handlePassword: (payload: PasswordFormData) => void
 }
 
@@ -53,6 +53,7 @@ const FindPasswordForm = ({
 }: Props) => {
   const [isSendEmail, setIsSendEmail] = useState(false)
   const [verifyCode, setVerifyCode] = useState("")
+  const [isVerify, setIsVerify] = useState(false)
 
   const {
     register,
@@ -60,22 +61,31 @@ const FindPasswordForm = ({
     watch,
     setValue,
     getValues,
+    getFieldState,
     formState: { errors },
   } = useForm<PasswordFormData>({
     resolver: yupResolver(schema),
+    mode: "onChange",
   })
+
+  useEffect(() => {
+    setIsVerify(false)
+  }, [watch("email")])
 
   const sendEmail = async () => {
     try {
-      sendCode(getValues("email") as string)
+      setIsVerify(false)
+      await sendCode(getValues("email") as string)
       setIsSendEmail(true)
     } catch (error) {
       console.error("이메일 인증 코드 전송 실패:", error)
     }
   }
-  const checkEmail = () => {
+  const checkEmail = async () => {
     try {
-      checkCode(getValues("email") as string, verifyCode)
+      setIsSendEmail(false)
+      await checkCode(getValues("email") as string, verifyCode)
+      setIsVerify(true)
       setValue("isEmailVerified", true)
     } catch (error) {
       console.error("이메일 인증 코드 확인 실패:", error)
@@ -101,7 +111,7 @@ const FindPasswordForm = ({
         <Button
           type="button"
           onClick={sendEmail}
-          disabled={isSendEmail}
+          disabled={isSendEmail || getFieldState("email").invalid}
           className="absolute top-1 right-2 bg-main text-white rounded-lg h-8"
         >
           인증코드 전송
@@ -114,24 +124,22 @@ const FindPasswordForm = ({
         >
           이메일 인증 코드
         </Label>
-        <div className="flex gap-2">
+        <div className="relative">
           <input
             value={verifyCode}
             onChange={e => setVerifyCode(e.target.value)}
             type="text"
             placeholder="인증 코드를 입력해주세요."
-            className="w-full rounded border px-2 py-1.5 text-xs leading-tight text-black"
+            className="w-full rounded border px-2 py-3 text-xs leading-tight text-black"
           />
-          <div className="flex gap-2">
-            <Button
-              type="button"
-              disabled={verifyCode.length !== 6}
-              onClick={checkEmail}
-              className="text-white bg-main"
-            >
-              인증
-            </Button>
-          </div>
+          <Button
+            type="button"
+            disabled={verifyCode.length !== 6 || isVerify}
+            onClick={checkEmail}
+            className="text-white bg-main absolute top-1 right-2 h-8"
+          >
+            인증
+          </Button>
         </div>
       </div>
       <InputField

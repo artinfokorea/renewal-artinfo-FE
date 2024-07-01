@@ -65,6 +65,7 @@ const PasswordDialog = ({
 
   const sendEmail = async () => {
     try {
+      setIsVerifyEmail(false)
       sendEmailVerifyCode()
       setIsSendEmail(true)
     } catch (error) {
@@ -73,10 +74,12 @@ const PasswordDialog = ({
   }
   const checkEmail = () => {
     try {
+      setIsSendEmail(false)
       checkEmailVerifyCode(verifyCode)
       setValue("isEmailVerified", true)
       setIsVerifyEmail(true)
     } catch (error) {
+      setIsSendEmail(false)
       console.error("이메일 인증 코드 확인 실패:", error)
     }
   }

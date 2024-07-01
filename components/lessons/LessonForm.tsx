@@ -66,21 +66,22 @@ const LessonForm = ({ handleLesson, isFormLoading, lesson }: Props) => {
   })
 
   const handleArea = (area: string) => {
-    if (watch("areas")?.includes(area)) {
-      const filteredAreas = watch("areas").filter(
-        (prev: string) => prev !== area,
-      )
+    const currentAreas = Array.from(watch("areas") || [])
+
+    if (currentAreas?.includes(area)) {
+      const filteredAreas = currentAreas.filter((prev: string) => prev !== area)
       setValue("areas", filteredAreas)
     } else {
-      const currentAreas = [...watch("areas"), area]
       let newAreas
 
       if (currentAreas.length >= 3) {
-        newAreas = [...currentAreas.slice(1), area].slice(0, 3)
+        // 이미 3개가 선택되어 있다면, 첫 번째 항목을 제거하고 새 항목을 추가합니다.
+        newAreas = [...currentAreas.slice(1), area]
       } else {
-        newAreas = [...currentAreas, area].slice(0, 3)
+        // 3개 미만이라면 그냥 추가합니다.
+        newAreas = [...currentAreas, area]
       }
-      console.log("cuttedAreas", newAreas)
+
       setValue("areas", newAreas)
     }
   }

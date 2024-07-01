@@ -1,14 +1,14 @@
 import { ListApiResponse, ListResponse } from "@/interface"
-import { apiRequest } from "."
+import { publicApiRequest } from "."
 import { exceptionHandler } from "./exception-handler"
 import { ArtField, MAJOR, MajorGroup } from "@/types/majors"
 import { ArtFieldRequest } from "@/interface/majors"
 
 export const getMajors = async (): Promise<ListResponse<MAJOR, "majors">> => {
   try {
-    const response = await apiRequest.get<ListApiResponse<MAJOR, "majors">>(
-      "/majors",
-    )
+    const response = await publicApiRequest.get<
+      ListApiResponse<MAJOR, "majors">
+    >("/majors")
     return response.item
   } catch (error) {
     throw new Error(exceptionHandler(error, "API getMajors error"))
@@ -17,7 +17,7 @@ export const getMajors = async (): Promise<ListResponse<MAJOR, "majors">> => {
 
 export const getArtCategories = async () => {
   try {
-    const response = await apiRequest.get<
+    const response = await publicApiRequest.get<
       ListApiResponse<MajorGroup, "majorGroups">
     >("/majors/art")
     return response.item
@@ -36,7 +36,7 @@ export const getArtFileds = async (request: ArtFieldRequest) => {
         params.append(key, value)
       }
     }
-    const response = await apiRequest.get<
+    const response = await publicApiRequest.get<
       ListApiResponse<ArtField, "majorGroups">
     >("/majors/fields", {
       params,

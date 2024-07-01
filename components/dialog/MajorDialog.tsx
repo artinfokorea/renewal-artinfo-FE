@@ -23,8 +23,6 @@ const MajorDialog = ({
 }: Props) => {
   const { data } = useQuery(queries.majors.list())
 
-  console.log("data", data)
-
   const selectMajor = (major: MAJOR) => {
     handleSelectMajor(major)
     if (!multiple) close()

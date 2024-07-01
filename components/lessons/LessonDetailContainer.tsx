@@ -160,7 +160,7 @@ const LessonDetailContainer = ({ lesson, deleteLesson }: Props) => {
           </div>
         </div>
       </div>
-      {user?.id === lesson?.authorId && (
+      {user?.id === lesson?.authorId ? (
         <div className="hidden md:flex my-8 px-4 h-8 relative">
           <div className="mx-auto border-b-2 border-whitesmoke w-3/5" />
           <ItemManageBox
@@ -171,6 +171,8 @@ const LessonDetailContainer = ({ lesson, deleteLesson }: Props) => {
             className="absolute -bottom-4 right-5"
           />
         </div>
+      ) : (
+        <div className="my-8" />
       )}
 
       <div className="flex flex-col px-4 md:px-0 gap-4 md:flex-row md:gap-8">

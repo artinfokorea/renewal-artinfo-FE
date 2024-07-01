@@ -20,8 +20,8 @@ import { USER } from "@/types/users"
 import { Badge } from "../ui/badge"
 import { SchoolTypeValues } from "@/types/lessons"
 import { Button } from "../ui/button"
-import { ProfileFormData } from "@/app/(site)/my-profile/page"
 import { MAJOR } from "@/types/majors"
+import { ProfileFormData } from "./ProfileContainer"
 
 interface Props {
   user?: USER

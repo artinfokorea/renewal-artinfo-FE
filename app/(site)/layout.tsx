@@ -9,7 +9,7 @@ export default function RootLayout({
   return (
     <>
       <Header />
-      <main className="pb-20 md:pb-8">{children}</main>
+      <main className="pb-40 md:pb-20">{children}</main>
       <BottomNavigation />
     </>
   )

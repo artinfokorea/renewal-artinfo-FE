@@ -1,5 +1,5 @@
 import { ListApiResponse, ListResponse, SuccessResponse } from "@/interface"
-import { apiRequest } from "."
+import { publicApiRequest, authApiRequest } from "."
 import { exceptionHandler } from "./exception-handler"
 import { IMAGE, PROVINCE } from "@/types"
 import { VerifyPhoneCodePayload } from "@/interface/systems"
@@ -8,7 +8,7 @@ export const getProvinces = async (
   depth?: number,
 ): Promise<ListResponse<PROVINCE, "provinces">> => {
   try {
-    const response = await apiRequest.get<
+    const response = await publicApiRequest.get<
       ListApiResponse<PROVINCE, "provinces">
     >("/provinces", {
       params: {
@@ -24,7 +24,7 @@ export const getProvinces = async (
 export const sendPhoneVerificationCode = async (
   phone: string,
 ): Promise<SuccessResponse> => {
-  const response = await apiRequest.post<SuccessResponse>(
+  const response = await authApiRequest.post<SuccessResponse>(
     "/verifications/mobile",
     { phone },
   )
@@ -34,7 +34,7 @@ export const sendPhoneVerificationCode = async (
 export const verifyPhoneCode = async (
   payload: VerifyPhoneCodePayload,
 ): Promise<SuccessResponse> => {
-  const response = await apiRequest.put<SuccessResponse>(
+  const response = await authApiRequest.put<SuccessResponse>(
     "/verifications/mobile",
     payload,
   )
@@ -48,7 +48,7 @@ export const uploadImages = async (
   imageFiles.forEach(file => formData.append("imageFiles", file))
   formData.append("target", "USER")
 
-  const response = await apiRequest.post<ListApiResponse<IMAGE, "images">>(
+  const response = await authApiRequest.post<ListApiResponse<IMAGE, "images">>(
     "/system/upload/images",
     formData,
     {
