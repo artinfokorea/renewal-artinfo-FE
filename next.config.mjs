@@ -35,24 +35,24 @@ const config = {
   },
 }
 
-// const nextConfig = withPWA({
-//   dest: "public",
-//   // disable: !isProduction,
-//   runtimeCaching: [],
-// })(config);
+const nextConfig = withPWA({
+  dest: "public",
+  // disable: !isProduction,
+  runtimeCaching: [],
+})(config)
 
-// const sentryWebpackPluginOptions = {
-//   org: 'artinfo',
-//   project: 'javascript-nextjs',
-//   silent: true,
-//   widenClientFileUpload: true,
-//   transpileClientSDK: true,
-//   tunnelRoute: '/monitoring',
-//   hideSourceMaps: true,
-//   disableLogger: true,
-//   automaticVercelMonitors: true,
-// };
+const sentryWebpackPluginOptions = {
+  org: "artinfo",
+  project: "javascript-nextjs",
+  silent: true,
+  widenClientFileUpload: true,
+  transpileClientSDK: true,
+  tunnelRoute: "/monitoring",
+  hideSourceMaps: true,
+  disableLogger: true,
+  automaticVercelMonitors: true,
+}
 
-export default config
+export default nextConfig
 
 // export default withSentryConfig(nextConfig);

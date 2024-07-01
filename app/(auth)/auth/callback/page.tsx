@@ -61,7 +61,7 @@ const Callback = () => {
 
     try {
       const res = await fetch(
-        `https://kauth.kakao.com/oauth/token?grant_type=authorization_code&client_id=${process.env.NEXT_PUBLIC_KAKAO_API_KEY}&redirect_uri=http://localhost:3000/auth/callback&code=${code}`,
+        `https://kauth.kakao.com/oauth/token?grant_type=authorization_code&client_id=${process.env.NEXT_PUBLIC_KAKAO_API_KEY}&redirect_uri=${process.env.NEXT_PUBLIC_REDIRECT_URL}auth/callback&code=${code}`,
         {
           method: "POST",
         },
