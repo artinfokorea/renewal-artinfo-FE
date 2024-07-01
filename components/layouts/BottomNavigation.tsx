@@ -50,9 +50,7 @@ const BottomNavigation = () => {
 
   return (
     <footer
-      className={`fixed md:hidden bottom-0 left-0 w-full z-50 border-t-[1px] h-20 bg-white safe-area ${
-        isIPhone && "h-24"
-      }`}
+      className={`fixed md:hidden bottom-0 left-0 w-full z-50 border-t-[1px] h-20 bg-white safe-area`}
     >
       <div className={`h-full grid grid-cols-4 mx-auto mt-2`}>
         {NavItems.map(({ href, title, prefetch, icon }) => {
@@ -64,7 +62,7 @@ const BottomNavigation = () => {
               href={href}
               key={title}
               prefetch={prefetch}
-              className={`flex flex-col items-center hover:bg-gray-50 h-full text-gray-500 focus:outline-none ${
+              className={`flex flex-col items-center h-full text-gray-500 focus:outline-none ${
                 isActive ? "text-main" : "text-gray-500"
               }`}
             >

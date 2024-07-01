@@ -32,15 +32,17 @@ const DetailContainer = () => {
           <h4 className="text-base md:text-xl font-bold break-keep">
             {job?.title}
           </h4>
-          <div className="flex my-2 items-center text-xs md:text-sm">
-            {job?.majors?.map(major => (
-              <Badge
-                key={major}
-                className="text-main text-xs md:text-sm bg-aliceblue rounded-xl mr-1"
-              >
-                {major}
-              </Badge>
-            ))}
+          <div className="flex my-2 items-center text-xs md:text-sm gap-1 md:gap-2">
+            {job?.majors?.map(major => {
+              return (
+                <Badge
+                  key={major}
+                  className="bg-main text-xs md:text-sm text-white rounded-xl"
+                >
+                  {major}
+                </Badge>
+              )
+            })}
           </div>
           <div className="flex justify-between text-coolgray text-sm md:text-base">
             <span>{job?.companyName}</span>

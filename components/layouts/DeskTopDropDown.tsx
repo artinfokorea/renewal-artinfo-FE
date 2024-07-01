@@ -1,14 +1,13 @@
 import React from "react"
-
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { USER } from "@/types/users"
 import Link from "next/link"
+import Image from "next/image"
 
 interface Props {
   user: USER
@@ -19,14 +18,12 @@ const DeskTopDropDown = ({ user, handleSign }: Props) => {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger className="flex items-center">
-        <Avatar>
-          <AvatarImage
-            src={user?.iconImageUrl || "/img/placeholder-user.png"}
-          />
-          <AvatarFallback>
-            <AvatarImage src={"/img/placeholder-user.png"} />
-          </AvatarFallback>
-        </Avatar>
+        <Image
+          src={user.iconImageUrl || "/img/placeholder-user.png"}
+          alt="user-icon-image"
+          width={40}
+          height={40}
+        />
         <span className="mx-2 hidden md:block">{user?.nickname}님</span>
       </DropdownMenuTrigger>
       <DropdownMenuContent>
