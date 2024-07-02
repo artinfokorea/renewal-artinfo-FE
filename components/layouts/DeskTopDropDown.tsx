@@ -8,6 +8,7 @@ import {
 import { USER } from "@/types/users"
 import Link from "next/link"
 import Image from "next/image"
+import FallbackImage from "../common/FallbackImage"
 
 interface Props {
   user: USER
@@ -19,10 +20,11 @@ const DeskTopDropDown = ({ user, handleSign }: Props) => {
     <DropdownMenu>
       <DropdownMenuTrigger className="flex items-center">
         <div className="w-10 h-10 relative">
-          <Image
-            src={user.iconImageUrl || "/img/placeholder-user.png"}
-            alt="user-icon-image"
+          <FallbackImage
+            src={user.iconImageUrl || ""}
+            alt="user_profile_image"
             fill
+            sizes="150px"
             className="rounded-full"
           />
         </div>

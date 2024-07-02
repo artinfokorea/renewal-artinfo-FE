@@ -22,6 +22,7 @@ import { SchoolTypeValues } from "@/types/lessons"
 import { Button } from "../ui/button"
 import { MAJOR } from "@/types/majors"
 import { ProfileFormData } from "./ProfileContainer"
+import FallbackImage from "../common/FallbackImage"
 
 interface Props {
   user?: USER
@@ -90,10 +91,12 @@ const ProfileForm = ({
           <div className="flex flex-col items-center relative h-[150px]">
             <div className="relative h-[100px]">
               <Avatar className="w-[150px] h-[150px]">
-                <AvatarImage
-                  src={watch("imageUrl") || "/img/placeholder-user.png"}
+                <FallbackImage
+                  src={watch("imageUrl") || ""}
                   alt="user_profile_image"
-                  className="w-[150px] h-[150px] rounded-full object-cover"
+                  fill
+                  sizes="150px"
+                  className="rounded-full"
                 />
                 <AvatarFallback>
                   <AvatarImage

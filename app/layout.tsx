@@ -1,7 +1,5 @@
 import { Inter } from "next/font/google"
 import "./globals.css"
-import Header from "@/components/layouts/Header"
-import BottomNavigation from "@/components/layouts/BottomNavigation"
 import ClientProvider from "@/components/provider/ClientProvider"
 import { Metadata, Viewport } from "next"
 import Script from "next/script"
