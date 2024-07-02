@@ -68,7 +68,7 @@ const LessonDetailContainer = ({ lesson, deleteLesson }: Props) => {
               handleDelete={() =>
                 setIsDeleteConfirmDialog(!isDeleteConfirmDialog)
               }
-              className="justify-end md:hidden"
+              className="justify-end md:hidden my-2"
             />
           )}
 

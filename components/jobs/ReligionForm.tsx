@@ -32,7 +32,7 @@ const schema = yup
     title: yup
       .string()
       .min(3, "3자 이상 20자 이하로 입력해주세요.")
-      .max(20, "3자 이상 20자 이하로 입력해주세요.")
+      .max(50, "3자 이상 50자 이하로 입력해주세요.")
       .required("제목을 입력해주세요."),
     contents: yup.string().required("내용을 입력해주세요."),
     companyName: yup
@@ -40,8 +40,11 @@ const schema = yup
       .min(2, "2자 이상 20자 이하로 입력해주세요.")
       .max(20, "2자 이상 20자 이하로 입력해주세요.")
       .required(),
-    province: yup.string().required("지역을 선택해주세요."),
-    detailAddress: yup.string().nullable(),
+    address: yup.string().required("지역을 선택해주세요."),
+    addressDetail: yup
+      .string()
+      .nullable()
+      .required("상세 주소를 입력해주세요."),
     majors: yup
       .array()
       .min(1, "전공을 최소 1개 선택해야 합니다.")
@@ -80,9 +83,9 @@ const ReligionForm = ({ handleReligionJob, isLoading, job }: Props) => {
       majors: job?.majors?.majors || [],
       title: job?.title || "",
       companyName: job?.companyName || "",
-      detailAddress: job?.address?.split("")[1] || "",
+      addressDetail: job?.addressDetail || "",
       contents: job?.contents || "",
-      province: job?.address?.split(" ")[0] || "",
+      address: job?.address || "",
     },
   })
 
@@ -136,14 +139,20 @@ const ReligionForm = ({ handleReligionJob, isLoading, job }: Props) => {
             <PlusIcon className="w-4 h-4 text-main" />
             <span>전공</span>
           </Button>
-          {watch("majors").map(major => (
-            <Badge key={major.id} className="bg-main text-white text-sm h-8">
-              {major.koName}
-              <button onClick={() => handleSelectMajor(major)} className="ml-1">
-                <CloseIcon className="w-4 h-4 mb-[1px] text-white" />
-              </button>
-            </Badge>
-          ))}
+          {watch("majors")
+            .slice(0, 1)
+            .map((major: MAJOR, index) => {
+              return (
+                <Badge
+                  key={major.id}
+                  className="bg-main text-white text-xs md:text-sm h-8 whitespace-nowrap"
+                >
+                  {watch("majors").length > 1 && index === 0
+                    ? `${major.koName} 외 ${watch("majors").length - 1}`
+                    : major.koName}
+                </Badge>
+              )
+            })}
           <ErrorMessage
             errors={errors}
             name="majors"
@@ -192,35 +201,39 @@ const ReligionForm = ({ handleReligionJob, isLoading, job }: Props) => {
           />
         </div>
       </div>
-      <div>
-        <div className="flex flex-col md:flex-row md:items-center my-2 md:my-0 gap-2">
-          <Button
-            onClick={() => setIsPostDialog(!isPostDialog)}
-            type="button"
-            className="text-sm border-whitesmoke border font-medium text-main px-4 h-9"
-          >
-            주소검색
-          </Button>
-          <Input
-            {...register("province")}
-            className="focus:outline-none p-2 border border-whitesmoke rounded-lg w-full"
-            placeholder="주소 검색을 해주세요."
-          />
-          <Input
-            {...register("detailAddress")}
-            className="focus:outline-none p-2 border border-whitesmoke rounded-lg w-full"
-            placeholder="상세 주소를 입력해주세요."
-          />
-        </div>
+      <div className="flex flex-col md:flex-row md:items-center my-2 md:my-0 gap-2">
+        <Button
+          onClick={() => setIsPostDialog(!isPostDialog)}
+          type="button"
+          className="text-sm border-whitesmoke border font-medium text-main px-4 h-9"
+        >
+          주소검색
+        </Button>
+        <Input
+          {...register("address")}
+          className="focus:outline-none p-2 border border-whitesmoke rounded-lg w-full"
+          placeholder="주소 검색을 해주세요."
+        />
         <ErrorMessage
           errors={errors}
-          name="province"
+          name="address"
+          render={({ message }) => (
+            <p className="text-error text-xs font-semibold">{message}</p>
+          )}
+        />
+        <Input
+          {...register("addressDetail")}
+          className="focus:outline-none p-2 border border-whitesmoke rounded-lg w-full"
+          placeholder="상세 주소를 입력해주세요."
+        />
+        <ErrorMessage
+          errors={errors}
+          name="addressDetail"
           render={({ message }) => (
             <p className="text-error text-xs font-semibold">{message}</p>
           )}
         />
       </div>
-
       <div className="my-4 h-[300px] md:h-[500px]">
         <ToastEditor setValue={setValue} />
       </div>
@@ -234,7 +247,7 @@ const ReligionForm = ({ handleReligionJob, isLoading, job }: Props) => {
       <PostCodeDialog
         isOpen={isPostDialog}
         close={() => setIsPostDialog(!isPostDialog)}
-        setValue={address => setValue("province", address)}
+        setValue={address => setValue("address", address)}
       />
       <div className="flex justify-end gap-2">
         <Button

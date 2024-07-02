@@ -9,12 +9,7 @@ import {
   ScrollApiResponse,
   DetailApiResponse,
 } from "@/interface"
-import {
-  JobPayload,
-  JobsRequest,
-  PartTimePayload,
-  ReligionPayload,
-} from "@/interface/jobs"
+import { JobPayload, JobsRequest, PartTimePayload } from "@/interface/jobs"
 
 /* 채용 스크롤 리스트 조회 */
 export const getInfiniteJobs = async (
@@ -93,36 +88,13 @@ export const createFullTimeJob = async (
   return response
 }
 
-/* 종교 채용 생성 */
-export const createReligionJob = async (
-  payload: ReligionPayload,
-): Promise<PostResponse> => {
-  const response = await authApiRequest.post<PostResponse>(
-    `/jobs/religion`,
-    payload,
-  )
-  return response
-}
-
 /* 예술단체 or 강사 수정 */
 export const updateArtOrganization = async (
   jobId: number,
   payload: JobPayload,
 ): Promise<SuccessResponse> => {
   const response = await authApiRequest.put<SuccessResponse>(
-    `/jobs/art-organization/${jobId}`,
-    payload,
-  )
-  return response
-}
-
-/* 종교 채용 수정 */
-export const updateReligion = async (
-  jobId: number,
-  payload: ReligionPayload,
-): Promise<SuccessResponse> => {
-  const response = await authApiRequest.put<SuccessResponse>(
-    `/jobs/religion/${jobId}`,
+    `/jobs/full-time/${jobId}`,
     payload,
   )
   return response

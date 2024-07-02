@@ -18,7 +18,6 @@ export interface PartTimePayload {
   majorId: number
   startAt: Date
   endAt: Date
-  fee: number
 }
 
 export interface JobPayload {
@@ -26,16 +25,8 @@ export interface JobPayload {
   contents: string
   companyName: string
   address: string
-  imageUrl: string
+  addressDetail: string
+  imageUrl?: string
   majorIds?: number[]
-}
-
-export interface ReligionPayload {
-  title: string
-  contents: string
-  companyName: string
-
-  address: string
-  fee: number
-  majorId: number
+  type: JobType
 }

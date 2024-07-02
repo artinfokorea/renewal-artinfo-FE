@@ -1,8 +1,7 @@
-import { JOB, JobType } from "@/types/jobs"
+import { JOB } from "@/types/jobs"
 import Link from "next/link"
 import { usePathname } from "next/navigation"
 import React, { forwardRef } from "react"
-import Image from "next/image"
 import filters from "@/lib/filters"
 import { Badge } from "../ui/badge"
 import FallbackImage from "../common/FallbackImage"
@@ -22,7 +21,7 @@ const JobCard = forwardRef<HTMLDivElement, Props>(
         <div className="md:hover:bg-whitesmoke rounded-xl h-[130px] md:h-[192px]  flex items-center">
           <div className="flex items-center md:px-4">
             {job.imageUrl ? (
-              <div className="relative h-[100px] md:h-[140px] w-[170px] md:w-[230px] border-whitesmoke border-2 rounded-xl">
+              <div className="relative h-[100px] md:h-[140px] w-[170px] md:w-[230px] rounded-xl">
                 <FallbackImage
                   src={job.imageUrl}
                   alt="job_image"
@@ -36,7 +35,7 @@ const JobCard = forwardRef<HTMLDivElement, Props>(
               </div>
             ) : (
               <div className="h-[100px] md:h-[140px] w-[170px] md:w-[230px] border-whitesmoke border-2 rounded-xl flex justify-center items-center">
-                <span className="font-bold text-lg md:text-2xl">
+                <span className="font-bold text-base md:text-xl text-center break-keep">
                   {job.companyName}
                 </span>
               </div>
@@ -46,9 +45,11 @@ const JobCard = forwardRef<HTMLDivElement, Props>(
                 {job.title}
               </h4>
               <div className="flex my-2 items-center gap-2">
-                <span className="text-[8px] md:text-sm">
-                  {job.province as string}
-                </span>
+                {job.address && (
+                  <Badge className="text-[10px] md:text-sm text-main rounded-xl border-main">
+                    {job.address.split(" ")[0].substring(0, 2)}
+                  </Badge>
+                )}
                 <div className="hidden md:flex gap-2">
                   {job?.majors?.majors?.slice(0, 3).map((major, index) => {
                     if (job?.majors?.majors?.length > 3 && index === 2)
@@ -76,12 +77,12 @@ const JobCard = forwardRef<HTMLDivElement, Props>(
                   })}
                 </div>
                 <div className="flex md:hidden gap-2">
-                  {job?.majors?.majors?.slice(0, 2).map((major, index) => {
-                    if (job?.majors?.majors?.length > 2 && index === 1)
+                  {job?.majors?.majors?.slice(0, 1).map((major, index) => {
+                    if (job?.majors?.majors?.length > 1 && index === 0)
                       return (
                         <Badge
                           key={major.id}
-                          className="bg-main text-[8px] text-white rounded-xl"
+                          className="bg-main text-[10px] text-white rounded-xl"
                         >
                           <span>
                             {`${major.koName} 외 ${
@@ -94,7 +95,7 @@ const JobCard = forwardRef<HTMLDivElement, Props>(
                     return (
                       <Badge
                         key={major.id}
-                        className="bg-main text-[8px] text-white rounded-xl whitespace-nowrap"
+                        className="bg-main text-[10px] text-white rounded-xl whitespace-nowrap"
                       >
                         {major.koName}
                       </Badge>

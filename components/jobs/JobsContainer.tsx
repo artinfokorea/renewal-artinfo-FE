@@ -92,7 +92,7 @@ const JobsContainer = () => {
               className="py-2 px-6 text-white bg-main rounded-3xl"
               onClick={() => router.push(`${pathname}/create`)}
             >
-              등록
+              채용등록
             </Button>
           </div>
           <MobileFilterTab

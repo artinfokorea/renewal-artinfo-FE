@@ -95,6 +95,7 @@ export type JOB = {
   createdAt: Date
   companyName: string
   address?: string
+  addressDetail?: string
 }
 
 export enum SearchType {

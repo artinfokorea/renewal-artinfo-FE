@@ -1,8 +1,8 @@
 "use client"
 
 import { queries } from "@/lib/queries"
-import { useQuery, useSuspenseQuery } from "@tanstack/react-query"
-import { useParams, usePathname, useRouter } from "next/navigation"
+import { useQuery } from "@tanstack/react-query"
+import { usePathname, useRouter } from "next/navigation"
 import React, { useState } from "react"
 import { Badge } from "../ui/badge"
 import filters from "@/lib/filters"
@@ -17,7 +17,6 @@ interface Props {
 }
 
 const DetailContainer = ({ deleteJob, job }: Props) => {
-  const params = useParams()
   const filter = filters()
   const router = useRouter()
   const { data: user } = useQuery(queries.users.detail())
@@ -40,7 +39,11 @@ const DetailContainer = ({ deleteJob, job }: Props) => {
             />
           </div>
         )}
-        <div className="md:ml-12 py-2 flex-1 flex flex-col justify-center gap-2 md:gap-4">
+        <div
+          className={`py-2 flex-1 flex flex-col justify-center gap-2 md:gap-4 ${
+            job?.type !== JobType.RELIGION && "md:ml-12"
+          }`}
+        >
           <h4 className="text-xl font-bold break-keep mt-4 md:mt-0">
             {job?.title}
           </h4>

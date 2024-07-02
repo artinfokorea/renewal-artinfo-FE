@@ -1,12 +1,10 @@
 "use client"
-import { deleteJob, updateArtOrganization, updateReligion } from "@/apis/jobs"
+import { deleteJob, updateArtOrganization } from "@/apis/jobs"
 import DetailContainer from "@/components/jobs/DetailContainer"
-import OrganizationForm, {
-  CreateJobFormData,
-} from "@/components/jobs/OrganizationForm"
-import ReligionForm, {
-  CreateReligionFormData,
-} from "@/components/jobs/ReligionForm"
+import FullTimeJobForm, {
+  CreateFulltimeJobFormData,
+} from "@/components/jobs/FullTimeJobForm"
+import ReligionForm from "@/components/jobs/ReligionForm"
 import useToast from "@/hooks/useToast"
 import { queries } from "@/lib/queries"
 import { JobType } from "@/types/jobs"
@@ -46,12 +44,14 @@ const page = () => {
     }
   }
 
-  const handleUpdateFulltimeJob = async (payload: CreateJobFormData) => {
+  const handleUpdateFulltimeJob = async (
+    payload: CreateFulltimeJobFormData,
+  ) => {
     const {
       title,
       companyName,
-      province,
-      detailAddress,
+      address,
+      addressDetail,
       imageUrl,
       majors,
       contents,
@@ -62,42 +62,12 @@ const page = () => {
         updateArtOrganization(Number(params.id), {
           title,
           companyName,
-          address: `${province} ${detailAddress}`,
-          imageUrl,
+          address,
+          addressDetail,
+          imageUrl: imageUrl || "",
           majorIds: majors.map(major => major.id),
           contents,
-        }),
-      )
-      successToast("채용이 수정되었습니다.")
-      queryClient.invalidateQueries({
-        queryKey: queries.jobs._def,
-      })
-      router.push(pathname.slice(0, pathname.lastIndexOf("/")))
-    } catch (error: any) {
-      errorToast(error.message)
-      console.log(error)
-    }
-  }
-
-  const handleReligionJob = async (payload: CreateReligionFormData) => {
-    const {
-      title,
-      contents,
-      companyName,
-      province,
-      detailAddress,
-      majors,
-      fee,
-    } = payload
-    try {
-      await handleFormTransition(
-        updateReligion(Number(params.id), {
-          title,
-          companyName,
-          address: `${province} ${detailAddress}`,
-          majorId: majors[0].id as number,
-          contents,
-          fee,
+          type: jobType,
         }),
       )
       successToast("채용이 수정되었습니다.")
@@ -113,18 +83,12 @@ const page = () => {
 
   return (
     <section>
-      {pageType === "edit" &&
-      (jobType === JobType.ART_ORGANIZATION || jobType === JobType.LECTURER) ? (
-        <OrganizationForm
+      {pageType === "edit" ? (
+        <FullTimeJobForm
           handleFullTimeJob={handleUpdateFulltimeJob}
           isLoading={isHandleFormLoading}
           job={job}
-        />
-      ) : pageType === "edit" && jobType === JobType.RELIGION ? (
-        <ReligionForm
-          handleReligionJob={handleReligionJob}
-          isLoading={isHandleFormLoading}
-          job={job}
+          withImage={jobType !== JobType.RELIGION}
         />
       ) : (
         <DetailContainer job={job} deleteJob={handleDeleteJob} />

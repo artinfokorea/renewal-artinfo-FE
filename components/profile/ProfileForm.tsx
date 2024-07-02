@@ -280,7 +280,7 @@ const ProfileForm = ({
                 {watch("majors")?.map(major => (
                   <Badge
                     key={major.id}
-                    className="text-main text-xs md:text-sm bg-aliceblue rounded-xl mx-1"
+                    className="text-xs md:text-sm bg-main text-white rounded-xl mx-1"
                   >
                     <span>{major.koName}</span>
                     {isUpdateForm && (

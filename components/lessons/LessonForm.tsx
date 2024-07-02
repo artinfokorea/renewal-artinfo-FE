@@ -17,6 +17,7 @@ import { LESSON } from "@/types/lessons"
 import { useLoading } from "@toss/use-loading"
 import Loading from "../common/Loading"
 import { ErrorMessage } from "@hookform/error-message"
+import ImageField from "../common/ImageField"
 
 const schema = yup
   .object({
@@ -65,6 +66,8 @@ const LessonForm = ({ handleLesson, isFormLoading, lesson }: Props) => {
     },
   })
 
+  const deleteImage = () => setValue("imageUrl", "")
+
   const handleArea = (area: string) => {
     const currentAreas = Array.from(watch("areas") || [])
 
@@ -107,46 +110,14 @@ const LessonForm = ({ handleLesson, isFormLoading, lesson }: Props) => {
     <>
       <form className="mt-8 md:mt-16 px-4">
         <div className="flex flex-col md:flex-row md:gap-24">
-          {watch("imageUrl") ? (
-            <div className="h-[360px] md:h-[300px] relative w-[300px] md:w-[240px] mx-auto">
-              <Image
-                src={watch("imageUrl")}
-                alt="lesson_image"
-                fill
-                quality={100}
-                className="rounded-md"
-                sizes="(max-width: 768px) 100px 180px, (max-width: 1200px) 200px, 200px"
-              />
-              <Button
-                className="absolute top-2 right-2 rounded-full opacity-40 bg-white p-2"
-                onClick={() => setValue("imageUrl", "")}
-              >
-                <CloseIcon className="w-6 h-6 text-primary" />
-              </Button>
-            </div>
-          ) : isImageLoading ? (
-            <div className="h-[360px] md:h-[300px] w-[300px] md:w-[240px] flex justify-center items-center">
-              <Loading className="w-10 h-10" />
-            </div>
-          ) : (
-            <div className="h-[360px] md:h-[300px] w-[300px] md:w-[240px] mx-auto bg-whitesmoke rounded flex flex-col items-center justify-center gap-6">
-              <div className="flex flex-col items-center gap-2">
-                <PhotoIcon className="w-14 h-14 text-dimgray" />
-                <h5 className="font-bold text-sm md:text-base text-center">
-                  프로필 이미지를 <br />
-                  등록해 주세요.
-                </h5>
-              </div>
-              <Button
-                type="button"
-                className="bg-white text-silver font-medium h-8 px-6"
-                onClick={openFileUploader}
-              >
-                이미지 선택
-              </Button>
-            </div>
-          )}
-
+          <ImageField
+            imageUrl={watch("imageUrl") || ""}
+            isImageLoading={isImageLoading}
+            alt="job_company_image"
+            deleteImage={deleteImage}
+            openFileUploader={openFileUploader}
+            className="h-[360px] md:h-[300px] w-[300px] md:w-[240px]"
+          />
           <div className="flex-1 p-2 md:p-0">
             <h4 className="text-xl md:text-2xl font-bold">레슨 등록</h4>
             <div className="mt-6 flex flex-col gap-4">
