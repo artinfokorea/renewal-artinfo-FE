@@ -31,7 +31,7 @@ const ReligionCard = forwardRef<HTMLDivElement, Props>(
               </h4>
               <div className="flex gap-2 my-2 items-center">
                 {job.address && (
-                  <Badge className="bg-white text-[10px] text-main rounded-xl whitespace-nowrap border-main border">
+                  <Badge className="bg-white text-[10px] md:text-sm text-main rounded-xl whitespace-nowrap border-main border">
                     {job.address.split(" ")[0].substring(0, 2)}
                   </Badge>
                 )}

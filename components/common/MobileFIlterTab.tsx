@@ -1,10 +1,15 @@
 import { PROVINCE } from "@/types"
-import { SearchType } from "@/types/jobs"
-import React, { useState } from "react"
+import { JobType, JobTypeValues, SearchType } from "@/types/jobs"
+import React, { useEffect, useMemo, useState } from "react"
 import MobileProvinceFilter from "../common/MobileProvinceFilter"
 import MobileProfessionalFilter from "./MobileProfessionalFilter"
-import MobileRecruitTypeFilter from "../jobs/MobileRecruitTypeFilter"
-import { ArtField } from "@/types/majors"
+import MobileRecruitTypeFilter from "./MobileRecruitTypeFilter"
+import {
+  ArtField,
+  ProfessinalValues,
+  ProfessionalFieldTypes,
+} from "@/types/majors"
+import { useRouter, useSearchParams } from "next/navigation"
 
 interface Props {
   provinces?: PROVINCE[]
@@ -13,7 +18,23 @@ interface Props {
 }
 
 const MobileFilterTab = ({ provinces, page, artFields }: Props) => {
+  const searchParams = useSearchParams()
+  const router = useRouter()
+  const recruit = searchParams.get("recruit") as JobType
+  const professional = searchParams.get(
+    "professional",
+  ) as ProfessionalFieldTypes
+  const provinceId = searchParams.get("provinceId") as string
   const [mobileSearchTab, setMobileSearchTab] = useState<SearchType>()
+  const [selectedRecruit, setSelectedRecruit] = useState<JobType | "">(
+    recruit || "",
+  )
+  const [selectedProvinceId, setSelectedProvinceId] = useState<string>(
+    provinceId || "",
+  )
+  const [selectedProfessional, setSelectedProfessional] = useState<
+    ProfessionalFieldTypes | ""
+  >(professional || "")
 
   const handleSearchTab = (searchType: SearchType) => {
     if (mobileSearchTab === searchType) {
@@ -22,6 +43,58 @@ const MobileFilterTab = ({ provinces, page, artFields }: Props) => {
       setMobileSearchTab(searchType)
     }
   }
+
+  const handleRecruit = (recruit: JobType | "") => {
+    setSelectedRecruit(recruit)
+    setMobileSearchTab(undefined)
+  }
+
+  const handleProvince = (provinceId: string | "") => {
+    setSelectedProvinceId(provinceId)
+    setMobileSearchTab(undefined)
+  }
+
+  const handleProfessional = (professional: ProfessionalFieldTypes | "") => {
+    setSelectedProfessional(professional)
+    setMobileSearchTab(undefined)
+  }
+
+  const selectedProvince = provinces?.filter(
+    province => province.id.toString() === provinceId,
+  )[0]
+
+  useEffect(() => {
+    const locationParams = new URLSearchParams(window.location.search)
+    locationParams.delete("recruit")
+    if (selectedRecruit) locationParams.append("recruit", selectedRecruit)
+    const newUrl = `${window.location.pathname}?${locationParams.toString()}`
+    router.push(newUrl, {
+      scroll: false,
+    })
+  }, [selectedRecruit])
+
+  useEffect(() => {
+    const locationParams = new URLSearchParams(window.location.search)
+    locationParams.delete("provinceId")
+    if (selectedProvinceId)
+      locationParams.append("provinceId", selectedProvinceId)
+    const newUrl = `${window.location.pathname}?${locationParams.toString()}`
+    router.push(newUrl, {
+      scroll: false,
+    })
+  }, [selectedProvinceId])
+
+  useEffect(() => {
+    const locationParams = new URLSearchParams(window.location.search)
+
+    locationParams.delete("professional")
+    if (selectedProfessional)
+      locationParams.append("professional", selectedProfessional)
+    const newUrl = `${window.location.pathname}?${locationParams.toString()}`
+    router.push(newUrl, {
+      scroll: false,
+    })
+  }, [selectedProfessional])
 
   return (
     <div className="flex flex-col lg:hidden border relative">
@@ -37,7 +110,7 @@ const MobileFilterTab = ({ provinces, page, artFields }: Props) => {
               mobileSearchTab === SearchType.RECRUIT && "bg-whitesmoke"
             }`}
           >
-            직군
+            {selectedRecruit ? JobTypeValues[selectedRecruit] : "직군"}
           </button>
         )}
         <button
@@ -46,7 +119,7 @@ const MobileFilterTab = ({ provinces, page, artFields }: Props) => {
             mobileSearchTab === SearchType.REGION && "bg-whitesmoke"
           }`}
         >
-          지역
+          {selectedProvince ? selectedProvince?.name.substring(0, 2) : "지역"}
         </button>
         <button
           onClick={() => handleSearchTab(SearchType.MAJOR)}
@@ -54,16 +127,26 @@ const MobileFilterTab = ({ provinces, page, artFields }: Props) => {
             mobileSearchTab === SearchType.MAJOR && "bg-whitesmoke"
           }`}
         >
-          분야
+          {selectedProfessional
+            ? ProfessinalValues[selectedProfessional]
+            : "분야"}
         </button>
       </div>
 
-      {mobileSearchTab === SearchType.RECRUIT && <MobileRecruitTypeFilter />}
+      {mobileSearchTab === SearchType.RECRUIT && (
+        <MobileRecruitTypeFilter handleRecruit={handleRecruit} />
+      )}
       {mobileSearchTab === SearchType.REGION && (
-        <MobileProvinceFilter provinces={provinces} />
+        <MobileProvinceFilter
+          provinces={provinces}
+          handleProvince={handleProvince}
+        />
       )}
       {mobileSearchTab === SearchType.MAJOR && (
-        <MobileProfessionalFilter artFields={artFields} />
+        <MobileProfessionalFilter
+          artFields={artFields}
+          handleProfessional={handleProfessional}
+        />
       )}
     </div>
   )

@@ -4,7 +4,6 @@ import CloseIcon from "../icons/CloseIcon"
 import { Button } from "../ui/button"
 import { useRouter, useSearchParams } from "next/navigation"
 import { PROVINCE } from "@/types"
-import { useDidUpdate } from "@toss/react"
 
 interface Props {
   provinces?: PROVINCE[]
@@ -17,7 +16,8 @@ const ProvinceDialog = ({ open, close, multiple, provinces }: Props) => {
   const searchParams = useSearchParams()
   const provinceIds = searchParams.getAll("provinceId")
   const router = useRouter()
-  const [selectedProvinceIds, setSelectedProvinceIds] = useState<string[]>([])
+  const [selectedProvinceIds, setSelectedProvinceIds] =
+    useState<string[]>(provinceIds)
 
   useEffect(() => {
     if (open) setSelectedProvinceIds(provinceIds)
@@ -33,7 +33,7 @@ const ProvinceDialog = ({ open, close, multiple, provinces }: Props) => {
     }
   }
 
-  useDidUpdate(() => {
+  const selecteComplete = () => {
     const locationParams = new URLSearchParams(window.location.search)
 
     if (selectedProvinceIds.length > 0) {
@@ -49,11 +49,8 @@ const ProvinceDialog = ({ open, close, multiple, provinces }: Props) => {
     router.push(newUrl, {
       scroll: false,
     })
-  }, [selectedProvinceIds])
-
-  useDidUpdate(() => {
     close()
-  }, [searchParams])
+  }
 
   return (
     <Dialog
@@ -74,7 +71,15 @@ const ProvinceDialog = ({ open, close, multiple, provinces }: Props) => {
           </div>
           <div className="border-b-2 border-whitesmoke" />
           <div className="p-4 md:p-8 flex justify-center">
-            <div className="grid grid-cols-4 md:grid-cols-6 gap-3 md:gap-4">
+            <div className="grid grid-cols-4 md:grid-cols-6 gap-4 md:gap-4">
+              <Button
+                onClick={() => setSelectedProvinceIds([])}
+                className={`text-white text-base h-6 md:text-base md:h-7 px-3 rounded-xl ${
+                  selectedProvinceIds.length === 0 ? "bg-main" : "bg-indigo-100"
+                }`}
+              >
+                전체
+              </Button>
               {provinces?.map(province => (
                 <Button
                   key={province.id}
@@ -100,7 +105,7 @@ const ProvinceDialog = ({ open, close, multiple, provinces }: Props) => {
               <Button
                 type="button"
                 className={` text-white rounded-lg text-sm bg-main h-8`}
-                onClick={close}
+                onClick={selecteComplete}
               >
                 선택 완료
               </Button>

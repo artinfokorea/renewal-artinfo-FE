@@ -48,3 +48,11 @@ export const MajorCategoryValues = [
     value: "사무",
   },
 ]
+
+export const ProfessinalValues: { [key in ProfessionalFieldTypes]: string } =
+  MajorCategoryValues.reduce<{
+    [key in ProfessionalFieldTypes]: string
+  }>((acc, curr) => {
+    acc[curr.key] = curr.value
+    return acc
+  }, {} as { [key in ProfessionalFieldTypes]: string })

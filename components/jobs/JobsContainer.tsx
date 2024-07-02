@@ -36,23 +36,6 @@ const JobsContainer = () => {
     )
   }, [provinceIds])
 
-  const deleteProvince = (provinceId: string) => {
-    const locationParams = new URLSearchParams(window.location.search)
-    if (provinceIds.includes(provinceId)) {
-      const newProvinceIds = provinceIds.filter(id => id !== provinceId)
-
-      locationParams.delete("provinceId")
-      newProvinceIds.forEach(id => {
-        locationParams.append("provinceId", id)
-      })
-    }
-
-    const newUrl = `${window.location.pathname}?${locationParams.toString()}`
-    router.push(newUrl, {
-      scroll: false,
-    })
-  }
-
   return (
     <div className="max-w-screen-lg mx-auto px-4">
       <ListSearchForm
@@ -66,27 +49,27 @@ const JobsContainer = () => {
         <div className="md:flex-1 w-full flex flex-col md:ml-12 md:mt-4">
           <div className="hidden lg:flex justify-between items-center">
             <div className="flex gap-2 flex-wrap">
-              {selectedProvinces?.length === 0 && (
-                <Button
-                  onClick={() => setIsProvinceDialog(!isProvinceDialog)}
-                  className="text-main text-sm border border-lightgray rounded px-4 h-7"
-                >
-                  지역선택
-                </Button>
-              )}
-              {selectedProvinces?.map(province => (
-                <Badge
-                  key={province.id}
-                  className="text-main text-sm border-lightgray rounded h-7 flex items-center"
-                >
-                  <span>{province.name.slice(0, 2)}</span>
-                  <button
-                    onClick={() => deleteProvince(province.id.toString())}
+              <Button
+                onClick={() => setIsProvinceDialog(!isProvinceDialog)}
+                className="text-main text-sm border border-lightgray rounded px-4 h-7"
+              >
+                지역선택
+              </Button>
+              {selectedProvinces?.slice(0, 7).map((province, index) => {
+                const name = province.name.slice(0, 2)
+                return (
+                  <Badge
+                    key={province.id}
+                    className="text-main text-sm border-lightgray rounded h-7 flex items-center"
                   >
-                    <CloseIcon className="w-4 h-4 pb-[1px]" />
-                  </button>
-                </Badge>
-              ))}
+                    <span>
+                      {selectedProvinces.length > 7 && index === 6
+                        ? `${name} 외 ${selectedProvinces.length - 7}`
+                        : name}
+                    </span>
+                  </Badge>
+                )
+              })}
             </div>
             <Button
               className="py-2 px-6 text-white bg-main rounded-3xl"
@@ -108,7 +91,7 @@ const JobsContainer = () => {
           provinces={provinceList?.provinces}
           open={isProvinceDialog}
           close={() => setIsProvinceDialog(false)}
-          multiple={false}
+          multiple={true}
         />
       </section>
     </div>
