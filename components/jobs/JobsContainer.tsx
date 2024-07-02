@@ -14,6 +14,7 @@ import MobileFilterTab from "../common/MobileFIlterTab"
 import JobsList from "./JobsList"
 import JobListSkeleton from "../skeleton/JobListSkeleton"
 import { ArtType } from "@/types/majors"
+import AddButton from "../common/AddButton"
 
 const JobsContainer = () => {
   const searchParams = useSearchParams()
@@ -92,6 +93,10 @@ const JobsContainer = () => {
           open={isProvinceDialog}
           close={() => setIsProvinceDialog(false)}
           multiple={true}
+        />
+        <AddButton
+          onClick={() => router.push(`${pathname}/create`)}
+          className="md:hidden fixed z-50 bottom-32 right-4 w-12 h-12 bg-white shadow-md rounded-full"
         />
       </section>
     </div>

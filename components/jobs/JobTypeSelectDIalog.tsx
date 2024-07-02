@@ -1,22 +1,19 @@
-import { JobType, JobTypeList } from '@/types/jobs';
-import React from 'react';
-import { Button } from '../ui/button';
-import CloseIcon from '../icons/CloseIcon';
-import { usePathname, useRouter } from 'next/navigation';
+import { JobType, JobTypeList } from "@/types/jobs"
+import React from "react"
+import { Button } from "../ui/button"
+import CloseIcon from "../icons/CloseIcon"
+import { usePathname, useRouter } from "next/navigation"
 
 interface Props {
-  handleSelectedJobType: (jobType: JobType) => void;
+  handleSelectedJobType: (jobType: JobType) => void
 }
 
 const JobTypeSelectDialog = ({ handleSelectedJobType }: Props) => {
-  const router = useRouter();
-  const pathname = usePathname();
+  const router = useRouter()
+  const pathname = usePathname()
 
   return (
-    <div
-      className="bg-whitesmoke flex items-center justify-center"
-      style={{ height: 'calc(100vh - 56px)' }}
-    >
+    <div className="bg-whitesmoke flex items-center justify-center min-h-screen">
       <div className="bg-white max-w-screen-md rounded-xl">
         <div className="flex justify-center items-center relative h-14">
           <h5 className="font-bold text-center flex-1 text-sm md:text-lg">
@@ -25,7 +22,7 @@ const JobTypeSelectDialog = ({ handleSelectedJobType }: Props) => {
           <Button
             className="absolute top-2 right-0 text-silver"
             onClick={() =>
-              router.push(pathname.slice(0, pathname.lastIndexOf('/')))
+              router.push(pathname.slice(0, pathname.lastIndexOf("/")))
             }
           >
             <CloseIcon className="w-5 h-5" />
@@ -33,7 +30,7 @@ const JobTypeSelectDialog = ({ handleSelectedJobType }: Props) => {
         </div>
         <div className="border-whitesmoke border-b-[3px]" />
         <div className="px-4 md:px-12 py-12">
-          {JobTypeList.map((type) => (
+          {JobTypeList.map(type => (
             <Button
               key={type.value}
               className="text-white text-xs md:text-sm bg-main w-[72px] md:w-[100px] h-10 rounded-3xl mx-1 md:mx-4"
@@ -45,7 +42,7 @@ const JobTypeSelectDialog = ({ handleSelectedJobType }: Props) => {
         </div>
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default JobTypeSelectDialog;
+export default JobTypeSelectDialog

@@ -1,7 +1,7 @@
-import React from "react";
+import React from "react"
 
 interface Props {
-  className?: string;
+  className?: string
 }
 
 const PlusIcon = ({ className }: Props) => {
@@ -11,7 +11,7 @@ const PlusIcon = ({ className }: Props) => {
       viewBox="0 0 24 24"
       fill="currentColor"
       stroke="currentColor"
-      strokeWidth="2"
+      strokeWidth="1.5"
       className={className}
     >
       <path
@@ -20,7 +20,7 @@ const PlusIcon = ({ className }: Props) => {
         clipRule="evenodd"
       />
     </svg>
-  );
-};
+  )
+}
 
-export default PlusIcon;
+export default PlusIcon

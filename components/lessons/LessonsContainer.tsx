@@ -14,6 +14,7 @@ import LessonListSkeleton from "../skeleton/LessonListSkeleton"
 import { ArtType } from "@/types/majors"
 import ProfessionalCheckBoxes from "../common/ProfessionalCheckBoxes"
 import MobileFilterTab from "../common/MobileFIlterTab"
+import AddButton from "../common/AddButton"
 
 const LessonsContainer = () => {
   const searchParams = useSearchParams()
@@ -110,6 +111,10 @@ const LessonsContainer = () => {
           open={isProvinceDialog}
           close={() => setIsProvinceDialog(false)}
           multiple={true}
+        />
+        <AddButton
+          onClick={() => router.push(`${pathname}/create`)}
+          className="md:hidden fixed z-50 bottom-32 right-4 w-12 h-12 bg-white shadow-md rounded-full"
         />
       </section>
     </div>
