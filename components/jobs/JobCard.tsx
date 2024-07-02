@@ -48,12 +48,12 @@ const JobCard = forwardRef<HTMLDivElement, Props>(
               <div className="flex my-2 items-center text-xs md:text-sm">
                 <span className="mr-2">{job.province as string}</span>
                 <div className="flex gap-2">
-                  {job.majors?.map(major => (
+                  {job.majors?.majors?.map(major => (
                     <Badge
-                      key={major}
+                      key={major.id}
                       className="text-main text-[10px] md:text-sm bg-aliceblue rounded-xl"
                     >
-                      {major}
+                      {major.koName}
                     </Badge>
                   ))}
                 </div>

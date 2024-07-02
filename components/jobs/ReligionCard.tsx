@@ -1,20 +1,20 @@
-import { JOB, JobType } from "@/types/jobs";
-import Link from "next/link";
-import { usePathname } from "next/navigation";
-import React, { forwardRef } from "react";
-import Image from "next/image";
-import filters from "@/lib/filters";
-import { Badge } from "../ui/badge";
+import { JOB, JobType } from "@/types/jobs"
+import Link from "next/link"
+import { usePathname } from "next/navigation"
+import React, { forwardRef } from "react"
+import Image from "next/image"
+import filters from "@/lib/filters"
+import { Badge } from "../ui/badge"
 
 interface Props {
-  job: JOB;
-  isLastPage: boolean;
+  job: JOB
+  isLastPage: boolean
 }
 
 const ReligionCard = forwardRef<HTMLDivElement, Props>(
   ({ job, isLastPage }, ref) => {
-    const pathname = usePathname();
-    const filter = filters();
+    const pathname = usePathname()
+    const filter = filters()
 
     return (
       <Link href={`${pathname}/${job.id}`}>
@@ -36,12 +36,12 @@ const ReligionCard = forwardRef<HTMLDivElement, Props>(
                   고양시
                 </Badge>
                 <div className="flex gap-2">
-                  {job.majors?.map((major) => (
+                  {job.majors?.majors?.map(major => (
                     <Badge
-                      key={major}
+                      key={major.id}
                       className="bg-main text-white text-[10px] md:text-sm rounded-xl h-5 md:h-6"
                     >
-                      {major}
+                      {major.koName}
                     </Badge>
                   ))}
                 </div>
@@ -55,10 +55,10 @@ const ReligionCard = forwardRef<HTMLDivElement, Props>(
         </div>
         {!isLastPage && <div ref={ref} />}
       </Link>
-    );
-  }
-);
+    )
+  },
+)
 
-ReligionCard.displayName = "ReligionCard";
+ReligionCard.displayName = "ReligionCard"
 
-export default ReligionCard;
+export default ReligionCard

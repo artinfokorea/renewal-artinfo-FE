@@ -1,27 +1,27 @@
-import filters from "@/lib/filters";
-import { JOB } from "@/types/jobs";
-import React, { forwardRef } from "react";
-import { Button } from "../ui/button";
-import Link from "next/link";
-import { usePathname } from "next/navigation";
-import { EditIcon } from "lucide-react";
-import TrashIcon from "../icons/TrashIcon";
+import filters from "@/lib/filters"
+import { JOB } from "@/types/jobs"
+import React, { forwardRef } from "react"
+import { Button } from "../ui/button"
+import Link from "next/link"
+import { usePathname } from "next/navigation"
+import { EditIcon } from "lucide-react"
+import TrashIcon from "../icons/TrashIcon"
 
 interface Props {
-  job: JOB;
-  isLastPage: boolean;
+  job: JOB
+  isLastPage: boolean
 }
 
 const ObriCard = forwardRef<HTMLDivElement, Props>(
   ({ job, isLastPage }, ref) => {
-    const filter = filters();
-    const pathname = usePathname();
+    const filter = filters()
+    const pathname = usePathname()
     return (
       <Link href={`${pathname}/${job.id}`}>
         <ul className="flex flex-col border-whitesmoke border my-4 md:my-6 md:mx-4 rounded-lg text-xs md:text-base">
           <li className="flex items-center h-12 md:h-12 border-whitespace border-b px-4">
             <h5 className="text-main font-semibold basis-2/5 md:basis-1/3">
-              {job.majors[0]}
+              {job.majors?.majors[0].koName}
             </h5>
             <div className="basis-3/5 md:basis-2/3 flex justify-between">
               <h4 className="font-bold">{job.title}</h4>
@@ -56,10 +56,10 @@ const ObriCard = forwardRef<HTMLDivElement, Props>(
         </ul>
         {!isLastPage && <div ref={ref} />}
       </Link>
-    );
-  }
-);
+    )
+  },
+)
 
-ObriCard.displayName = "ObriCard";
+ObriCard.displayName = "ObriCard"
 
-export default ObriCard;
+export default ObriCard

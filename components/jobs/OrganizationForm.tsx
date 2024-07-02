@@ -81,7 +81,7 @@ const OrganizationForm = ({ handleFullTimeJob, isLoading, job }: Props) => {
   } = useForm<CreateJobFormData>({
     resolver: yupResolver(schema),
     defaultValues: {
-      majors: job?.majors || ([] as MAJOR[]),
+      majors: job?.majors?.majors || ([] as MAJOR[]),
       title: job?.title || "",
       companyName: job?.companyName || "",
       detailAddress: job?.address?.split("")[1] || "",
@@ -90,6 +90,9 @@ const OrganizationForm = ({ handleFullTimeJob, isLoading, job }: Props) => {
       imageUrl: job?.imageUrl || "",
     },
   })
+
+  console.log("job.a", job?.address)
+  console.log("pro", watch("province"))
 
   const openFileUploader = () => {
     fileUploader.current?.click()
@@ -122,6 +125,8 @@ const OrganizationForm = ({ handleFullTimeJob, isLoading, job }: Props) => {
       setValue("majors", mergedMajors.slice(-3))
     }
   }
+
+  console.log("pro", watch("province"))
 
   return (
     <form
@@ -220,7 +225,7 @@ const OrganizationForm = ({ handleFullTimeJob, isLoading, job }: Props) => {
                 key={major.id}
                 className="bg-main text-white text-xs md:text-sm h-8 whitespace-nowrap"
               >
-                {major.secondGroupKo}
+                {major.koName}
                 <button
                   onClick={() => handleSelectMajor(major)}
                   className="ml-1"

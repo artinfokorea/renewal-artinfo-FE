@@ -1,3 +1,5 @@
+import { MAJOR } from "./majors"
+
 export enum JobType {
   ART_ORGANIZATION = "ART_ORGANIZATION",
   PART_TIME = "PART_TIME",
@@ -83,7 +85,7 @@ export type JOB = {
   contents: string
   province: string
   imageUrl: string
-  majors: MajorType[]
+  majors: { majors: MAJOR[] }
   type: JobType
   isActive: true
   fee: number

@@ -45,50 +45,50 @@ const DetailContainer = ({ deleteJob, job }: Props) => {
             {job?.title}
           </h4>
           <div className="hidden md:flex my-2 items-center text-xs md:text-sm gap-2">
-            {job?.majors?.slice(0, 3).map((major, index) => {
-              if (job?.majors.length > 3 && index === 2)
+            {job?.majors?.majors?.slice(0, 3).map((major, index) => {
+              if (job?.majors?.majors?.length > 3 && index === 2)
                 return (
                   <Badge
-                    key={major}
+                    key={major.id}
                     className="bg-main text-xs md:text-sm text-white rounded-xl"
                   >
                     <span className="text-xs text-white">
-                      {`${major} 외 ${job?.majors.length - 3}`}
+                      {`${major.koName} 외 ${job?.majors?.majors.length - 3}`}
                     </span>
                   </Badge>
                 )
 
               return (
                 <Badge
-                  key={major}
+                  key={major.id}
                   className="bg-main text-xs md:text-sm text-white rounded-xl"
                 >
-                  {major}
+                  {major.koName}
                 </Badge>
               )
             })}
           </div>
           <div className="flex md:hidden my-2 items-center text-xs md:text-sm gap-2">
-            {job?.majors?.slice(0, 2).map((major, index) => {
-              if (job?.majors.length > 2 && index === 1)
+            {job?.majors?.majors?.slice(0, 2).map((major, index) => {
+              if (job?.majors?.majors?.length > 2 && index === 1)
                 return (
                   <Badge
-                    key={major}
+                    key={major.id}
                     className="bg-main text-xs md:text-sm text-white rounded-xl"
                   >
-                    {major}
+                    {major.koName}
                     <span className="text-xs text-white">
-                      {` 외 ${job?.majors.length - 2}`}
+                      {` 외 ${job?.majors?.majors?.length - 2}`}
                     </span>
                   </Badge>
                 )
 
               return (
                 <Badge
-                  key={major}
+                  key={major.id}
                   className="bg-main text-xs md:text-sm text-white rounded-xl"
                 >
-                  {major}
+                  {major.koName}
                 </Badge>
               )
             })}

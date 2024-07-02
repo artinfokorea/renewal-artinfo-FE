@@ -65,7 +65,7 @@ const MainJobsContainer = () => {
         <Swiper spaceBetween={10} slidesPerView="auto" modules={[Pagination]}>
           {data?.jobs.map(job => (
             <SwiperSlide key={job.id} style={{ width: "150px" }}>
-              <Link key={job.id} href={`/jobs/${job.id}`} target="_blank">
+              <Link key={job.id} href={`/jobs/${job.id}`}>
                 <AspectRatio
                   ratio={5 / 3}
                   className="relative cursor-pointer border-2 border-whitesmoke rounded-lg"
