@@ -77,7 +77,7 @@ const ReligionForm = ({ handleReligionJob, isLoading, job }: Props) => {
   } = useForm<CreateReligionFormData>({
     resolver: yupResolver(schema),
     defaultValues: {
-      majors: job?.majors || [],
+      majors: job?.majors?.majors || [],
       title: job?.title || "",
       companyName: job?.companyName || "",
       detailAddress: job?.address?.split("")[1] || "",
