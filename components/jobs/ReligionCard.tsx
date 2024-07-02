@@ -30,12 +30,12 @@ const ReligionCard = forwardRef<HTMLDivElement, Props>(
               <h4 className="text-sm md:text-xl font-bold break-keep">
                 {job.title}
               </h4>
-              <div className="flex gap-2 my-2 items-center text-xs md:text-sm">
-                <Badge className="border border-main text-main text-[10px] md:text-sm font-semibold h-5 md:h-6">
+              <div className="flex gap-2 my-2 items-center">
+                <Badge className="bg-white text-[8px] text-main rounded-xl whitespace-nowrap border-main border">
                   {/* {job.province as string} */}
                   고양시
                 </Badge>
-                <div className="flex gap-2">
+                {/* <div className="flex gap-2">
                   {job.majors?.majors?.map(major => (
                     <Badge
                       key={major.id}
@@ -44,6 +44,58 @@ const ReligionCard = forwardRef<HTMLDivElement, Props>(
                       {major.koName}
                     </Badge>
                   ))}
+                </div> */}
+                <div className="hidden md:flex gap-2">
+                  {job?.majors?.majors?.slice(0, 3).map((major, index) => {
+                    if (job?.majors?.majors?.length > 3 && index === 2)
+                      return (
+                        <Badge
+                          key={major.id}
+                          className="bg-main text-sm text-white rounded-xl"
+                        >
+                          <span className="text-sm text-white">
+                            {`${major.koName} 외 ${
+                              job?.majors?.majors.length - 3
+                            }`}
+                          </span>
+                        </Badge>
+                      )
+
+                    return (
+                      <Badge
+                        key={major.id}
+                        className="bg-main text-sm text-white rounded-xl"
+                      >
+                        {major.koName}
+                      </Badge>
+                    )
+                  })}
+                </div>
+                <div className="flex md:hidden gap-2">
+                  {job?.majors?.majors?.slice(0, 2).map((major, index) => {
+                    if (job?.majors?.majors?.length > 2 && index === 1)
+                      return (
+                        <Badge
+                          key={major.id}
+                          className="bg-main text-[8px] text-white rounded-xl whitespace-nowrap"
+                        >
+                          <span>
+                            {`${major.koName} 외 ${
+                              job?.majors?.majors.length - 2
+                            }`}
+                          </span>
+                        </Badge>
+                      )
+
+                    return (
+                      <Badge
+                        key={major.id}
+                        className="bg-main text-[8px] text-white rounded-xl whitespace-nowrap"
+                      >
+                        {major.koName}
+                      </Badge>
+                    )
+                  })}
                 </div>
               </div>
               <div className="flex justify-between text-coolgray text-xs md:text-base">

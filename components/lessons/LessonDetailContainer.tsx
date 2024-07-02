@@ -79,7 +79,7 @@ const LessonDetailContainer = ({ lesson, deleteLesson }: Props) => {
                 {lesson?.majors?.map((major, index) => (
                   <Badge
                     key={major}
-                    className="text-main text-xs md:text-sm bg-aliceblue rounded-xl mx-1"
+                    className="bg-main text-xs md:text-sm text-white rounded-xl mx-1"
                   >
                     {major}
                   </Badge>

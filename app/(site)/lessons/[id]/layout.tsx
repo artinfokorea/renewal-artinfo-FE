@@ -1,4 +1,4 @@
-import { getJob } from "@/apis/jobs"
+import { getLesson } from "@/apis/lessons"
 import type { Metadata } from "next"
 
 interface Props {
@@ -7,17 +7,17 @@ interface Props {
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { id } = params
-  const data = await getJob(Number(id))
+  const data = await getLesson(Number(id))
 
-  const pageTitle = data?.title.substring(0, 35)
+  const pageTitle = data?.name
   const pageImage = data?.imageUrl
 
   return {
-    title: `채용 | ${pageTitle}`,
+    title: `레슨 | ${pageTitle}`,
     description: `${pageTitle} | 아트인포`,
     openGraph: {
       title: pageTitle,
-      description: "아트인포 채용",
+      description: "아트인포 레슨",
       images: {
         url:
           pageImage ??

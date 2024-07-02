@@ -42,20 +42,64 @@ const JobCard = forwardRef<HTMLDivElement, Props>(
               </div>
             )}
             <div className="ml-4 md:ml-12 py-2 flex-1">
-              <h4 className="text-sm md:text-xl font-bold break-keep">
+              <h4 className="text-sm md:text-xl font-bold line-clamp-2">
                 {job.title}
               </h4>
-              <div className="flex my-2 items-center text-xs md:text-sm">
-                <span className="mr-2">{job.province as string}</span>
-                <div className="flex gap-2">
-                  {job.majors?.majors?.map(major => (
-                    <Badge
-                      key={major.id}
-                      className="text-main text-[10px] md:text-sm bg-aliceblue rounded-xl"
-                    >
-                      {major.koName}
-                    </Badge>
-                  ))}
+              <div className="flex my-2 items-center gap-2">
+                <span className="text-[8px] md:text-sm">
+                  {job.province as string}
+                </span>
+                <div className="hidden md:flex gap-2">
+                  {job?.majors?.majors?.slice(0, 3).map((major, index) => {
+                    if (job?.majors?.majors?.length > 3 && index === 2)
+                      return (
+                        <Badge
+                          key={major.id}
+                          className="bg-main text-sm text-white rounded-xl"
+                        >
+                          <span className="text-sm text-white">
+                            {`${major.koName} 외 ${
+                              job?.majors?.majors.length - 3
+                            }`}
+                          </span>
+                        </Badge>
+                      )
+
+                    return (
+                      <Badge
+                        key={major.id}
+                        className="bg-main text-sm text-white rounded-xl"
+                      >
+                        {major.koName}
+                      </Badge>
+                    )
+                  })}
+                </div>
+                <div className="flex md:hidden gap-2">
+                  {job?.majors?.majors?.slice(0, 2).map((major, index) => {
+                    if (job?.majors?.majors?.length > 2 && index === 1)
+                      return (
+                        <Badge
+                          key={major.id}
+                          className="bg-main text-[8px] text-white rounded-xl"
+                        >
+                          <span>
+                            {`${major.koName} 외 ${
+                              job?.majors?.majors.length - 2
+                            }`}
+                          </span>
+                        </Badge>
+                      )
+
+                    return (
+                      <Badge
+                        key={major.id}
+                        className="bg-main text-[8px] text-white rounded-xl whitespace-nowrap"
+                      >
+                        {major.koName}
+                      </Badge>
+                    )
+                  })}
                 </div>
               </div>
               <div className="flex justify-between text-coolgray text-xs md:text-base">

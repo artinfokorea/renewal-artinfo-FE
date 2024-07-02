@@ -79,6 +79,18 @@ const JobsList = () => {
           )
         }),
       )}
+      {/* {jobs?.pages?.map(page =>
+        page?.jobs?.map((job, index) => {
+          return (
+            <JobCard
+              key={job.id}
+              job={job}
+              ref={ref}
+              isLastPage={!(hasNextPage && index === page.jobs.length - 5)}
+            />
+          )
+        }),
+      )} */}
     </div>
   )
 }

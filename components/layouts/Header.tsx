@@ -68,7 +68,7 @@ const Header = () => {
 
   return (
     <header
-      className={`sticky top-0 left-0 z-50 h-14 py-3 px-4 bg-white ${
+      className={`sticky top-0 left-0 z-50 h-14 py-3 md:py-2 px-4 bg-white ${
         (!isTopScroll || isBarOpen) && "shadow-md"
       }
       `}
