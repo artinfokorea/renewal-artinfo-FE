@@ -24,15 +24,15 @@ const MobileDropDown = ({ isBarOpen, handleBar, items, handleSign }: Props) => {
   const menuRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
-    function handleClickOutside(event: TouchEvent) {
+    function handleClickOutside(event: MouseEvent) {
       if (menuRef.current && !menuRef.current.contains(event.target as Node)) {
         handleBar()
       }
     }
 
-    document.addEventListener("touchstart", handleClickOutside)
+    document.addEventListener("mousedown", handleClickOutside)
     return () => {
-      document.removeEventListener("touchstart", handleClickOutside)
+      document.removeEventListener("mousedown", handleClickOutside)
     }
   }, [])
 
