@@ -53,7 +53,7 @@ const BottomNavigation = () => {
                 isActive ? "text-main" : "text-gray-500"
               }`}
             >
-              <div className="flex flex-col gap-[2px] items-center my-auto">
+              <div className="flex flex-col gap-[2px] items-center mt-4">
                 {icon({
                   className: "w-5 h-5",
                 })}
@@ -69,7 +69,7 @@ const BottomNavigation = () => {
               pathname.startsWith("/my-profile") ? "text-main" : "text-gray-500"
             }`}
           >
-            <div className="flex flex-col gap-[2px] items-center my-auto">
+            <div className="flex flex-col gap-[2px] items-center mt-4">
               <UserIcon className="w-5 h-5" />
               <span className="text-sm mt-[2px] font-medium">내 정보</span>
             </div>
@@ -81,7 +81,7 @@ const BottomNavigation = () => {
               pathname.startsWith("/inquiry") ? "text-main" : "text-gray-500"
             }`}
           >
-            <div className="flex flex-col gap-[2px] items-center my-auto">
+            <div className="flex flex-col gap-[2px] items-center mt-4">
               <InformationIcon className="w-5 h-5" />
               <span className="text-xs mt-[2px] font-medium">문의</span>
             </div>
