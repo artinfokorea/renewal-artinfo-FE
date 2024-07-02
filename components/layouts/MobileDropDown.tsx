@@ -30,9 +30,9 @@ const MobileDropDown = ({ isBarOpen, handleBar, items, handleSign }: Props) => {
       }
     }
 
-    document.addEventListener("touchend", handleClickOutside)
+    document.addEventListener("touchstart", handleClickOutside)
     return () => {
-      document.removeEventListener("touchend", handleClickOutside)
+      document.removeEventListener("touchstart", handleClickOutside)
     }
   }, [])
 
