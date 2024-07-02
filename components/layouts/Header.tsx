@@ -68,12 +68,12 @@ const Header = () => {
 
   return (
     <header
-      className={`sticky top-0 left-0 z-50 h-14 py-2 px-4 bg-white ${
+      className={`sticky top-0 left-0 z-50 h-14 py-3 px-4 bg-white ${
         (!isTopScroll || isBarOpen) && "shadow-md"
       }
       `}
     >
-      <div className="max-w-screen-lg flex justify-between items-center mx-auto ">
+      <div className="max-w-screen-lg flex justify-between items-center mx-auto relative">
         <div className="flex">
           <Link href="/">
             <h1 className="font-bold text-2xl text-main">ARTINFO</h1>
