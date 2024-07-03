@@ -2,9 +2,7 @@
 
 import React, { useRef, useState } from "react"
 import FileUploader from "../common/FileUploader"
-import Image from "next/image"
 import { Button, Input, Textarea } from "@headlessui/react"
-import PhotoIcon from "../icons/PhotoIcon"
 import CloseIcon from "../icons/CloseIcon"
 import { useForm } from "react-hook-form"
 import { yupResolver } from "@hookform/resolvers/yup"
@@ -15,9 +13,9 @@ import useToast from "@/hooks/useToast"
 import { uploadImages } from "@/apis/system"
 import { LESSON } from "@/types/lessons"
 import { useLoading } from "@toss/use-loading"
-import Loading from "../common/Loading"
 import { ErrorMessage } from "@hookform/error-message"
 import ImageField from "../common/ImageField"
+import { Spinner } from "../common/Loading"
 
 const schema = yup
   .object({
@@ -218,7 +216,7 @@ const LessonForm = ({ handleLesson, isFormLoading, lesson }: Props) => {
             className="bg-main text-white rounded-full font-semibold px-6 w-20"
           >
             {isFormLoading ? (
-              <Loading className="w-6 h-6" />
+              <Spinner className="w-6 h-6" />
             ) : lesson ? (
               "수정"
             ) : (

@@ -4,14 +4,13 @@ import { useRouter } from "next/navigation"
 import React, { useEffect, useState } from "react"
 import { Input } from "@headlessui/react"
 import dynamic from "next/dynamic"
-import Loading from "../common/Loading"
+import { Spinner } from "../common/Loading"
 import { Button } from "../ui/button"
 import * as yup from "yup"
 import { yupResolver } from "@hookform/resolvers/yup"
 import { ErrorMessage } from "@hookform/error-message"
 import { useForm } from "react-hook-form"
 import { Badge } from "../ui/badge"
-import CloseIcon from "../icons/CloseIcon"
 import MajorDialog from "../dialog/MajorDialog"
 import PostCodeDialog from "../dialog/PostCodeDialog"
 import PlusIcon from "../icons/PlusIcon"
@@ -22,7 +21,7 @@ const ToastEditor = dynamic(() => import("../editor/ToastEditor"), {
   ssr: false,
   loading: () => (
     <div className="h-[400px] flex items-center justify-center">
-      <Loading className="w-8 h-8" />
+      <Spinner className="w-8 h-8" />
     </div>
   ),
 })

@@ -1,54 +1,57 @@
 "use client"
 
-import React from "react"
-import { Dialog, DialogPanel, DialogTitle } from "@headlessui/react"
-import { Button } from "@/components/ui/button"
+import React, { Fragment } from "react"
+import { Dialog, DialogPanel, DialogTitle, Transition } from "@headlessui/react"
 
 interface Props {
   isOpen: boolean
   handleDialog: () => void
   title: string
-  description?: string
-  error?: boolean
+  children: React.ReactNode
 }
 
-const AlertDialog = ({
-  isOpen,
-  handleDialog,
-  title,
-  description,
-  error,
-}: Props) => {
+const AlertDialog = ({ isOpen, handleDialog, title, children }: Props) => {
   return (
-    <Dialog
-      open={isOpen}
-      onClose={handleDialog}
-      className="relative z-50 flex items-center justify-center rounded-lg"
-    >
-      <div className="fixed inset-0 bg-black/30" aria-hidden="true" />
-      <div className="fixed inset-0 flex items-center justify-center p-4">
-        <DialogPanel className="w-full max-w-[350px] bg-white rounded-xl flex flex-col p-4">
-          <DialogTitle className="text-primary font-bold md:text-lg">
-            {title}
-          </DialogTitle>
-          <p
-            className={`font-medium py-3 text-sm ${error ? "text-error" : ""}`}
-          >
-            {description}
-          </p>
+    <Transition appear show={isOpen} as={Fragment}>
+      <Dialog as="div" className="relative z-10" onClose={handleDialog}>
+        <Transition
+          as={Fragment}
+          enter="ease-out duration-300"
+          enterFrom="opacity-0"
+          enterTo="opacity-100"
+          leave="ease-in duration-200"
+          leaveFrom="opacity-100"
+          leaveTo="opacity-0"
+        >
+          <div className="fixed inset-0 bg-black bg-opacity-25" />
+        </Transition>
 
-          <div className="flex justify-end">
-            <Button
-              type="button"
-              onClick={handleDialog}
-              className="bg-main text-white"
+        <div className="fixed inset-0 overflow-y-auto">
+          <div className="flex min-h-full items-center justify-center p-4 text-center">
+            <Transition
+              as={Fragment}
+              enter="ease-out duration-300"
+              enterFrom="opacity-0 scale-95"
+              enterTo="opacity-100 scale-100"
+              leave="ease-in duration-200"
+              leaveFrom="opacity-100 scale-100"
+              leaveTo="opacity-0 scale-95"
             >
-              확인
-            </Button>
+              <DialogPanel className="w-full max-w-md transform overflow-hidden rounded-2xl bg-white p-6 text-left align-middle shadow-xl transition-all">
+                <DialogTitle
+                  as="h3"
+                  className="text-lg font-medium leading-6 text-gray-900"
+                >
+                  {title}
+                </DialogTitle>
+
+                {children}
+              </DialogPanel>
+            </Transition>
           </div>
-        </DialogPanel>
-      </div>
-    </Dialog>
+        </div>
+      </Dialog>
+    </Transition>
   )
 }
 

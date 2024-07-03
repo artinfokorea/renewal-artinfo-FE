@@ -12,7 +12,7 @@ const JobTypeSelectDialog = ({ handleSelectedJobType }: Props) => {
   const pathname = usePathname()
 
   return (
-    <div className={`flex items-center justify-center h-[600px]`}>
+    <div className="fixed inset-0 flex items-center justify-center">
       <div className="shadow-lg max-w-screen-md rounded-xl border-whitesmoke border-2">
         <div className="flex justify-center items-center relative h-14">
           <h5 className="font-bold text-center flex-1 text-sm md:text-lg">

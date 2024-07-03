@@ -11,7 +11,6 @@ import useToast from "@/hooks/useToast"
 import { useLoading } from "@toss/use-loading"
 import { useSearchParams } from "next/navigation"
 import InputField from "../common/InputField"
-import AlertDialog from "../dialog/AlertDialog"
 
 const schema = yup
   .object({
@@ -35,7 +34,6 @@ type FormData = yup.InferType<typeof schema>
 
 const SignInForm = () => {
   const [isLoading, startTransition] = useLoading()
-  const [isConfirmDialogOpen, setIsConfirmDialogOpen] = useState(false)
   const [errorMessage, setErrorMessage] = useState("")
   const { errorToast } = useToast()
   const searchParams = useSearchParams()
@@ -48,8 +46,6 @@ const SignInForm = () => {
   } = useForm<FormData>({
     resolver: yupResolver(schema),
   })
-
-  const handleDialog = () => setIsConfirmDialogOpen(!isConfirmDialogOpen)
 
   useEffect(() => {
     if (error) {
@@ -71,7 +67,6 @@ const SignInForm = () => {
 
   const handleSignIn = async (payload: FormData) => {
     try {
-      setErrorMessage("")
       await startTransition(
         signIn("signin-email", {
           ...payload,
@@ -81,7 +76,6 @@ const SignInForm = () => {
     } catch (error: any) {
       errorToast(error.message)
       console.log(error)
-      setIsConfirmDialogOpen(true)
     }
   }
 
@@ -204,13 +198,6 @@ const SignInForm = () => {
           <img src="/kakao_logo.png" alt="kakao_logo" />
         </button>
       </div>
-      <AlertDialog
-        title="로그인 실패"
-        description="이메일 또는 비밀번호가 일치하지 않습니다."
-        error
-        isOpen={isConfirmDialogOpen}
-        handleDialog={handleDialog}
-      />
     </form>
   )
 }

@@ -2,7 +2,7 @@ import React from "react"
 import Image from "next/image"
 import { Button } from "../ui/button"
 import CloseIcon from "../icons/CloseIcon"
-import Loading from "./Loading"
+import { Spinner } from "./Loading"
 import PhotoIcon from "../icons/PhotoIcon"
 
 interface Props {
@@ -42,7 +42,7 @@ const ImageField = ({
         </div>
       ) : isImageLoading ? (
         <div className={`flex justify-center items-center ${className}`}>
-          <Loading className="w-10 h-10" />
+          <Spinner className="w-10 h-10" />
         </div>
       ) : (
         <div

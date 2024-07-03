@@ -40,7 +40,7 @@ const JobCard = forwardRef<HTMLDivElement, Props>(
                 </span>
               </div>
             )}
-            <div className="ml-4 md:ml-12 py-2 flex-1 max-w-[300px]">
+            <div className="ml-4 md:ml-12 py-2 flex-1">
               <h4 className="text-sm md:text-xl font-bold line-clamp-2 break-all">
                 {job.title}
               </h4>

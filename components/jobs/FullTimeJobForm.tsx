@@ -1,7 +1,6 @@
 import { ErrorMessage } from "@hookform/error-message"
-import React, { useContext, useEffect, useMemo, useRef, useState } from "react"
-import { Dialog, DialogPanel, Input } from "@headlessui/react"
-import Image from "next/image"
+import React, { useRef, useState } from "react"
+import { Input } from "@headlessui/react"
 import { useRouter } from "next/navigation"
 import { useForm } from "react-hook-form"
 import { yupResolver } from "@hookform/resolvers/yup"
@@ -10,7 +9,6 @@ import * as yup from "yup"
 import FileUploader from "../common/FileUploader"
 import { Button } from "../ui/button"
 import PlusIcon from "../icons/PlusIcon"
-import Loading from "../common/Loading"
 import MajorDialog from "../dialog/MajorDialog"
 import { Badge } from "../ui/badge"
 import PostCodeDialog from "../dialog/PostCodeDialog"
@@ -20,12 +18,13 @@ import { uploadImages } from "@/apis/system"
 import useToast from "@/hooks/useToast"
 import { useLoading } from "@toss/use-loading"
 import ImageField from "../common/ImageField"
+import { Spinner } from "../common/Loading"
 
 const ToastEditor = dynamic(() => import("../editor/ToastEditor"), {
   ssr: false,
   loading: () => (
     <div className="h-[400px] flex items-center justify-center">
-      <Loading className="w-8 h-8" />
+      <Spinner className="w-8 h-8" />
     </div>
   ),
 })

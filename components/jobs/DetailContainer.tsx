@@ -10,6 +10,7 @@ import FallbackImage from "../common/FallbackImage"
 import ItemManageBox from "../common/ItemManageBox"
 import ConfirmDialog from "../dialog/ConfirmDialog"
 import { JOB, JobType } from "@/types/jobs"
+import { useSession } from "next-auth/react"
 
 interface Props {
   deleteJob: () => void
@@ -19,7 +20,11 @@ interface Props {
 const DetailContainer = ({ deleteJob, job }: Props) => {
   const filter = filters()
   const router = useRouter()
-  const { data: user } = useQuery(queries.users.detail())
+  const { data } = useSession()
+  const { data: user } = useQuery({
+    ...queries.users.detail(),
+    enabled: !!data?.user,
+  })
   const pathname = usePathname()
   const [isDeleteConfirmDialog, setIsDeleteConfirmDialog] = useState(false)
 

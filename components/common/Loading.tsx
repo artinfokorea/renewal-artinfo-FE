@@ -1,11 +1,17 @@
-import React from "react";
+import React from "react"
 
 interface Props {
-  className?: string;
+  className?: string
 }
 
-const Loading = ({ className }: Props) => {
-  return <span className={`loader ${className}`} />;
-};
+export const Spinner = ({ className }: Props) => {
+  return <span className={`loader ${className}`} />
+}
 
-export default Loading;
+export const Loading = () => {
+  return (
+    <div className="fixed inset-0 md:h-screen flex items-center justify-center">
+      <Spinner className="h-12 w-12" />
+    </div>
+  )
+}
