@@ -91,18 +91,9 @@ const DetailContainer = ({ deleteJob, job }: Props) => {
           </div>
         </div>
       </div>
-      {user?.id === job?.authorId && (
-        <ItemManageBox
-          handleEdit={() =>
-            router.push(`${pathname}?type=edit&jobType=${job?.type}`)
-          }
-          handleDelete={() => setIsDeleteConfirmDialog(!isDeleteConfirmDialog)}
-          className="justify-end md:hidden my-2"
-        />
-      )}
       {user?.id === job?.authorId ? (
-        <div className="hidden md:flex my-8 px-4 h-8 relative">
-          <div className="mx-auto border-b-2 border-whitesmoke w-3/5" />
+        <div className="flex my-8 h-8 items-center gap-4 md:gap-6">
+          <div className="flex-1 border-b-2 border-whitesmoke w-full" />
           <ItemManageBox
             handleEdit={() =>
               router.push(`${pathname}?type=edit&jobType=${job?.type}`)
@@ -110,7 +101,7 @@ const DetailContainer = ({ deleteJob, job }: Props) => {
             handleDelete={() =>
               setIsDeleteConfirmDialog(!isDeleteConfirmDialog)
             }
-            className="absolute -bottom-4 right-5"
+            className="h-10"
           />
         </div>
       ) : (

@@ -29,7 +29,7 @@ const ConfirmDialog = ({
 }: Props) => {
   return (
     <Dialog open={isOpen} onOpenChange={handleDialog}>
-      <DialogContent className="sm:max-w-md">
+      <DialogContent className="w-[300px] rounded-md">
         <DialogHeader>
           <DialogTitle className="text-primary font-bold">{title}</DialogTitle>
           <DialogDescription className="font-semibolde text-base">
@@ -37,7 +37,7 @@ const ConfirmDialog = ({
           </DialogDescription>
         </DialogHeader>
 
-        <DialogFooter>
+        <DialogFooter className="flex-row justify-center gap-2 mt-2">
           <DialogClose asChild>
             <Button type="button" className="bg-main text-white">
               취소

@@ -116,12 +116,12 @@ const LessonForm = ({ handleLesson, isFormLoading, lesson }: Props) => {
             alt="job_company_image"
             deleteImage={deleteImage}
             openFileUploader={openFileUploader}
-            className="h-[360px] md:h-[300px] w-[300px] md:w-[240px]"
+            className="h-[360px] md:h-[300px] w-[300px] md:w-[240px] mx-auto"
           />
           <div className="flex-1 p-2 md:p-0">
             <h4 className="text-xl md:text-2xl font-bold">레슨 등록</h4>
             <div className="mt-6 flex flex-col gap-4">
-              <div className="flex gap-6 text-base md:text-lg items-center">
+              <div className="flex gap-6 text-sm md:text-lg items-center">
                 <span className="font-bold">가격</span>
                 <div className="flex whitespace-nowrap items-center">
                   <Input
@@ -133,16 +133,16 @@ const LessonForm = ({ handleLesson, isFormLoading, lesson }: Props) => {
                   <span className="text-xs leading-6">(1회)</span>
                 </div>
               </div>
-              <div className="flex gap-6 items-center text-base md:text-lg">
-                <span className="font-bold">지역</span>
+              <div className="flex gap-6 items-center text-sm md:text-lg">
+                <span className="font-bold whitespace-nowrap">지역</span>
                 <div className="flex items-center gap-4">
                   <Button
                     onClick={() => setIsDistrictDialog(!isDistrictDialog)}
-                    className="text-main font-medium border px-2 h-8 rounded-lg"
+                    className="text-main font-medium border px-2 h-8 rounded-lg whitespace-nowrap"
                   >
                     지역 등록
                   </Button>
-                  <span className="text-silver font-medium text-sm">
+                  <span className="text-silver font-medium text-xs md:text-base">
                     지역은 최대 3개까지 등록 가능합니다.
                   </span>
                 </div>
@@ -163,13 +163,13 @@ const LessonForm = ({ handleLesson, isFormLoading, lesson }: Props) => {
         <div className="border-whitesmoke border-b-2 my-8 " />
         <div className="flex flex-col gap-4 md:flex-row md:gap-8">
           <div className="md:w-1/2 bg-whitesmoke rounded-md p-4 md:p-8 h-[380px] overflow-y-auto">
-            <p className="text-coolgray font-semibold text-lg mb-3 md:mb-6">
+            <p className="text-coolgray font-semibold md:text-lg mb-3 md:mb-6">
               전문가 소개
             </p>
             <Textarea
               {...register("introduction")}
               placeholder="전문가 소개를 입력해주세요."
-              className="border p-3 rounded-lg resize-none focus:outline-none w-full h-4/5"
+              className="border p-3 rounded-lg resize-none text-sm md:text-lg focus:outline-none w-full h-4/5"
             />
             <ErrorMessage
               errors={errors}
@@ -182,13 +182,13 @@ const LessonForm = ({ handleLesson, isFormLoading, lesson }: Props) => {
             />
           </div>
           <div className="md:w-1/2 bg-whitesmoke rounded-md p-4 md:p-8 h-[380px] overflow-y-auto">
-            <p className="text-coolgray font-semibold text-lg mb-3 md:mb-6">
+            <p className="text-coolgray font-semibold md:text-lg mb-3 md:mb-6">
               경력
             </p>
             <Textarea
               {...register("career")}
               placeholder="경력 사항을 입력해주세요."
-              className="border p-3 rounded-lg resize-none focus:outline-none w-full h-4/5"
+              className="border p-3 rounded-lg resize-none text-sm md:text-lg focus:outline-none w-full h-4/5"
             />
             <ErrorMessage
               errors={errors}

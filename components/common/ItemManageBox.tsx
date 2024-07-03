@@ -16,13 +16,13 @@ const ItemManageBox = ({ handleEdit, handleDelete, className }: Props) => {
         onClick={handleEdit}
         className="border-2 p-2 border-whitesmoke rounded-lg"
       >
-        <EditIcon className="w-5 h-5 md:w-6 md:h-6" />
+        <EditIcon className="w-5 h-5" />
       </Button>
       <Button
         onClick={handleDelete}
         className="border-2 p-2 border-whitesmoke rounded-lg"
       >
-        <TrashIcon className="w-5 h-5 md:w-6 md:h-6" />
+        <TrashIcon className="w-5 h-5" />
       </Button>
     </div>
   )

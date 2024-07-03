@@ -43,7 +43,7 @@ const LessonDetailContainer = ({ lesson, deleteLesson }: Props) => {
   }
 
   return (
-    <div className="mt-8 md:mt-16">
+    <div className="mt-8 md:mt-16 md:px-4">
       <div className="flex flex-col md:flex-row md:gap-24">
         {lesson?.imageUrl && (
           <div className="h-[360px] md:h-[300px] relative w-[300px] md:w-[240px] mx-auto">
@@ -63,15 +63,17 @@ const LessonDetailContainer = ({ lesson, deleteLesson }: Props) => {
             {lesson?.name}
           </h4>
           {user?.id === lesson?.authorId && (
-            <ItemManageBox
-              handleEdit={() => router.push(`${pathname}?type=edit`)}
-              handleDelete={() =>
-                setIsDeleteConfirmDialog(!isDeleteConfirmDialog)
-              }
-              className="justify-end md:hidden my-2"
-            />
+            <div className="flex md:hidden my-2 h-8 items-center gap-4 md:gap-6">
+              <div className="flex-1 border-b-2 border-whitesmoke w-full" />
+              <ItemManageBox
+                handleEdit={() => router.push(`${pathname}?type=edit`)}
+                handleDelete={() =>
+                  setIsDeleteConfirmDialog(!isDeleteConfirmDialog)
+                }
+                className="h-10"
+              />
+            </div>
           )}
-
           <div className="mt-6 grid md:grid-cols-2 gap-y-4 gap-x-10">
             <div className="flex  gap-4 text-base md:text-lg items-center">
               <span className="font-bold">전공</span>
@@ -161,14 +163,14 @@ const LessonDetailContainer = ({ lesson, deleteLesson }: Props) => {
         </div>
       </div>
       {user?.id === lesson?.authorId ? (
-        <div className="hidden md:flex my-8 px-4 h-8 relative">
-          <div className="mx-auto border-b-2 border-whitesmoke w-3/5" />
+        <div className="hidden md:flex my-8 h-8 items-center gap-4 md:gap-6">
+          <div className="flex-1 border-b-2 border-whitesmoke w-full" />
           <ItemManageBox
             handleEdit={() => router.push(`${pathname}?type=edit`)}
             handleDelete={() =>
               setIsDeleteConfirmDialog(!isDeleteConfirmDialog)
             }
-            className="absolute -bottom-4 right-5"
+            className="h-10"
           />
         </div>
       ) : (

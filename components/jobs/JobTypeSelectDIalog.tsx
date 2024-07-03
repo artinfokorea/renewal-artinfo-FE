@@ -1,5 +1,4 @@
 import { JobType, JobTypeList } from "@/types/jobs"
-import React from "react"
 import { Button } from "../ui/button"
 import CloseIcon from "../icons/CloseIcon"
 import { usePathname, useRouter } from "next/navigation"
@@ -13,8 +12,8 @@ const JobTypeSelectDialog = ({ handleSelectedJobType }: Props) => {
   const pathname = usePathname()
 
   return (
-    <div className="bg-whitesmoke flex items-center justify-center min-h-screen">
-      <div className="bg-white max-w-screen-md rounded-xl">
+    <div className={`flex items-center justify-center h-[600px]`}>
+      <div className="shadow-lg max-w-screen-md rounded-xl border-whitesmoke border-2">
         <div className="flex justify-center items-center relative h-14">
           <h5 className="font-bold text-center flex-1 text-sm md:text-lg">
             채용 선택

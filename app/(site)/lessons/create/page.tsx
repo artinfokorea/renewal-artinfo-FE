@@ -38,7 +38,7 @@ const page = () => {
     getLessonQualification()
       .then(res => res.item)
       .catch((error: any) => {
-        if (error.response?.data?.code === "LESSON-OO3") {
+        if (error.response?.data?.code === "LESSON-003") {
           setIsDuplicateDialog(true)
           setQualificationErrorMessages(error.response?.data?.message)
         } else {
@@ -64,7 +64,7 @@ const page = () => {
         title="레슨 등록 제한"
         description={qualificationErrorMessages}
         error
-        isOpen={isQualificationDialog}
+        isOpen={isDuplicateDialog}
         handleDialog={() => router.push("/lessons")}
       />
     </section>
