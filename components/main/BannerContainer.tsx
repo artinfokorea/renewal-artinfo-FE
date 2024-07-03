@@ -9,14 +9,10 @@ import {
 } from "@/components/ui/carousel"
 import Image from "next/image"
 import { AspectRatio } from "../ui/aspect-ratio"
-import { AD, AdvertisementType } from "@/types/ads"
+import { AdvertisementType } from "@/types/ads"
 import Link from "next/link"
 import { useSuspenseQuery } from "@tanstack/react-query"
 import { queries } from "@/lib/queries"
-
-// interface Props {
-//   ads?: AD[];
-// }
 
 const BannerContainer = () => {
   const plugin = useRef(
