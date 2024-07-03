@@ -7,7 +7,6 @@ import ListSearchForm from "../common/ListSearchForm"
 import { Suspense, useMemo, useState } from "react"
 import { Button } from "../ui/button"
 import { Badge } from "../ui/badge"
-import CloseIcon from "../icons/CloseIcon"
 import ProvinceDialog from "../dialog/ProvinceDialog"
 import LessonList from "./LessonList"
 import LessonListSkeleton from "../skeleton/LessonListSkeleton"
@@ -36,23 +35,6 @@ const LessonsContainer = () => {
       provinceIds.includes(province.id.toString()),
     )
   }, [provinceIds])
-
-  const deleteProvince = (provinceId: string) => {
-    const locationParams = new URLSearchParams(window.location.search)
-    if (provinceIds.includes(provinceId)) {
-      const newProvinceIds = provinceIds.filter(id => id !== provinceId)
-
-      locationParams.delete("provinceId")
-      newProvinceIds.forEach(id => {
-        locationParams.append("provinceId", id)
-      })
-    }
-
-    const newUrl = `${window.location.pathname}?${locationParams.toString()}`
-    router.push(newUrl, {
-      scroll: false,
-    })
-  }
 
   return (
     <div className="max-w-screen-lg mx-auto px-4">

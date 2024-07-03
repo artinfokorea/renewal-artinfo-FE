@@ -59,9 +59,11 @@ const MobileFilterTab = ({ provinces, page, artFields }: Props) => {
     setMobileSearchTab(undefined)
   }
 
-  const selectedProvince = provinces?.filter(
-    province => province.id.toString() === provinceId,
-  )[0]
+  const selectedProvince = useMemo(() => {
+    return provinces?.filter(
+      province => province.id.toString() === selectedProvinceId,
+    )[0]
+  }, [selectedProvinceId, provinces])
 
   useEffect(() => {
     const locationParams = new URLSearchParams(window.location.search)
