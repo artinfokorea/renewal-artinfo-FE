@@ -27,7 +27,9 @@ import {
   checkEmailVerificationCode,
 } from "@/apis/auth"
 import { MAJOR } from "@/types/majors"
-import { SuccessCode, SuccessResponse } from "@/interface"
+import AlertDialog from "../dialog/AlertDialog"
+import { AxiosError } from "axios"
+import { SuccessResponse } from "@/interface"
 
 const schema = yup
   .object({
@@ -214,34 +216,35 @@ const ProfileContainer = () => {
       successToast("비밀번호 변경이 완료되었습니다.")
       setIsPasswordDialog(!isPasswordDialog)
     } catch (error: any) {
-      errorToast(error.message)
+      errorToast(error.response.data.message)
       console.log(error)
     }
   }
 
   const sendEmailVerifyCode = async () => {
-    if (!user?.email) {
-      errorToast("이메일을 확인 할 수 없습니다.")
-      return
-    }
-
     try {
-      await sendEmailVerificationCode(user?.email),
-        successToast("인증코드가 전송되었습니다.")
+      await sendEmailVerificationCode(user?.email)
+      successToast("인증코드가 전송되었습니다.")
     } catch (error: any) {
-      errorToast(error.message)
+      console.log("error", error)
+      errorToast("인증코드 전송에 실패했습니다.")
       console.log(error)
+      throw error
     }
   }
 
   const checkEmailVerifyCode = async (verification: string) => {
     try {
-      const result = await checkEmailVerificationCode(user?.email, verification)
+      await checkEmailVerificationCode(user?.email, verification)
       successToast("이메일 인증이 완료되었습니다.")
-      return result
     } catch (error: any) {
-      errorToast(error.message)
-      console.log(error)
+      if (error.response.data.code === "VERIFICATION-001") {
+        errorToast(error.response.data.message)
+      } else {
+        errorToast("이메일 인증에 실패했습니다.")
+      }
+      console.error(error)
+      throw error
     }
   }
 
@@ -282,11 +285,16 @@ const ProfileContainer = () => {
       <PasswordDialog
         open={isPasswordDialog}
         close={() => setIsPasswordDialog(!isPasswordDialog)}
-        isLoading={isUpdatePhoneLoading}
+        isLoading={isUpdatePasswordLoading}
         handlePassword={handleUserPassword}
         sendEmailVerifyCode={sendEmailVerifyCode}
         checkEmailVerifyCode={checkEmailVerifyCode}
       />
+      {/* <AlertDialog
+        isOpen={true}
+        handleDialog={() => console.log("hi")}
+        title="ㅗㅑㅗㅑ"
+      /> */}
     </section>
   )
 }

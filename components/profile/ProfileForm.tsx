@@ -175,6 +175,7 @@ const ProfileForm = ({
               <div className="flex md:hidden justify-center gap-4 my-8">
                 <Button
                   type="button"
+                  onClick={handlePasswordDialog}
                   className="border rounded-full font-semibold"
                 >
                   비밀번호 변경

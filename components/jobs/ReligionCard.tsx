@@ -17,16 +17,16 @@ const ReligionCard = forwardRef<HTMLDivElement, Props>(
 
     return (
       <Link href={`${pathname}/${job.id}`}>
-        <div className="hover:bg-whitesmoke rounded-xl h-[130px] md:h-[192px]  flex items-center">
+        <div className="md:hover:bg-[#f5f5f5] rounded-xl h-[130px] md:h-[192px]  flex items-center">
           <div className="flex items-center md:px-4">
-            <div className="h-[100px] md:h-[140px] w-[170px] md:w-[230px] border-whitesmoke border-2 rounded-xl flex justify-center items-center">
-              <span className="font-bold text-base md:text-xl">
+            <div className="bg-white h-[100px] md:h-[140px] w-[170px] md:w-[230px] border-whitesmoke border-2 rounded-xl flex justify-center items-center px-2">
+              <span className="font-bold text-base md:text-xl text-center break-all">
                 {job.companyName}
               </span>
             </div>
 
             <div className="ml-4 md:ml-12 py-2 flex-1">
-              <h4 className="text-sm md:text-xl font-bold break-keep">
+              <h4 className="text-sm md:text-xl font-bold line-clamp-2 break-all">
                 {job.title}
               </h4>
               <div className="flex gap-2 my-2 items-center">
@@ -90,7 +90,9 @@ const ReligionCard = forwardRef<HTMLDivElement, Props>(
                 </div>
               </div>
               <div className="flex justify-between text-coolgray text-xs md:text-base">
-                <span>{job.companyName}</span>
+                <span className="line-clamp-2 break-all">
+                  {job.companyName}
+                </span>
                 <span>{filter.YYYYMMDD(job.endAt)}</span>
               </div>
             </div>

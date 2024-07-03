@@ -5,7 +5,6 @@ import { useSuspenseInfiniteQuery } from "@tanstack/react-query"
 import { useSearchParams } from "next/navigation"
 import { useInView } from "react-intersection-observer"
 import React, { useEffect } from "react"
-import ObriCard from "./ObriCard"
 import JobCard from "./JobCard"
 import ReligionCard from "./ReligionCard"
 import { ProfessionalFieldTypes } from "@/types/majors"
@@ -55,14 +54,7 @@ const JobsList = () => {
     <div className="mt-4">
       {jobs?.pages?.map(page =>
         page?.jobs?.map((job, index) => {
-          return job.type === JobType.PART_TIME ? (
-            <ObriCard
-              key={job.id}
-              job={job}
-              ref={ref}
-              isLastPage={!(hasNextPage && index === page.jobs.length - 5)}
-            />
-          ) : job.type === JobType.RELIGION ? (
+          return job.type === JobType.RELIGION ? (
             <ReligionCard
               key={job.id}
               job={job}

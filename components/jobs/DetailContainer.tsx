@@ -24,7 +24,7 @@ const DetailContainer = ({ deleteJob, job }: Props) => {
   const [isDeleteConfirmDialog, setIsDeleteConfirmDialog] = useState(false)
 
   return (
-    <div className="mt-4 px-8 max-w-screen-lg mx-auto">
+    <div className="mt-4 px-4 md:px-8 max-w-screen-lg mx-auto">
       <div className="flex flex-col md:flex-row">
         {job?.imageUrl && (
           <div className="h-[244px] relative w-full md:w-[400px]">
@@ -44,7 +44,7 @@ const DetailContainer = ({ deleteJob, job }: Props) => {
             job?.type !== JobType.RELIGION && "md:ml-12"
           }`}
         >
-          <h4 className="text-xl font-bold break-keep mt-4 md:mt-0">
+          <h4 className="text-xl font-bold break-words mt-4 md:mt-0">
             {job?.title}
           </h4>
           <div className="hidden md:flex my-2 items-center text-xs md:text-sm gap-2 text-white">

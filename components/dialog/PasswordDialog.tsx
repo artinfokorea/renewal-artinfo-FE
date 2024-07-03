@@ -38,8 +38,8 @@ interface Props {
   close: () => void
   isLoading: boolean
   handlePassword: (payload: PasswordFormData) => void
-  sendEmailVerifyCode: () => void
-  checkEmailVerifyCode: (verifyEmailCode: string) => void
+  sendEmailVerifyCode: () => Promise<void>
+  checkEmailVerifyCode: (verifyEmailCode: string) => Promise<void>
 }
 
 const PasswordDialog = ({
@@ -65,15 +65,23 @@ const PasswordDialog = ({
   })
 
   const sendEmail = async () => {
-    setIsVerifyEmail(false)
-    sendEmailVerifyCode()
-    setIsSendEmail(true)
+    try {
+      setIsVerifyEmail(false)
+      await sendEmailVerifyCode()
+      setIsSendEmail(true)
+    } catch (error) {
+      console.error("이메일 전송 실패", error)
+    }
   }
-  const checkEmail = () => {
+  const checkEmail = async () => {
     setIsSendEmail(false)
-    checkEmailVerifyCode(verifyCode)
-    setValue("isEmailVerified", true)
-    setIsVerifyEmail(true)
+    try {
+      await checkEmailVerifyCode(verifyCode)
+      setValue("isEmailVerified", true)
+      setIsVerifyEmail(true)
+    } catch (error) {
+      console.error("이메일 인증 실패", error)
+    }
   }
 
   return (

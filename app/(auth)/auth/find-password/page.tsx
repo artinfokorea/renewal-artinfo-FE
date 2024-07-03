@@ -30,8 +30,10 @@ const page = () => {
 
       successToast("인증코드가 전송되었습니다.")
     } catch (error: any) {
-      errorToast(error.message)
-      console.log(error.message)
+      console.log("error", error)
+      errorToast("인증코드 전송에 실패했습니다.")
+      console.log(error)
+      throw error
     }
   }
 
@@ -40,8 +42,13 @@ const page = () => {
       await checkEmailVerificationCode(email, verification)
       successToast("이메일 인증이 완료되었습니다.")
     } catch (error: any) {
-      errorToast(error.message)
-      console.log(error)
+      if (error.response.data.code === "VERIFICATION-001") {
+        errorToast(error.response.data.message)
+      } else {
+        errorToast("이메일 인증에 실패했습니다.")
+      }
+      console.error(error)
+      throw error
     }
   }
 
@@ -51,7 +58,7 @@ const page = () => {
         updateUserPassword(payload.password, payload.email),
       )
       successToast("비밀번호 변경이 완료되었습니다.")
-      router.push("/")
+      router.push("/auth/sign-in")
     } catch (error: any) {
       errorToast(error.message)
       console.log(error)

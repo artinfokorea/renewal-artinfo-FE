@@ -14,7 +14,10 @@ const schema = yup
   .object({
     email: yup
       .string()
-      .email("이메일 형식이 아닙니다.")
+      .matches(
+        /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/,
+        "유효한 이메일 주소를 입력해주세요.",
+      )
       .required("이메일은 필수입력 사항입니다."),
     isEmailVerified: yup
       .boolean()
