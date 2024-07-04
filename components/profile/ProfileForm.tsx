@@ -23,6 +23,7 @@ import { Button } from "../ui/button"
 import { MAJOR } from "@/types/majors"
 import { ProfileFormData } from "./ProfileContainer"
 import FallbackImage from "../common/FallbackImage"
+import { Spinner } from "../common/Loading"
 
 interface Props {
   user?: USER
@@ -89,43 +90,52 @@ const ProfileForm = ({
       <div className="flex-1 md:ml-12 px-8 py-2 md:py-6">
         <div className="flex flex-col md:flex-row md:gap-20">
           <div className="flex flex-col items-center relative h-[150px]">
-            <div className="relative h-[100px]">
-              <Avatar className="w-[150px] h-[150px]">
-                <FallbackImage
-                  src={watch("imageUrl") || ""}
-                  alt="user_profile_image"
-                  fill
-                  sizes="150px"
-                  className="rounded-full"
-                />
-                <AvatarFallback>
-                  <AvatarImage
-                    src={"/img/placeholder-user.png"}
-                    alt="user_profile_image"
-                    className="w-[150px] h-[150px] rounded-full object-cover"
-                  />
-                </AvatarFallback>
-              </Avatar>
-              {watch("imageUrl") && isUpdateForm && (
-                <Button
-                  type="button"
-                  onClick={() => setValue("imageUrl", "")}
-                  className="bg-white opacity-55 text-lg text-black font-semibold
+            <div className="relative h-[150px]">
+              {isImageUploadLoading ? (
+                <div className="w-[150px] h-[150px] flex items-center justify-center">
+                  <Spinner className="w-8 h-8" />
+                </div>
+              ) : (
+                <>
+                  <Avatar className="w-[150px] h-[150px]">
+                    <FallbackImage
+                      src={watch("imageUrl") || ""}
+                      alt="user_profile_image"
+                      fill
+                      sizes="150px"
+                      quality={100}
+                      className="rounded-full"
+                    />
+                    <AvatarFallback>
+                      <AvatarImage
+                        src={"/img/placeholder-user.png"}
+                        alt="user_profile_image"
+                        className="w-[150px] h-[150px] rounded-full object-cover"
+                      />
+                    </AvatarFallback>
+                  </Avatar>
+                  {watch("imageUrl") && isUpdateForm && (
+                    <Button
+                      type="button"
+                      onClick={() => setValue("imageUrl", "")}
+                      className="bg-white opacity-55 text-lg text-black font-semibold
                 absolute top-0 right-0 rounded-full p-2
                 "
-                >
-                  <CloseIcon className="w-6 h-6" />
-                </Button>
-              )}
-              {isUpdateForm && (
-                <button
-                  type="button"
-                  disabled={isImageUploadLoading}
-                  className="mt-12 bg-blue-500 -bottom-12 right-0 p-[5px] rounded-full absolute border-white border"
-                  onClick={openFileUploader}
-                >
-                  <CameraIcon className="w-6 h-6 text-white" />
-                </button>
+                    >
+                      <CloseIcon className="w-6 h-6" />
+                    </Button>
+                  )}
+                  {isUpdateForm && (
+                    <button
+                      type="button"
+                      disabled={isImageUploadLoading}
+                      className="mt-12 bg-blue-500 bottom-0 right-0 p-[5px] rounded-full absolute border-white border"
+                      onClick={openFileUploader}
+                    >
+                      <CameraIcon className="w-6 h-6 text-white" />
+                    </button>
+                  )}
+                </>
               )}
             </div>
           </div>

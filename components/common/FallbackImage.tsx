@@ -1,7 +1,7 @@
 "use client"
 
 import Image, { ImageProps } from "next/image"
-import React, { useState } from "react"
+import React, { useEffect, useState } from "react"
 
 interface Props extends Omit<ImageProps, "src"> {
   src: string
@@ -28,6 +28,10 @@ const FallbackImage = ({
       setImgError(true)
     }
   }
+
+  useEffect(() => {
+    setImgSrc(src || defaultSrc)
+  }, [src])
 
   if (imgError) {
     return (

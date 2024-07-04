@@ -13,7 +13,11 @@ import {
 import useToast from "@/hooks/useToast"
 import { updateUser, updateUserPassword, updateUserPhone } from "@/apis/users"
 import { SchoolType } from "@/types/lessons"
-import { useQueryClient, useSuspenseQuery } from "@tanstack/react-query"
+import {
+  useQuery,
+  useQueryClient,
+  useSuspenseQuery,
+} from "@tanstack/react-query"
 import { queries } from "@/lib/queries"
 import MajorDialog from "@/components/dialog/MajorDialog"
 import PhoneDialog from "@/components/dialog/PhoneDialog"
@@ -44,7 +48,9 @@ const ProfileContainer = () => {
   const queryClient = useQueryClient()
   const filter = filters()
 
-  const { data: user } = useSuspenseQuery(queries.users.detail())
+  const { data: user } = useSuspenseQuery({
+    ...queries.users.detail(),
+  })
 
   const {
     register,
@@ -229,24 +235,26 @@ const ProfileContainer = () => {
 
   return (
     <section className="max-w-screen-lg mx-auto">
-      <ProfileForm
-        user={user}
-        isUpdateForm={isUpdateForm}
-        isUpdateProfileLoading={isUpdateProfileLoading}
-        isImageUploadLoading={isImageUploadLoading}
-        handleUploadedFiles={handleUploadedFiles}
-        handleSelectMajor={handleSelectMajor}
-        handleMajorDialog={() => setIsMajorDialog(!isMajorDialog)}
-        handlePhoneDialog={() => setIsPhoneDialog(!isPhoneDialog)}
-        handleUpdateForm={() => setIsUpdateForm(!isUpdateForm)}
-        handlePasswordDialog={() => setIsPasswordDialog(!isPasswordDialog)}
-        isDirty={isDirty}
-        setValue={setValue}
-        errors={errors}
-        register={register}
-        handleSubmit={handleSubmit(updateProfile)}
-        watch={watch}
-      />
+      {user && (
+        <ProfileForm
+          user={user}
+          isUpdateForm={isUpdateForm}
+          isUpdateProfileLoading={isUpdateProfileLoading}
+          isImageUploadLoading={isImageUploadLoading}
+          handleUploadedFiles={handleUploadedFiles}
+          handleSelectMajor={handleSelectMajor}
+          handleMajorDialog={() => setIsMajorDialog(!isMajorDialog)}
+          handlePhoneDialog={() => setIsPhoneDialog(!isPhoneDialog)}
+          handleUpdateForm={() => setIsUpdateForm(!isUpdateForm)}
+          handlePasswordDialog={() => setIsPasswordDialog(!isPasswordDialog)}
+          isDirty={isDirty}
+          setValue={setValue}
+          errors={errors}
+          register={register}
+          handleSubmit={handleSubmit(updateProfile)}
+          watch={watch}
+        />
+      )}
       <MajorDialog
         open={isMajorDialog}
         close={() => setIsMajorDialog(!isMajorDialog)}
