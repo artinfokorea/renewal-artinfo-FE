@@ -1,7 +1,7 @@
 "use client"
 
 import Image, { ImageProps } from "next/image"
-import React, { useEffect, useState } from "react"
+import React, { useState } from "react"
 
 interface Props extends Omit<ImageProps, "src"> {
   src: string
@@ -18,7 +18,7 @@ const FallbackImage = ({
   ...props
 }: Props) => {
   const defaultSrc = "/img/placeholder-user.png"
-  const [imgSrc, setImgSrc] = useState(src || defaultSrc)
+  const [imgSrc, setImgSrc] = useState(src)
   const [imgError, setImgError] = useState(false)
 
   const handleError = () => {
