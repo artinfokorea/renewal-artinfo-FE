@@ -1,6 +1,6 @@
-import LessonsContainer from "@/components/lessons/LessonsContainer";
-import { Metadata } from "next";
-import React from "react";
+import LessonsContainer from "@/components/lessons/LessonsContainer"
+import { Metadata } from "next"
+import React from "react"
 
 export const metadata: Metadata = {
   title: `레슨 | 아트인포`,
@@ -13,10 +13,10 @@ export const metadata: Metadata = {
       alt: "아트인포-ARTINFO",
     },
   },
-};
+}
 
 const page = () => {
-  return <LessonsContainer />;
-};
+  return <LessonsContainer />
+}
 
-export default page;
+export default page

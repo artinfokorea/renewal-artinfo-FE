@@ -20,16 +20,16 @@ const MainObriContainer = () => {
         </Link>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-2 md:gap-6 mt-4 mb-12">
+      <div className="mb-12 mt-4 grid grid-cols-1 gap-2 md:grid-cols-2 md:gap-6">
         {data?.jobs.map(job => (
           <Link key={job.id} href={`/jobs/${job.id}`}>
-            <div className="border border-lightgrey rounded-md py-5 flex items-center text-sm md:text-lg">
-              <div className="flex px-4 w-full">
-                <span className="text-main font-medium basis-1/4">
+            <div className="flex items-center rounded-md border border-lightgrey py-5 text-sm md:text-lg">
+              <div className="flex w-full px-4">
+                <span className="basis-1/4 font-medium text-main">
                   {job.majors?.majors?.[0]?.koName}
                 </span>
                 <span className="basis-1/4">{job.address}</span>
-                <span className="whitespace-nowrap text-ellipsis overflow-hidden font-bold basis-2/4">
+                <span className="basis-2/4 overflow-hidden text-ellipsis whitespace-nowrap font-bold">
                   {job.title}
                 </span>
               </div>

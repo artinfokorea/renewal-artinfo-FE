@@ -37,22 +37,22 @@ const LessonsContainer = () => {
   }, [provinceIds])
 
   return (
-    <div className="max-w-screen-lg mx-auto px-4">
+    <div className="mx-auto max-w-screen-lg px-4">
       <ListSearchForm
         totalCount={lessonsCount?.totalCount}
         title="명의 전문가가
         준비중이에요."
       />
       <section className="flex">
-        <form className="hidden lg:flex flex-col text-gray-400 min-w-[180px]">
+        <form className="hidden min-w-[180px] flex-col text-gray-400 lg:flex">
           <ProfessionalCheckBoxes artFields={artFields?.majorGroups} />
         </form>
-        <div className="md:flex-1 w-full flex flex-col md:ml-12 md:mt-4">
-          <div className="hidden lg:flex justify-between items-center">
-            <div className="flex gap-2 flex-wrap">
+        <div className="flex w-full flex-col md:ml-12 md:mt-4 md:flex-1">
+          <div className="hidden items-center justify-between lg:flex">
+            <div className="flex flex-wrap gap-2">
               <Button
                 onClick={() => setIsProvinceDialog(!isProvinceDialog)}
-                className="text-main text-sm border border-lightgray rounded px-4 h-7"
+                className="h-7 rounded border border-lightgray px-4 text-sm text-main"
               >
                 지역선택
               </Button>
@@ -61,7 +61,7 @@ const LessonsContainer = () => {
                 return (
                   <Badge
                     key={province.id}
-                    className="text-main text-sm border-lightgray rounded h-7 flex items-center"
+                    className="flex h-7 items-center rounded border-lightgray text-sm text-main"
                   >
                     <span>
                       {selectedProvinces.length > 7 && index === 6
@@ -73,7 +73,7 @@ const LessonsContainer = () => {
               })}
             </div>
             <Button
-              className="py-2 px-6 text-white bg-main rounded-3xl"
+              className="rounded-3xl bg-main px-6 py-2 text-white"
               onClick={() => router.push(`${pathname}/create`)}
             >
               등록
@@ -96,7 +96,7 @@ const LessonsContainer = () => {
         />
         <AddButton
           onClick={() => router.push(`${pathname}/create`)}
-          className="md:hidden fixed z-50 bottom-32 right-4 w-12 h-12 bg-white shadow-md rounded-full"
+          className="fixed bottom-32 right-4 z-50 h-12 w-12 rounded-full bg-white shadow-md md:hidden"
         />
       </section>
     </div>

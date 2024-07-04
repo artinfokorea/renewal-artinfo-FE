@@ -2,7 +2,7 @@ import React from "react"
 
 const BannerSkeleton = () => {
   return (
-    <div className="aspect-[4/1] w-full h-full rounded-xl my-12 md:my-16 bg-gray-200 animate-pulse" />
+    <div className="my-12 aspect-[4/1] h-full w-full animate-pulse rounded-xl bg-gray-200 md:my-16" />
   )
 }
 

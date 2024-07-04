@@ -99,16 +99,16 @@ const MobileFilterTab = ({ provinces, page, artFields }: Props) => {
   }, [selectedProfessional])
 
   return (
-    <div className="flex flex-col lg:hidden border relative rounded">
+    <div className="relative flex flex-col rounded border lg:hidden">
       <div
-        className={`grid text-main text-sm ${
+        className={`grid text-sm text-main ${
           page === "JOB" ? "grid-cols-3" : "grid-cols-2"
         }`}
       >
         {page === "JOB" && (
           <button
             onClick={() => handleSearchTab(SearchType.RECRUIT)}
-            className={`py-2 rounded ${
+            className={`rounded py-2 ${
               mobileSearchTab === SearchType.RECRUIT && "bg-whitesmoke"
             }`}
           >
@@ -117,7 +117,7 @@ const MobileFilterTab = ({ provinces, page, artFields }: Props) => {
         )}
         <button
           onClick={() => handleSearchTab(SearchType.REGION)}
-          className={`py-2 rounded ${
+          className={`rounded py-2 ${
             mobileSearchTab === SearchType.REGION && "bg-whitesmoke"
           }`}
         >
@@ -125,7 +125,7 @@ const MobileFilterTab = ({ provinces, page, artFields }: Props) => {
         </button>
         <button
           onClick={() => handleSearchTab(SearchType.MAJOR)}
-          className={`py-2 rounded ${
+          className={`rounded py-2 ${
             mobileSearchTab === SearchType.MAJOR && "bg-whitesmoke"
           }`}
         >

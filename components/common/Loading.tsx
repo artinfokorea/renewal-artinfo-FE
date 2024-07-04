@@ -10,7 +10,7 @@ export const Spinner = ({ className }: Props) => {
 
 export const Loading = () => {
   return (
-    <div className="fixed inset-0 md:h-screen flex items-center justify-center">
+    <div className="absolute inset-0 flex items-center justify-center">
       <Spinner className="h-12 w-12" />
     </div>
   )

@@ -29,10 +29,10 @@ const DetailContainer = ({ deleteJob, job }: Props) => {
   const [isDeleteConfirmDialog, setIsDeleteConfirmDialog] = useState(false)
 
   return (
-    <div className="mt-4 px-4 md:px-8 max-w-screen-lg mx-auto">
+    <div className="mx-auto mt-4 max-w-screen-lg px-4 md:px-8">
       <div className="flex flex-col md:flex-row">
         {job?.imageUrl && (
-          <div className="h-[244px] relative w-full md:w-[400px]">
+          <div className="relative h-[244px] w-full md:w-[400px]">
             <FallbackImage
               src={job?.imageUrl}
               alt="job_image"
@@ -45,18 +45,18 @@ const DetailContainer = ({ deleteJob, job }: Props) => {
           </div>
         )}
         <div
-          className={`py-2 flex-1 flex flex-col justify-center gap-2 md:gap-4 ${
+          className={`flex flex-1 flex-col justify-center gap-2 py-2 md:gap-4 ${
             job?.type !== JobType.RELIGION && "md:ml-12"
           }`}
         >
-          <h4 className="text-xl font-bold break-words mt-4 md:mt-0">
+          <h4 className="mt-4 break-words text-xl font-bold md:mt-0">
             {job?.title}
           </h4>
-          <div className="hidden md:flex my-2 items-center text-xs md:text-sm gap-2 text-white">
+          <div className="my-2 hidden items-center gap-2 text-xs text-white md:flex md:text-sm">
             {job?.majors?.majors?.slice(0, 3).map((major, index) => {
               if (job?.majors?.majors?.length > 3 && index === 2)
                 return (
-                  <Badge key={major.id} className="bg-main rounded-xl">
+                  <Badge key={major.id} className="rounded-xl bg-main">
                     <span>
                       {`${major.koName} 외 ${job?.majors?.majors.length - 3}`}
                     </span>
@@ -64,41 +64,41 @@ const DetailContainer = ({ deleteJob, job }: Props) => {
                 )
 
               return (
-                <Badge key={major.id} className="bg-main rounded-xl">
+                <Badge key={major.id} className="rounded-xl bg-main">
                   {major.koName}
                 </Badge>
               )
             })}
           </div>
-          <div className="flex md:hidden my-2 items-center text-xs md:text-sm gap-2 text-white">
+          <div className="my-2 flex items-center gap-2 text-xs text-white md:hidden md:text-sm">
             {job?.majors?.majors?.slice(0, 2).map((major, index) => {
               if (job?.majors?.majors?.length > 2 && index === 1)
                 return (
-                  <Badge key={major.id} className="bg-main rounded-xl">
+                  <Badge key={major.id} className="rounded-xl bg-main">
                     {major.koName}
                     <span>{` 외 ${job?.majors?.majors?.length - 2}`}</span>
                   </Badge>
                 )
 
               return (
-                <Badge key={major.id} className="bg-main rounded-xl">
+                <Badge key={major.id} className="rounded-xl bg-main">
                   {major.koName}
                 </Badge>
               )
             })}
           </div>
-          <p className="text-coolgray text-sm md:text-lg font-medium">
+          <p className="text-sm font-medium text-coolgray md:text-lg">
             {job?.address}
           </p>
-          <div className="flex justify-between text-coolgray text-sm md:text-lg font-medium">
+          <div className="flex justify-between text-sm font-medium text-coolgray md:text-lg">
             <span>{job?.companyName}</span>
             <span>{filter.YYYYMMDD(job?.endAt)}</span>
           </div>
         </div>
       </div>
       {user?.id === job?.authorId ? (
-        <div className="flex my-8 h-8 items-center gap-4 md:gap-6">
-          <div className="flex-1 border-b-2 border-whitesmoke w-full" />
+        <div className="my-8 flex h-8 items-center gap-4 md:gap-6">
+          <div className="w-full flex-1 border-b-2 border-whitesmoke" />
           <ItemManageBox
             handleEdit={() =>
               router.push(`${pathname}?type=edit&jobType=${job?.type}`)
@@ -110,7 +110,7 @@ const DetailContainer = ({ deleteJob, job }: Props) => {
           />
         </div>
       ) : (
-        <div className="my-8 flex-1 border-b border-whitesmoke w-full" />
+        <div className="mx-4 my-8 flex-1 border-b-2 border-whitesmoke md:mx-0" />
       )}
       {job?.contents && (
         <div dangerouslySetInnerHTML={{ __html: job.contents }}></div>

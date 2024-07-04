@@ -17,32 +17,32 @@ const ReligionCard = forwardRef<HTMLDivElement, Props>(
 
     return (
       <Link href={`${pathname}/${job.id}`}>
-        <div className="md:hover:bg-[#f5f5f5] rounded-xl h-[130px] md:h-[192px]  flex items-center">
+        <div className="flex h-[130px] items-center rounded-xl md:h-[192px] md:hover:bg-[#f5f5f5]">
           <div className="flex items-center md:px-4">
-            <div className="bg-white h-[100px] md:h-[140px] w-[170px] md:w-[230px] border-whitesmoke border-2 rounded-xl flex justify-center items-center px-2">
-              <span className="font-bold text-base md:text-xl text-center break-all">
+            <div className="flex h-[100px] w-[170px] items-center justify-center rounded-xl border-2 border-whitesmoke bg-white px-2 md:h-[140px] md:w-[230px]">
+              <span className="break-all text-center text-base font-bold md:text-xl">
                 {job.companyName}
               </span>
             </div>
 
-            <div className="ml-4 md:ml-12 py-2 flex-1">
-              <h4 className="text-sm md:text-xl font-bold line-clamp-2 break-all">
+            <div className="ml-4 flex-1 py-2 md:ml-12">
+              <h4 className="line-clamp-2 break-all text-sm font-bold md:text-xl">
                 {job.title}
               </h4>
-              <div className="flex gap-2 my-2 items-center">
+              <div className="my-2 flex items-center gap-2">
                 {job.address && (
-                  <Badge className="bg-white text-[10px] md:text-sm text-main rounded-xl whitespace-nowrap border-main border">
+                  <Badge className="whitespace-nowrap rounded-xl border border-main bg-white text-[10px] text-main md:text-sm">
                     {job.address.split(" ")[0].substring(0, 2)}
                   </Badge>
                 )}
 
-                <div className="hidden md:flex gap-2">
+                <div className="hidden gap-2 md:flex">
                   {job?.majors?.majors?.slice(0, 3).map((major, index) => {
                     if (job?.majors?.majors?.length > 3 && index === 2)
                       return (
                         <Badge
                           key={major.id}
-                          className="bg-main text-sm text-white rounded-xl"
+                          className="rounded-xl bg-main text-sm text-white"
                         >
                           <span className="text-sm text-white">
                             {`${major.koName} 외 ${
@@ -55,20 +55,20 @@ const ReligionCard = forwardRef<HTMLDivElement, Props>(
                     return (
                       <Badge
                         key={major.id}
-                        className="bg-main text-sm text-white rounded-xl"
+                        className="rounded-xl bg-main text-sm text-white"
                       >
                         {major.koName}
                       </Badge>
                     )
                   })}
                 </div>
-                <div className="flex md:hidden gap-2">
+                <div className="flex gap-2 md:hidden">
                   {job?.majors?.majors?.slice(0, 1).map((major, index) => {
                     if (job?.majors?.majors?.length > 1 && index === 0)
                       return (
                         <Badge
                           key={major.id}
-                          className="bg-main text-[10px] text-white rounded-xl whitespace-nowrap"
+                          className="whitespace-nowrap rounded-xl bg-main text-[10px] text-white"
                         >
                           <span>
                             {`${major.koName} 외 ${
@@ -81,7 +81,7 @@ const ReligionCard = forwardRef<HTMLDivElement, Props>(
                     return (
                       <Badge
                         key={major.id}
-                        className="bg-main text-[10px] text-white rounded-xl whitespace-nowrap"
+                        className="whitespace-nowrap rounded-xl bg-main text-[10px] text-white"
                       >
                         {major.koName}
                       </Badge>
@@ -89,7 +89,7 @@ const ReligionCard = forwardRef<HTMLDivElement, Props>(
                   })}
                 </div>
               </div>
-              <div className="flex justify-between text-coolgray text-xs md:text-base">
+              <div className="flex justify-between text-xs text-coolgray md:text-base">
                 <span className="line-clamp-2 break-all">
                   {job.companyName}
                 </span>

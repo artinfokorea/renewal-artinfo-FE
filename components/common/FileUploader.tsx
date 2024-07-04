@@ -1,37 +1,37 @@
-"use client";
+"use client"
 
-import useToast from "@/hooks/useToast";
-import { ChangeEvent, forwardRef, ForwardedRef } from "react";
+import useToast from "@/hooks/useToast"
+import { ChangeEvent, forwardRef, ForwardedRef } from "react"
 
 type Props = {
-  acceptType?: "IMAGE" | "VIDEO" | "DOC";
-  uploadedFiles?: (files: File[]) => void;
-  multiple?: boolean;
-};
+  acceptType?: "IMAGE" | "VIDEO" | "DOC"
+  uploadedFiles?: (files: File[]) => void
+  multiple?: boolean
+}
 
 function FileUploader(
   { acceptType, uploadedFiles, multiple }: Props,
-  ref: ForwardedRef<HTMLInputElement>
+  ref: ForwardedRef<HTMLInputElement>,
 ) {
-  const { errorToast } = useToast();
+  const { errorToast } = useToast()
 
   const handleChangeFile = (e: ChangeEvent<HTMLInputElement>) => {
-    const { files } = e.target as any;
+    const { files } = e.target as any
     if (!files) {
-      return;
+      return
     }
 
-    const maxFile = 5;
+    const maxFile = 5
 
     if (files.length > maxFile) {
-      errorToast("5장이상은 등록 할 수 없습니다.");
-      e.preventDefault();
+      errorToast("5장이상은 등록 할 수 없습니다.")
+      e.preventDefault()
     }
 
     if (uploadedFiles) {
-      uploadedFiles([...files]);
+      uploadedFiles([...files])
     }
-  };
+  }
   return (
     <div className="hidden">
       <input
@@ -42,7 +42,7 @@ function FileUploader(
         onChange={handleChangeFile}
       />
     </div>
-  );
+  )
 }
 
-export default forwardRef<HTMLInputElement, Props>(FileUploader);
+export default forwardRef<HTMLInputElement, Props>(FileUploader)

@@ -10,7 +10,7 @@ interface Props {
 const AddButton = ({ className, onClick }: Props) => {
   return (
     <Button onClick={onClick} className={className}>
-      <PlusIcon className="w-6 h-6" />
+      <PlusIcon className="h-6 w-6" />
     </Button>
   )
 }

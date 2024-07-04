@@ -20,8 +20,8 @@ import { JOB } from "@/types/jobs"
 const ToastEditor = dynamic(() => import("../editor/ToastEditor"), {
   ssr: false,
   loading: () => (
-    <div className="h-[400px] flex items-center justify-center">
-      <Spinner className="w-8 h-8" />
+    <div className="flex h-[400px] items-center justify-center">
+      <Spinner className="h-8 w-8" />
     </div>
   ),
 })
@@ -108,34 +108,34 @@ const ReligionForm = ({ handleReligionJob, isLoading, job }: Props) => {
 
   return (
     <form
-      className="max-w-screen-lg mx-auto py-8 px-2 font-semibold text-sm"
+      className="mx-auto max-w-screen-lg px-2 py-8 text-sm font-semibold"
       onSubmit={handleSubmit(handleReligionJob)}
     >
-      <h2 className="text-center md:text-2xl my-4 md:my-12 font-bold">
+      <h2 className="my-4 text-center font-bold md:my-12 md:text-2xl">
         채용 등록
       </h2>
-      <div className="flex-col mb-2">
+      <div className="mb-2 flex-col">
         <Input
           {...register("title")}
-          className="focus:outline-none p-2 border border-whitesmoke rounded-lg w-full md:w-1/2"
+          className="w-full rounded-lg border border-whitesmoke p-2 focus:outline-none md:w-1/2"
           placeholder="제목을 입력해주세요."
         />
         <ErrorMessage
           errors={errors}
           name="title"
           render={({ message }) => (
-            <p className="text-error text-xs font-semibold">{message}</p>
+            <p className="text-xs font-semibold text-error">{message}</p>
           )}
         />
       </div>
-      <div className="flex flex-col md:flex-row my-2">
-        <div className="flex-row my-2 items-center gap-1 flex flex-wrap md:mb-0">
+      <div className="my-2 flex flex-col md:flex-row">
+        <div className="my-2 flex flex-row flex-wrap items-center gap-1 md:mb-0">
           <Button
             type="button"
             onClick={() => setIsMajorDialog(!isMajorDialog)}
-            className="border text-main h-8 text-sm rounded-full flex gap-1"
+            className="flex h-8 gap-1 rounded-full border text-sm text-main"
           >
-            <PlusIcon className="w-4 h-4 text-main" />
+            <PlusIcon className="h-4 w-4 text-main" />
             <span>전공</span>
           </Button>
           {watch("majors")
@@ -144,7 +144,7 @@ const ReligionForm = ({ handleReligionJob, isLoading, job }: Props) => {
               return (
                 <Badge
                   key={major.id}
-                  className="bg-main text-white text-xs md:text-sm h-8 whitespace-nowrap"
+                  className="h-8 whitespace-nowrap bg-main text-xs text-white md:text-sm"
                 >
                   {watch("majors").length > 1 && index === 0
                     ? `${major.koName} 외 ${watch("majors").length - 1}`
@@ -156,80 +156,80 @@ const ReligionForm = ({ handleReligionJob, isLoading, job }: Props) => {
             errors={errors}
             name="majors"
             render={({ message }) => (
-              <p className="text-error text-xs font-semibold">{message}</p>
+              <p className="text-xs font-semibold text-error">{message}</p>
             )}
           />
         </div>
       </div>
-      <div className="flex flex-col md:flex-row gap-2">
-        <div className="md:basis-1/2 flex items-center my-2 gap-4 md:gap-8 md:px-6">
-          <span className="text-sm font-medium text-main whitespace-nowrap">
+      <div className="flex flex-col gap-2 md:flex-row">
+        <div className="my-2 flex items-center gap-4 md:basis-1/2 md:gap-8 md:px-6">
+          <span className="whitespace-nowrap text-sm font-medium text-main">
             단체명
           </span>
 
           <Input
             {...register("companyName")}
-            className="focus:outline-none p-2 border border-whitesmoke rounded-lg w-full"
+            className="w-full rounded-lg border border-whitesmoke p-2 focus:outline-none"
             placeholder="단체 이름을 입력해주세요."
           />
           <ErrorMessage
             errors={errors}
             name="companyName"
             render={({ message }) => (
-              <p className="text-error text-xs font-semibold">{message}</p>
+              <p className="text-xs font-semibold text-error">{message}</p>
             )}
           />
         </div>
 
-        <div className="md:basis-1/2 flex items-center gap-4">
-          <span className="text-sm font-medium text-main whitespace-nowrap">
+        <div className="flex items-center gap-4 md:basis-1/2">
+          <span className="whitespace-nowrap text-sm font-medium text-main">
             사례비
           </span>
           <Input
             {...register("fee")}
             placeholder="100000"
             type="number"
-            className="focus:outline-none p-2 border border-whitesmoke rounded-lg w-full md:w-1/2"
+            className="w-full rounded-lg border border-whitesmoke p-2 focus:outline-none md:w-1/2"
           />
           <ErrorMessage
             errors={errors}
             name="fee"
             render={({ message }) => (
-              <p className="text-error text-xs font-semibold">{message}</p>
+              <p className="text-xs font-semibold text-error">{message}</p>
             )}
           />
         </div>
       </div>
-      <div className="flex flex-col md:flex-row md:items-center my-2 md:my-0 gap-2">
+      <div className="my-2 flex flex-col gap-2 md:my-0 md:flex-row md:items-center">
         <Button
           onClick={() => setIsPostDialog(!isPostDialog)}
           type="button"
-          className="text-sm border-whitesmoke border font-medium text-main px-4 h-9"
+          className="h-9 border border-whitesmoke px-4 text-sm font-medium text-main"
         >
           주소검색
         </Button>
         <Input
           {...register("address")}
-          className="focus:outline-none p-2 border border-whitesmoke rounded-lg w-full"
+          className="w-full rounded-lg border border-whitesmoke p-2 focus:outline-none"
           placeholder="주소 검색을 해주세요."
         />
         <ErrorMessage
           errors={errors}
           name="address"
           render={({ message }) => (
-            <p className="text-error text-xs font-semibold">{message}</p>
+            <p className="text-xs font-semibold text-error">{message}</p>
           )}
         />
         <Input
           {...register("addressDetail")}
-          className="focus:outline-none p-2 border border-whitesmoke rounded-lg w-full"
+          className="w-full rounded-lg border border-whitesmoke p-2 focus:outline-none"
           placeholder="상세 주소를 입력해주세요."
         />
         <ErrorMessage
           errors={errors}
           name="addressDetail"
           render={({ message }) => (
-            <p className="text-error text-xs font-semibold">{message}</p>
+            <p className="text-xs font-semibold text-error">{message}</p>
           )}
         />
       </div>
@@ -251,7 +251,7 @@ const ReligionForm = ({ handleReligionJob, isLoading, job }: Props) => {
       <div className="flex justify-end gap-2">
         <Button
           type="button"
-          className="border rounded-3xl text-sm h-9 px-6"
+          className="h-9 rounded-3xl border px-6 text-sm"
           onClick={() => router.back()}
         >
           취소
@@ -259,7 +259,7 @@ const ReligionForm = ({ handleReligionJob, isLoading, job }: Props) => {
         <Button
           disabled={isLoading}
           type="submit"
-          className="rounded-3xl text-sm h-9 bg-main text-white px-6"
+          className="h-9 rounded-3xl bg-main px-6 text-sm text-white"
         >
           등록
         </Button>

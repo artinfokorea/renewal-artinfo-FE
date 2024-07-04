@@ -10,13 +10,12 @@ import { usePathname, useRouter } from "next/navigation"
 import * as yup from "yup"
 import DistrictDialog from "../dialog/DistrictDialog"
 import useToast from "@/hooks/useToast"
-import { uploadImages } from "@/apis/system"
 import { LESSON } from "@/types/lessons"
-import { useLoading } from "@toss/use-loading"
 import { ErrorMessage } from "@hookform/error-message"
 import ImageField from "../common/ImageField"
 import { Spinner } from "../common/Loading"
 import { lessonSchema } from "@/lib/schemas"
+import useImageCompress from "@/hooks/useImageCompress"
 
 export type LessonFormData = yup.InferType<typeof lessonSchema>
 
@@ -32,7 +31,7 @@ const LessonForm = ({ handleLesson, isFormLoading, lesson }: Props) => {
   const pathname = usePathname()
   const { successToast, errorToast } = useToast()
   const [isDistrictDialog, setIsDistrictDialog] = useState(false)
-  const [isImageLoading, imageLoadingTransition] = useLoading()
+  const { compressAndUpload, isUploadLoading } = useImageCompress()
 
   const {
     register,
@@ -64,10 +63,8 @@ const LessonForm = ({ handleLesson, isFormLoading, lesson }: Props) => {
       let newAreas
 
       if (currentAreas.length >= 3) {
-        // 이미 3개가 선택되어 있다면, 첫 번째 항목을 제거하고 새 항목을 추가합니다.
         newAreas = [...currentAreas.slice(1), area]
       } else {
-        // 3개 미만이라면 그냥 추가합니다.
         newAreas = [...currentAreas, area]
       }
 
@@ -81,9 +78,7 @@ const LessonForm = ({ handleLesson, isFormLoading, lesson }: Props) => {
 
   const handleUploadedFiles = async (files: File[]) => {
     try {
-      const uploadResponse = await imageLoadingTransition(
-        uploadImages(files as File[]),
-      )
+      const uploadResponse = await compressAndUpload(files)
       successToast("프로필 이미지가 등록되었습니다.")
       setValue("imageUrl", uploadResponse.images[0].url as string)
     } catch (error: any) {
@@ -94,51 +89,51 @@ const LessonForm = ({ handleLesson, isFormLoading, lesson }: Props) => {
 
   return (
     <>
-      <form className="mt-8 md:mt-16 px-4">
+      <form className="mt-8 px-4 md:mt-16">
         <div className="flex flex-col md:flex-row md:gap-24">
           <ImageField
             imageUrl={watch("imageUrl") || ""}
-            isImageLoading={isImageLoading}
+            isImageLoading={isUploadLoading}
             alt="job_company_image"
             deleteImage={deleteImage}
             openFileUploader={openFileUploader}
-            className="h-[360px] md:h-[300px] w-[300px] md:w-[240px] mx-auto"
+            className="mx-auto h-[360px] w-[300px] md:h-[300px] md:w-[240px]"
           />
           <div className="flex-1 p-2 md:p-0">
-            <h4 className="text-xl md:text-2xl font-bold">레슨 등록</h4>
+            <h4 className="text-xl font-bold md:text-2xl">레슨 등록</h4>
             <div className="mt-6 flex flex-col gap-4">
-              <div className="flex gap-6 text-sm md:text-lg items-center">
+              <div className="flex items-center gap-6 text-sm md:text-lg">
                 <span className="font-bold">가격</span>
-                <div className="flex whitespace-nowrap items-center">
+                <div className="flex items-center whitespace-nowrap">
                   <Input
                     {...register("pay")}
                     type="number"
-                    className="border px-2 py-1 mr-1 rounded-lg focus:outline-none w-full md:w-[200px]"
+                    className="mr-1 w-full rounded-lg border px-2 py-1 focus:outline-none md:w-[200px]"
                   />
                   <span className="text-lg">원</span>
                   <span className="text-xs leading-6">(1회)</span>
                 </div>
               </div>
-              <div className="flex gap-6 items-center text-sm md:text-lg">
-                <span className="font-bold whitespace-nowrap">지역</span>
+              <div className="flex items-center gap-6 text-sm md:text-lg">
+                <span className="whitespace-nowrap font-bold">지역</span>
                 <div className="flex items-center gap-4">
                   <Button
                     onClick={() => setIsDistrictDialog(!isDistrictDialog)}
-                    className="text-main font-medium border px-2 h-8 rounded-lg whitespace-nowrap"
+                    className="h-8 whitespace-nowrap rounded-lg border px-2 font-medium text-main"
                   >
                     지역 등록
                   </Button>
-                  <span className="text-silver font-medium text-xs md:text-base">
+                  <span className="text-xs font-medium text-silver md:text-base">
                     지역은 최대 3개까지 등록 가능합니다.
                   </span>
                 </div>
               </div>
-              <ul className="border rounded-lg h-32 w-full md:w-1/2 p-2">
+              <ul className="h-32 w-full rounded-lg border p-2 md:w-1/2">
                 {watch("areas")?.map((area: string) => (
                   <li key={area} className="flex items-center gap-2">
                     <span>{area}</span>{" "}
                     <button onClick={() => handleArea(area)}>
-                      <CloseIcon className="w-4 h-4" />
+                      <CloseIcon className="h-4 w-4" />
                     </button>
                   </li>
                 ))}
@@ -146,54 +141,54 @@ const LessonForm = ({ handleLesson, isFormLoading, lesson }: Props) => {
             </div>
           </div>
         </div>
-        <div className="border-whitesmoke border-b-2 my-8 " />
+        <div className="my-8 border-b-2 border-whitesmoke" />
         <div className="flex flex-col gap-4 md:flex-row md:gap-8">
-          <div className="md:w-1/2 bg-whitesmoke rounded-md p-4 md:p-8 h-[380px] overflow-y-auto">
-            <p className="text-coolgray font-semibold md:text-lg mb-3 md:mb-6">
+          <div className="h-[380px] overflow-y-auto rounded-md bg-whitesmoke p-4 md:w-1/2 md:p-8">
+            <p className="mb-3 font-semibold text-coolgray md:mb-6 md:text-lg">
               전문가 소개
             </p>
             <Textarea
               {...register("introduction")}
               placeholder="전문가 소개를 입력해주세요."
-              className="border p-3 rounded-lg resize-none text-sm md:text-lg focus:outline-none w-full h-4/5"
+              className="h-4/5 w-full resize-none rounded-lg border p-3 text-sm focus:outline-none md:text-lg"
             />
             <ErrorMessage
               errors={errors}
               name="introduction"
               render={({ message }) => (
-                <p className="text-error text-xs font-semibold md:basis-1/2">
+                <p className="text-xs font-semibold text-error md:basis-1/2">
                   {message}
                 </p>
               )}
             />
           </div>
-          <div className="md:w-1/2 bg-whitesmoke rounded-md p-4 md:p-8 h-[380px] overflow-y-auto">
-            <p className="text-coolgray font-semibold md:text-lg mb-3 md:mb-6">
+          <div className="h-[380px] overflow-y-auto rounded-md bg-whitesmoke p-4 md:w-1/2 md:p-8">
+            <p className="mb-3 font-semibold text-coolgray md:mb-6 md:text-lg">
               경력
             </p>
             <Textarea
               {...register("career")}
               placeholder="경력 사항을 입력해주세요."
-              className="border p-3 rounded-lg resize-none text-sm md:text-lg focus:outline-none w-full h-4/5"
+              className="h-4/5 w-full resize-none rounded-lg border p-3 text-sm focus:outline-none md:text-lg"
             />
             <ErrorMessage
               errors={errors}
               name="career"
               render={({ message }) => (
-                <p className="text-error text-xs font-semibold md:basis-1/2">
+                <p className="text-xs font-semibold text-error md:basis-1/2">
                   {message}
                 </p>
               )}
             />
           </div>
         </div>
-        <div className="flex justify-end gap-4 mt-8">
+        <div className="mt-8 flex justify-end gap-4">
           <Button
             onClick={() =>
               router.push(pathname.slice(0, pathname.lastIndexOf("/")))
             }
             type="button"
-            className="border-[3px] rounded-full font-semibold w-20 py-1"
+            className="w-20 rounded-full border-[3px] py-1 font-semibold"
           >
             취소
           </Button>
@@ -201,10 +196,10 @@ const LessonForm = ({ handleLesson, isFormLoading, lesson }: Props) => {
             type="button"
             onClick={handleSubmit(handleLesson)}
             disabled={isFormLoading}
-            className="bg-main text-white rounded-full font-semibold px-6 w-20"
+            className="w-20 rounded-full bg-main px-6 font-semibold text-white"
           >
             {isFormLoading ? (
-              <Spinner className="w-6 h-6" />
+              <Spinner className="h-6 w-6" />
             ) : lesson ? (
               "수정"
             ) : (

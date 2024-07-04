@@ -38,20 +38,20 @@ const MajorDialog = ({
     >
       <div className="fixed inset-0 bg-black/30" aria-hidden="true" />
       <div className="fixed inset-0 flex w-screen items-center justify-center p-4">
-        <DialogPanel className="z-10 max-w-[650px] h-[500px] md:h-[800px] bg-white rounded-xl py-4 overflow-auto mx-auto">
+        <DialogPanel className="z-10 mx-auto h-[500px] max-w-[650px] overflow-auto rounded-xl bg-white py-4 md:h-[800px]">
           <div className="relative mb-4">
-            <DialogTitle className=" flex-1 md:text-lg text-center font-semibold ">
+            <DialogTitle className="flex-1 text-center font-semibold md:text-lg">
               전공선택
             </DialogTitle>
             <Button onClick={close} className="absolute -top-[8px] right-2">
-              <CloseIcon className=" w-6 h-6 text-silver" />
+              <CloseIcon className="h-6 w-6 text-silver" />
             </Button>
           </div>
           <div className="border-b-2 border-whitesmoke" />
           <div className="p-4 md:px-8">
             {MajorCategoryValues.map(({ key, value }) => (
-              <div key={key} className="flex flex-col gap-3 my-3">
-                <span className="text-coolgray font-bold">{value}</span>
+              <div key={key} className="my-3 flex flex-col gap-3">
+                <span className="font-bold text-coolgray">{value}</span>
                 <div className="flex flex-wrap gap-2">
                   {data?.majors.map(major => {
                     return (
@@ -60,8 +60,7 @@ const MajorDialog = ({
                           type="button"
                           key={major.id}
                           onClick={() => selectMajor(major)}
-                          className={`text-white text-sm h-6 md:text-base md:h-7 px-3 rounded-xl
-                          ${
+                          className={`h-6 rounded-xl px-3 text-sm text-white md:h-7 md:text-base ${
                             selectedMajorIds.includes(major.id)
                               ? "bg-main"
                               : "bg-lavender"
@@ -80,7 +79,7 @@ const MajorDialog = ({
             <div className="flex justify-center">
               <Button
                 type="button"
-                className={` text-white rounded-lg text-sm bg-main h-8`}
+                className={`h-8 rounded-lg bg-main text-sm text-white`}
                 onClick={close}
               >
                 선택 완료

@@ -58,7 +58,7 @@ const page = () => {
       })
   }, [])
   return (
-    <section className="max-w-screen-lg mx-auto">
+    <section className="mx-auto max-w-screen-lg">
       <LessonForm
         handleLesson={handleLessonForm}
         isFormLoading={isHandleFormLoading}
@@ -68,8 +68,8 @@ const page = () => {
         isOpen={isQualificationDialog}
         handleDialog={() => router.push("/my-profile")}
       >
-        <div className="flex flex-col gap-4 justify-center my-4">
-          <p className="text-silver text-sm md:text-base">
+        <div className="my-4 flex flex-col justify-center gap-4">
+          <p className="text-sm text-silver md:text-base">
             {qualificationErrorMessages}
           </p>
           <Button
@@ -85,8 +85,8 @@ const page = () => {
         isOpen={isDuplicateDialog}
         handleDialog={() => router.push("/lessons")}
       >
-        <div className="flex flex-col gap-4 justify-center my-4">
-          <p className="text-silver text-sm md:text-base">
+        <div className="my-4 flex flex-col justify-center gap-4">
+          <p className="text-sm text-silver md:text-base">
             {qualificationErrorMessages}
           </p>
           <Button

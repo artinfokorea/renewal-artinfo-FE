@@ -25,7 +25,7 @@ const ImageField = ({
   return (
     <>
       {imageUrl ? (
-        <div className={`rounded-md relative ${className}`}>
+        <div className={`relative rounded-md ${className}`}>
           <Image
             src={imageUrl || ""}
             alt={alt}
@@ -34,29 +34,29 @@ const ImageField = ({
             sizes="(max-width: 768px) 100px 190px, 198px 240px"
           />
           <Button
-            className="absolute top-2 right-2 rounded-full opacity-40 bg-white p-2"
+            className="absolute right-2 top-2 rounded-full bg-white p-2 opacity-40"
             onClick={deleteImage}
           >
-            <CloseIcon className="w-6 h-6 text-primary" />
+            <CloseIcon className="h-6 w-6 text-primary" />
           </Button>
         </div>
       ) : isImageLoading ? (
-        <div className={`flex justify-center items-center ${className}`}>
-          <Spinner className="w-10 h-10" />
+        <div className={`flex items-center justify-center ${className}`}>
+          <Spinner className="h-10 w-10" />
         </div>
       ) : (
         <div
-          className={`bg-whitesmoke rounded-md flex flex-col items-center justify-center gap-6 ${className}`}
+          className={`flex flex-col items-center justify-center gap-6 rounded-md bg-whitesmoke ${className}`}
         >
           <div className="flex flex-col items-center gap-2">
-            <PhotoIcon className="w-12 h-12 text-dimgray" />
-            <h5 className="font-bold text-sm md:text-base">
+            <PhotoIcon className="h-12 w-12 text-dimgray" />
+            <h5 className="text-sm font-bold md:text-base">
               대표 이미지를 등록해주세요.
             </h5>
           </div>
           <Button
             type="button"
-            className="bg-white text-silver font-medium h-8 px-6"
+            className="h-8 bg-white px-6 font-medium text-silver"
             onClick={openFileUploader}
           >
             이미지 선택

@@ -1,11 +1,11 @@
-import { Dialog, DialogPanel } from "@headlessui/react";
-import React from "react";
-import DaumPostcode from "react-daum-postcode";
+import { Dialog, DialogPanel } from "@headlessui/react"
+import React from "react"
+import DaumPostcode from "react-daum-postcode"
 
 interface Props {
-  isOpen: boolean;
-  close: () => void;
-  setValue: (address: string) => void;
+  isOpen: boolean
+  close: () => void
+  setValue: (address: string) => void
 }
 
 const PostCodeDialog = ({ isOpen, close, setValue }: Props) => {
@@ -13,12 +13,12 @@ const PostCodeDialog = ({ isOpen, close, setValue }: Props) => {
     width: "350px",
     height: "500px",
     border: "1.4px solid #333333",
-  };
+  }
 
   const completeHandler = (data: any) => {
-    setValue(data.address);
-    close();
-  };
+    setValue(data.address)
+    close()
+  }
 
   return (
     <Dialog
@@ -30,7 +30,7 @@ const PostCodeDialog = ({ isOpen, close, setValue }: Props) => {
         <DaumPostcode style={style} onComplete={completeHandler} />
       </DialogPanel>
     </Dialog>
-  );
-};
+  )
+}
 
-export default PostCodeDialog;
+export default PostCodeDialog

@@ -5,19 +5,11 @@ import { yupResolver } from "@hookform/resolvers/yup"
 import * as yup from "yup"
 import React, { useEffect, useState } from "react"
 import { useLoading } from "@toss/use-loading"
-import {
-  sendPhoneVerificationCode,
-  uploadImages,
-  verifyPhoneCode,
-} from "@/apis/system"
+import { sendPhoneVerificationCode, verifyPhoneCode } from "@/apis/system"
 import useToast from "@/hooks/useToast"
 import { updateUser, updateUserPassword, updateUserPhone } from "@/apis/users"
 import { SchoolType } from "@/types/lessons"
-import {
-  useQuery,
-  useQueryClient,
-  useSuspenseQuery,
-} from "@tanstack/react-query"
+import { useQuery, useQueryClient } from "@tanstack/react-query"
 import { queries } from "@/lib/queries"
 import MajorDialog from "@/components/dialog/MajorDialog"
 import PhoneDialog from "@/components/dialog/PhoneDialog"
@@ -32,12 +24,12 @@ import {
 } from "@/apis/auth"
 import { MAJOR } from "@/types/majors"
 import { profileSchema } from "@/lib/schemas"
+import useImageCompress from "@/hooks/useImageCompress"
 
 export type ProfileFormData = yup.InferType<typeof profileSchema>
 
 const ProfileContainer = () => {
   const [isMajorDialog, setIsMajorDialog] = useState(false)
-  const [isImageUploadLoading, imageStartTransition] = useLoading()
   const { successToast, errorToast } = useToast()
   const [isUpdateForm, setIsUpdateForm] = useState(false)
   const [isUpdateProfileLoading, updateProfileStartTransition] = useLoading()
@@ -47,8 +39,9 @@ const ProfileContainer = () => {
   const [isPasswordDialog, setIsPasswordDialog] = useState(false)
   const queryClient = useQueryClient()
   const filter = filters()
+  const { compressAndUpload, isUploadLoading } = useImageCompress()
 
-  const { data: user } = useSuspenseQuery({
+  const { data: user } = useQuery({
     ...queries.users.detail(),
   })
 
@@ -89,9 +82,8 @@ const ProfileContainer = () => {
 
   const handleUploadedFiles = async (files: File[]) => {
     try {
-      const uploadResponse = await imageStartTransition(
-        uploadImages(files as File[]),
-      )
+      const uploadResponse = await compressAndUpload(files)
+
       successToast("프로필 이미지가 등록되었습니다.")
       setValue("imageUrl", uploadResponse.images[0].url as string)
     } catch (error: any) {
@@ -208,7 +200,7 @@ const ProfileContainer = () => {
 
   const sendEmailVerifyCode = async () => {
     try {
-      await sendEmailVerificationCode(user?.email)
+      await sendEmailVerificationCode(user?.email as string)
       successToast("인증코드가 전송되었습니다.")
     } catch (error: any) {
       console.log("error", error)
@@ -220,7 +212,7 @@ const ProfileContainer = () => {
 
   const checkEmailVerifyCode = async (verification: string) => {
     try {
-      await checkEmailVerificationCode(user?.email, verification)
+      await checkEmailVerificationCode(user?.email as string, verification)
       successToast("이메일 인증이 완료되었습니다.")
     } catch (error: any) {
       if (error.response.data.code === "VERIFICATION-001") {
@@ -234,27 +226,26 @@ const ProfileContainer = () => {
   }
 
   return (
-    <section className="max-w-screen-lg mx-auto">
-      {user && (
-        <ProfileForm
-          user={user}
-          isUpdateForm={isUpdateForm}
-          isUpdateProfileLoading={isUpdateProfileLoading}
-          isImageUploadLoading={isImageUploadLoading}
-          handleUploadedFiles={handleUploadedFiles}
-          handleSelectMajor={handleSelectMajor}
-          handleMajorDialog={() => setIsMajorDialog(!isMajorDialog)}
-          handlePhoneDialog={() => setIsPhoneDialog(!isPhoneDialog)}
-          handleUpdateForm={() => setIsUpdateForm(!isUpdateForm)}
-          handlePasswordDialog={() => setIsPasswordDialog(!isPasswordDialog)}
-          isDirty={isDirty}
-          setValue={setValue}
-          errors={errors}
-          register={register}
-          handleSubmit={handleSubmit(updateProfile)}
-          watch={watch}
-        />
-      )}
+    <section className="mx-auto max-w-screen-lg">
+      <ProfileForm
+        user={user}
+        isUpdateForm={isUpdateForm}
+        isUpdateProfileLoading={isUpdateProfileLoading}
+        isImageUploadLoading={isUploadLoading}
+        handleUploadedFiles={handleUploadedFiles}
+        handleSelectMajor={handleSelectMajor}
+        handleMajorDialog={() => setIsMajorDialog(!isMajorDialog)}
+        handlePhoneDialog={() => setIsPhoneDialog(!isPhoneDialog)}
+        handleUpdateForm={() => setIsUpdateForm(!isUpdateForm)}
+        handlePasswordDialog={() => setIsPasswordDialog(!isPasswordDialog)}
+        isDirty={isDirty}
+        setValue={setValue}
+        errors={errors}
+        register={register}
+        handleSubmit={handleSubmit(updateProfile)}
+        watch={watch}
+      />
+
       <MajorDialog
         open={isMajorDialog}
         close={() => setIsMajorDialog(!isMajorDialog)}

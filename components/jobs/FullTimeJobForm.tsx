@@ -14,18 +14,17 @@ import { Badge } from "../ui/badge"
 import PostCodeDialog from "../dialog/PostCodeDialog"
 import { MAJOR } from "@/types/majors"
 import { JOB } from "@/types/jobs"
-import { uploadImages } from "@/apis/system"
 import useToast from "@/hooks/useToast"
-import { useLoading } from "@toss/use-loading"
 import ImageField from "../common/ImageField"
 import { Spinner } from "../common/Loading"
 import { jobSchema } from "@/lib/schemas"
+import useImageCompress from "@/hooks/useImageCompress"
 
 const ToastEditor = dynamic(() => import("../editor/ToastEditor"), {
   ssr: false,
   loading: () => (
-    <div className="h-[400px] flex items-center justify-center">
-      <Spinner className="w-8 h-8" />
+    <div className="flex h-[400px] items-center justify-center">
+      <Spinner className="h-8 w-8" />
     </div>
   ),
 })
@@ -49,8 +48,8 @@ const FullTimeJobForm = ({
   const fileUploader = useRef<HTMLInputElement>(null)
   const [isMajorDialog, setIsMajorDialog] = useState(false)
   const [isPostDialog, setIsPostDialog] = useState(false)
-  const [isImageLoading, imageLoadingTransition] = useLoading()
   const { successToast, errorToast } = useToast()
+  const { compressAndUpload, isUploadLoading } = useImageCompress()
 
   const {
     register,
@@ -80,9 +79,7 @@ const FullTimeJobForm = ({
 
   const handleUploadedFiles = async (files: File[]) => {
     try {
-      const uploadResponse = await imageLoadingTransition(
-        uploadImages(files as File[]),
-      )
+      const uploadResponse = await compressAndUpload(files)
       successToast("프로필 이미지가 등록되었습니다.")
       setValue("imageUrl", uploadResponse.images[0].url as string)
     } catch (error: any) {
@@ -110,53 +107,53 @@ const FullTimeJobForm = ({
 
   return (
     <form
-      className="max-w-screen-lg mx-auto py-4 px-2"
+      className="mx-auto max-w-screen-lg px-2 py-4"
       onSubmit={handleSubmit(handleFullTimeJob)}
     >
-      <h2 className="text-center md:text-2xl my-4 md:my-12 font-bold">
+      <h2 className="my-4 text-center font-bold md:my-12 md:text-2xl">
         채용 등록
       </h2>
       <div className="flex flex-col md:flex-row">
         {withImage && (
           <ImageField
             imageUrl={watch("imageUrl") || ""}
-            isImageLoading={isImageLoading}
+            isImageLoading={isUploadLoading}
             alt="job_company_image"
             deleteImage={deleteImage}
             openFileUploader={openFileUploader}
-            className="h-[190px] md:h-[244px] w-full md:w-[400px]"
+            className="h-[190px] w-full md:h-[244px] md:w-[400px]"
           />
         )}
         <div
-          className={`flex flex-col text-dimgray flex-1 ${
-            withImage ? "md:ml-16 md:my-4" : "w-full"
+          className={`flex flex-1 flex-col text-dimgray ${
+            withImage ? "md:my-4 md:ml-16" : "w-full"
           }`}
         >
-          <div className="mt-4 md:mt:0 mb-2">
+          <div className="md:mt:0 mb-2 mt-4">
             <Input
               {...register("title")}
-              className="border-b-2 border-whitesmoke focus:outline-none py-2 w-full"
+              className="w-full border-b-2 border-whitesmoke py-2 focus:outline-none"
               placeholder="제목을 입력해주세요."
             />
             <ErrorMessage
               errors={errors}
               name="title"
               render={({ message }) => (
-                <p className="text-error text-xs font-semibold">{message}</p>
+                <p className="text-xs font-semibold text-error">{message}</p>
               )}
             />
           </div>
           <div className="mb-2">
             <Input
               {...register("companyName")}
-              className="border-b-2 border-whitesmoke focus:outline-none py-2 w-full"
+              className="w-full border-b-2 border-whitesmoke py-2 focus:outline-none"
               placeholder="단체 이름을 입력해주세요."
             />
             <ErrorMessage
               errors={errors}
               name="companyName"
               render={({ message }) => (
-                <p className="text-error text-xs font-semibold">{message}</p>
+                <p className="text-xs font-semibold text-error">{message}</p>
               )}
             />
           </div>
@@ -164,13 +161,13 @@ const FullTimeJobForm = ({
             <Button
               type="button"
               onClick={() => setIsMajorDialog(!isMajorDialog)}
-              className="border text-main h-8 text-sm rounded-full flex gap-1"
+              className="flex h-8 gap-1 rounded-full border text-sm text-main"
             >
-              <PlusIcon className="w-4 h-4 text-main" />
+              <PlusIcon className="h-4 w-4 text-main" />
               <span>전공</span>
             </Button>
             {!errors.majors && watch("majors").length == 0 && (
-              <span className="text-silver text-sm">
+              <span className="text-sm text-silver">
                 전공은 최대 3개까지 선택 가능합니다.
               </span>
             )}
@@ -180,7 +177,7 @@ const FullTimeJobForm = ({
                 return (
                   <Badge
                     key={major.id}
-                    className="bg-main text-white text-xs md:text-sm h-8 whitespace-nowrap"
+                    className="h-8 whitespace-nowrap bg-main text-xs text-white md:text-sm"
                   >
                     {watch("majors").length > 1 && index === 0
                       ? `${major.koName} 외 ${watch("majors").length - 1}`
@@ -192,15 +189,15 @@ const FullTimeJobForm = ({
               errors={errors}
               name="majors"
               render={({ message }) => (
-                <p className="text-error text-xs font-semibold">{message}</p>
+                <p className="text-xs font-semibold text-error">{message}</p>
               )}
             />
           </div>
-          <div className="flex gap-4 h-20">
+          <div className="flex h-20 gap-4">
             <Button
               type="button"
               onClick={() => setIsPostDialog(!isPostDialog)}
-              className="border text-main h-8 text-sm"
+              className="h-8 border text-sm text-main"
             >
               주소검색
             </Button>
@@ -209,13 +206,13 @@ const FullTimeJobForm = ({
                 <Input
                   disabled
                   value={watch("address")}
-                  className="border-b-2 border-whitesmoke focus:outline-none py-2 w-full"
+                  className="w-full border-b-2 border-whitesmoke py-2 focus:outline-none"
                 />
                 <ErrorMessage
                   errors={errors}
                   name="address"
                   render={({ message }) => (
-                    <p className="text-error text-xs font-semibold">
+                    <p className="text-xs font-semibold text-error">
                       {message}
                     </p>
                   )}
@@ -223,13 +220,13 @@ const FullTimeJobForm = ({
                 <Input
                   {...register("addressDetail")}
                   placeholder="상세 주소를 입력해주세요."
-                  className="border-b-2 border-whitesmoke focus:outline-none py-2 w-full"
+                  className="w-full border-b-2 border-whitesmoke py-2 focus:outline-none"
                 />
                 <ErrorMessage
                   errors={errors}
                   name="addressDetail"
                   render={({ message }) => (
-                    <p className="text-error text-xs font-semibold">
+                    <p className="text-xs font-semibold text-error">
                       {message}
                     </p>
                   )}
@@ -245,7 +242,7 @@ const FullTimeJobForm = ({
       <div className="flex justify-end gap-2">
         <Button
           type="button"
-          className="border rounded-3xl text-sm h-9 px-6"
+          className="h-9 rounded-3xl border px-6 text-sm"
           onClick={() => router.back()}
         >
           취소
@@ -253,7 +250,7 @@ const FullTimeJobForm = ({
         <Button
           disabled={isLoading}
           type="submit"
-          className="rounded-3xl text-sm h-9 bg-main text-white px-6"
+          className="h-9 rounded-3xl bg-main px-6 text-sm text-white"
         >
           등록
         </Button>

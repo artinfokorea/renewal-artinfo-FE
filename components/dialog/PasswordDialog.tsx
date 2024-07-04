@@ -92,9 +92,9 @@ const PasswordDialog = ({
     >
       <div className="fixed inset-0 bg-black/30" aria-hidden="true" />
       <form className="fixed inset-0 flex w-screen items-center justify-center p-4">
-        <DialogPanel className="z-10 w-full md:max-w-[450px] h-[460px] bg-white rounded-xl py-4 mx-auto">
+        <DialogPanel className="z-10 mx-auto h-[460px] w-full rounded-xl bg-white py-4 md:max-w-[450px]">
           <div className="relative mb-4">
-            <DialogTitle className=" flex-1 md:text-lg text-center font-semibold ">
+            <DialogTitle className="flex-1 text-center font-semibold md:text-lg">
               비밀번호 변경
             </DialogTitle>
             <Button
@@ -102,19 +102,19 @@ const PasswordDialog = ({
               onClick={close}
               className="absolute -top-[8px] right-2"
             >
-              <CloseIcon className=" w-6 h-6 text-silver" />
+              <CloseIcon className="h-6 w-6 text-silver" />
             </Button>
           </div>
           <div className="border-b-2 border-whitesmoke" />
 
           <div className="p-4 md:p-6">
-            <p className="text-silver font-medium text-sm">
+            <p className="text-sm font-medium text-silver">
               가입한 이메일로 인증번호를 보내드립니다.
             </p>
-            <div className="flex flex-col gap-2 my-2">
+            <div className="my-2 flex flex-col gap-2">
               <Label
                 htmlFor="이메일 인증 코드"
-                className="block pb-1 text-sm font-semibold text-tertiary"
+                className="text-tertiary block pb-1 text-sm font-semibold"
               >
                 이메일 인증 코드
               </Label>
@@ -130,7 +130,7 @@ const PasswordDialog = ({
                   <Button
                     type="button"
                     disabled={verifyCode.length !== 6 || isVerifyEmail}
-                    className="text-white bg-blue-800"
+                    className="bg-blue-800 text-white"
                     onClick={checkEmail}
                   >
                     인증
@@ -139,7 +139,7 @@ const PasswordDialog = ({
                     type="button"
                     disabled={isSendEmail}
                     onClick={sendEmail}
-                    className="text-white bg-error"
+                    className="bg-error text-white"
                   >
                     요청
                   </Button>
@@ -169,12 +169,12 @@ const PasswordDialog = ({
               placeholder="비밀번호를 입력해주세요."
               className="py-3"
             />
-            <div className="flex justify-center gap-4 mt-4">
+            <div className="mt-4 flex justify-center gap-4">
               <Button
                 type="button"
                 disabled={isLoading}
                 onClick={handleSubmit(handlePassword)}
-                className="text-white rounded-lg text-sm bg-main w-full"
+                className="w-full rounded-lg bg-main text-sm text-white"
               >
                 비밀번호 변경
               </Button>

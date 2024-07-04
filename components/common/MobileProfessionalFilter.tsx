@@ -7,10 +7,10 @@ interface Props {
 
 const MobileProfessionalFilter = ({ artFields, handleProfessional }: Props) => {
   return (
-    <div className="py-4 px-2 flex flex-col gap-1">
+    <div className="flex flex-col gap-1 px-2 py-4">
       <button
         onClick={() => handleProfessional("")}
-        className="text-coolgray font-semibold py-1 px-4 text-left rounded-lg"
+        className="rounded-lg px-4 py-1 text-left font-semibold text-coolgray"
       >
         전체
       </button>
@@ -19,7 +19,7 @@ const MobileProfessionalFilter = ({ artFields, handleProfessional }: Props) => {
           <div key={nameEn}>
             <div className="flex items-center">
               <button
-                className="flex items-center gap-2 text-coolgray font-semibold py-1 px-4 text-left rounded-lg w-full"
+                className="flex w-full items-center gap-2 rounded-lg px-4 py-1 text-left font-semibold text-coolgray"
                 onClick={() => handleProfessional(nameEn)}
               >
                 {nameKo}

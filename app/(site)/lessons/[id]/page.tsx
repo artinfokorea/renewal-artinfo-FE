@@ -67,7 +67,7 @@ const page = () => {
   }
 
   return (
-    <section className="max-w-screen-lg mx-auto">
+    <section className="mx-auto max-w-screen-lg">
       {pageType === "edit" ? (
         <LessonForm
           lesson={lesson}

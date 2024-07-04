@@ -18,39 +18,39 @@ const ObriCard = forwardRef<HTMLDivElement, Props>(
     const pathname = usePathname()
     return (
       <Link href={`${pathname}/${job.id}`}>
-        <ul className="flex flex-col border-whitesmoke border my-4 md:my-6 md:mx-4 rounded-lg text-xs md:text-base">
-          <li className="flex items-center h-12 md:h-12 border-whitespace border-b px-4">
-            <h5 className="text-main font-semibold basis-2/5 md:basis-1/3">
+        <ul className="my-4 flex flex-col rounded-lg border border-whitesmoke text-xs md:mx-4 md:my-6 md:text-base">
+          <li className="border-whitespace flex h-12 items-center border-b px-4 md:h-12">
+            <h5 className="basis-2/5 font-semibold text-main md:basis-1/3">
               {job.majors?.majors[0].koName}
             </h5>
-            <div className="basis-3/5 md:basis-2/3 flex justify-between">
+            <div className="flex basis-3/5 justify-between md:basis-2/3">
               <h4 className="font-bold">{job.title}</h4>
               {job.endAt < new Date() ? (
                 <button
                   disabled
-                  className="text-white bg-lightgray px-3 rounded"
+                  className="rounded bg-lightgray px-3 text-white"
                 >
                   마감
                 </button>
               ) : (
-                <button className="text-main border-whitesmoke border px-3 rounded">
+                <button className="rounded border border-whitesmoke px-3 text-main">
                   지원
                 </button>
               )}
             </div>
           </li>
-          <li className="flex items-center h-12 md:h-12 border-whitespace border-b px-4">
-            <span className="font-bold basis-2/5 md:basis-1/3">
+          <li className="border-whitespace flex h-12 items-center border-b px-4 md:h-12">
+            <span className="basis-2/5 font-bold md:basis-1/3">
               페이 {job.fee}만원
             </span>
             <span className="basis-3/5 md:basis-2/3">{job.province}</span>
           </li>
-          <li className="h-12 md:h-12 border-whitespace border-b px-4 flex justify-center items-center gap-4 md:gap-8">
+          <li className="border-whitespace flex h-12 items-center justify-center gap-4 border-b px-4 md:h-12 md:gap-8">
             <span>{filter.YYYYMMDD(job.startAt, "YYYY.MM.DD(ddd) hh:mm")}</span>{" "}
             -<span>{filter.YYYYMMDD(job.endAt, "YYYY.MM.DD(ddd) hh:mm")}</span>
           </li>
-          <li className="h-12 md:h-12 px-6 flex items-center ">
-            <span className="w-[6px] h-[6px] bg-primary rounded-full mr-2 " />
+          <li className="flex h-12 items-center px-6 md:h-12">
+            <span className="mr-2 h-[6px] w-[6px] rounded-full bg-primary" />
             {job.contents}
           </li>
         </ul>

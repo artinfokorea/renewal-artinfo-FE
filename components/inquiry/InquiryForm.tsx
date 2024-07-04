@@ -1,12 +1,12 @@
-import React from "react";
-import { useForm } from "react-hook-form";
-import { yupResolver } from "@hookform/resolvers/yup";
-import * as yup from "yup";
-import { Input, Textarea } from "@headlessui/react";
-import { ErrorMessage } from "@hookform/error-message";
-import { Button } from "../ui/button";
-import { useRouter } from "next/navigation";
-import InputField from "../common/InputField";
+import React from "react"
+import { useForm } from "react-hook-form"
+import { yupResolver } from "@hookform/resolvers/yup"
+import * as yup from "yup"
+import { Input, Textarea } from "@headlessui/react"
+import { ErrorMessage } from "@hookform/error-message"
+import { Button } from "../ui/button"
+import { useRouter } from "next/navigation"
+import InputField from "../common/InputField"
 
 const schema = yup
   .object({
@@ -23,13 +23,13 @@ const schema = yup
       .min(3, "내용은 10글자이상 입력해주세요.")
       .required("내용은 필수입력사항 입니다."),
   })
-  .required();
+  .required()
 
-export type InquiryFormData = yup.InferType<typeof schema>;
+export type InquiryFormData = yup.InferType<typeof schema>
 
 interface Props {
-  handleInquiry: (payload: InquiryFormData) => void;
-  isLoading: boolean;
+  handleInquiry: (payload: InquiryFormData) => void
+  isLoading: boolean
 }
 
 const InquiryForm = ({ handleInquiry, isLoading }: Props) => {
@@ -39,13 +39,13 @@ const InquiryForm = ({ handleInquiry, isLoading }: Props) => {
     formState: { errors },
   } = useForm<InquiryFormData>({
     resolver: yupResolver(schema),
-  });
+  })
 
-  const router = useRouter();
+  const router = useRouter()
 
   return (
     <form className="p-6 md:p-12" onSubmit={handleSubmit(handleInquiry)}>
-      <h2 className="text-xl font-bold ">문의하기</h2>
+      <h2 className="text-xl font-bold">문의하기</h2>
       <p className="mt-2 text-sm text-gray-500">
         문의사항이 있으시면 아래 양식을 작성해주세요.
       </p>
@@ -78,34 +78,34 @@ const InquiryForm = ({ handleInquiry, isLoading }: Props) => {
           id="contents"
           {...register("contents")}
           placeholder="문의 내용을 입력해주세요."
-          className="mt-1 p-2 w-full border border-gray-300 rounded-md focus:outline-none resize-none h-[200px]"
+          className="mt-1 h-[200px] w-full resize-none rounded-md border border-gray-300 p-2 focus:outline-none"
         />
         <ErrorMessage
           errors={errors}
           name="contents"
           render={({ message }) => (
-            <p className="text-error font-semibold">{message}</p>
+            <p className="font-semibold text-error">{message}</p>
           )}
         />
       </div>
-      <div className="flex justify-end gap-4 mt-4">
+      <div className="mt-4 flex justify-end gap-4">
         <Button
           onClick={() => router.push("/")}
           type="button"
-          className="border rounded-full font-semibold w-20"
+          className="w-20 rounded-full border font-semibold"
         >
           취소
         </Button>
         <Button
           disabled={isLoading}
           type="submit"
-          className="bg-main text-white rounded-full font-semibold w-20"
+          className="w-20 rounded-full bg-main font-semibold text-white"
         >
           등록
         </Button>
       </div>
     </form>
-  );
-};
+  )
+}
 
-export default InquiryForm;
+export default InquiryForm

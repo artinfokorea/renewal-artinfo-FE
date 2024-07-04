@@ -103,11 +103,11 @@ const SignUpForm = () => {
 
   return (
     <form
-      className="max-w-[500px] mx-auto mt-12 md:mt-20 px-4"
+      className="mx-auto mt-12 max-w-[500px] px-4 md:mt-20"
       onSubmit={handleSubmit(handleSignUp)}
     >
       <Link href="/">
-        <h2 className="text-4xl font-bold text-main text-center mb-12 md:mb-16">
+        <h2 className="mb-12 text-center text-4xl font-bold text-main md:mb-16">
           ARTINFO
         </h2>
       </Link>
@@ -146,7 +146,7 @@ const SignUpForm = () => {
             isSendEmailVerifiedCode ||
             getFieldState("email").invalid
           }
-          className="absolute top-1 right-2 bg-main text-white rounded-lg h-8"
+          className="absolute right-2 top-1 h-8 rounded-lg bg-main text-white"
         >
           이메일 인증
         </Button>
@@ -155,7 +155,7 @@ const SignUpForm = () => {
         errors={errors}
         name="isEmailVerified"
         render={({ message }) => (
-          <p className="text-error text-xs font-semibold">{message}</p>
+          <p className="text-xs font-semibold text-error">{message}</p>
         )}
       />
       <InputWithButton
@@ -171,7 +171,7 @@ const SignUpForm = () => {
           type="button"
           disabled={isEmailVerifiedLoading || watch("isEmailVerified")}
           onClick={checkEmailVerifiedCode}
-          className="absolute top-1 right-2 bg-main text-white rounded-lg h-8"
+          className="absolute right-2 top-1 h-8 rounded-lg bg-main text-white"
         >
           인증번호 확인
         </Button>
@@ -196,10 +196,10 @@ const SignUpForm = () => {
       />
       <Button
         type="submit"
-        className="bg-main w-full my-4 hover:bg-main text-white"
+        className="my-4 w-full bg-main text-white hover:bg-main"
         disabled={isPending}
       >
-        {isPending ? <Spinner className="w-5 h-5" /> : "회원가입"}
+        {isPending ? <Spinner className="h-5 w-5" /> : "회원가입"}
       </Button>
     </form>
   )

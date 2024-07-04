@@ -6,10 +6,10 @@ interface Props {
 
 const MobileRecruitTypeFilter = ({ handleRecruit }: Props) => {
   return (
-    <div className="py-4 px-2 flex flex-col gap-1">
+    <div className="flex flex-col gap-1 px-2 py-4">
       <button
         onClick={() => handleRecruit("")}
-        className="text-coolgray font-semibold py-2 px-4 text-left rounded-lg"
+        className="rounded-lg px-4 py-2 text-left font-semibold text-coolgray"
       >
         전체
       </button>
@@ -17,7 +17,7 @@ const MobileRecruitTypeFilter = ({ handleRecruit }: Props) => {
         <button
           key={value}
           onClick={() => handleRecruit(value)}
-          className="text-coolgray font-semibold py-2 px-4 text-left rounded-lg"
+          className="rounded-lg px-4 py-2 text-left font-semibold text-coolgray"
         >
           {title}
         </button>

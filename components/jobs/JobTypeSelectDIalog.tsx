@@ -13,26 +13,26 @@ const JobTypeSelectDialog = ({ handleSelectedJobType }: Props) => {
 
   return (
     <div className="fixed inset-0 flex items-center justify-center">
-      <div className="shadow-lg max-w-screen-md rounded-xl border-whitesmoke border-2">
-        <div className="flex justify-center items-center relative h-14">
-          <h5 className="font-bold text-center flex-1 text-sm md:text-lg">
+      <div className="max-w-screen-md rounded-xl border-2 border-whitesmoke shadow-lg">
+        <div className="relative flex h-14 items-center justify-center">
+          <h5 className="flex-1 text-center text-sm font-bold md:text-lg">
             채용 선택
           </h5>
           <Button
-            className="absolute top-2 right-0 text-silver"
+            className="absolute right-0 top-2 text-silver"
             onClick={() =>
               router.push(pathname.slice(0, pathname.lastIndexOf("/")))
             }
           >
-            <CloseIcon className="w-5 h-5" />
+            <CloseIcon className="h-5 w-5" />
           </Button>
         </div>
-        <div className="border-whitesmoke border-b-[3px]" />
-        <div className="px-4 md:px-12 py-12">
+        <div className="border-b-[3px] border-whitesmoke" />
+        <div className="px-4 py-12 md:px-12">
           {JobTypeList.map(type => (
             <Button
               key={type.value}
-              className="text-white text-xs md:text-sm bg-main w-[72px] md:w-[100px] h-10 rounded-3xl mx-1 md:mx-4"
+              className="mx-1 h-10 w-[72px] rounded-3xl bg-main text-xs text-white md:mx-4 md:w-[100px] md:text-sm"
               onClick={() => handleSelectedJobType(type.value)}
             >
               {type.title}

@@ -18,7 +18,7 @@ const MainConcertContainer = () => {
   )
   return (
     <>
-      <section className="hidden md:grid gap-8 my-12 md:my-16 lg:gap-8  grid-cols-2 md:grid-cols-4">
+      <section className="my-12 hidden grid-cols-2 gap-8 md:my-16 md:grid md:grid-cols-4 lg:gap-8">
         {concerts?.map((concert, index) => (
           <Link
             key={concert.id}
@@ -42,7 +42,7 @@ const MainConcertContainer = () => {
           </Link>
         ))}
       </section>
-      <section className="my-12 md:my-16 flex md:hidden overflow-x-auto">
+      <section className="my-12 flex overflow-x-auto md:my-16 md:hidden">
         <Swiper spaceBetween={10} slidesPerView="auto" modules={[Pagination]}>
           {concerts?.map(concert => (
             <SwiperSlide key={concert.id} style={{ width: "200px" }}>

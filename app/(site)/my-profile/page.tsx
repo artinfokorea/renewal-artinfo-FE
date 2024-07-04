@@ -1,18 +1,39 @@
 import ProfileContainer from "@/components/profile/ProfileContainer"
-import React, { Suspense } from "react"
-import Loading from "@/app/(site)/jobs/[id]/loading"
-import { getServerSession } from "next-auth"
-import { redirect } from "next/navigation"
+import React from "react"
+import GetQueryClient from "@/app/GetQueryClient"
+import { HydrationBoundary, dehydrate } from "@tanstack/react-query"
+import { cookies } from "next/headers"
+import { USER } from "@/types/users"
+import { DetailApiResponse } from "@/interface"
+
+const getUser = async (): Promise<DetailApiResponse<USER>> => {
+  const res = await fetch(`${process.env.REST_API_BASE_URL!}/users/me`, {
+    headers: {
+      Authorization: `Bearer ${cookies().get("accessToken")?.value}`,
+    },
+  })
+
+  if (!res.ok) {
+    throw new Error("Failed to fetch data")
+  }
+
+  return res.json()
+}
 
 const page = async () => {
-  const session = await getServerSession()
+  const queryClient = GetQueryClient()
 
-  if (!session) redirect("/auth/sign-in")
+  await queryClient.prefetchQuery({
+    queryKey: ["users", "me"],
+    queryFn: () => getUser().then(res => res.item),
+  })
+
+  const dehydratedState = dehydrate(queryClient)
 
   return (
-    <Suspense fallback={<Loading />}>
+    <HydrationBoundary state={dehydratedState}>
       <ProfileContainer />
-    </Suspense>
+    </HydrationBoundary>
   )
 }
 

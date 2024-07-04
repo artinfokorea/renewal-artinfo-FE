@@ -1,13 +1,13 @@
-"use client";
+"use client"
 
-import React, { useState } from "react";
-import { QueryClientProvider, QueryClient } from "@tanstack/react-query";
-import { SessionProvider } from "next-auth/react";
-import { Toaster } from "react-hot-toast";
-import { ThemeProvider } from "@material-tailwind/react";
+import React, { useState } from "react"
+import { QueryClientProvider, QueryClient } from "@tanstack/react-query"
+import { SessionProvider } from "next-auth/react"
+import { Toaster } from "react-hot-toast"
+import { ThemeProvider } from "@material-tailwind/react"
 
 interface Props {
-  children: React.ReactNode;
+  children: React.ReactNode
 }
 
 const ClientProvider = ({ children }: Props) => {
@@ -16,12 +16,12 @@ const ClientProvider = ({ children }: Props) => {
       defaultOptions: {
         queries: {
           refetchOnWindowFocus: false,
-          retry: false,
+          retry: 1,
           staleTime: 60 * 1000 * 60,
         },
       },
-    })
-  );
+    }),
+  )
   return (
     <QueryClientProvider client={client}>
       <ThemeProvider>
@@ -31,7 +31,7 @@ const ClientProvider = ({ children }: Props) => {
         </SessionProvider>
       </ThemeProvider>
     </QueryClientProvider>
-  );
-};
+  )
+}
 
-export default ClientProvider;
+export default ClientProvider

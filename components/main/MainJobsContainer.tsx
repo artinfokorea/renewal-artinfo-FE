@@ -35,7 +35,7 @@ const MainJobsContainer = () => {
           <h5 className="font-bold text-silver">더보기</h5>
         </Link>
       </div>
-      <div className="hidden md:grid grid-cols-2 md:grid-cols-3 gap-4 md:gap-8 mt-4 mb-12 ">
+      <div className="mb-12 mt-4 hidden grid-cols-2 gap-4 md:grid md:grid-cols-3 md:gap-8">
         {data?.jobs?.map((job, index) => (
           <Link
             key={job.title}
@@ -46,7 +46,7 @@ const MainJobsContainer = () => {
           >
             <AspectRatio
               ratio={5 / 3}
-              className="relative cursor-pointer border-2 border-whitesmoke rounded-lg"
+              className="relative cursor-pointer rounded-lg border-2 border-whitesmoke"
             >
               <FallbackImage
                 src={job.imageUrl}
@@ -61,14 +61,14 @@ const MainJobsContainer = () => {
           </Link>
         ))}
       </div>
-      <div className="flex md:hidden overflow-x-auto mt-4 mb-12">
+      <div className="mb-12 mt-4 flex overflow-x-auto md:hidden">
         <Swiper spaceBetween={10} slidesPerView="auto" modules={[Pagination]}>
           {data?.jobs.map(job => (
             <SwiperSlide key={job.id} style={{ width: "150px" }}>
               <Link key={job.id} href={`/jobs/${job.id}`}>
                 <AspectRatio
                   ratio={5 / 3}
-                  className="relative cursor-pointer border-2 border-whitesmoke rounded-lg"
+                  className="relative cursor-pointer rounded-lg border-2 border-whitesmoke"
                 >
                   <FallbackImage
                     src={job.imageUrl}

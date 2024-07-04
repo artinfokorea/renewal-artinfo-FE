@@ -71,9 +71,9 @@ const FindPasswordForm = ({
   }
 
   return (
-    <form className="max-w-[500px] mx-auto mt-12 md:mt-20 px-4">
+    <form className="mx-auto mt-12 max-w-[500px] px-4 md:mt-20">
       <Link href="/">
-        <h2 className="text-4xl font-bold text-main text-center mb-12 md:mb-16">
+        <h2 className="mb-12 text-center text-4xl font-bold text-main md:mb-16">
           ARTINFO
         </h2>
       </Link>
@@ -90,15 +90,15 @@ const FindPasswordForm = ({
           type="button"
           onClick={sendEmail}
           disabled={isSendEmail || getFieldState("email").invalid}
-          className="absolute top-1 right-2 bg-main text-white rounded-lg h-8"
+          className="absolute right-2 top-1 h-8 rounded-lg bg-main text-white"
         >
           인증코드 전송
         </Button>
       </InputWithButton>
-      <div className="flex flex-col gap-2 my-2">
+      <div className="my-2 flex flex-col gap-2">
         <Label
           htmlFor="이메일 인증 코드"
-          className="block pb-1 text-sm font-semibold text-tertiary"
+          className="text-tertiary block pb-1 text-sm font-semibold"
         >
           이메일 인증 코드
         </Label>
@@ -114,7 +114,7 @@ const FindPasswordForm = ({
             type="button"
             disabled={verifyCode.length !== 6 || isVerify}
             onClick={checkEmail}
-            className="text-white bg-main absolute top-1 right-2 h-8"
+            className="absolute right-2 top-1 h-8 bg-main text-white"
           >
             인증
           </Button>
@@ -138,12 +138,12 @@ const FindPasswordForm = ({
         placeholder="비밀번호를 입력해주세요."
         className="py-3"
       />
-      <div className="flex justify-center gap-4 mt-4">
+      <div className="mt-4 flex justify-center gap-4">
         <Button
           type="button"
           disabled={isLoading}
           onClick={handleSubmit(handlePassword)}
-          className="text-white rounded-lg text-sm bg-main w-full"
+          className="w-full rounded-lg bg-main text-sm text-white"
         >
           비밀번호 변경
         </Button>

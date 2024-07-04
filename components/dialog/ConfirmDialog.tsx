@@ -31,13 +31,13 @@ const ConfirmDialog = ({
     <Dialog open={isOpen} onOpenChange={handleDialog}>
       <DialogContent className="w-[300px] rounded-md">
         <DialogHeader>
-          <DialogTitle className="text-primary font-bold">{title}</DialogTitle>
+          <DialogTitle className="font-bold text-primary">{title}</DialogTitle>
           <DialogDescription className="font-semibolde text-base">
             {description}
           </DialogDescription>
         </DialogHeader>
 
-        <DialogFooter className="flex-row justify-center gap-2 mt-2">
+        <DialogFooter className="mt-2 flex-row justify-center gap-2">
           <DialogClose asChild>
             <Button type="button" className="bg-main text-white">
               취소

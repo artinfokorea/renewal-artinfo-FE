@@ -1,6 +1,7 @@
 import { User } from "next-auth"
 import NextAuth from "next-auth"
 import CredentialsProvider from "next-auth/providers/credentials"
+import { cookies } from "next/headers"
 
 const handleRefreshToken = async ({
   accessToken,
@@ -135,6 +136,13 @@ const handler = NextAuth({
   callbacks: {
     async jwt({ token, user }: { token: any; user: User }) {
       if (user) {
+        cookies().set({
+          name: "accessToken",
+          value: user.accessToken,
+          httpOnly: true,
+          path: "/",
+          expires: new Date(user.accessTokenExpiresIn),
+        })
         token.accessToken = user?.accessToken
         token.refreshToken = user?.refreshToken
         token.accessTokenExpiresIn = user?.accessTokenExpiresIn

@@ -18,7 +18,7 @@ interface Props {
 const DeskTopDropDown = ({ user, handleSign }: Props) => {
   return (
     <DropdownMenu>
-      <DropdownMenuTrigger className="flex items-center">
+      <DropdownMenuTrigger className="flex items-center focus:outline-none">
         <div className="w-10 h-10 relative">
           <FallbackImage
             src={user.iconImageUrl || ""}

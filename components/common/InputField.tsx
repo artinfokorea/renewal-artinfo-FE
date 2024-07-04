@@ -1,19 +1,14 @@
-import {
-  FieldError,
-  FieldValues,
-  Path,
-  UseFormRegister,
-} from 'react-hook-form';
-import { cn } from '@/lib/utils';
-import { Label } from '../ui/label';
+import { FieldError, FieldValues, Path, UseFormRegister } from "react-hook-form"
+import { cn } from "@/lib/utils"
+import { Label } from "../ui/label"
 
-interface Props<T extends FieldValues> extends React.ComponentProps<'input'> {
-  label: string;
-  id: Path<T>;
-  type: string;
-  placeholder: string;
-  register: UseFormRegister<T>;
-  errors?: FieldError;
+interface Props<T extends FieldValues> extends React.ComponentProps<"input"> {
+  label: string
+  id: Path<T>
+  type: string
+  placeholder: string
+  register: UseFormRegister<T>
+  errors?: FieldError
 }
 
 const InputField = <T extends FieldValues>({
@@ -27,22 +22,22 @@ const InputField = <T extends FieldValues>({
   ...props
 }: Props<T>) => {
   return (
-    <div className="flex flex-col gap-2 my-2">
+    <div className="my-2 flex flex-col gap-2">
       <Label
         htmlFor={id}
-        className="block pb-1 text-sm font-semibold text-tertiary"
+        className="text-tertiary block pb-1 text-sm font-semibold"
       >
         {label}
       </Label>
       <div>
         <input
-          {...register(id, { valueAsNumber: type === 'number' })}
+          {...register(id, { valueAsNumber: type === "number" })}
           id={id}
           type={type}
           placeholder={placeholder}
           className={cn(
-            'w-full rounded border px-2 py-1.5 text-xs leading-tight text-black',
-            className
+            "w-full rounded border px-2 py-1.5 text-xs leading-tight text-black",
+            className,
           )}
           {...props}
         />
@@ -51,7 +46,7 @@ const InputField = <T extends FieldValues>({
         )}
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default InputField;
+export default InputField

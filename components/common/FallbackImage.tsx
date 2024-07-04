@@ -1,7 +1,7 @@
 "use client"
 
 import Image, { ImageProps } from "next/image"
-import React, { useEffect, useState } from "react"
+import React, { useState } from "react"
 
 interface Props extends Omit<ImageProps, "src"> {
   src: string
@@ -10,45 +10,48 @@ interface Props extends Omit<ImageProps, "src"> {
 }
 
 const FallbackImage = ({
-  src = "",
+  src,
   alt,
   width,
   height,
   fallbackText,
+  fallbackSrc = "/img/placeholder-user.png",
   ...props
 }: Props) => {
-  const defaultSrc = "/img/placeholder-user.png"
-  const [imgSrc, setImgSrc] = useState(src)
   const [imgError, setImgError] = useState(false)
 
   const handleError = () => {
-    if (src) {
-      setImgSrc(defaultSrc)
-    } else {
-      setImgError(true)
-    }
+    setImgError(true)
   }
 
-  useEffect(() => {
-    setImgSrc(src || defaultSrc)
-  }, [src])
-
   if (imgError) {
+    if (fallbackText) {
+      return (
+        <div className="flex h-full items-center justify-center">
+          <span className="font-serif text-base font-bold text-black md:text-xl">
+            {fallbackText}
+          </span>
+        </div>
+      )
+    }
     return (
-      <div className="flex items-center justify-center h-full">
-        <span className="font-bold text-black text-base md:text-xl font-serif">
-          {fallbackText}
-        </span>
-      </div>
+      <Image
+        src={fallbackSrc}
+        alt={alt}
+        width={width}
+        height={height}
+        {...props}
+      />
     )
   }
 
   return (
     <Image
-      src={imgSrc}
+      src={src || fallbackSrc}
       alt={alt}
+      width={width}
+      height={height}
       onError={handleError}
-      quality={100}
       {...props}
     />
   )

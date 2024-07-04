@@ -78,18 +78,18 @@ const PhoneDialog = ({
     >
       <div className="fixed inset-0 bg-black/30" aria-hidden="true" />
       <form className="fixed inset-0 flex w-screen items-center justify-center p-4">
-        <DialogPanel className="z-10 w-full md:max-w-[450px] h-[370px] bg-white rounded-xl py-4 overflow-auto mx-auto">
+        <DialogPanel className="z-10 mx-auto h-[370px] w-full overflow-auto rounded-xl bg-white py-4 md:max-w-[450px]">
           <div className="relative mb-4">
-            <DialogTitle className=" flex-1 md:text-lg text-center font-semibold ">
+            <DialogTitle className="flex-1 text-center font-semibold md:text-lg">
               휴대폰 번호등록
             </DialogTitle>
             <Button onClick={close} className="absolute -top-[8px] right-2">
-              <CloseIcon className=" w-6 h-6 text-silver" />
+              <CloseIcon className="h-6 w-6 text-silver" />
             </Button>
           </div>
           <div className="border-b-2 border-whitesmoke" />
           <div className="p-4 md:p-8">
-            <div className="grid items-center gap-4 my-4 text-primary">
+            <div className="my-4 grid items-center gap-4 text-primary">
               <Label htmlFor="휴대폰 번호">휴대폰 번호</Label>
               <div className="relative">
                 <Input
@@ -101,7 +101,7 @@ const PhoneDialog = ({
                 {isCounting ? (
                   <Button
                     type="button"
-                    className="absolute top-1 right-2 bg-main text-white rounded-lg h-8 w-20"
+                    className="absolute right-2 top-1 h-8 w-20 rounded-lg bg-main text-white"
                   >
                     {formatTime(time)}
                   </Button>
@@ -113,14 +113,14 @@ const PhoneDialog = ({
                       sendCode(phone)
                       setIsCounting(true)
                     }}
-                    className="absolute top-1 right-2 bg-main text-white rounded-lg h-8"
+                    className="absolute right-2 top-1 h-8 rounded-lg bg-main text-white"
                   >
                     번호인증
                   </Button>
                 )}
               </div>
             </div>
-            <div className="grid items-center gap-4 my-4 text-primary">
+            <div className="my-4 grid items-center gap-4 text-primary">
               <Label htmlFor="휴대폰 번호">휴대폰 인증번호</Label>
               <div className="relative">
                 <Input
@@ -135,7 +135,7 @@ const PhoneDialog = ({
                   onClick={() => {
                     checkCode(phone, code)
                   }}
-                  className="absolute top-1 right-2 bg-main text-white rounded-lg h-8"
+                  className="absolute right-2 top-1 h-8 rounded-lg bg-main text-white"
                 >
                   인증확인
                 </Button>
@@ -145,7 +145,7 @@ const PhoneDialog = ({
 
           <div className="flex justify-center">
             <Button
-              className={` text-white rounded-lg text-sm bg-main h-8`}
+              className={`h-8 rounded-lg bg-main text-sm text-white`}
               onClick={closeDialog}
             >
               닫기

@@ -8,7 +8,7 @@ interface Props {
 
 const ListCheckBoxes = ({ artFields }: Props) => {
   return (
-    <form className="hidden lg:flex flex-col text-gray-400 min-w-[180px]">
+    <form className="hidden min-w-[180px] flex-col text-gray-400 lg:flex">
       <JobTypeCheckBoxes />
       <ProfessionalCheckBoxes artFields={artFields} />
     </form>

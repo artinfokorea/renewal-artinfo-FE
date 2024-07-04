@@ -46,7 +46,7 @@ const LessonDetailContainer = ({ lesson, deleteLesson }: Props) => {
     <div className="mt-8 md:mt-16 md:px-4">
       <div className="flex flex-col md:flex-row md:gap-24">
         {lesson?.imageUrl && (
-          <div className="h-[360px] md:h-[300px] relative w-[300px] md:w-[240px] mx-auto">
+          <div className="relative mx-auto h-[360px] w-[300px] md:h-[300px] md:w-[240px]">
             <Image
               src={lesson?.imageUrl}
               alt="lesson_image"
@@ -59,12 +59,12 @@ const LessonDetailContainer = ({ lesson, deleteLesson }: Props) => {
           </div>
         )}
         <div className="flex-1 p-4 md:p-0">
-          <h4 className="text-2xl font-bold mt-4 md:mt-0 text-center md:text-left">
+          <h4 className="mt-4 text-center text-2xl font-bold md:mt-0 md:text-left">
             {lesson?.name}
           </h4>
           {user?.id === lesson?.authorId && (
-            <div className="flex md:hidden my-2 h-8 items-center gap-4 md:gap-6">
-              <div className="flex-1 border-b-2 border-whitesmoke w-full" />
+            <div className="my-2 flex h-8 items-center gap-4 md:hidden md:gap-6">
+              <div className="w-full flex-1 border-b-2 border-whitesmoke" />
               <ItemManageBox
                 handleEdit={() => router.push(`${pathname}?type=edit`)}
                 handleDelete={() =>
@@ -74,21 +74,21 @@ const LessonDetailContainer = ({ lesson, deleteLesson }: Props) => {
               />
             </div>
           )}
-          <div className="mt-6 grid md:grid-cols-2 gap-y-4 gap-x-10">
-            <div className="flex  gap-4 text-base md:text-lg items-center">
+          <div className="mt-6 grid gap-x-10 gap-y-4 md:grid-cols-2">
+            <div className="flex items-center gap-4 text-base md:text-lg">
               <span className="font-bold">전공</span>
               <div>
                 {lesson?.majors?.map((major, index) => (
                   <Badge
                     key={major}
-                    className="bg-main text-xs md:text-sm text-white rounded-xl mx-1"
+                    className="mx-1 rounded-xl bg-main text-xs text-white md:text-sm"
                   >
                     {major}
                   </Badge>
                 ))}
               </div>
             </div>
-            <div className="flex gap-4 text-base md:text-lg items-center">
+            <div className="flex items-center gap-4 text-base md:text-lg">
               <span className="font-bold">가격</span>
               <div>
                 <span className="font-medium">
@@ -103,24 +103,24 @@ const LessonDetailContainer = ({ lesson, deleteLesson }: Props) => {
               {lesson?.schools?.map(school => (
                 <div
                   key={school.id}
-                  className="flex items-center gap-6 md:gap-12 mb-2"
+                  className="mb-2 flex items-center gap-6 md:gap-12"
                 >
                   <img
                     src={
                       school.type === SchoolType.UNDERGRADUATE
                         ? "/icon/bachelor.png"
                         : school.type === SchoolType.MASTER
-                        ? "/icon/master.png"
-                        : "/icon/doctor.png"
+                          ? "/icon/master.png"
+                          : "/icon/doctor.png"
                     }
                     alt="school_image"
-                    className="w-[30px] h-[30px]"
+                    className="h-[30px] w-[30px]"
                   />
                   <div>
-                    <h5 className="font-semibold text-base text-primary">
+                    <h5 className="text-base font-semibold text-primary">
                       {school.name}
                     </h5>
-                    <p className="text-coolgray text-sm">
+                    <p className="text-sm text-coolgray">
                       {SchoolTypeValues[school.type]}
                     </p>
                   </div>
@@ -128,18 +128,18 @@ const LessonDetailContainer = ({ lesson, deleteLesson }: Props) => {
               ))}
             </div>
             <div className="flex flex-col gap-4">
-              <div className="flex gap-4 text-base md:text-lg items-center">
+              <div className="flex items-center gap-4 text-base md:text-lg">
                 <span className="font-bold">연락처</span>
                 {isPhoneShow ? (
-                  <div className="flex items-center font-medium ml-4">
+                  <div className="ml-4 flex items-center font-medium">
                     <span>{lesson?.phone}</span>
                     <button onClick={copyToPhone}>
-                      <ClipBoardIcon className="w-4 pb-1 ml-2" />
+                      <ClipBoardIcon className="ml-2 w-4 pb-1" />
                     </button>
                   </div>
                 ) : (
                   <button
-                    className="text-main font-semibold"
+                    className="font-semibold text-main"
                     onClick={() => setIsPhoneShow(!isPhoneShow)}
                   >
                     연락처보기
@@ -163,8 +163,8 @@ const LessonDetailContainer = ({ lesson, deleteLesson }: Props) => {
         </div>
       </div>
       {user?.id === lesson?.authorId ? (
-        <div className="hidden md:flex my-8 h-8 items-center gap-4 md:gap-6">
-          <div className="flex-1 border-b border-whitesmoke w-full" />
+        <div className="my-8 hidden h-8 items-center gap-4 md:flex md:gap-6">
+          <div className="w-full flex-1 border-b border-whitesmoke" />
           <ItemManageBox
             handleEdit={() => router.push(`${pathname}?type=edit`)}
             handleDelete={() =>
@@ -174,23 +174,23 @@ const LessonDetailContainer = ({ lesson, deleteLesson }: Props) => {
           />
         </div>
       ) : (
-        <div className="my-8 flex-1 border-b border-whitesmoke w-full" />
+        <div className="mx-4 my-8 flex-1 border-b-2 border-whitesmoke md:mx-0" />
       )}
 
-      <div className="flex flex-col px-4 md:px-0 gap-4 md:flex-row md:gap-8">
-        <div className="md:w-1/2 bg-whitesmoke rounded-md p-4 md:p-8 min-h-[200px] md:h-[380px] overflow-y-auto">
-          <p className="text-coolgray font-semibold text-lg mb-3 md:mb-6">
+      <div className="flex flex-col gap-4 px-4 md:flex-row md:gap-8 md:px-0">
+        <div className="min-h-[200px] overflow-y-auto rounded-md bg-whitesmoke p-4 md:h-[380px] md:w-1/2 md:p-8">
+          <p className="mb-3 text-lg font-semibold text-coolgray md:mb-6">
             전문가 소개
           </p>
-          <p className="min-h-[120px] md:h-[260px] rounded-lg p-2 whitespace-pre-wrap">
+          <p className="min-h-[120px] whitespace-pre-wrap rounded-lg p-2 md:h-[260px]">
             {lesson?.introduction}
           </p>
         </div>
-        <div className="md:w-1/2 bg-whitesmoke rounded-md p-4 md:p-8 min-h-[200px] md:h-[380px] overflow-y-auto">
-          <p className="text-coolgray font-semibold text-lg mb-3 md:mb-6">
+        <div className="min-h-[200px] overflow-y-auto rounded-md bg-whitesmoke p-4 md:h-[380px] md:w-1/2 md:p-8">
+          <p className="mb-3 text-lg font-semibold text-coolgray md:mb-6">
             경력
           </p>
-          <p className="min-h-[120px] md:h-[260px] rounded-lg p-2 whitespace-pre-wrap">
+          <p className="min-h-[120px] whitespace-pre-wrap rounded-lg p-2 md:h-[260px]">
             {lesson?.career}
           </p>
         </div>

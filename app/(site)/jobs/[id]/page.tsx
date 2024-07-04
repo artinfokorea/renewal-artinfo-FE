@@ -109,8 +109,8 @@ const page = () => {
         handleDialog={() => router.push("/auth/sign-in")}
         title="로그인이 필요합니다."
       >
-        <div className="flex flex-col gap-4 justify-center my-4">
-          <p className="text-silver text-sm md:text-base">
+        <div className="my-4 flex flex-col justify-center gap-4">
+          <p className="text-sm text-silver md:text-base">
             채용 상세를 확인하려면 로그인이 필요합니다.
           </p>
           <Button

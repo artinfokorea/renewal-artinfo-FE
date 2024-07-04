@@ -7,10 +7,10 @@ interface Props {
 
 const MobileProvinceFilter = ({ provinces, handleProvince }: Props) => {
   return (
-    <div className="py-4 px-2 grid grid-cols-5 gap-1">
+    <div className="grid grid-cols-5 gap-1 px-2 py-4">
       <button
         onClick={() => handleProvince("")}
-        className="text-coolgray font-semibold py-2 px-4 rounded-xl"
+        className="rounded-xl px-4 py-2 font-semibold text-coolgray"
       >
         전체
       </button>
@@ -18,7 +18,7 @@ const MobileProvinceFilter = ({ provinces, handleProvince }: Props) => {
         <button
           key={province.id}
           onClick={() => handleProvince(province.id.toString())}
-          className="text-coolgray font-semibold py-2 px-4 rounded-xl"
+          className="rounded-xl px-4 py-2 font-semibold text-coolgray"
         >
           {province.name.slice(0, 2)}
         </button>

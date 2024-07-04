@@ -108,11 +108,11 @@ const SignInForm = () => {
 
   return (
     <form
-      className="max-w-[500px] mx-auto mt-12 md:mt-28 px-4"
+      className="mx-auto mt-12 max-w-[500px] px-4 md:mt-28"
       onSubmit={handleSubmit(handleSignIn)}
     >
       <Link href="/">
-        <h2 className="text-4xl font-bold text-main text-center mb-12 md:mb-16">
+        <h2 className="mb-12 text-center text-4xl font-bold text-main md:mb-16">
           ARTINFO
         </h2>
       </Link>
@@ -137,29 +137,29 @@ const SignInForm = () => {
       {errorMessage && <p className="text-xs text-error">{errorMessage}</p>}
       <Button
         type="submit"
-        className="bg-main w-full my-6 hover:bg-main text-white"
+        className="my-6 w-full bg-main text-white hover:bg-main"
         disabled={isLoading}
       >
-        {isLoading ? <Spinner className="w-5 h-5" /> : "로그인"}
+        {isLoading ? <Spinner className="h-5 w-5" /> : "로그인"}
       </Button>
-      <p className="text-primary text-center mt-2">
+      <p className="mt-2 text-center text-primary">
         아직 회원이 아니신가요?
         <Link href="/auth/sign-up">
-          <span className="text-main cursor-pointer"> 회원가입</span>
+          <span className="cursor-pointer text-main"> 회원가입</span>
         </Link>
       </p>
       <Link href="/auth/find-password" prefetch={false}>
         <p className="text-center text-main">비밀번호 찾기</p>
       </Link>
-      <div className="flex text-grey mt-4">
-        <div className="border-b-2 w-full border-grey mb-3" />
-        <span className="whitespace-nowrap mx-4 font-semibold">간편로그인</span>
-        <div className="border-b-2 w-full border-grey mb-3" />
+      <div className="mt-4 flex text-grey">
+        <div className="mb-3 w-full border-b-2 border-grey" />
+        <span className="mx-4 whitespace-nowrap font-semibold">간편로그인</span>
+        <div className="mb-3 w-full border-b-2 border-grey" />
       </div>
-      <div className="flex justify-between w-[200px] mx-auto mt-6">
+      <div className="mx-auto mt-6 flex w-[200px] justify-between">
         <Button
           type="button"
-          className="p-1 bg-white w-[48px] h-[48px] rounded-lg transition ease-in-out duration-150 inline-flex items-center justify-center  text-white shadow-md  focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 disabled:opacity-50 "
+          className="inline-flex h-[48px] w-[48px] items-center justify-center rounded-lg bg-white p-1 text-white shadow-md transition duration-150 ease-in-out focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 disabled:opacity-50"
           disabled={isLoading}
           onClick={handleGoogleLogin}
         >
@@ -167,7 +167,7 @@ const SignInForm = () => {
         </Button>
         <button
           type="button"
-          className="w-[48px] h-[48px] rounded-lg transition ease-in-out duration-150 inline-flex items-center justify-center  text-white shadow-md  focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 disabled:opacity-50 "
+          className="inline-flex h-[48px] w-[48px] items-center justify-center rounded-lg text-white shadow-md transition duration-150 ease-in-out focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 disabled:opacity-50"
           disabled={isLoading}
           onClick={handleNaverLogin}
         >
@@ -175,7 +175,7 @@ const SignInForm = () => {
         </button>
         <button
           type="button"
-          className="w-[48px] h-[48px] rounded-lg transition ease-in-out duration-150 inline-flex items-center justify-center bg-[#FEE500]  text-white shadow-md  focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 disabled:opacity-50 "
+          className="inline-flex h-[48px] w-[48px] items-center justify-center rounded-lg bg-[#FEE500] text-white shadow-md transition duration-150 ease-in-out focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 disabled:opacity-50"
           disabled={isLoading}
           onClick={kakaoLogin}
         >
