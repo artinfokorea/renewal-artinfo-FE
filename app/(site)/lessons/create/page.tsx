@@ -22,8 +22,17 @@ const page = () => {
   const queryClient = useQueryClient()
 
   const handleLessonForm = async (payload: LessonFormData) => {
+    const { areas, pay, imageUrl, introduction, career } = payload
     try {
-      await handleFormTransition(createLesson(payload))
+      await handleFormTransition(
+        createLesson({
+          areas,
+          pay,
+          imageUrl,
+          introduction,
+          career: career || "",
+        }),
+      )
       successToast("레슨이 등록되었습니다.")
       queryClient.invalidateQueries({
         queryKey: queries.lessons._def,

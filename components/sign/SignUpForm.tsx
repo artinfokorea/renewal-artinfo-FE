@@ -1,12 +1,10 @@
 "use client"
 
-import React, { useEffect, useMemo, useState, useTransition } from "react"
+import React, { useEffect, useState } from "react"
 import { useForm } from "react-hook-form"
 import { yupResolver } from "@hookform/resolvers/yup"
 import { ErrorMessage } from "@hookform/error-message"
 import * as yup from "yup"
-import { Label } from "../ui/label"
-import { Input } from "../ui/input"
 import { Button } from "../ui/button"
 import useToast from "@/hooks/useToast"
 import {
@@ -20,69 +18,33 @@ import { useLoading } from "@toss/use-loading"
 import InputField from "../common/InputField"
 import InputWithButton from "../common/InputWithButton"
 import Link from "next/link"
+import { Spinner } from "../common/Loading"
+import { signUpSchema } from "@/lib/schemas"
 
-const schema = yup
-  .object({
-    email: yup
-      .string()
-      .email("이메일 형식이 아닙니다.")
-      .required("이메일을 입력해주세요."),
-    password: yup
-      .string()
-      .min(8, "8자 이상 12자 이하로 영문, 숫자, 특수문자를 포함해주세요.")
-      .max(12, "8자 이상 12자 이하로 영문, 숫자, 특수문자를 포함해주세요.")
-      .required()
-      .matches(
-        /^(?=.*[0-9])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{8,12}$/,
-        "8자 이상 12자 이하로 영문, 숫자, 특수문자를 포함해주세요.",
-      ),
-    rePassword: yup
-      .string()
-      .required("재확인 비밀번호를 입력해주세요.")
-      .oneOf([yup.ref("password")], "재확인 비밀번호가 일치 하지 않습니다."),
-    name: yup
-      .string()
-      .min(2, "이름은 2글자 이상 입력해주세요.")
-      .max(6, "이름은 6글자 이하로 입력해주세요.")
-      .required("이름을 입력해주세요."),
-    nickname: yup
-      .string()
-      .min(2, "닉네임은 2글자 이상 입력해주세요.")
-      .max(6, "닉네임은 12글자 이하로 입력해주세요.")
-      .required("닉네임을 입력해주세요."),
-    isEmailVerified: yup
-      .boolean()
-      .oneOf([true], "이메일 중복검사를 완료해주세요.")
-      .default(false),
-  })
-  .required()
-
-type FormData = yup.InferType<typeof schema>
+type FormData = yup.InferType<typeof signUpSchema>
 
 const SignUpForm = () => {
   const [isPending, startTransition] = useLoading()
   const [isEmailDuplicateLoading, startEmailDuplicateTransition] = useLoading()
   const [isEmailVerifiedLoading, startEmailVerifiedTransition] = useLoading()
   const [isSendEmailVerifiedCode, setIsSendEmailVerifiedCode] = useState(false)
-  const [emailVerifiedCode, setEmailVerifiedCode] = useState("")
-  const [isEmailVerified, setIsEmailVerified] = useState(false)
   const { successToast, errorToast } = useToast()
   const {
     register,
     handleSubmit,
     watch,
     setValue,
-    control,
     getFieldState,
-    clearErrors,
-    formState: { errors, isValid },
+    formState: { errors },
   } = useForm<FormData>({
-    resolver: yupResolver(schema),
+    resolver: yupResolver(signUpSchema),
+    mode: "onChange",
   })
   const router = useRouter()
 
   useEffect(() => {
-    clearErrors("isEmailVerified")
+    setValue("isEmailVerified", false)
+    setIsSendEmailVerifiedCode(false)
   }, [watch("email")])
 
   const handleSignUp = async (payload: FormData) => {
@@ -99,7 +61,7 @@ const SignUpForm = () => {
       router.push("sign-in")
       successToast("회원가입이 완료되었습니다. 로그인 해주세요.")
     } catch (error: any) {
-      errorToast(error.message)
+      errorToast(error.response.data.message)
       console.log(error.message)
     }
   }
@@ -115,10 +77,12 @@ const SignUpForm = () => {
       await startEmailDuplicateTransition(
         sendEmailVerificationCode(watch("email")),
       )
-      successToast("사용 가능한 이메일입니다.")
+      successToast(
+        "사용 가능한 이메일입니다. \n이메일로 인증코드를 보냈습니다.",
+      )
       setIsSendEmailVerifiedCode(true)
     } catch (error: any) {
-      errorToast(error.message)
+      errorToast(error.response.data.message)
       console.log(error.message)
     }
   }
@@ -126,21 +90,16 @@ const SignUpForm = () => {
   const checkEmailVerifiedCode = async () => {
     try {
       await startEmailVerifiedTransition(
-        checkEmailVerificationCode(watch("email"), emailVerifiedCode),
+        checkEmailVerificationCode(watch("email"), watch("emailVerifiedCode")),
       )
       successToast("이메일 인증이 완료되었습니다.")
       setValue("isEmailVerified", true)
-      setIsEmailVerified(true)
     } catch (error: any) {
-      errorToast(error.message)
+      setIsSendEmailVerifiedCode(false)
+      errorToast(error.response.data.message)
       console.log(error.message)
     }
   }
-
-  const emailIsValid = useMemo(() => {
-    const emailRegex = /^[a-zA-Z0-9+-\_.]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/
-    return emailRegex.test(watch("email"))
-  }, [watch("email")])
 
   return (
     <form
@@ -182,7 +141,11 @@ const SignUpForm = () => {
         <Button
           type="button"
           onClick={isDuplicate}
-          disabled={!emailIsValid || isEmailDuplicateLoading}
+          disabled={
+            isEmailDuplicateLoading ||
+            isSendEmailVerifiedCode ||
+            getFieldState("email").invalid
+          }
           className="absolute top-1 right-2 bg-main text-white rounded-lg h-8"
         >
           이메일 인증
@@ -195,27 +158,24 @@ const SignUpForm = () => {
           <p className="text-error text-xs font-semibold">{message}</p>
         )}
       />
-
-      {isSendEmailVerifiedCode && (
-        <InputWithButton
-          label="이메일 인증코드"
-          id="isEmailVerified"
-          type="text"
-          register={register}
-          errors={errors.isEmailVerified}
-          placeholder="이메일 인증코드를 입력하세요."
-          className="py-3"
+      <InputWithButton
+        label="이메일 인증코드"
+        id="emailVerifiedCode"
+        type="text"
+        register={register}
+        errors={errors.emailVerifiedCode}
+        placeholder="이메일 인증코드를 입력하세요."
+        className="py-3"
+      >
+        <Button
+          type="button"
+          disabled={isEmailVerifiedLoading || watch("isEmailVerified")}
+          onClick={checkEmailVerifiedCode}
+          className="absolute top-1 right-2 bg-main text-white rounded-lg h-8"
         >
-          <Button
-            type="button"
-            disabled={isEmailVerifiedLoading || isEmailVerified}
-            onClick={checkEmailVerifiedCode}
-            className="absolute top-1 right-2 bg-main text-white rounded-lg h-8"
-          >
-            인증번호 확인
-          </Button>
-        </InputWithButton>
-      )}
+          인증번호 확인
+        </Button>
+      </InputWithButton>
       <InputField
         label="비밀번호"
         id="password"
@@ -239,7 +199,7 @@ const SignUpForm = () => {
         className="bg-main w-full my-4 hover:bg-main text-white"
         disabled={isPending}
       >
-        회원가입
+        {isPending ? <Spinner className="w-5 h-5" /> : "회원가입"}
       </Button>
     </form>
   )

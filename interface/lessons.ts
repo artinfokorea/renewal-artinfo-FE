@@ -13,5 +13,5 @@ export interface LessonPayload {
   pay: number
   areas: string[]
   introduction: string
-  career: string
+  career?: string
 }

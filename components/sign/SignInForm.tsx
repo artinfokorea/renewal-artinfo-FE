@@ -11,26 +11,10 @@ import useToast from "@/hooks/useToast"
 import { useLoading } from "@toss/use-loading"
 import { useSearchParams } from "next/navigation"
 import InputField from "../common/InputField"
+import { Spinner } from "../common/Loading"
+import { signInSchema } from "@/lib/schemas"
 
-const schema = yup
-  .object({
-    email: yup
-      .string()
-      .email("이메일 형식이 아닙니다.")
-      .required("이메일을 입력해주세요."),
-    password: yup
-      .string()
-      .min(8, "8자 이상 12자 이하로 영문, 숫자, 특수문자를 포함해주세요.")
-      .max(12, "8자 이상 12자 이하로 영문, 숫자, 특수문자를 포함해주세요.")
-      .required()
-      .matches(
-        /^(?=.*[0-9])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{8,12}$/,
-        "8자 이상 12자 이하로 영문, 숫자, 특수문자를 포함해주세요.",
-      ),
-  })
-  .required()
-
-type FormData = yup.InferType<typeof schema>
+type FormData = yup.InferType<typeof signInSchema>
 
 const SignInForm = () => {
   const [isLoading, startTransition] = useLoading()
@@ -44,7 +28,7 @@ const SignInForm = () => {
     handleSubmit,
     formState: { errors },
   } = useForm<FormData>({
-    resolver: yupResolver(schema),
+    resolver: yupResolver(signInSchema),
   })
 
   useEffect(() => {
@@ -156,7 +140,7 @@ const SignInForm = () => {
         className="bg-main w-full my-6 hover:bg-main text-white"
         disabled={isLoading}
       >
-        로그인
+        {isLoading ? <Spinner className="w-5 h-5" /> : "로그인"}
       </Button>
       <p className="text-primary text-center mt-2">
         아직 회원이 아니신가요?

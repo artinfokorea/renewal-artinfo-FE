@@ -43,8 +43,18 @@ const page = () => {
   }
 
   const handleLessonForm = async (payload: LessonFormData) => {
+    const { areas, pay, imageUrl, introduction, career } = payload
+
     try {
-      await handleFormTransition(updateLesson(payload))
+      await handleFormTransition(
+        updateLesson({
+          areas,
+          pay,
+          imageUrl,
+          introduction,
+          career: career || "",
+        }),
+      )
       successToast("레슨이 수정되었습니다.")
       queryClient.invalidateQueries({
         queryKey: queries.lessons._def,

@@ -3,7 +3,6 @@ import Image from "next/image"
 import Link from "next/link"
 import { usePathname } from "next/navigation"
 import React, { forwardRef } from "react"
-import { AspectRatio } from "../ui/aspect-ratio"
 
 interface Props {
   lesson: LESSON
@@ -17,7 +16,7 @@ const LessonCard = forwardRef<HTMLDivElement, Props>(
     return (
       <Link href={`${pathname}/${lesson.id}`}>
         {lesson.imageUrl && (
-          <div className="relative h-[240px] md:h-[300px]">
+          <div className="relative aspect-[2/3]">
             <Image
               src={lesson.imageUrl}
               alt="job_imgge"

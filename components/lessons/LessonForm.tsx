@@ -16,21 +16,9 @@ import { useLoading } from "@toss/use-loading"
 import { ErrorMessage } from "@hookform/error-message"
 import ImageField from "../common/ImageField"
 import { Spinner } from "../common/Loading"
+import { lessonSchema } from "@/lib/schemas"
 
-const schema = yup
-  .object({
-    introduction: yup.string().required("소개를 입력해주세요."),
-    career: yup.string().required("경력 사항을 입력해주세요."),
-    pay: yup.number().required("1회당 금액을 입력해주세요."),
-    areas: yup
-      .array()
-      .min(1, "한개 이상의 지역을 등록해주세요.")
-      .required("레슨 가능한 지역을 등록해주세요."),
-    imageUrl: yup.string().required("이미지를 등록해주세요."),
-  })
-  .required()
-
-export type LessonFormData = yup.InferType<typeof schema>
+export type LessonFormData = yup.InferType<typeof lessonSchema>
 
 interface Props {
   isFormLoading: boolean
@@ -54,7 +42,7 @@ const LessonForm = ({ handleLesson, isFormLoading, lesson }: Props) => {
     clearErrors,
     formState: { errors },
   } = useForm<LessonFormData>({
-    resolver: yupResolver(schema),
+    resolver: yupResolver(lessonSchema),
     defaultValues: {
       areas: lesson?.areas || [],
       pay: lesson?.pay,

@@ -9,37 +9,10 @@ import { useEffect, useState } from "react"
 import InputField from "../common/InputField"
 import InputWithButton from "../common/InputWithButton"
 import Link from "next/link"
+import { findPasswordSchema } from "@/lib/schemas"
+import { isDuplicateEmail } from "@/apis/auth"
 
-const schema = yup
-  .object({
-    email: yup
-      .string()
-      .matches(
-        /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/,
-        "유효한 이메일 주소를 입력해주세요.",
-      )
-      .required("이메일은 필수입력 사항입니다."),
-    isEmailVerified: yup
-      .boolean()
-      .oneOf([true], "이메일 인증을 완료해주세요.")
-      .default(false),
-    password: yup
-      .string()
-      .min(8, "8자 이상 12자 이하로 영문, 숫자, 특수문자를 포함해주세요.")
-      .max(12, "8자 이상 12자 이하로 영문, 숫자, 특수문자를 포함해주세요.")
-      .required()
-      .matches(
-        /^(?=.*[0-9])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{8,12}$/,
-        "8자 이상 12자 이하로 영문, 숫자, 특수문자를 포함해주세요.",
-      ),
-    rePassword: yup
-      .string()
-      .required("재확인 비밀번호를 입력해주세요.")
-      .oneOf([yup.ref("password")], "재확인 비밀번호가 일치 하지 않습니다."),
-  })
-  .required()
-
-export type PasswordFormData = yup.InferType<typeof schema>
+export type PasswordFormData = yup.InferType<typeof findPasswordSchema>
 
 interface Props {
   isLoading: boolean
@@ -67,18 +40,20 @@ const FindPasswordForm = ({
     getFieldState,
     formState: { errors },
   } = useForm<PasswordFormData>({
-    resolver: yupResolver(schema),
+    resolver: yupResolver(findPasswordSchema),
     mode: "onChange",
   })
 
   useEffect(() => {
     setIsVerify(false)
+    setIsSendEmail(false)
   }, [watch("email")])
 
   const sendEmail = async () => {
     try {
       setIsVerify(false)
-      await sendCode(getValues("email") as string)
+      await isDuplicateEmail(getValues("email"))
+      await sendCode(getValues("email"))
       setIsSendEmail(true)
     } catch (error) {
       console.error("이메일 인증 코드 전송 실패:", error)

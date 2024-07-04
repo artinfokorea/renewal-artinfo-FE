@@ -27,31 +27,10 @@ import {
   checkEmailVerificationCode,
 } from "@/apis/auth"
 import { MAJOR } from "@/types/majors"
-import AlertDialog from "../dialog/AlertDialog"
-import { AxiosError } from "axios"
-import { SuccessResponse } from "@/interface"
+import { profileSchema } from "@/lib/schemas"
 
-const schema = yup
-  .object({
-    name: yup
-      .string()
-      .min(2, "이름은 2글자 이상 입력해주세요.")
-      .required("이름을 입력해주세요."),
-    birth: yup.string().required("생년월일을 입력해주세요."),
-    nickname: yup
-      .string()
-      .min(2, "닉네임은 2글자 이상 입력해주세요.")
-      .required("닉네임을 입력해주세요."),
-    majors: yup.array().max(2, "최대 2개까지 선택 가능합니다.").nullable(),
-    bachellor: yup.string().nullable(),
-    master: yup.string().nullable(),
-    doctor: yup.string().nullable(),
-    imageUrl: yup.string().nullable(),
-    phone: yup.string().nullable(),
-  })
-  .required()
+export type ProfileFormData = yup.InferType<typeof profileSchema>
 
-export type ProfileFormData = yup.InferType<typeof schema>
 const ProfileContainer = () => {
   const [isMajorDialog, setIsMajorDialog] = useState(false)
   const [isImageUploadLoading, imageStartTransition] = useLoading()
@@ -74,7 +53,7 @@ const ProfileContainer = () => {
     setValue,
     formState: { errors, isDirty },
   } = useForm<ProfileFormData>({
-    resolver: yupResolver(schema),
+    resolver: yupResolver(profileSchema),
   })
 
   useEffect(() => {
@@ -290,11 +269,6 @@ const ProfileContainer = () => {
         sendEmailVerifyCode={sendEmailVerifyCode}
         checkEmailVerifyCode={checkEmailVerifyCode}
       />
-      {/* <AlertDialog
-        isOpen={true}
-        handleDialog={() => console.log("hi")}
-        title="ㅗㅑㅗㅑ"
-      /> */}
     </section>
   )
 }

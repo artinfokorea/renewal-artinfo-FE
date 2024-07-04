@@ -7,7 +7,7 @@ import { Button } from "../ui/button"
 import InputField from "../common/InputField"
 import { Label } from "../ui/label"
 import { useState } from "react"
-import { SuccessCode, SuccessResponse } from "@/interface"
+import { passwordRegex } from "@/lib/schemas"
 
 const schema = yup
   .object({
@@ -21,7 +21,7 @@ const schema = yup
       .max(12, "8자 이상 12자 이하로 영문, 숫자, 특수문자를 포함해주세요.")
       .required()
       .matches(
-        /^(?=.*[0-9])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{8,12}$/,
+        passwordRegex,
         "8자 이상 12자 이하로 영문, 숫자, 특수문자를 포함해주세요.",
       ),
     rePassword: yup

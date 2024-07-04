@@ -19,6 +19,7 @@ import useToast from "@/hooks/useToast"
 import { useLoading } from "@toss/use-loading"
 import ImageField from "../common/ImageField"
 import { Spinner } from "../common/Loading"
+import { jobSchema } from "@/lib/schemas"
 
 const ToastEditor = dynamic(() => import("../editor/ToastEditor"), {
   ssr: false,
@@ -29,30 +30,7 @@ const ToastEditor = dynamic(() => import("../editor/ToastEditor"), {
   ),
 })
 
-const schema = yup
-  .object({
-    title: yup
-      .string()
-      .min(3, "3자 이상 20자 이하로 입력해주세요.")
-      .max(50, "3자 이상 50자 이하로 입력해주세요.")
-      .required("제목을 입력해주세요."),
-    contents: yup.string().required("내용을 입력해주세요."),
-    companyName: yup
-      .string()
-      .min(2, "2자 이상 20자 이하로 입력해주세요.")
-      .max(20, "2자 이상 20자 이하로 입력해주세요.")
-      .required(),
-    address: yup.string().required("지역을 선택해주세요."),
-    addressDetail: yup.string().required("상세 주소를 입력해주세요."),
-    imageUrl: yup.string().nullable(),
-    majors: yup
-      .array()
-      .min(1, "전공을 최소 1개 선택해야 합니다.")
-      .required("전공을 선택해주세요."),
-  })
-  .required()
-
-export type CreateFulltimeJobFormData = yup.InferType<typeof schema>
+export type CreateFulltimeJobFormData = yup.InferType<typeof jobSchema>
 
 interface Props {
   handleFullTimeJob: (payload: CreateFulltimeJobFormData) => void
@@ -82,9 +60,9 @@ const FullTimeJobForm = ({
     clearErrors,
     formState: { errors },
   } = useForm<CreateFulltimeJobFormData>({
-    resolver: yupResolver(schema),
+    resolver: yupResolver(jobSchema),
     defaultValues: {
-      majors: job?.majors?.majors || ([] as MAJOR[]),
+      majors: job?.majors?.majors || [],
       title: job?.title || "",
       companyName: job?.companyName || "",
       addressDetail: job?.addressDetail || "",
@@ -122,7 +100,7 @@ const FullTimeJobForm = ({
         watch("majors")?.filter(major => major.id !== selectedMajor.id),
       )
     } else {
-      const mergedMajors = [...watch("majors"), selectedMajor]
+      const mergedMajors = [...(watch("majors") || []), selectedMajor]
 
       setValue("majors", mergedMajors)
     }
@@ -197,8 +175,8 @@ const FullTimeJobForm = ({
               </span>
             )}
             {watch("majors")
-              .slice(0, 1)
-              .map((major: MAJOR, index) => {
+              ?.slice(0, 1)
+              .map((major: MAJOR, index: number) => {
                 return (
                   <Badge
                     key={major.id}
