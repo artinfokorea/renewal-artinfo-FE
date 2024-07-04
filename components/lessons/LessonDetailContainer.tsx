@@ -182,7 +182,7 @@ const LessonDetailContainer = ({ lesson, deleteLesson }: Props) => {
           <p className="text-coolgray font-semibold text-lg mb-3 md:mb-6">
             전문가 소개
           </p>
-          <p className="min-h-[120px] md:h-[260px] rounded-lg p-2">
+          <p className="min-h-[120px] md:h-[260px] rounded-lg p-2 whitespace-pre-wrap">
             {lesson?.introduction}
           </p>
         </div>
@@ -190,7 +190,7 @@ const LessonDetailContainer = ({ lesson, deleteLesson }: Props) => {
           <p className="text-coolgray font-semibold text-lg mb-3 md:mb-6">
             경력
           </p>
-          <p className="min-h-[120px] md:h-[260px] rounded-lg p-2">
+          <p className="min-h-[120px] md:h-[260px] rounded-lg p-2 whitespace-pre-wrap">
             {lesson?.career}
           </p>
         </div>
