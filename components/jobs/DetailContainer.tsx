@@ -110,7 +110,7 @@ const DetailContainer = ({ deleteJob, job }: Props) => {
           />
         </div>
       ) : (
-        <div className="my-8" />
+        <div className="my-8 flex-1 border-b border-whitesmoke w-full" />
       )}
       {job?.contents && (
         <div dangerouslySetInnerHTML={{ __html: job.contents }}></div>

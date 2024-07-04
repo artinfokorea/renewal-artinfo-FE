@@ -164,7 +164,7 @@ const LessonDetailContainer = ({ lesson, deleteLesson }: Props) => {
       </div>
       {user?.id === lesson?.authorId ? (
         <div className="hidden md:flex my-8 h-8 items-center gap-4 md:gap-6">
-          <div className="flex-1 border-b-2 border-whitesmoke w-full" />
+          <div className="flex-1 border-b border-whitesmoke w-full" />
           <ItemManageBox
             handleEdit={() => router.push(`${pathname}?type=edit`)}
             handleDelete={() =>
@@ -174,7 +174,7 @@ const LessonDetailContainer = ({ lesson, deleteLesson }: Props) => {
           />
         </div>
       ) : (
-        <div className="my-8" />
+        <div className="my-8 flex-1 border-b border-whitesmoke w-full" />
       )}
 
       <div className="flex flex-col px-4 md:px-0 gap-4 md:flex-row md:gap-8">
