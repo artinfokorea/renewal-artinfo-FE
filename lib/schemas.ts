@@ -44,7 +44,7 @@ const nameSchema = yup
 const nicknameSchema = yup
   .string()
   .min(2, "닉네임은 2글자 이상 입력해주세요.")
-  .max(6, "닉네임은 12글자 이하로 입력해주세요.")
+  .max(12, "닉네임은 12글자 이하로 입력해주세요.")
   .required("닉네임을 입력해주세요.")
 
 const verifyCodeSchema = yup
