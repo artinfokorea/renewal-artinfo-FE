@@ -120,12 +120,12 @@ const DetailContainer = ({ deleteJob, job }: Props) => {
       ) : (
         <div className="mx-4 my-8 flex-1 border-b-2 border-whitesmoke md:mx-0" />
       )}
-      {job?.contents && (
+      {senitizeHTML && (
         <div
           dangerouslySetInnerHTML={{
             __html: senitizeHTML,
           }}
-        ></div>
+        />
       )}
       <ConfirmDialog
         isOpen={isDeleteConfirmDialog}

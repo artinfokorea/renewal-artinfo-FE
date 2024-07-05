@@ -13,6 +13,14 @@ interface Props {
   setValue: UseFormSetValue<any>
 }
 
+DOMPurify.addHook("beforeSanitizeAttributes", node => {
+  if (node.hasAttribute("style")) {
+    const styles = node.getAttribute("style")
+    // style 속성 값을 그대로 유지하되, 세미콜론으로 끝나도록 보장
+    node.setAttribute("style", styles?.endsWith(";") ? styles : styles + ";")
+  }
+})
+
 const ToastEditor = ({ setValue, value = "" }: Props) => {
   const editorRef = useRef<Editor>(null)
   const toolbarItems = [
@@ -53,6 +61,32 @@ const ToastEditor = ({ setValue, value = "" }: Props) => {
     }
   }, [])
 
+  const customSanitizer = (html: string) => {
+    return DOMPurify.sanitize(html, {
+      ALLOWED_TAGS: [
+        "p",
+        "br",
+        "span",
+        "strong",
+        "em",
+        "u",
+        "a",
+        "img",
+        "ul",
+        "ol",
+        "li",
+      ],
+      ALLOWED_ATTR: ["href", "target", "rel", "src", "alt", "style"],
+      ADD_TAGS: ["style"],
+      ADD_ATTR: ["style"],
+      ALLOW_DATA_ATTR: false,
+      FORBID_ATTR: ["class", "id"],
+      ALLOW_UNKNOWN_PROTOCOLS: true,
+      SAFE_FOR_TEMPLATES: true,
+      WHOLE_DOCUMENT: false,
+    })
+  }
+
   return (
     <Editor
       ref={editorRef}
@@ -66,26 +100,7 @@ const ToastEditor = ({ setValue, value = "" }: Props) => {
       hooks={{
         addImageBlobHook: onUploadImage,
       }}
-      sanitizer={{
-        allowedTags: [
-          "p",
-          "br",
-          "span",
-          "strong",
-          "em",
-          "u",
-          "a",
-          "img",
-          "ul",
-          "ol",
-          "li",
-        ],
-        allowedAttributes: {
-          a: ["href", "target", "rel"],
-          img: ["src", "alt"],
-        },
-        forbiddenTags: ["class", "style"],
-      }}
+      customHTMLSanitizer={customSanitizer}
     />
   )
 }
