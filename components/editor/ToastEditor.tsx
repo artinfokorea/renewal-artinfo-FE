@@ -62,29 +62,81 @@ const ToastEditor = ({ setValue, value = "" }: Props) => {
   }, [])
 
   const customSanitizer = (html: string) => {
-    return DOMPurify.sanitize(html, {
-      ALLOWED_TAGS: [
-        "p",
-        "br",
-        "span",
-        "strong",
-        "em",
-        "u",
-        "a",
-        "img",
-        "ul",
-        "ol",
-        "li",
-      ],
-      ALLOWED_ATTR: ["href", "target", "rel", "src", "alt", "style"],
-      ADD_TAGS: ["style"],
-      ADD_ATTR: ["style"],
-      ALLOW_DATA_ATTR: false,
-      FORBID_ATTR: ["class", "id"],
-      ALLOW_UNKNOWN_PROTOCOLS: true,
-      SAFE_FOR_TEMPLATES: true,
-      WHOLE_DOCUMENT: false,
-    })
+    if (!html) {
+      console.log("HTML is null or undefined, returning empty string")
+      return ""
+    }
+
+    try {
+      console.log("Initial HTML:", html)
+
+      // 스타일 속성과 font-family 속성 제거
+      const preprocessedHtml = html.replace(/<[^>]+>/g, match => {
+        // 각 태그에서 style 속성 제거
+        let cleanedMatch = match.replace(/ style=["'][^"']*["']/gi, "")
+
+        // font-family 속성 제거
+        cleanedMatch = cleanedMatch.replace(
+          /font-family\s*:\s*(?:&quot;|')[^;&]*(?:&quot;|')?;?/gi,
+          "",
+        )
+
+        return cleanedMatch
+      })
+
+      console.log(
+        "After removing style and font-family attributes:",
+        preprocessedHtml,
+      )
+
+      // DOMPurify로 HTML 정제
+      const sanitized = DOMPurify.sanitize(preprocessedHtml, {
+        ALLOWED_TAGS: [
+          "p",
+          "br",
+          "span",
+          "strong",
+          "em",
+          "u",
+          "a",
+          "img",
+          "ul",
+          "ol",
+          "li",
+          "h1",
+          "h2",
+          "h3",
+          "h4",
+          "h5",
+          "h6",
+          "table",
+          "thead",
+          "tbody",
+          "tr",
+          "th",
+          "td",
+        ],
+        ALLOWED_ATTR: [
+          "href",
+          "target",
+          "rel",
+          "src",
+          "alt",
+          "colspan",
+          "rowspan",
+        ],
+        ALLOW_DATA_ATTR: false,
+        FORBID_TAGS: ["script", "iframe", "style"],
+        FORBID_ATTR: ["style", "class"],
+        ALLOW_UNKNOWN_PROTOCOLS: true,
+      })
+
+      console.log("Sanitized HTML:", sanitized)
+      return sanitized
+    } catch (error) {
+      console.error("Sanitization error:", error)
+      return ""
+    }
   }
 
   return (
@@ -92,6 +144,7 @@ const ToastEditor = ({ setValue, value = "" }: Props) => {
       ref={editorRef}
       placeholder="내용을 입력해주세요."
       initialEditType="wysiwyg"
+      initialValue=""
       height="100%"
       previewStyle="vertical"
       toolbarItems={toolbarItems}

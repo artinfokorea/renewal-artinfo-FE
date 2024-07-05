@@ -3,7 +3,7 @@
 import { queries } from "@/lib/queries"
 import { useQuery } from "@tanstack/react-query"
 import { usePathname, useRouter } from "next/navigation"
-import React, { useEffect, useState } from "react"
+import React, { useState } from "react"
 import { Badge } from "../ui/badge"
 import filters from "@/lib/filters"
 import FallbackImage from "../common/FallbackImage"
@@ -11,7 +11,6 @@ import ItemManageBox from "../common/ItemManageBox"
 import ConfirmDialog from "../dialog/ConfirmDialog"
 import { JOB, JobType } from "@/types/jobs"
 import { useSession } from "next-auth/react"
-import DOMPurify from "dompurify"
 
 interface Props {
   deleteJob: () => void
@@ -28,13 +27,6 @@ const DetailContainer = ({ deleteJob, job }: Props) => {
   })
   const pathname = usePathname()
   const [isDeleteConfirmDialog, setIsDeleteConfirmDialog] = useState(false)
-  const [senitizeHTML, setSenitizeHTML] = useState("")
-
-  useEffect(() => {
-    const jobContents =
-      DOMPurify?.sanitize(filter.URLFY(job?.contents) as string) || ""
-    setSenitizeHTML(jobContents)
-  }, [])
 
   return (
     <div className="mx-auto mt-4 max-w-screen-lg px-4 md:px-8">
@@ -120,10 +112,10 @@ const DetailContainer = ({ deleteJob, job }: Props) => {
       ) : (
         <div className="mx-4 my-8 flex-1 border-b-2 border-whitesmoke md:mx-0" />
       )}
-      {senitizeHTML && (
+      {job?.contents && (
         <div
           dangerouslySetInnerHTML={{
-            __html: senitizeHTML,
+            __html: filter.URLFY(job?.contents) as string,
           }}
         />
       )}

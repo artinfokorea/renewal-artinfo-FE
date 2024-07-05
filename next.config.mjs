@@ -8,6 +8,7 @@ const config = {
     REST_API_BASE_URL: process.env.REST_API_BASE_URL,
     NEXTAUTH_SECRET: process.env.NEXTAUTH_SECRET,
     DEV_ENV: process.env.DEV_ENV,
+    GTAG_ID: process.env.GTAG_ID,
   },
   images: {
     remotePatterns: [

@@ -3,6 +3,7 @@ import "./globals.css"
 import ClientProvider from "@/components/provider/ClientProvider"
 import { Metadata, Viewport } from "next"
 import Script from "next/script"
+import * as gtag from "@/lib/gtag"
 
 const inter = Inter({ subsets: ["latin"] })
 
@@ -37,12 +38,12 @@ export const metadata: Metadata = {
   },
   manifest: "/manifest.json",
 
-  // verification: {
-  //   other: {
-  //     "naver-site-verification": ["eb1c30e483eed014548bceaa3325c74cc15490db"],
-  //     "google-adsense-account": ["ca-pub-7139698395080232"],
-  //   },
-  // },
+  verification: {
+    other: {
+      "naver-site-verification": ["eb1c30e483eed014548bceaa3325c74cc15490db"],
+      // "google-adsense-account": ["ca-pub-7139698395080232"],
+    },
+  },
 }
 
 export default function RootLayout({
@@ -57,6 +58,24 @@ export default function RootLayout({
         style={{ height: "calc(100vh - 156px)" }}
         suppressHydrationWarning
       >
+        <Script
+          strategy="afterInteractive"
+          src={`https://www.googletagmanager.com/gtag/js?id=${gtag.GA_TRACKING_ID}`}
+        />
+        <Script
+          id="gtag-init"
+          strategy="afterInteractive"
+          dangerouslySetInnerHTML={{
+            __html: `
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+            gtag('config', '${gtag.GA_TRACKING_ID}', {
+              page_path: window.location.pathname,
+            });
+          `,
+          }}
+        />
         <Script
           src="https://developers.kakao.com/sdk/js/kakao.js"
           strategy="beforeInteractive"

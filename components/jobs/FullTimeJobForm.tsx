@@ -22,14 +22,26 @@ import { uploadImages } from "@/apis/system"
 import { useLoading } from "@toss/use-loading"
 import { UploadTarget } from "@/types"
 
-const ToastEditor = dynamic(() => import("../editor/ToastEditor"), {
-  ssr: false,
-  loading: () => (
-    <div className="flex h-[400px] items-center justify-center">
-      <Spinner className="h-8 w-8" />
-    </div>
-  ),
-})
+// const ToastEditor = dynamic(() => import("../editor/ToastEditor"), {
+//   ssr: false,
+//   loading: () => (
+//     <div className="flex h-[400px] items-center justify-center">
+//       <Spinner className="h-8 w-8" />
+//     </div>
+//   ),
+// })
+
+const QuillEditor = dynamic(
+  () => import("@/components/QuillEditor/QuillEditor"),
+  {
+    loading: () => (
+      <div className="flex h-[400px] items-center justify-center">
+        <Spinner className="h-8 w-8" />
+      </div>
+    ),
+    ssr: false,
+  },
+)
 
 export type CreateFulltimeJobFormData = yup.InferType<typeof jobSchema>
 
@@ -52,12 +64,14 @@ const FullTimeJobForm = ({
   const [isPostDialog, setIsPostDialog] = useState(false)
   const { successToast, errorToast } = useToast()
   const [isUploadLoading, uploadTrasition] = useLoading()
+  const quillRef = useRef()
 
   const {
     register,
     handleSubmit,
     watch,
     setValue,
+    control,
     clearErrors,
     formState: { errors },
   } = useForm<CreateFulltimeJobFormData>({
@@ -234,7 +248,12 @@ const FullTimeJobForm = ({
         </div>
       </div>
       <div className="my-6 h-[300px] md:h-[500px]">
-        <ToastEditor setValue={setValue} value={job?.contents} />
+        <QuillEditor
+          quillRef={quillRef}
+          htmlContent={watch("contents")}
+          handleContent={(html: string) => setValue("contents", html)}
+        />
+        {/* <ToastEditor setValue={setValue} value={job?.contents} /> */}
         <ErrorMessage
           errors={errors}
           name="contents"
@@ -243,7 +262,7 @@ const FullTimeJobForm = ({
           )}
         />
       </div>
-      <div className="flex justify-end gap-2">
+      <div className="mt-20 flex justify-end gap-2">
         <Button
           type="button"
           className="h-9 rounded-3xl border px-6 text-sm"
