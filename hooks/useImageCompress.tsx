@@ -4,17 +4,20 @@ import { useState, useCallback } from "react"
 import imageCompression from "browser-image-compression"
 import { useLoading } from "@toss/use-loading"
 import { uploadImages } from "@/apis/system"
+import { UploadTarget } from "@/types"
 
 interface CompressOptions {
   maxSizeMB: number
   maxWidthOrHeight: number
   useWebWorker: boolean
+  compress: boolean
 }
 
 const defaultOptions: CompressOptions = {
-  maxSizeMB: 30,
+  maxSizeMB: 50,
   maxWidthOrHeight: 1920,
   useWebWorker: true,
+  compress: true,
 }
 
 const useImageCompress = () => {
@@ -22,7 +25,11 @@ const useImageCompress = () => {
   const [uploadError, setUploadError] = useState<Error | null>(null)
 
   const compressAndUpload = useCallback(
-    async (files: File[], options: CompressOptions = defaultOptions) => {
+    async (
+      target: UploadTarget,
+      files: File[],
+      options: CompressOptions = defaultOptions,
+    ) => {
       setUploadError(null)
 
       try {
@@ -35,7 +42,7 @@ const useImageCompress = () => {
         )
 
         const uploadResponse = await startTransition(
-          uploadImages(compressedFiles),
+          uploadImages(target, compressedFiles, options.compress),
         )
 
         return uploadResponse

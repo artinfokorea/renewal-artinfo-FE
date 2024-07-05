@@ -5,6 +5,8 @@ import { UseFormSetValue } from "react-hook-form"
 import "@toast-ui/editor/dist/toastui-editor.css"
 import "./toastEditor.css"
 import { uploadImages } from "@/apis/system"
+import DOMPurify from "dompurify"
+import { UploadTarget } from "@/types"
 
 interface Props {
   value?: string
@@ -37,7 +39,7 @@ const ToastEditor = ({ setValue, value = "" }: Props) => {
   const onUploadImage = async (blob: Blob, callback: (url: string) => void) => {
     try {
       const file = new File([blob], "image.jpg", { type: blob.type })
-      const uploadResponse = await uploadImages([file])
+      const uploadResponse = await uploadImages(UploadTarget.JOB, [file], false)
 
       callback(uploadResponse.images[0].url)
     } catch (error) {
@@ -47,21 +49,43 @@ const ToastEditor = ({ setValue, value = "" }: Props) => {
 
   useEffect(() => {
     if (editorRef.current) {
-      editorRef.current.getInstance().setMarkdown(value)
+      editorRef.current.getInstance().setHTML(value)
     }
   }, [])
+
   return (
     <Editor
       ref={editorRef}
       placeholder="내용을 입력해주세요."
-      initialValue=""
       initialEditType="wysiwyg"
       height="100%"
       previewStyle="vertical"
       toolbarItems={toolbarItems}
       plugins={[colorSyntax]}
       hideModeSwitch={true}
-      hooks={{ addImageBlobHook: onUploadImage }}
+      hooks={{
+        addImageBlobHook: onUploadImage,
+      }}
+      sanitizer={{
+        allowedTags: [
+          "p",
+          "br",
+          "span",
+          "strong",
+          "em",
+          "u",
+          "a",
+          "img",
+          "ul",
+          "ol",
+          "li",
+        ],
+        allowedAttributes: {
+          a: ["href", "target", "rel"],
+          img: ["src", "alt"],
+        },
+        forbiddenTags: ["class", "style"],
+      }}
     />
   )
 }

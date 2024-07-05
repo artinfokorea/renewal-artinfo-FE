@@ -46,7 +46,7 @@ const LessonDetailContainer = ({ lesson, deleteLesson }: Props) => {
     <div className="mt-8 md:mt-16 md:px-4">
       <div className="flex flex-col md:flex-row md:gap-24">
         {lesson?.imageUrl && (
-          <div className="relative mx-auto h-[360px] w-[300px] md:h-[300px] md:w-[240px]">
+          <div className="relative mx-auto h-[320px] w-[240px] md:h-[300px] md:w-[220px]">
             <Image
               src={lesson?.imageUrl}
               alt="lesson_image"
@@ -189,7 +189,9 @@ const LessonDetailContainer = ({ lesson, deleteLesson }: Props) => {
             }}
           />
         </div>
-        <div className="min-h-[300px] w-full overflow-hidden rounded-md bg-whitesmoke p-4 md:p-8">
+        <div
+          className={`min-h-[300px] w-full overflow-hidden rounded-md bg-whitesmoke p-4 md:p-8 ${lesson?.career ? "block" : "hidden"}`}
+        >
           <p className="mb-3 text-lg font-semibold text-coolgray md:mb-6">
             경력
           </p>

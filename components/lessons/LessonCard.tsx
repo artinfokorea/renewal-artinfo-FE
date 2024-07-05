@@ -16,7 +16,7 @@ const LessonCard = forwardRef<HTMLDivElement, Props>(
     return (
       <Link href={`${pathname}/${lesson.id}`}>
         {lesson.imageUrl && (
-          <div className="relative aspect-[2/3]">
+          <div className="relative aspect-[20/27]">
             <Image
               src={lesson.imageUrl}
               alt="job_imgge"

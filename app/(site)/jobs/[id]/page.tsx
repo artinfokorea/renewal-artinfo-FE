@@ -87,9 +87,7 @@ const page = () => {
   }
 
   useEffect(() => {
-    if (!data) {
-      setIsLoginModalOpen(true)
-    }
+    setIsLoginModalOpen(!data?.user)
   }, [data])
 
   return (

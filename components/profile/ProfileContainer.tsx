@@ -5,7 +5,11 @@ import { yupResolver } from "@hookform/resolvers/yup"
 import * as yup from "yup"
 import React, { useEffect, useState } from "react"
 import { useLoading } from "@toss/use-loading"
-import { sendPhoneVerificationCode, verifyPhoneCode } from "@/apis/system"
+import {
+  sendPhoneVerificationCode,
+  uploadImages,
+  verifyPhoneCode,
+} from "@/apis/system"
 import useToast from "@/hooks/useToast"
 import { updateUser, updateUserPassword, updateUserPhone } from "@/apis/users"
 import { SchoolType } from "@/types/lessons"
@@ -24,7 +28,7 @@ import {
 } from "@/apis/auth"
 import { MAJOR } from "@/types/majors"
 import { profileSchema } from "@/lib/schemas"
-import useImageCompress from "@/hooks/useImageCompress"
+import { UploadTarget } from "@/types"
 
 export type ProfileFormData = yup.InferType<typeof profileSchema>
 
@@ -39,7 +43,7 @@ const ProfileContainer = () => {
   const [isPasswordDialog, setIsPasswordDialog] = useState(false)
   const queryClient = useQueryClient()
   const filter = filters()
-  const { compressAndUpload, isUploadLoading } = useImageCompress()
+  const [isUploadLoading, uploadTransition] = useLoading()
 
   const { data: user } = useQuery({
     ...queries.users.detail(),
@@ -82,7 +86,9 @@ const ProfileContainer = () => {
 
   const handleUploadedFiles = async (files: File[]) => {
     try {
-      const uploadResponse = await compressAndUpload(files)
+      const uploadResponse = await uploadTransition(
+        uploadImages(UploadTarget.USER, files, true),
+      )
 
       successToast("프로필 이미지가 등록되었습니다.")
       setValue("imageUrl", uploadResponse.images[0].url as string)

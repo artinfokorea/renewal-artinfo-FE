@@ -15,7 +15,9 @@ import { ErrorMessage } from "@hookform/error-message"
 import ImageField from "../common/ImageField"
 import { Spinner } from "../common/Loading"
 import { lessonSchema } from "@/lib/schemas"
-import useImageCompress from "@/hooks/useImageCompress"
+import { uploadImages } from "@/apis/system"
+import { useLoading } from "@toss/use-loading"
+import { UploadTarget } from "@/types"
 
 export type LessonFormData = yup.InferType<typeof lessonSchema>
 
@@ -31,7 +33,7 @@ const LessonForm = ({ handleLesson, isFormLoading, lesson }: Props) => {
   const pathname = usePathname()
   const { successToast, errorToast } = useToast()
   const [isDistrictDialog, setIsDistrictDialog] = useState(false)
-  const { compressAndUpload, isUploadLoading } = useImageCompress()
+  const [isUploadLoading, uploadTrasition] = useLoading()
 
   const {
     register,
@@ -131,8 +133,10 @@ const LessonForm = ({ handleLesson, isFormLoading, lesson }: Props) => {
 
   const handleUploadedFiles = async (files: File[]) => {
     try {
-      const uploadResponse = await compressAndUpload(files)
-      successToast("프로필 이미지가 등록되었습니다.")
+      const uploadResponse = await uploadTrasition(
+        uploadImages(UploadTarget.LESSON, files, true),
+      )
+      successToast("레슨 이미지가 등록되었습니다.")
       setValue("imageUrl", uploadResponse.images[0].url as string)
     } catch (error: any) {
       errorToast(error.message)
@@ -151,7 +155,7 @@ const LessonForm = ({ handleLesson, isFormLoading, lesson }: Props) => {
             priority={true}
             deleteImage={deleteImage}
             openFileUploader={openFileUploader}
-            className="mx-auto h-[360px] w-[300px] rounded-md md:h-[300px] md:w-[240px]"
+            className="mx-auto h-[320px] w-[240px] rounded-md md:h-[300px] md:w-[220px]"
           />
           <div className="flex-1 p-2 md:p-0">
             <h4 className="text-xl font-bold md:text-2xl">레슨 등록</h4>

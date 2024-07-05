@@ -1,7 +1,7 @@
 import { ListApiResponse, ListResponse, SuccessResponse } from "@/interface"
 import { publicApiRequest, authApiRequest } from "."
 import { exceptionHandler } from "./exception-handler"
-import { IMAGE, PROVINCE } from "@/types"
+import { IMAGE, PROVINCE, UploadTarget } from "@/types"
 import { VerifyPhoneCodePayload } from "@/interface/systems"
 
 export const getProvinces = async (
@@ -42,11 +42,14 @@ export const verifyPhoneCode = async (
 }
 
 export const uploadImages = async (
+  target: UploadTarget,
   imageFiles: File[],
+  compress?: boolean,
 ): Promise<ListResponse<IMAGE, "images">> => {
   const formData = new FormData()
   imageFiles.forEach(file => formData.append("imageFiles", file))
-  formData.append("target", "USER")
+  formData.append("target", target)
+  // formData.append("compress", `${compress}`)
 
   const response = await authApiRequest.post<ListApiResponse<IMAGE, "images">>(
     "/system/upload/images",

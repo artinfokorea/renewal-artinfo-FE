@@ -115,3 +115,9 @@ export type IMAGE = {
   size: number
   url: string
 }
+
+export enum UploadTarget {
+  USER = "USER",
+  JOB = "JOB",
+  LESSON = "LESSON",
+}

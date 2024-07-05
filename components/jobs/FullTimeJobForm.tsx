@@ -18,7 +18,9 @@ import useToast from "@/hooks/useToast"
 import ImageField from "../common/ImageField"
 import { Spinner } from "../common/Loading"
 import { jobSchema } from "@/lib/schemas"
-import useImageCompress from "@/hooks/useImageCompress"
+import { uploadImages } from "@/apis/system"
+import { useLoading } from "@toss/use-loading"
+import { UploadTarget } from "@/types"
 
 const ToastEditor = dynamic(() => import("../editor/ToastEditor"), {
   ssr: false,
@@ -49,7 +51,7 @@ const FullTimeJobForm = ({
   const [isMajorDialog, setIsMajorDialog] = useState(false)
   const [isPostDialog, setIsPostDialog] = useState(false)
   const { successToast, errorToast } = useToast()
-  const { compressAndUpload, isUploadLoading } = useImageCompress()
+  const [isUploadLoading, uploadTrasition] = useLoading()
 
   const {
     register,
@@ -79,8 +81,10 @@ const FullTimeJobForm = ({
 
   const handleUploadedFiles = async (files: File[]) => {
     try {
-      const uploadResponse = await compressAndUpload(files)
-      successToast("프로필 이미지가 등록되었습니다.")
+      const uploadResponse = await uploadTrasition(
+        uploadImages(UploadTarget.JOB, files, true),
+      )
+      successToast("채용 이미지가 등록되었습니다.")
       setValue("imageUrl", uploadResponse.images[0].url as string)
     } catch (error: any) {
       errorToast(error.message)
@@ -199,38 +203,33 @@ const FullTimeJobForm = ({
             >
               주소검색
             </Button>
-            {watch("address") && (
-              <div className="w-full">
-                <Input
-                  disabled
-                  value={watch("address")}
-                  className="w-full border-b-2 border-whitesmoke py-2 focus:outline-none"
-                />
-                <ErrorMessage
-                  errors={errors}
-                  name="address"
-                  render={({ message }) => (
-                    <p className="text-xs font-semibold text-error">
-                      {message}
-                    </p>
-                  )}
-                />
-                <Input
-                  {...register("addressDetail")}
-                  placeholder="상세 주소를 입력해주세요."
-                  className="w-full border-b-2 border-whitesmoke py-2 focus:outline-none"
-                />
-                <ErrorMessage
-                  errors={errors}
-                  name="addressDetail"
-                  render={({ message }) => (
-                    <p className="text-xs font-semibold text-error">
-                      {message}
-                    </p>
-                  )}
-                />
-              </div>
-            )}
+            <div className="w-full">
+              <Input
+                disabled
+                value={watch("address")}
+                placeholder="주소검색을 통해 주소를 입력해주세요."
+                className="w-full border-b-2 border-whitesmoke py-2 focus:outline-none disabled:bg-white"
+              />
+              <ErrorMessage
+                errors={errors}
+                name="address"
+                render={({ message }) => (
+                  <p className="text-xs font-semibold text-error">{message}</p>
+                )}
+              />
+              <Input
+                {...register("addressDetail")}
+                placeholder="상세 주소를 입력해주세요."
+                className="w-full border-b-2 border-whitesmoke py-2 focus:outline-none"
+              />
+              <ErrorMessage
+                errors={errors}
+                name="addressDetail"
+                render={({ message }) => (
+                  <p className="text-xs font-semibold text-error">{message}</p>
+                )}
+              />
+            </div>
           </div>
         </div>
       </div>

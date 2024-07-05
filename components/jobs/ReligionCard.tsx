@@ -26,7 +26,7 @@ const ReligionCard = forwardRef<HTMLDivElement, Props>(
             </div>
 
             <div className="ml-4 flex-1 py-2 md:ml-12">
-              <h4 className="line-clamp-2 break-all text-sm font-bold md:text-xl">
+              <h4 className="line-clamp-1 break-all text-sm font-bold md:text-xl">
                 {job.title}
               </h4>
               <div className="my-2 flex items-center gap-2">
