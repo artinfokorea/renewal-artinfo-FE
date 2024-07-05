@@ -29,4 +29,5 @@ export interface JobPayload {
   imageUrl?: string
   majorIds?: number[]
   type: JobType
+  recruitSiteUrl?: string
 }

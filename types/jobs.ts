@@ -47,10 +47,13 @@ export const JobTypeList = [
 
 export const JobTypeValues: { [key in JobType]: string } = JobTypeList.reduce<{
   [key in JobType]: string
-}>((acc, curr) => {
-  acc[curr.value] = curr.title
-  return acc
-}, {} as { [key in JobType]: string })
+}>(
+  (acc, curr) => {
+    acc[curr.value] = curr.title
+    return acc
+  },
+  {} as { [key in JobType]: string },
+)
 
 export const MajorValues = [
   {
@@ -96,6 +99,7 @@ export type JOB = {
   companyName: string
   address?: string
   addressDetail?: string
+  recruitSiteUrl?: string
 }
 
 export enum SearchType {

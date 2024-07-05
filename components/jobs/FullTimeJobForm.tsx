@@ -84,6 +84,7 @@ const FullTimeJobForm = ({
       contents: job?.contents || "",
       address: job?.address || "",
       imageUrl: job?.imageUrl || "",
+      recruitSiteUrl: job?.recruitSiteUrl || "",
     },
   })
 
@@ -142,10 +143,10 @@ const FullTimeJobForm = ({
         )}
         <div
           className={`flex flex-1 flex-col text-dimgray ${
-            withImage ? "md:my-4 md:ml-16" : "w-full"
+            withImage ? "md:ml-16" : "w-full"
           }`}
         >
-          <div className="md:mt:0 mb-2 mt-4">
+          <div className="md:mt:0 mb-2">
             <Input
               {...register("title")}
               className="w-full border-b-2 border-whitesmoke py-2 focus:outline-none"
@@ -168,6 +169,20 @@ const FullTimeJobForm = ({
             <ErrorMessage
               errors={errors}
               name="companyName"
+              render={({ message }) => (
+                <p className="text-xs font-semibold text-error">{message}</p>
+              )}
+            />
+          </div>
+          <div className="mb-2">
+            <Input
+              {...register("recruitSiteUrl")}
+              className="w-full border-b-2 border-whitesmoke py-2 focus:outline-none"
+              placeholder="사이트 주소를 입력해주세요. 예): https://naver.com"
+            />
+            <ErrorMessage
+              errors={errors}
+              name="recruitSiteUrl"
               render={({ message }) => (
                 <p className="text-xs font-semibold text-error">{message}</p>
               )}

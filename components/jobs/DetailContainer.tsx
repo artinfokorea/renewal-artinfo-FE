@@ -27,7 +27,7 @@ const DetailContainer = ({ deleteJob, job }: Props) => {
   })
   const pathname = usePathname()
   const [isDeleteConfirmDialog, setIsDeleteConfirmDialog] = useState(false)
-  console.log("contents", job?.contents)
+  console.log("job", job)
   return (
     <div className="mx-auto mt-4 max-w-screen-lg px-4 md:px-8">
       <div className="flex flex-col md:flex-row">
@@ -90,28 +90,54 @@ const DetailContainer = ({ deleteJob, job }: Props) => {
           <p className="text-sm font-medium text-coolgray md:text-lg">
             {job?.address}
           </p>
-          <div className="flex justify-between text-sm font-medium text-coolgray md:text-lg">
+          <div className="flex items-center justify-between text-sm font-medium text-coolgray md:text-lg">
             <span>{job?.companyName}</span>
             <span>{filter.YYYYMMDD(job?.endAt)}</span>
           </div>
+          {job?.recruitSiteUrl && (
+            <a
+              href={job?.recruitSiteUrl}
+              target="_blank"
+              className="text-sm font-bold text-main md:hidden md:text-lg"
+            >
+              채용 사이트 바로가기
+            </a>
+          )}
         </div>
       </div>
-      {user?.id === job?.authorId ? (
-        <div className="my-8 flex h-8 items-center gap-4 md:gap-6">
-          <div className="w-full flex-1 border-b-2 border-whitesmoke" />
-          <ItemManageBox
-            handleEdit={() =>
-              router.push(`${pathname}?type=edit&jobType=${job?.type}`)
-            }
-            handleDelete={() =>
-              setIsDeleteConfirmDialog(!isDeleteConfirmDialog)
-            }
-            className="h-10"
-          />
-        </div>
-      ) : (
-        <div className="mx-4 my-8 flex-1 border-b-2 border-whitesmoke md:mx-0" />
-      )}
+
+      {
+        user?.id === job?.authorId ? (
+          <div className="my-8 flex h-8 items-center gap-4 md:gap-6">
+            <div className="w-full flex-1 border-b-2 border-whitesmoke" />
+            <ItemManageBox
+              handleEdit={() =>
+                router.push(`${pathname}?type=edit&jobType=${job?.type}`)
+              }
+              handleDelete={() =>
+                setIsDeleteConfirmDialog(!isDeleteConfirmDialog)
+              }
+              className="h-10"
+            />
+          </div>
+        ) : job?.recruitSiteUrl ? (
+          <div className="mx-4 my-8 hidden items-center justify-center md:mx-0 md:flex">
+            <div className="flex-1 border-b-2 border-whitesmoke"></div>
+            <a
+              href={job?.recruitSiteUrl}
+              target="_blank"
+              className="mx-4 hidden text-base font-bold text-main md:inline md:text-lg"
+            >
+              채용 사이트 바로가기
+            </a>
+            <div className="flex-1 border-b-2 border-whitesmoke"></div>
+          </div>
+        ) : (
+          <div className="my-8 flex flex-1 border-b-2 border-whitesmoke" />
+        )
+
+        // <div className="my-8 flex flex-1 border-b-2 border-whitesmoke md:hidden" />
+      }
       {job?.contents && (
         <div
           dangerouslySetInnerHTML={{

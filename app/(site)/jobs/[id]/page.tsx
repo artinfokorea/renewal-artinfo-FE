@@ -60,6 +60,7 @@ const page = () => {
       imageUrl,
       majors,
       contents,
+      recruitSiteUrl,
     } = payload
 
     try {
@@ -73,6 +74,7 @@ const page = () => {
           majorIds: majors.map(major => major.id),
           contents,
           type: jobType,
+          recruitSiteUrl: recruitSiteUrl || "",
         }),
       )
       successToast("채용이 수정되었습니다.")

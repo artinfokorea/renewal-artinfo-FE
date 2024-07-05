@@ -31,6 +31,7 @@ const page = () => {
       imageUrl,
       majors,
       contents,
+      recruitSiteUrl,
     } = payload
     try {
       await startTransition(
@@ -43,6 +44,7 @@ const page = () => {
           majorIds: majors.map(major => major.id),
           contents,
           type: jobType,
+          recruitSiteUrl: recruitSiteUrl || "",
         }),
       )
       successToast("채용이 등록되었습니다.")

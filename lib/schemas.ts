@@ -81,6 +81,8 @@ const createStringRequiredSchema = (
   return schema
 }
 
+const linkUrlSchema = yup.string().url("유효한 URL을 입력해주세요.").nullable()
+
 export const findPasswordSchema = yup.object().shape({
   email: emailSchema,
   isEmailVerified: booleanSchema,
@@ -121,6 +123,7 @@ export const jobSchema = yup.object().shape({
     minErrorMessage: "3자 이상 입력해주세요.",
     maxErrorMessage: "50자 이하로 입력해주세요.",
   }),
+  recruitSiteUrl: linkUrlSchema,
   contents: createStringRequiredSchema("내용을 입력해주세요."),
   companyName: createStringRequiredSchema("회사명을 입력해주세요.", {
     minLength: 2,
