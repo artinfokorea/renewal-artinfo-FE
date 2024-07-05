@@ -112,7 +112,7 @@ const FindPasswordForm = ({
           />
           <Button
             type="button"
-            disabled={verifyCode.length !== 6 || isVerify}
+            disabled={isVerify}
             onClick={checkEmail}
             className="absolute right-2 top-1 h-8 bg-main text-white"
           >

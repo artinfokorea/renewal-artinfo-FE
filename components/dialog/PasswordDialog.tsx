@@ -129,7 +129,7 @@ const PasswordDialog = ({
                 <div className="flex gap-2">
                   <Button
                     type="button"
-                    disabled={verifyCode.length !== 6 || isVerifyEmail}
+                    disabled={isVerifyEmail}
                     className="bg-blue-800 text-white"
                     onClick={checkEmail}
                   >
