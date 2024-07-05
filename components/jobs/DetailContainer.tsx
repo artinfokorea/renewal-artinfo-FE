@@ -27,7 +27,7 @@ const DetailContainer = ({ deleteJob, job }: Props) => {
   })
   const pathname = usePathname()
   const [isDeleteConfirmDialog, setIsDeleteConfirmDialog] = useState(false)
-  console.log("job", job)
+
   return (
     <div className="mx-auto mt-4 max-w-screen-lg px-4 md:px-8">
       <div className="flex flex-col md:flex-row">
@@ -46,7 +46,7 @@ const DetailContainer = ({ deleteJob, job }: Props) => {
         )}
         <div
           className={`flex flex-1 flex-col justify-center gap-2 py-2 md:gap-4 ${
-            job?.type !== JobType.RELIGION && "md:ml-12"
+            job?.imageUrl && "md:ml-12"
           }`}
         >
           <h4 className="mt-4 break-words text-xl font-bold md:mt-0">
