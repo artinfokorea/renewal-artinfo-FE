@@ -27,7 +27,7 @@ const DetailContainer = ({ deleteJob, job }: Props) => {
   })
   const pathname = usePathname()
   const [isDeleteConfirmDialog, setIsDeleteConfirmDialog] = useState(false)
-
+  console.log("contents", job?.contents)
   return (
     <div className="mx-auto mt-4 max-w-screen-lg px-4 md:px-8">
       <div className="flex flex-col md:flex-row">
@@ -115,7 +115,7 @@ const DetailContainer = ({ deleteJob, job }: Props) => {
       {job?.contents && (
         <div
           dangerouslySetInnerHTML={{
-            __html: filter.URLFY(job?.contents) as string,
+            __html: job?.contents,
           }}
         />
       )}
