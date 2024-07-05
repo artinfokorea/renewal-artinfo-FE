@@ -145,7 +145,7 @@ const ProfileForm = ({
                 <>
                   <Input
                     {...register("name")}
-                    className="mx-auto w-[100px] rounded-lg border px-2 py-1 focus:outline-none md:ml-10 md:w-[200px]"
+                    className="mx-auto w-[150px] rounded-lg border px-2 py-1 focus:outline-none md:ml-10 md:w-[200px]"
                     placeholder="이름을 입력해주세요."
                   />
                   <ErrorMessage
@@ -209,7 +209,7 @@ const ProfileForm = ({
                 <>
                   <Input
                     {...register("nickname")}
-                    className="w-[120px] rounded-lg border px-2 py-1 focus:outline-none md:w-[200px]"
+                    className="w-full rounded-lg border px-2 py-1 focus:outline-none md:w-[200px]"
                     placeholder="닉네임을 입력해주세요."
                   />
                   <ErrorMessage
