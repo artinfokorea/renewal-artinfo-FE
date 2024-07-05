@@ -106,38 +106,34 @@ const DetailContainer = ({ deleteJob, job }: Props) => {
         </div>
       </div>
 
-      {
-        user?.id === job?.authorId ? (
-          <div className="my-8 flex h-8 items-center gap-4 md:gap-6">
-            <div className="w-full flex-1 border-b-2 border-whitesmoke" />
-            <ItemManageBox
-              handleEdit={() =>
-                router.push(`${pathname}?type=edit&jobType=${job?.type}`)
-              }
-              handleDelete={() =>
-                setIsDeleteConfirmDialog(!isDeleteConfirmDialog)
-              }
-              className="h-10"
-            />
-          </div>
-        ) : job?.recruitSiteUrl ? (
-          <div className="mx-4 my-8 hidden items-center justify-center md:mx-0 md:flex">
-            <div className="flex-1 border-b-2 border-whitesmoke"></div>
-            <a
-              href={job?.recruitSiteUrl}
-              target="_blank"
-              className="mx-4 hidden text-base font-bold text-main md:inline md:text-lg"
-            >
-              채용 사이트 바로가기
-            </a>
-            <div className="flex-1 border-b-2 border-whitesmoke"></div>
-          </div>
-        ) : (
-          <div className="my-8 flex flex-1 border-b-2 border-whitesmoke" />
-        )
-
-        // <div className="my-8 flex flex-1 border-b-2 border-whitesmoke md:hidden" />
-      }
+      {user?.id === job?.authorId ? (
+        <div className="my-8 flex h-8 items-center gap-4 md:gap-6">
+          <div className="w-full flex-1 border-b-2 border-whitesmoke" />
+          <ItemManageBox
+            handleEdit={() =>
+              router.push(`${pathname}?type=edit&jobType=${job?.type}`)
+            }
+            handleDelete={() =>
+              setIsDeleteConfirmDialog(!isDeleteConfirmDialog)
+            }
+            className="h-10"
+          />
+        </div>
+      ) : job?.recruitSiteUrl ? (
+        <div className="my-8 flex items-center justify-center">
+          <div className="flex-1 border-b-2 border-whitesmoke"></div>
+          <a
+            href={job?.recruitSiteUrl}
+            target="_blank"
+            className="mx-4 hidden text-base font-bold text-main md:inline md:text-lg"
+          >
+            채용 사이트 바로가기
+          </a>
+          <div className="flex-1 border-b-2 border-whitesmoke"></div>
+        </div>
+      ) : (
+        <div className="my-8 flex flex-1 border-b-2 border-whitesmoke" />
+      )}
       {job?.contents && (
         <div
           dangerouslySetInnerHTML={{
