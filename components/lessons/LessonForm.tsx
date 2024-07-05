@@ -1,6 +1,6 @@
 "use client"
 
-import React, { useRef, useState } from "react"
+import React, { FormEvent, useEffect, useRef, useState } from "react"
 import FileUploader from "../common/FileUploader"
 import { Button, Input, Textarea } from "@headlessui/react"
 import CloseIcon from "../icons/CloseIcon"
@@ -38,7 +38,6 @@ const LessonForm = ({ handleLesson, isFormLoading, lesson }: Props) => {
     handleSubmit,
     watch,
     setValue,
-    clearErrors,
     formState: { errors },
   } = useForm<LessonFormData>({
     resolver: yupResolver(lessonSchema),
@@ -50,6 +49,60 @@ const LessonForm = ({ handleLesson, isFormLoading, lesson }: Props) => {
       career: lesson?.career,
     },
   })
+
+  const autoResizeIntro = (element: HTMLTextAreaElement) => {
+    if (element) {
+      element.style.height = "auto"
+      element.style.height = `${element.scrollHeight}px`
+    }
+  }
+
+  useEffect(() => {
+    const resizeObserver = new ResizeObserver(() => {
+      const textarea = document.querySelector('textarea[name="introduction"]')
+      if (textarea) {
+        autoResizeIntro(textarea as HTMLTextAreaElement)
+      }
+    })
+
+    const textarea = document.querySelector('textarea[name="introduction"]')
+    if (textarea) {
+      resizeObserver.observe(textarea)
+    }
+
+    return () => {
+      if (textarea) {
+        resizeObserver.unobserve(textarea)
+      }
+    }
+  }, [])
+
+  const autoResizeCareer = (element: HTMLTextAreaElement) => {
+    if (element) {
+      element.style.height = "auto"
+      element.style.height = `${element.scrollHeight}px`
+    }
+  }
+
+  useEffect(() => {
+    const resizeObserver = new ResizeObserver(() => {
+      const textarea = document.querySelector('textarea[name="career"]')
+      if (textarea) {
+        autoResizeCareer(textarea as HTMLTextAreaElement)
+      }
+    })
+
+    const textarea = document.querySelector('textarea[name="career"]')
+    if (textarea) {
+      resizeObserver.observe(textarea)
+    }
+
+    return () => {
+      if (textarea) {
+        resizeObserver.unobserve(textarea)
+      }
+    }
+  }, [])
 
   const deleteImage = () => setValue("imageUrl", "")
 
@@ -95,9 +148,10 @@ const LessonForm = ({ handleLesson, isFormLoading, lesson }: Props) => {
             imageUrl={watch("imageUrl") || ""}
             isImageLoading={isUploadLoading}
             alt="job_company_image"
+            priority={true}
             deleteImage={deleteImage}
             openFileUploader={openFileUploader}
-            className="mx-auto h-[360px] w-[300px] md:h-[300px] md:w-[240px]"
+            className="mx-auto h-[360px] w-[300px] rounded-md md:h-[300px] md:w-[240px]"
           />
           <div className="flex-1 p-2 md:p-0">
             <h4 className="text-xl font-bold md:text-2xl">레슨 등록</h4>
@@ -143,14 +197,17 @@ const LessonForm = ({ handleLesson, isFormLoading, lesson }: Props) => {
         </div>
         <div className="my-8 border-b-2 border-whitesmoke" />
         <div className="flex flex-col gap-4 md:flex-row md:gap-8">
-          <div className="h-[380px] overflow-y-auto rounded-md bg-whitesmoke p-4 md:w-1/2 md:p-8">
+          <div className="rounded-md bg-whitesmoke p-4 md:w-1/2 md:p-8">
             <p className="mb-3 font-semibold text-coolgray md:mb-6 md:text-lg">
               전문가 소개
             </p>
             <Textarea
               {...register("introduction")}
               placeholder="전문가 소개를 입력해주세요."
-              className="h-4/5 w-full resize-none rounded-lg border p-3 text-sm focus:outline-none md:text-lg"
+              onInput={(e: FormEvent<HTMLTextAreaElement>) =>
+                autoResizeIntro(e.target as HTMLTextAreaElement)
+              }
+              className="min-h-[300px] w-full resize-none overflow-y-hidden rounded-lg border p-3 text-sm focus:outline-none md:text-lg"
             />
             <ErrorMessage
               errors={errors}
@@ -162,14 +219,17 @@ const LessonForm = ({ handleLesson, isFormLoading, lesson }: Props) => {
               )}
             />
           </div>
-          <div className="h-[380px] overflow-y-auto rounded-md bg-whitesmoke p-4 md:w-1/2 md:p-8">
+          <div className="rounded-md bg-whitesmoke p-4 md:w-1/2 md:p-8">
             <p className="mb-3 font-semibold text-coolgray md:mb-6 md:text-lg">
               경력
             </p>
             <Textarea
               {...register("career")}
               placeholder="경력 사항을 입력해주세요."
-              className="h-4/5 w-full resize-none rounded-lg border p-3 text-sm focus:outline-none md:text-lg"
+              onInput={(e: FormEvent<HTMLTextAreaElement>) =>
+                autoResizeCareer(e.target as HTMLTextAreaElement)
+              }
+              className="h-auto min-h-[300px] w-full resize-none overflow-y-hidden rounded-lg border p-3 text-sm focus:outline-none md:text-lg"
             />
             <ErrorMessage
               errors={errors}

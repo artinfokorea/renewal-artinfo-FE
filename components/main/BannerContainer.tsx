@@ -25,7 +25,7 @@ const BannerContainer = () => {
 
   return (
     <Carousel
-      className="my-12 w-full md:my-16"
+      className="my-6 w-full md:my-16"
       plugins={[plugin.current]}
       onMouseEnter={plugin.current.stop}
       onMouseLeave={plugin.current.reset}

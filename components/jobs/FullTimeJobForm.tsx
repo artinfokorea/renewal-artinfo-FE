@@ -103,8 +103,6 @@ const FullTimeJobForm = ({
     }
   }
 
-  console.log("withImage", withImage)
-
   return (
     <form
       className="mx-auto max-w-screen-lg px-2 py-4"
@@ -236,8 +234,15 @@ const FullTimeJobForm = ({
           </div>
         </div>
       </div>
-      <div className="my-4 h-[300px] md:h-[500px]">
+      <div className="my-6 h-[300px] md:h-[500px]">
         <ToastEditor setValue={setValue} value={job?.contents} />
+        <ErrorMessage
+          errors={errors}
+          name="contents"
+          render={({ message }) => (
+            <p className="text-xs font-semibold text-error">{message}</p>
+          )}
+        />
       </div>
       <div className="flex justify-end gap-2">
         <Button

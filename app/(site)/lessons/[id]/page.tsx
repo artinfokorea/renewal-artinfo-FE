@@ -59,7 +59,7 @@ const page = () => {
       queryClient.invalidateQueries({
         queryKey: queries.lessons._def,
       })
-      router.push(pathname.slice(0, pathname.lastIndexOf("/")))
+      router.push(pathname)
     } catch (error: any) {
       errorToast(error.message)
       console.log(error)

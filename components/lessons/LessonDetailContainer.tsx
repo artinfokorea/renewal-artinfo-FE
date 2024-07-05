@@ -177,22 +177,28 @@ const LessonDetailContainer = ({ lesson, deleteLesson }: Props) => {
         <div className="mx-4 my-8 flex-1 border-b-2 border-whitesmoke md:mx-0" />
       )}
 
-      <div className="flex flex-col gap-4 px-4 md:flex-row md:gap-8 md:px-0">
-        <div className="min-h-[200px] overflow-y-auto rounded-md bg-whitesmoke p-4 md:h-[380px] md:w-1/2 md:p-8">
+      <div className="flex flex-col gap-4 px-4 md:min-h-[400px] md:flex-row md:gap-8 md:px-0">
+        <div className="min-h-[300px] w-full overflow-hidden rounded-md bg-whitesmoke p-4 md:p-8">
           <p className="mb-3 text-lg font-semibold text-coolgray md:mb-6">
             전문가 소개
           </p>
-          <p className="min-h-[120px] whitespace-pre-wrap rounded-lg p-2 md:h-[260px]">
-            {lesson?.introduction}
-          </p>
+          <div
+            className="whitespace-pre-wrap rounded-lg p-2"
+            dangerouslySetInnerHTML={{
+              __html: (filter.URLFY(lesson?.introduction) as string) || "",
+            }}
+          />
         </div>
-        <div className="min-h-[200px] overflow-y-auto rounded-md bg-whitesmoke p-4 md:h-[380px] md:w-1/2 md:p-8">
+        <div className="min-h-[300px] w-full overflow-hidden rounded-md bg-whitesmoke p-4 md:p-8">
           <p className="mb-3 text-lg font-semibold text-coolgray md:mb-6">
             경력
           </p>
-          <p className="min-h-[120px] whitespace-pre-wrap rounded-lg p-2 md:h-[260px]">
-            {lesson?.career}
-          </p>
+          <div
+            className="whitespace-pre-wrap rounded-lg p-2"
+            dangerouslySetInnerHTML={{
+              __html: (filter.URLFY(lesson?.career) as string) || "",
+            }}
+          />
         </div>
       </div>
 

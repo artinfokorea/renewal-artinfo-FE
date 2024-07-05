@@ -113,7 +113,11 @@ const DetailContainer = ({ deleteJob, job }: Props) => {
         <div className="mx-4 my-8 flex-1 border-b-2 border-whitesmoke md:mx-0" />
       )}
       {job?.contents && (
-        <div dangerouslySetInnerHTML={{ __html: job.contents }}></div>
+        <div
+          dangerouslySetInnerHTML={{
+            __html: (filter.URLFY(job?.contents) as string) || "",
+          }}
+        ></div>
       )}
       <ConfirmDialog
         isOpen={isDeleteConfirmDialog}

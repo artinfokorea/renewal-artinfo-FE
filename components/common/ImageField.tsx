@@ -1,11 +1,11 @@
 import React from "react"
-import Image from "next/image"
+import Image, { ImageProps } from "next/image"
 import { Button } from "../ui/button"
 import CloseIcon from "../icons/CloseIcon"
 import { Spinner } from "./Loading"
 import PhotoIcon from "../icons/PhotoIcon"
 
-interface Props {
+interface Props extends Omit<ImageProps, "src"> {
   imageUrl?: string
   deleteImage: () => void
   alt: string
