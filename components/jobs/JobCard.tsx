@@ -86,7 +86,7 @@ const JobCard = forwardRef<HTMLDivElement, Props>(
                         >
                           <span>
                             {`${major.koName} 외 ${
-                              job?.majors?.majors.length - 2
+                              job?.majors?.majors.length - 1
                             }`}
                           </span>
                         </Badge>
