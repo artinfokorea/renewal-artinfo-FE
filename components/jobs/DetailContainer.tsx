@@ -136,6 +136,7 @@ const DetailContainer = ({ deleteJob, job }: Props) => {
       )}
       {job?.contents && (
         <div
+          className="editor_view"
           dangerouslySetInnerHTML={{
             __html: job?.contents,
           }}
