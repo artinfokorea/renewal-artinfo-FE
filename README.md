@@ -1,36 +1,34 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# Art Info Korea (아트인포코리아)
 
-## Getting Started
+![Art Info Korea Logo](https://ycuajmirzlqpgzuonzca.supabase.co/storage/v1/object/public/artinfo/advertisements/artinfo2.png)
 
-First, run the development server:
+**소개:**
+클래식 음악 업종에 종사자들은 별도에 채용, 공연등의 정보를 한곳에서 볼수 있는 마땅한 서비스가 없어 개발하게 되었으며 현재는 채용, 공연정보 뿐만아니라 레슨, 아티스트 펜페이지 등의 기능들을 추가하여 11월 말 기준 현재 회원 2700명, 최대 DAU 1500여명을 달성하였습니다. 클래식 뿐만
+아니라 예체능 계열의 원티드를 목표로 나아가고 있습니다.클래식 음악 업종에 종사자들은 별도에 채용, 공연등의 정보를 한곳에서 볼수 있는 마땅한 서비스가 없어 개발하게 되었으며 현재는 채용, 공연정보 뿐만아니라 레슨, 아티스트 펜페이지 등의 기능들을 추가하여 11월 말 기준 현재 회원 2700명, 최대 DAU 1500여명을 달성하였습니다. 클래식 뿐만 아니라 예체능 계열의 원티드를 목표로 나아가고 있습니다.
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+## Tech Stack
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+<div>
+    <img src="https://img.shields.io/badge/Next.js-61DAFB?style=for-the-badge&logo=Next.js&logoColor=white">
+    <img src="https://img.shields.io/badge/JavaScript-F7DF1E?style=for-the-badge&logo=JavaScript&logoColor=white">
+    <img src="https://img.shields.io/badge/typescript-3178C6?style=for-the-badge&logo=typescript&logoColor=black">
+    <img src="https://img.shields.io/badge/tailwind-DB7093?style=for-the-badge&logo=tailwind&logoColor=white">
+     <img src="https://img.shields.io/badge/supabase-1572B6?style=for-the-badge&logo=supabase&logoColor=white">
+     <img src="https://img.shields.io/badge/React Query-FF4154?style=for-the-badge&logo=ReactQuery&logoColor=white">
+     
+</div>
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+<br/>
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+**특징:**
 
-## Learn More
+- **전국 공연장들의 흩어져 있는 채용 정보를 한눈에 볼 수 있는 채용페이지**
 
-To learn more about Next.js, take a look at the following resources:
+- **전공, 지역등을 선택하여 레슨홍보를 할 수 있는 레슨페이지**
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+<br />
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+**연락처:**
 
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+- 웹사이트: [https://artinfokorea.com](https://artinfokorea.com)
+- 이메일: artinfokorea2022@gmail.com
