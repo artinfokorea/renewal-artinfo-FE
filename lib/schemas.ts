@@ -12,6 +12,8 @@ export const passwordRegex =
 
 const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/
 
+const nameRegex = /^[a-zA-Z0-9가-힣-_.]*$/
+
 const passwordSchema = yup
   .string()
   .matches(
@@ -39,12 +41,20 @@ const nameSchema = yup
   .string()
   .min(2, "이름은 2글자 이상 입력해주세요.")
   .max(6, "이름은 6글자 이하로 입력해주세요.")
+  .matches(
+    nameRegex,
+    "이름은 영문, 숫자, 특수문자 빼기(-), 밑줄(_), 마침표(.)를 포함하여 2~6자로 입력하세요.",
+  )
   .required("이름을 입력해주세요.")
 
 const nicknameSchema = yup
   .string()
   .min(2, "닉네임은 2글자 이상 입력해주세요.")
   .max(12, "닉네임은 12글자 이하로 입력해주세요.")
+  .matches(
+    nameRegex,
+    "닉네임은 영문, 숫자, 특수문자 빼기(-), 밑줄(_), 마침표(.)를 포함하여 2~12자로 입력하세요.",
+  )
   .required("닉네임을 입력해주세요.")
 
 const verifyCodeSchema = yup

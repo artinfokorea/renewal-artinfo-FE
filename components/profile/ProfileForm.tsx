@@ -24,6 +24,7 @@ import { MAJOR } from "@/types/majors"
 import { ProfileFormData } from "./ProfileContainer"
 import FallbackImage from "../common/FallbackImage"
 import { Spinner } from "../common/Loading"
+import InputField from "../common/InputField"
 
 interface Props {
   user?: USER
@@ -142,7 +143,7 @@ const ProfileForm = ({
           <div className="mt-4 flex flex-col gap-2 text-base md:mt-0 md:gap-0 md:text-lg">
             <div className="mb-2 mt-8 flex items-center gap-4 font-medium">
               {isUpdateForm ? (
-                <>
+                <div className="flex flex-col">
                   <Input
                     {...register("name")}
                     className="mx-auto w-[150px] rounded-lg border px-2 py-1 focus:outline-none md:ml-10 md:w-[200px]"
@@ -152,10 +153,12 @@ const ProfileForm = ({
                     errors={errors}
                     name="name"
                     render={({ message }) => (
-                      <p className="font-semibold text-error">{message}</p>
+                      <p className="text-xs font-semibold text-error">
+                        {message}
+                      </p>
                     )}
                   />
-                </>
+                </div>
               ) : (
                 <h4 className="mx-auto text-xl font-bold md:ml-10">
                   {user?.name}
@@ -206,7 +209,7 @@ const ProfileForm = ({
                 height={24}
               />
               {isUpdateForm ? (
-                <>
+                <div className="flex flex-col">
                   <Input
                     {...register("nickname")}
                     className="w-full rounded-lg border px-2 py-1 focus:outline-none md:w-[200px]"
@@ -216,10 +219,12 @@ const ProfileForm = ({
                     errors={errors}
                     name="nickname"
                     render={({ message }) => (
-                      <p className="font-semibold text-error">{message}</p>
+                      <p className="text-xs font-semibold text-error">
+                        {message}
+                      </p>
                     )}
                   />
-                </>
+                </div>
               ) : (
                 <span>{user?.nickname}</span>
               )}
@@ -236,7 +241,7 @@ const ProfileForm = ({
             <div className="mb-2 flex items-center gap-4 font-medium">
               <CalendarIcon className="h-6 w-6" />
               {isUpdateForm ? (
-                <>
+                <div className="flex flex-col">
                   <Input
                     {...register("birth")}
                     type="date"
@@ -247,10 +252,12 @@ const ProfileForm = ({
                     errors={errors}
                     name="birth"
                     render={({ message }) => (
-                      <p className="font-semibold text-error">{message}</p>
+                      <p className="text-xs font-semibold text-error">
+                        {message}
+                      </p>
                     )}
                   />
-                </>
+                </div>
               ) : (
                 <span>{filter.YYYYMMDD(user?.birth, "YYYY-MM-DD")}</span>
               )}
