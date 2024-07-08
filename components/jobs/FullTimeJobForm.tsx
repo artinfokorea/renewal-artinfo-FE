@@ -23,7 +23,7 @@ import { useLoading } from "@toss/use-loading"
 import { UploadTarget } from "@/types"
 
 const QuillEditor = dynamic(
-  () => import("@/components/quillEditor/QuillEditor"),
+  () => import("@/components/QuillEditor/QuillEditor"),
   {
     loading: () => (
       <div className="flex h-[400px] items-center justify-center">

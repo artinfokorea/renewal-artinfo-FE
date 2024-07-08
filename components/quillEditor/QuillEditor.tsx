@@ -3,7 +3,6 @@
 import React, { useMemo, useCallback } from "react"
 import "react-quill/dist/quill.snow.css"
 import ReactQuill from "react-quill"
-import "./editor.css"
 import { uploadImages } from "@/apis/system"
 import { UploadTarget } from "@/types"
 import { CustomKeyboard } from "./CustomKeyboard"
