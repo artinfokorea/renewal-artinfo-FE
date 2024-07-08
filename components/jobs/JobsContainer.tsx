@@ -37,7 +37,7 @@ const JobsContainer = () => {
 
   return (
     <div className="mx-auto max-w-screen-lg px-4">
-      <ListSearchForm title="예술 취업 1등 플랫폼, 취업은 아트인포와 함께" />
+      <ListSearchForm title="취업은 아트인포와 함께" />
 
       <section className="flex">
         <JobListCheckBoxes artFields={artFields?.majorGroups} />
