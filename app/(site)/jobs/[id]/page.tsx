@@ -19,6 +19,7 @@ import {
   useSearchParams,
 } from "next/navigation"
 import { useEffect, useState } from "react"
+import Cookies from "js-cookie"
 
 const page = () => {
   const params = useParams()
@@ -90,6 +91,7 @@ const page = () => {
 
   useEffect(() => {
     setIsLoginModalOpen(!data?.user)
+    Cookies.set("prevPath", pathname, { expires: 1 / 288 })
   }, [data])
 
   return (

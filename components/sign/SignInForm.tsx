@@ -13,6 +13,7 @@ import { useSearchParams } from "next/navigation"
 import InputField from "../common/InputField"
 import { Spinner } from "../common/Loading"
 import { signInSchema } from "@/lib/schemas"
+import Cookies from "js-cookie"
 
 type FormData = yup.InferType<typeof signInSchema>
 
@@ -22,6 +23,7 @@ const SignInForm = () => {
   const { errorToast } = useToast()
   const searchParams = useSearchParams()
   const error = searchParams.get("error")
+  const prevPath = Cookies.get("prevPath")
 
   const {
     register,
@@ -54,7 +56,7 @@ const SignInForm = () => {
       await startTransition(
         signIn("signin-email", {
           ...payload,
-          callbackUrl: "/",
+          callbackUrl: prevPath || "/",
         }),
       )
     } catch (error: any) {

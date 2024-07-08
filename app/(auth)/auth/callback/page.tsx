@@ -3,10 +3,12 @@
 import { signIn } from "next-auth/react"
 import { useRouter, useSearchParams } from "next/navigation"
 import React, { useEffect } from "react"
+import Cookies from "js-cookie"
 
 const Callback = () => {
   const searchParams = useSearchParams()
   const router = useRouter()
+  const prevPath = Cookies.get("prevPath")
 
   let naver
   let naverLogin: any
@@ -44,7 +46,7 @@ const Callback = () => {
           signIn("sns", {
             accessToken: obj.access_token,
             type: "GOOGLE",
-            callbackUrl: "/",
+            callbackUrl: prevPath || "/",
           })
         } else {
           router.push("auth")
@@ -72,7 +74,7 @@ const Callback = () => {
       signIn("sns", {
         accessToken: res.access_token,
         type: "KAKAO",
-        callbackUrl: "/",
+        callbackUrl: prevPath || "/",
       })
     } catch (e: any) {
       console.error("kakao login error", e)
@@ -87,7 +89,7 @@ const Callback = () => {
         signIn("sns", {
           accessToken: naverLogin.loginStatus.accessToken.accessToken,
           type: "NAVER",
-          callbackUrl: "/",
+          callbackUrl: prevPath || "/",
         })
       }
     })

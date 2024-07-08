@@ -68,15 +68,14 @@ const Header = () => {
 
   return (
     <header
-      className={`sticky top-0 left-0 z-50 h-14 py-3 md:py-2 px-4 bg-white ${
+      className={`sticky left-0 top-0 z-50 h-14 bg-white px-4 py-3 md:py-2 ${
         (!isTopScroll || isBarOpen) && "shadow-md"
-      }
-      `}
+      } `}
     >
-      <div className="max-w-screen-lg flex justify-between items-center mx-auto relative">
+      <div className="relative mx-auto flex max-w-screen-lg items-center justify-between">
         <div className="flex">
           <Link href="/">
-            <h1 className="font-bold text-2xl text-main">ARTINFO</h1>
+            <h1 className="text-2xl font-bold text-main">ARTINFO</h1>
           </Link>
           <NavigationMenu className="ml-12 hidden md:flex">
             <NavigationMenuList>
@@ -104,7 +103,7 @@ const Header = () => {
             <DeskTopDropDown user={user} handleSign={handleSign} />
           ) : (
             <Button
-              className="bg-white text-main border-main border text-sm h-8 hover:bg-white"
+              className="h-8 border border-main bg-white text-sm text-main hover:bg-white"
               onClick={handleSign}
             >
               로그인
