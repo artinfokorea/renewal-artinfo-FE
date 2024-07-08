@@ -100,7 +100,7 @@ const QuillEditor = ({ quillRef, htmlContent, handleContent }: any) => {
     <ReactQuill
       ref={quillRef}
       value={htmlContent}
-      onChange={e => handleChange(e)}
+      onChange={e => handleContent(e)}
       modules={modules}
       theme="snow"
       style={{ height: "100%" }}
