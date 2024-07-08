@@ -6,7 +6,7 @@ import ReactQuill from "react-quill"
 import "./editor.css"
 import { uploadImages } from "@/apis/system"
 import { UploadTarget } from "@/types"
-import { CustomKeyboard } from "./CustomKeyborad"
+import { CustomKeyboard } from "./CustomKeyboard"
 
 const QuillEditor = ({ quillRef, htmlContent, handleContent }: any) => {
   const imageHandler = useCallback(() => {
@@ -40,6 +40,15 @@ const QuillEditor = ({ quillRef, htmlContent, handleContent }: any) => {
     }
   }, [quillRef])
 
+  const processContent = (content: string): string => {
+    return content.replace(/\n/g, "<br>")
+  }
+
+  const handleChange = (value: string) => {
+    const processedContent = processContent(value)
+    handleContent(processedContent)
+  }
+
   const modules = useMemo(
     () => ({
       toolbar: {
@@ -60,6 +69,9 @@ const QuillEditor = ({ quillRef, htmlContent, handleContent }: any) => {
         },
       },
       keyboard: CustomKeyboard.bindings,
+      clipboard: {
+        matchers: [],
+      },
     }),
     [imageHandler],
   )
@@ -68,7 +80,7 @@ const QuillEditor = ({ quillRef, htmlContent, handleContent }: any) => {
     <ReactQuill
       ref={quillRef}
       value={htmlContent}
-      onChange={e => handleContent(e)}
+      onChange={e => handleChange(e)}
       modules={modules}
       theme="snow"
       style={{ height: "100%" }}
