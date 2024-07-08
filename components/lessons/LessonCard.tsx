@@ -13,6 +13,10 @@ const LessonCard = forwardRef<HTMLDivElement, Props>(
   ({ lesson, isLastPage }, ref) => {
     const pathname = usePathname()
 
+    const province = lesson.area?.split(" ")[0].substring(0, 2)
+
+    const area = lesson.area?.split(" ")[1]
+
     return (
       <Link href={`${pathname}/${lesson.id}`}>
         {lesson.imageUrl && (
@@ -30,7 +34,9 @@ const LessonCard = forwardRef<HTMLDivElement, Props>(
               <p className="text-right">{lesson.name}</p>
               <div className="flex justify-end gap-4">
                 <span>{lesson.major}</span>
-                <span>{lesson.area}</span>
+                <span>
+                  {province} {area}
+                </span>
               </div>
             </div>
           </div>

@@ -38,7 +38,7 @@ const MajorDialog = ({
     >
       <div className="fixed inset-0 bg-black/30" aria-hidden="true" />
       <div className="fixed inset-0 flex w-screen items-center justify-center p-4">
-        <DialogPanel className="z-10 mx-auto h-[500px] max-w-[650px] overflow-auto rounded-xl bg-white py-4 md:h-[800px]">
+        <DialogPanel className="z-10 mx-auto h-[620px] max-w-[650px] overflow-auto rounded-xl bg-white py-4">
           <div className="relative mb-4">
             <DialogTitle className="flex-1 text-center font-semibold md:text-lg">
               전공선택
