@@ -5,7 +5,6 @@ import "react-quill/dist/quill.snow.css"
 import ReactQuill from "react-quill"
 import { uploadImages } from "@/apis/system"
 import { UploadTarget } from "@/types"
-import { CustomKeyboard } from "./CustomKeyboard"
 
 const QuillEditor = ({ quillRef, htmlContent, handleContent }: any) => {
   const imageHandler = useCallback(() => {
@@ -67,7 +66,6 @@ const QuillEditor = ({ quillRef, htmlContent, handleContent }: any) => {
           image: imageHandler,
         },
       },
-      keyboard: CustomKeyboard.bindings,
       clipboard: {
         matchers: [],
       },
