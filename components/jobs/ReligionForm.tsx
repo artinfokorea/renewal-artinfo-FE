@@ -17,14 +17,14 @@ import PlusIcon from "../icons/PlusIcon"
 import { MAJOR } from "@/types/majors"
 import { JOB } from "@/types/jobs"
 
-const ToastEditor = dynamic(() => import("../editor/ToastEditor"), {
-  ssr: false,
-  loading: () => (
-    <div className="flex h-[400px] items-center justify-center">
-      <Spinner className="h-8 w-8" />
-    </div>
-  ),
-})
+// const ToastEditor = dynamic(() => import("../editor/ToastEditor"), {
+//   ssr: false,
+//   loading: () => (
+//     <div className="flex h-[400px] items-center justify-center">
+//       <Spinner className="h-8 w-8" />
+//     </div>
+//   ),
+// })
 
 const schema = yup
   .object({
@@ -233,9 +233,9 @@ const ReligionForm = ({ handleReligionJob, isLoading, job }: Props) => {
           )}
         />
       </div>
-      <div className="my-4 h-[300px] md:h-[500px]">
+      {/* <div className="my-4 h-[300px] md:h-[500px]">
         <ToastEditor setValue={setValue} />
-      </div>
+      </div> */}
       <MajorDialog
         open={isMajorDialog}
         close={() => setIsMajorDialog(!isMajorDialog)}

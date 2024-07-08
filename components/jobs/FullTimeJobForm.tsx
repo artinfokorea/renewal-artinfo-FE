@@ -22,15 +22,6 @@ import { uploadImages } from "@/apis/system"
 import { useLoading } from "@toss/use-loading"
 import { UploadTarget } from "@/types"
 
-// const ToastEditor = dynamic(() => import("../editor/ToastEditor"), {
-//   ssr: false,
-//   loading: () => (
-//     <div className="flex h-[400px] items-center justify-center">
-//       <Spinner className="h-8 w-8" />
-//     </div>
-//   ),
-// })
-
 const QuillEditor = dynamic(
   () => import("@/components/QuillEditor/QuillEditor"),
   {

@@ -30,7 +30,7 @@ const ListSearchForm = ({ totalCount, title }: Props) => {
   return (
     <div className="mx-auto mt-8 flex max-w-screen-sm flex-col items-center md:mt-20">
       <h4 className="text-lg font-bold md:text-2xl">
-        <span className="text-main">{totalCount ?? "00"}</span>
+        {totalCount && <span className="text-main">{totalCount}</span>}
         {title}
       </h4>
       <form className="relative mt-4 w-full" onSubmit={handleSubmit}>

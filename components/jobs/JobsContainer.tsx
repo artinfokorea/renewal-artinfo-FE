@@ -14,6 +14,7 @@ import JobsList from "./JobsList"
 import JobListSkeleton from "../skeleton/JobListSkeleton"
 import { ArtType } from "@/types/majors"
 import AddButton from "../common/AddButton"
+import Cookies from "js-cookie"
 
 const JobsContainer = () => {
   const searchParams = useSearchParams()
@@ -28,8 +29,6 @@ const JobsContainer = () => {
 
   const { data: provinceList } = useQuery(queries.provinces.list())
 
-  const { data: jobsCount } = useQuery(queries.jobs.count())
-
   const selectedProvinces = useMemo(() => {
     return provinceList?.provinces?.filter(province =>
       provinceIds.includes(province.id.toString()),
@@ -38,11 +37,7 @@ const JobsContainer = () => {
 
   return (
     <div className="mx-auto max-w-screen-lg px-4">
-      <ListSearchForm
-        totalCount={jobsCount?.totalCount}
-        title="개의 채용이
-        진행중이에요."
-      />
+      <ListSearchForm title="예술 취업 1등 플랫폼, 취업은 아트인포와 함께" />
 
       <section className="flex">
         <JobListCheckBoxes artFields={artFields?.majorGroups} />
@@ -73,7 +68,10 @@ const JobsContainer = () => {
             </div>
             <Button
               className="rounded-3xl bg-main px-6 py-2 text-white"
-              onClick={() => router.push(`${pathname}/create`)}
+              onClick={() => {
+                Cookies.set("prevPath", pathname, { expires: 1 / 288 })
+                router.push(`${pathname}/create`)
+              }}
             >
               채용등록
             </Button>
