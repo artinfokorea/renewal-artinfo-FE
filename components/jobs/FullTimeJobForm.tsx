@@ -31,6 +31,18 @@ const QuillEditor = dynamic(() => import("@/components/editor/QuillEditor"), {
   ssr: false,
 })
 
+const ToastEditor = dynamic(
+  () => import("@/components/toastEditor/ToastEditor"),
+  {
+    loading: () => (
+      <div className="flex h-[400px] items-center justify-center">
+        <Spinner className="h-8 w-8" />
+      </div>
+    ),
+    ssr: false,
+  },
+)
+
 export type CreateFulltimeJobFormData = yup.InferType<typeof jobSchema>
 
 interface Props {
@@ -256,6 +268,10 @@ const FullTimeJobForm = ({
           htmlContent={watch("contents")}
           handleContent={(html: string) => setValue("contents", html)}
         />
+        {/* <ToastEditor
+          value={watch("contents")}
+          onChange={(value: string) => setValue("contents", value)}
+        /> */}
         <ErrorMessage
           errors={errors}
           name="contents"
