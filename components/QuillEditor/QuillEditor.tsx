@@ -6,6 +6,7 @@ import ReactQuill from "react-quill"
 import "./editor.css"
 import { uploadImages } from "@/apis/system"
 import { UploadTarget } from "@/types"
+import { CustomKeyboard } from "./CustomKeyborad"
 
 const QuillEditor = ({ quillRef, htmlContent, handleContent }: any) => {
   const imageHandler = useCallback(() => {
@@ -42,7 +43,6 @@ const QuillEditor = ({ quillRef, htmlContent, handleContent }: any) => {
   const modules = useMemo(
     () => ({
       toolbar: {
-        // 툴바에 넣을 기능들을 순서대로 나열하면 된다.
         container: [
           ["bold", "italic", "underline", "strike", "blockquote"],
           [{ size: ["small", false, "large", "huge"] }, { color: [] }],
@@ -56,10 +56,10 @@ const QuillEditor = ({ quillRef, htmlContent, handleContent }: any) => {
           ["image", "video"],
         ],
         handlers: {
-          // 위에서 만든 이미지 핸들러 사용하도록 설정
           image: imageHandler,
         },
       },
+      keyboard: CustomKeyboard.bindings,
     }),
     [imageHandler],
   )
