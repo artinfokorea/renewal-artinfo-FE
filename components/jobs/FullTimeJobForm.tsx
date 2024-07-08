@@ -256,7 +256,6 @@ const FullTimeJobForm = ({
           htmlContent={watch("contents")}
           handleContent={(html: string) => setValue("contents", html)}
         />
-        {/* <ToastEditor setValue={setValue} value={job?.contents} /> */}
         <ErrorMessage
           errors={errors}
           name="contents"
