@@ -1,10 +1,11 @@
 "use client"
 
-import React, { useMemo, useCallback } from "react"
+import React, { useMemo, useCallback, useEffect } from "react"
 import "react-quill/dist/quill.snow.css"
 import ReactQuill from "react-quill"
 import { uploadImages } from "@/apis/system"
 import { UploadTarget } from "@/types"
+import "./editor.css"
 
 const QuillEditor = ({ quillRef, htmlContent, handleContent }: any) => {
   const imageHandler = useCallback(() => {
@@ -46,6 +47,28 @@ const QuillEditor = ({ quillRef, htmlContent, handleContent }: any) => {
     const processedContent = processContent(value)
     handleContent(processedContent)
   }
+
+  useEffect(() => {
+    const editor = quillRef.current?.getEditor()
+    if (editor) {
+      const handleKeyDown = (e: KeyboardEvent) => {
+        if (e.key === "Enter") {
+          e.preventDefault()
+          const range = editor.getSelection()
+          if (range) {
+            editor.insertText(range.index, "\n")
+            editor.setSelection(range.index + 1)
+          }
+        }
+      }
+
+      editor.root.addEventListener("keydown", handleKeyDown)
+
+      return () => {
+        editor.root.removeEventListener("keydown", handleKeyDown)
+      }
+    }
+  }, [])
 
   const modules = useMemo(
     () => ({

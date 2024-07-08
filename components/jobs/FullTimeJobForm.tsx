@@ -22,17 +22,14 @@ import { uploadImages } from "@/apis/system"
 import { useLoading } from "@toss/use-loading"
 import { UploadTarget } from "@/types"
 
-const QuillEditor = dynamic(
-  () => import("@/components/quillEditor/QuillEditor"),
-  {
-    loading: () => (
-      <div className="flex h-[400px] items-center justify-center">
-        <Spinner className="h-8 w-8" />
-      </div>
-    ),
-    ssr: false,
-  },
-)
+const QuillEditor = dynamic(() => import("@/components/editor/QuillEditor"), {
+  loading: () => (
+    <div className="flex h-[400px] items-center justify-center">
+      <Spinner className="h-8 w-8" />
+    </div>
+  ),
+  ssr: false,
+})
 
 export type CreateFulltimeJobFormData = yup.InferType<typeof jobSchema>
 
