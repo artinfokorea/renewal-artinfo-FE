@@ -90,7 +90,7 @@ const page = () => {
   }
 
   useEffect(() => {
-    setIsLoginModalOpen(!data?.user)
+    setIsLoginModalOpen(!data)
     Cookies.set("prevPath", pathname, { expires: 1 / 288 })
   }, [data])
 
