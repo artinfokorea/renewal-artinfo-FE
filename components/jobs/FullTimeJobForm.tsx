@@ -31,17 +31,14 @@ const QuillEditor = dynamic(() => import("@/components/editor/QuillEditor"), {
   ssr: false,
 })
 
-const ToastEditor = dynamic(
-  () => import("@/components/toastEditor/ToastEditor"),
-  {
-    loading: () => (
-      <div className="flex h-[400px] items-center justify-center">
-        <Spinner className="h-8 w-8" />
-      </div>
-    ),
-    ssr: false,
-  },
-)
+const CKEditor = dynamic(() => import("@/components/CKEditor/CKEditor"), {
+  loading: () => (
+    <div className="flex h-[400px] items-center justify-center">
+      <Spinner className="h-8 w-8" />
+    </div>
+  ),
+  ssr: false,
+})
 
 export type CreateFulltimeJobFormData = yup.InferType<typeof jobSchema>
 
@@ -263,15 +260,15 @@ const FullTimeJobForm = ({
         </div>
       </div>
       <div className="my-6 h-[300px] md:h-[500px]">
-        <QuillEditor
+        {/* <QuillEditor
           quillRef={quillRef}
           htmlContent={watch("contents")}
           handleContent={(html: string) => setValue("contents", html)}
-        />
-        {/* <ToastEditor
+        /> */}
+        <CKEditor
           value={watch("contents")}
           onChange={(value: string) => setValue("contents", value)}
-        /> */}
+        />
         <ErrorMessage
           errors={errors}
           name="contents"
@@ -280,7 +277,7 @@ const FullTimeJobForm = ({
           )}
         />
       </div>
-      <div className="mt-20 flex justify-end gap-2">
+      <div className="mt-64 flex justify-end gap-2 md:mt-16">
         <Button
           type="button"
           className="h-9 rounded-3xl border px-6 text-sm"
