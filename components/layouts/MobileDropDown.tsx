@@ -27,10 +27,10 @@ const MobileDropDown = ({ isBarOpen, handleBar, items, handleSign }: Props) => {
       {({ open }) => (
         <>
           <MenuButton
-            className="flex md:hidden focus:outline-none"
+            className="flex focus:outline-none md:hidden"
             onClick={handleBar}
           >
-            <HamburgerIcon className="w-7 h-7 text-dimgray" />
+            <HamburgerIcon className="h-7 w-7 text-dimgray" />
           </MenuButton>
           <Transition
             show={open}
@@ -43,7 +43,7 @@ const MobileDropDown = ({ isBarOpen, handleBar, items, handleSign }: Props) => {
           >
             <MenuItems
               static
-              className="bg-white w-screen mt-3 absolute top-10 -left-3 z-30 p-4 flex flex-col gap-3 mobile-dropdown shadow-sm focus:outline-none"
+              className="mobile-dropdown absolute -left-3 top-8 z-30 mt-3 flex w-screen flex-col gap-3 bg-white p-4 shadow-sm focus:outline-none"
             >
               {items.map(({ href, label }) => {
                 const isActive = pathname.includes(href)
@@ -51,7 +51,7 @@ const MobileDropDown = ({ isBarOpen, handleBar, items, handleSign }: Props) => {
                   <MenuItem key={href}>
                     <Link
                       href={href}
-                      className={`py-2 font-semibold w-full ${
+                      className={`w-full py-2 font-semibold ${
                         isActive && "text-main"
                       }`}
                     >
@@ -60,22 +60,22 @@ const MobileDropDown = ({ isBarOpen, handleBar, items, handleSign }: Props) => {
                   </MenuItem>
                 )
               })}
-              <div className="border-b-[1px] my-4 border-whitesmoke w-full mx-auto" />
+              <div className="mx-auto my-4 w-full border-b-[1px] border-whitesmoke" />
               <MenuItem>
-                <Link href="/my-profile" className="my-2 font-bold w-full">
+                <Link href="/my-profile" className="my-2 w-full font-bold">
                   내정보
                 </Link>
               </MenuItem>
               <MenuItem>
                 {data?.user ? (
                   <span
-                    className="py-2 font-bold cursor-pointer"
+                    className="cursor-pointer py-2 font-bold"
                     onClick={handleSign}
                   >
                     로그아웃
                   </span>
                 ) : (
-                  <Link href="/auth/sign-in" className="py-2 font-bold w-full">
+                  <Link href="/auth/sign-in" className="w-full py-2 font-bold">
                     로그인
                   </Link>
                 )}

@@ -1,10 +1,7 @@
-import React from "react";
+import { IconProps } from "@/interface"
+import React from "react"
 
-interface Props {
-  className?: string;
-}
-
-const LeftIcon = ({ className }: Props) => {
+const LeftIcon = ({ className }: IconProps) => {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -20,7 +17,7 @@ const LeftIcon = ({ className }: Props) => {
         d="M15.75 19.5 8.25 12l7.5-7.5"
       />
     </svg>
-  );
-};
+  )
+}
 
-export default LeftIcon;
+export default LeftIcon

@@ -1,10 +1,7 @@
-import React from "react";
+import { IconProps } from "@/interface"
+import React from "react"
 
-interface Props {
-  className?: string;
-}
-
-const RightIcon = ({ className }: Props) => {
+const RightIcon = ({ className }: IconProps) => {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -20,7 +17,7 @@ const RightIcon = ({ className }: Props) => {
         d="m8.25 4.5 7.5 7.5-7.5 7.5"
       />
     </svg>
-  );
-};
+  )
+}
 
-export default RightIcon;
+export default RightIcon

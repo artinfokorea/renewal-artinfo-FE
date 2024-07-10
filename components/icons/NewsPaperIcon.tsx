@@ -1,10 +1,7 @@
-import React from "react";
+import { IconProps } from "@/interface"
+import React from "react"
 
-interface Props {
-  className?: string;
-}
-
-const NewsPaperIcon = ({ className }: Props) => {
+const NewsPaperIcon = ({ className }: IconProps) => {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -19,7 +16,7 @@ const NewsPaperIcon = ({ className }: Props) => {
       />
       <path d="M18.75 6.75h1.875c.621 0 1.125.504 1.125 1.125V18a1.5 1.5 0 0 1-3 0V6.75Z" />
     </svg>
-  );
-};
+  )
+}
 
-export default NewsPaperIcon;
+export default NewsPaperIcon

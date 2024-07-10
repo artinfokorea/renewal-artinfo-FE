@@ -1,10 +1,7 @@
-import React from "react";
+import { IconProps } from "@/interface"
+import React from "react"
 
-interface Props {
-  className?: string;
-}
-
-const CloseIcon = ({ className }: Props) => {
+const CloseIcon = ({ className }: IconProps) => {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -20,7 +17,7 @@ const CloseIcon = ({ className }: Props) => {
         d="M6 18 18 6M6 6l12 12"
       />
     </svg>
-  );
-};
+  )
+}
 
-export default CloseIcon;
+export default CloseIcon

@@ -1,8 +1,6 @@
-interface Props {
-  className?: string;
-}
+import { IconProps } from "@/interface"
 
-const HamburgerIcon = ({ className }: Props) => {
+const HamburgerIcon = ({ className }: IconProps) => {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -16,7 +14,7 @@ const HamburgerIcon = ({ className }: Props) => {
         clipRule="evenodd"
       />
     </svg>
-  );
-};
+  )
+}
 
-export default HamburgerIcon;
+export default HamburgerIcon

@@ -1,10 +1,7 @@
-import React from "react";
+import { IconProps } from "@/interface"
+import React from "react"
 
-interface Props {
-  className?: string;
-}
-
-const HomeIcon = ({ className }: Props) => {
+const HomeIcon = ({ className }: IconProps) => {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -18,7 +15,7 @@ const HomeIcon = ({ className }: Props) => {
         clipRule="evenodd"
       />
     </svg>
-  );
-};
+  )
+}
 
-export default HomeIcon;
+export default HomeIcon

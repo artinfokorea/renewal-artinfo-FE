@@ -1,10 +1,7 @@
-import React from "react";
+import { IconProps } from "@/interface"
+import React from "react"
 
-interface Props {
-  className?: string;
-}
-
-const CameraIcon = ({ className }: Props) => {
+const CameraIcon = ({ className }: IconProps) => {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -25,7 +22,7 @@ const CameraIcon = ({ className }: Props) => {
         d="M16.5 12.75a4.5 4.5 0 1 1-9 0 4.5 4.5 0 0 1 9 0ZM18.75 10.5h.008v.008h-.008V10.5Z"
       />
     </svg>
-  );
-};
+  )
+}
 
-export default CameraIcon;
+export default CameraIcon

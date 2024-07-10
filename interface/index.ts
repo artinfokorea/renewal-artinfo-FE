@@ -56,3 +56,7 @@ export type ScrollApiResponse<T, K extends string> = {
   isLast: boolean
   totalCount: number
 }
+
+export interface IconProps {
+  className?: string
+}

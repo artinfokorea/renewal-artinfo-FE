@@ -1,10 +1,7 @@
+import { IconProps } from "@/interface"
 import React from "react"
 
-interface Props {
-  className?: string
-}
-
-const BookIcon = ({ className }: Props) => {
+const BookIcon = ({ className }: IconProps) => {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"

@@ -1,10 +1,7 @@
-import React from "react";
+import { IconProps } from "@/interface"
+import React from "react"
 
-interface Props {
-  className?: string;
-}
-
-const DownIcon = ({ className }: Props) => {
+const DownIcon = ({ className }: IconProps) => {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -20,7 +17,7 @@ const DownIcon = ({ className }: Props) => {
         d="m19.5 8.25-7.5 7.5-7.5-7.5"
       />
     </svg>
-  );
-};
+  )
+}
 
-export default DownIcon;
+export default DownIcon
