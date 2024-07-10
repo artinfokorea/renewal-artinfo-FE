@@ -45,7 +45,7 @@ const DetailContainer = ({ deleteJob, job }: Props) => {
           </div>
         )}
         <div
-          className={`flex flex-1 flex-col justify-center gap-2 py-2 md:gap-4 ${
+          className={`flex flex-1 flex-col justify-center gap-2 py-2 ${
             job?.imageUrl && "md:ml-12"
           }`}
         >
