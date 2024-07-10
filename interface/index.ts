@@ -49,7 +49,7 @@ export type PostResponse = {
   id: number
 }
 
-export type ScrollApiResponse<T, K extends string = string> = {
+export type ScrollApiResponse<T, K extends string> = {
   [key in K]: T[]
 } & {
   nextPage: number
