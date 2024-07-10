@@ -7,6 +7,7 @@ import { ErrorMessage } from "@hookform/error-message"
 import { Button } from "../ui/button"
 import { useRouter } from "next/navigation"
 import InputField from "../common/InputField"
+import { Spinner } from "../common/Loading"
 
 const schema = yup
   .object({
@@ -101,7 +102,7 @@ const InquiryForm = ({ handleInquiry, isLoading }: Props) => {
           type="submit"
           className="w-20 rounded-full bg-main font-semibold text-white"
         >
-          등록
+          {isLoading ? <Spinner className="h-6 w-6" /> : "등록"}
         </Button>
       </div>
     </form>

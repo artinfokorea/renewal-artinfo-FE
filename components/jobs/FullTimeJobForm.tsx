@@ -290,7 +290,7 @@ const FullTimeJobForm = ({
           type="submit"
           className="h-9 rounded-3xl bg-main px-6 text-sm text-white"
         >
-          등록
+          {isLoading ? <Spinner className="h-6 w-6" /> : job ? "수정" : "등록"}
         </Button>
       </div>
       <FileUploader ref={fileUploader} uploadedFiles={handleUploadedFiles} />

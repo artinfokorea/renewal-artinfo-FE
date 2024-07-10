@@ -30,8 +30,8 @@ export const metadata: Metadata = {
     images: [
       {
         url: "https://artinfo.s3.ap-northeast-2.amazonaws.com/prod/upload/1710/images/20240710/original/3jp88xoTO8r.1720575433094.png",
-        width: 580,
-        height: 580,
+        width: 380,
+        height: 380,
         alt: "아트인포-ARTINFO",
       },
     ],
