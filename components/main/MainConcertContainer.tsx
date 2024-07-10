@@ -30,7 +30,7 @@ const MainConcertContainer = () => {
           >
             <AspectRatio ratio={2 / 3} className="relative cursor-pointer">
               <Image
-                src={concert.imageUrl}
+                src={`${concert.imageUrl}?v=${concert.id}`}
                 alt="concert_image"
                 fill
                 priority
@@ -49,7 +49,7 @@ const MainConcertContainer = () => {
               <Link key={concert.id} href={concert.redirectUrl} target="_blank">
                 <AspectRatio ratio={2 / 3} className="relative cursor-pointer">
                   <Image
-                    src={concert.imageUrl}
+                    src={`${concert.imageUrl}?v=${concert.id}`}
                     alt="concert_image"
                     fill
                     priority

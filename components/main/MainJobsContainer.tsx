@@ -49,7 +49,7 @@ const MainJobsContainer = () => {
               className="relative cursor-pointer rounded-lg border-2 border-whitesmoke"
             >
               <FallbackImage
-                src={job.imageUrl}
+                src={`${job.imageUrl}?v=${job.id}`}
                 alt="job_image"
                 fill
                 fallbackText={job.companyName}
@@ -71,7 +71,7 @@ const MainJobsContainer = () => {
                   className="relative cursor-pointer rounded-lg border-2 border-whitesmoke"
                 >
                   <FallbackImage
-                    src={job.imageUrl}
+                    src={`${job.imageUrl}?v=${job.id}`}
                     alt="job_image"
                     fill
                     priority

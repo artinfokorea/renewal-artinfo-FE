@@ -14,12 +14,6 @@ const config = {
     remotePatterns: [
       {
         protocol: "https",
-        hostname: "artinfokorea.com",
-        port: "",
-        pathname: "**",
-      },
-      {
-        protocol: "https",
         hostname: "ycuajmirzlqpgzuonzca.supabase.co",
         port: "",
         pathname: "**",
