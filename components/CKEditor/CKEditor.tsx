@@ -10,7 +10,7 @@ interface Props {
   onChange: (value: string) => void
 }
 
-const CEditor = ({ value, onChange }: Props) => {
+const Editor = ({ value, onChange }: Props) => {
   function MyCustomUploadAdapterPlugin(editor: any) {
     editor.plugins.get("FileRepository").createUploadAdapter = (
       loader: any,
@@ -72,4 +72,4 @@ const CEditor = ({ value, onChange }: Props) => {
   )
 }
 
-export default CEditor
+export default Editor
