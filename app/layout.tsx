@@ -51,7 +51,7 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   return (
-    <html lang="en">
+    <html lang="ko">
       <body
         className={`${inter.className} touch-manipulation`}
         style={{ height: "calc(100vh - 156px)" }}

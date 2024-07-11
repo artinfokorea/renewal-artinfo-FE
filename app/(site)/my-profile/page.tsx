@@ -6,10 +6,13 @@ import { cookies } from "next/headers"
 import { USER } from "@/types/users"
 import { DetailApiResponse } from "@/interface"
 
-const getUser = async (): Promise<DetailApiResponse<USER>> => {
+const getUser = async (): Promise<USER> => {
+  const accessToken = cookies().get("accessToken")?.value
+  if (!accessToken) throw new Error("Access token not found")
+
   const res = await fetch(`${process.env.REST_API_BASE_URL!}/users/me`, {
     headers: {
-      Authorization: `Bearer ${cookies().get("accessToken")?.value}`,
+      Authorization: `Bearer ${accessToken}`,
     },
   })
 
@@ -17,7 +20,8 @@ const getUser = async (): Promise<DetailApiResponse<USER>> => {
     throw new Error("Failed to fetch data")
   }
 
-  return res.json()
+  const data: DetailApiResponse<USER> = await res.json()
+  return data.item
 }
 
 const page = async () => {
@@ -25,7 +29,7 @@ const page = async () => {
 
   await queryClient.prefetchQuery({
     queryKey: ["users", "me"],
-    queryFn: () => getUser().then(res => res.item),
+    queryFn: getUser,
   })
 
   const dehydratedState = dehydrate(queryClient)
