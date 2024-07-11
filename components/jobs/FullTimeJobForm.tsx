@@ -31,7 +31,7 @@ const QuillEditor = dynamic(() => import("@/components/editor/QuillEditor"), {
   ssr: false,
 })
 
-const CKEditor = dynamic(() => import("@/components/CKEditor/CKEditor"), {
+const CKEditor = dynamic(() => import("@/components/ckEditor/CKEditor"), {
   loading: () => (
     <div className="flex h-[400px] items-center justify-center">
       <Spinner className="h-8 w-8" />
