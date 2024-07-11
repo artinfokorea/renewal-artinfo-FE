@@ -9,6 +9,7 @@ const config = {
     NEXTAUTH_SECRET: process.env.NEXTAUTH_SECRET,
     DEV_ENV: process.env.DEV_ENV,
     GTAG_ID: process.env.GTAG_ID,
+    AD_SENSE_ID: process.env.AD_SENSE_ID,
   },
   images: {
     remotePatterns: [

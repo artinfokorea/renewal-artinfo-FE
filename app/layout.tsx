@@ -58,6 +58,11 @@ export default function RootLayout({
         suppressHydrationWarning
       >
         <Script
+          async
+          src={`https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=${process.env.AD_SENSE_ID}`}
+          crossOrigin="anonymous"
+        ></Script>
+        <Script
           strategy="afterInteractive"
           src={`https://www.googletagmanager.com/gtag/js?id=${gtag.GA_TRACKING_ID}`}
         />
