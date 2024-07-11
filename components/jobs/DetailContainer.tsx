@@ -92,7 +92,7 @@ const DetailContainer = ({ deleteJob, job }: Props) => {
           </p>
           <div className="flex items-center justify-between text-sm font-medium text-coolgray md:text-lg">
             <span>{job?.companyName}</span>
-            <span>{filter.YYYYMMDD(job?.endAt)}</span>
+            <span>{filter.YYYYMMDD(job?.createdAt)}</span>
           </div>
           {job?.recruitSiteUrl && (
             <a

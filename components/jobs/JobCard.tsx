@@ -107,7 +107,7 @@ const JobCard = forwardRef<HTMLDivElement, Props>(
                 <span className="line-clamp-2 break-all">
                   {job.companyName}
                 </span>
-                <span>{filter.YYYYMMDD(job.endAt)}</span>
+                <span>{filter.YYYYMMDD(job.createdAt)}</span>
               </div>
             </div>
           </div>
