@@ -35,7 +35,7 @@ const MainJobsContainer = () => {
           <h5 className="font-bold text-silver">더보기</h5>
         </Link>
       </div>
-      // Desktop
+      {/* // Desktop Job Section */}
       <div className="mb-12 mt-4 hidden grid-cols-2 gap-4 md:grid md:grid-cols-3 md:gap-8">
         {data?.jobs?.map((job, index) => (
           <Link
@@ -62,7 +62,7 @@ const MainJobsContainer = () => {
           </Link>
         ))}
       </div>
-      // Mobile
+      {/* // Mobile Job Section */}
       <div className="mb-12 mt-4 flex overflow-x-auto md:hidden">
         <Swiper spaceBetween={10} slidesPerView="auto" modules={[Pagination]}>
           {data?.jobs.map(job => (

@@ -16,9 +16,10 @@ const MainConcertContainer = () => {
   const { data: concerts } = useSuspenseQuery(
     queries.ads.list(AdvertisementType.CONCERT),
   )
+  //
   return (
     <>
-      // Desktop Concert Section
+      {/*  Desktop Concert Section */}
       <section className="my-12 hidden grid-cols-2 gap-8 md:my-16 md:grid md:grid-cols-4 lg:gap-8">
         {concerts?.map((concert, index) => (
           <Link
@@ -43,7 +44,7 @@ const MainConcertContainer = () => {
           </Link>
         ))}
       </section>
-      // Mobile Concert Section
+      {/*  Mobile Concert Section */}
       <section className="my-12 flex overflow-x-auto md:my-16 md:hidden">
         <Swiper spaceBetween={10} slidesPerView="auto" modules={[Pagination]}>
           {concerts?.map(concert => (
