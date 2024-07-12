@@ -2,11 +2,12 @@
 
 import React, { Suspense } from "react"
 import BannerContainer from "@/components/main/BannerContainer"
-import ConcertContainer from "@/components/main/MainConcertContainer"
+import ArtContainer from "@/components/main/ArtContainer"
 import MainJobsContainer from "@/components/main/MainJobsContainer"
 import BannerSkeleton from "@/components/skeleton/BannerSkeleton"
-import ConcertSkeleton from "@/components/skeleton/ConcertSkeleton"
+import ArtSkeleton from "@/components/skeleton/ArtSkeleton"
 import MainJobSkeleton from "@/components/skeleton/MainJobSkeleton"
+import { AdvertisementType } from "@/types/ads"
 
 const page = () => {
   return (
@@ -14,11 +15,14 @@ const page = () => {
       <Suspense fallback={<BannerSkeleton />}>
         <BannerContainer />
       </Suspense>
-      <Suspense fallback={<ConcertSkeleton />}>
-        <ConcertContainer />
+      <Suspense fallback={<ArtSkeleton />}>
+        <ArtContainer type={AdvertisementType.CONCERT} title="공연" />
       </Suspense>
       <Suspense fallback={<MainJobSkeleton />}>
         <MainJobsContainer />
+      </Suspense>
+      <Suspense fallback={<ArtSkeleton />}>
+        <ArtContainer type={AdvertisementType.EXHIBITION} title="전시" />
       </Suspense>
 
       <article className="my-12 hidden h-[100px] rounded-xl bg-whitesmoke md:my-16 md:flex md:h-[120px]">
@@ -59,9 +63,6 @@ const page = () => {
           />
         </div>
       </article>
-      {/* <Suspense fallback={<MainObirSkeleton />}>
-        <MainObriContainer />
-      </Suspense> */}
     </div>
   )
 }

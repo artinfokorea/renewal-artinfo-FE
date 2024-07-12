@@ -38,11 +38,13 @@ const LessonsContainer = () => {
 
   return (
     <div className="mx-auto max-w-screen-lg px-4">
+      {/* Desktop Filter */}
       <ListSearchForm
         totalCount={lessonsCount?.totalCount}
         title="명의 전문가가
         준비중이에요."
       />
+
       <section className="flex">
         <form className="hidden min-w-[180px] flex-col text-gray-400 lg:flex">
           <ProfessionalCheckBoxes artFields={artFields?.majorGroups} />
@@ -79,11 +81,14 @@ const LessonsContainer = () => {
               등록
             </Button>
           </div>
+
+          {/* Mobile Filter */}
           <MobileFilterTab
             artFields={artFields?.majorGroups}
             provinces={provinceList?.provinces}
             page="LESSON"
           />
+
           <Suspense fallback={<LessonListSkeleton />}>
             <LessonList />
           </Suspense>

@@ -12,19 +12,23 @@ import "swiper/css"
 import { Pagination } from "swiper/modules"
 import { AspectRatio } from "../ui/aspect-ratio"
 
-const MainConcertContainer = () => {
-  const { data: concerts } = useSuspenseQuery(
-    queries.ads.list(AdvertisementType.CONCERT),
-  )
+interface Props {
+  type: AdvertisementType
+  title: string
+}
+
+const ArtConatiner = ({ type, title }: Props) => {
+  const { data: arts } = useSuspenseQuery(queries.ads.list(type))
   //
   return (
-    <>
-      {/*  Desktop Concert Section */}
-      <section className="my-12 hidden grid-cols-2 gap-8 md:my-16 md:grid md:grid-cols-4 lg:gap-8">
-        {concerts?.map((concert, index) => (
+    <section className="my-12 md:my-16">
+      <h3 className="mb-4 text-xl font-bold">#{title}</h3>
+      {/*  Desktop Art Section */}
+      <div className="hidden grid-cols-2 gap-8 md:grid md:grid-cols-4 lg:gap-8">
+        {arts?.map((art, index) => (
           <Link
-            key={concert.id}
-            href={concert.redirectUrl}
+            key={art.id}
+            href={art.redirectUrl}
             target="_blank"
             className={`${
               index < 2 ? "block" : index < 4 ? "hidden md:block" : "hidden"
@@ -32,7 +36,7 @@ const MainConcertContainer = () => {
           >
             <AspectRatio ratio={2 / 3} className="relative cursor-pointer">
               <Image
-                src={`${concert.imageUrl}?v=${concert.id}`}
+                src={`${art.imageUrl}?v=${art.id}`}
                 alt="concert_image"
                 fill
                 priority
@@ -43,16 +47,16 @@ const MainConcertContainer = () => {
             </AspectRatio>
           </Link>
         ))}
-      </section>
-      {/*  Mobile Concert Section */}
-      <section className="my-12 flex overflow-x-auto md:my-16 md:hidden">
+      </div>
+      {/*  Mobile Art Section */}
+      <div className="flex overflow-x-auto md:hidden">
         <Swiper spaceBetween={10} slidesPerView="auto" modules={[Pagination]}>
-          {concerts?.map(concert => (
-            <SwiperSlide key={concert.id} style={{ width: "200px" }}>
-              <Link key={concert.id} href={concert.redirectUrl} target="_blank">
+          {arts?.map(art => (
+            <SwiperSlide key={art.id} style={{ width: "200px" }}>
+              <Link key={art.id} href={art.redirectUrl} target="_blank">
                 <AspectRatio ratio={2 / 3} className="relative cursor-pointer">
                   <Image
-                    src={`${concert.imageUrl}?v=${concert.id}`}
+                    src={`${art.imageUrl}?v=${art.id}`}
                     alt="concert_image"
                     fill
                     priority
@@ -65,9 +69,9 @@ const MainConcertContainer = () => {
             </SwiperSlide>
           ))}
         </Swiper>
-      </section>
-    </>
+      </div>
+    </section>
   )
 }
 
-export default MainConcertContainer
+export default ArtConatiner

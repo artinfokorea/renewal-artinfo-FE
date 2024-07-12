@@ -40,7 +40,9 @@ const JobsContainer = () => {
       <ListSearchForm title="취업은 아트인포와 함께" />
 
       <section className="flex">
+        {/* Desktop Filter */}
         <JobListCheckBoxes artFields={artFields?.majorGroups} />
+
         <div className="flex w-full flex-col md:ml-12 md:mt-4 md:flex-1">
           <div className="hidden items-center justify-between lg:flex">
             <div className="flex flex-wrap gap-2">
@@ -76,11 +78,14 @@ const JobsContainer = () => {
               채용등록
             </Button>
           </div>
+
+          {/* Mobile Filter */}
           <MobileFilterTab
             provinces={provinceList?.provinces}
             page="JOB"
             artFields={artFields?.majorGroups}
           />
+
           <Suspense fallback={<JobListSkeleton />}>
             <JobsList />
           </Suspense>

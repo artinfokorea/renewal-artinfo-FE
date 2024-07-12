@@ -1,6 +1,6 @@
 import React from "react"
 
-const ConcertSkeleton = () => {
+const ArtSkeleton = () => {
   return (
     <>
       <section className="my-12 hidden grid-cols-2 gap-8 md:my-16 md:grid md:grid-cols-4 lg:gap-8">
@@ -28,4 +28,4 @@ const ConcertSkeleton = () => {
   )
 }
 
-export default ConcertSkeleton
+export default ArtSkeleton
