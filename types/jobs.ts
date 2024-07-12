@@ -28,7 +28,7 @@ export enum MajorType {
 
 export const JobTypeList = [
   {
-    title: "연주단체",
+    title: "예술단체",
     value: JobType.ART_ORGANIZATION,
   },
   // {
@@ -40,7 +40,7 @@ export const JobTypeList = [
     value: JobType.RELIGION,
   },
   {
-    title: "강사",
+    title: "대학 · 학원",
     value: JobType.LECTURER,
   },
 ]

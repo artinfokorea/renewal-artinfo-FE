@@ -88,7 +88,7 @@ export const createFullTimeJob = async (
   return response
 }
 
-/* 예술단체 or 강사 수정 */
+/* 예술단체 or 강사수정 */
 export const updateArtOrganization = async (
   jobId: number,
   payload: JobPayload,
@@ -102,9 +102,10 @@ export const updateArtOrganization = async (
 
 export const getJobsCount = async (): Promise<{ totalCount: number }> => {
   try {
-    const response = await publicApiRequest.get<
-      DetailApiResponse<{ totalCount: number }>
-    >("/jobs/count")
+    const response =
+      await publicApiRequest.get<DetailApiResponse<{ totalCount: number }>>(
+        "/jobs/count",
+      )
     return response.item
   } catch (error) {
     throw new Error(exceptionHandler(error, "API getJobsCount error"))
