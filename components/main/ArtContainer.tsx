@@ -20,7 +20,7 @@ interface Props {
 const ArtConatiner = ({ type, title }: Props) => {
   const { data: arts } = useSuspenseQuery(queries.ads.list(type))
 
-  const createdDate = new Date().valueOf()
+  const createdDate = Date.now()
 
   return (
     <section className="my-12 md:my-16">

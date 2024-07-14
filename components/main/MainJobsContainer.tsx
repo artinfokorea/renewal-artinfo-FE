@@ -27,7 +27,7 @@ const MainJobsContainer = () => {
     }),
   )
 
-  const createdDate = new Date().valueOf()
+  const createdDate = Date.now()
 
   return (
     <section className="my-12 md:my-16">
