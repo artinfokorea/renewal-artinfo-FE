@@ -27,8 +27,6 @@ const MainJobsContainer = () => {
     }),
   )
 
-  const createdDate = Date.now()
-
   return (
     <section className="my-12 md:my-16">
       <div className="flex justify-between">
@@ -52,7 +50,8 @@ const MainJobsContainer = () => {
               className="relative cursor-pointer rounded-lg border-2 border-whitesmoke"
             >
               <FallbackImage
-                src={`${job.imageUrl}?v=${createdDate}`}
+                key={job.title}
+                src={job.imageUrl}
                 alt="job_image"
                 fill
                 fallbackText={job.companyName}
@@ -75,7 +74,8 @@ const MainJobsContainer = () => {
                   className="relative cursor-pointer rounded-lg border-2 border-whitesmoke"
                 >
                   <FallbackImage
-                    src={`${job.imageUrl}?v=${createdDate}`}
+                    key={job.title}
+                    src={job.imageUrl}
                     alt="job_image"
                     fill
                     priority

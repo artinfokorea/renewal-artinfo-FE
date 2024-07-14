@@ -20,8 +20,6 @@ interface Props {
 const ArtConatiner = ({ type, title }: Props) => {
   const { data: arts } = useSuspenseQuery(queries.ads.list(type))
 
-  const createdDate = Date.now()
-
   return (
     <section className="my-12 md:my-16">
       <h3 className="mb-4 text-xl font-bold">#{title}</h3>
@@ -38,7 +36,8 @@ const ArtConatiner = ({ type, title }: Props) => {
           >
             <AspectRatio ratio={2 / 3} className="relative cursor-pointer">
               <Image
-                src={`${art.imageUrl}?v=${createdDate}`}
+                key={art.title}
+                src={art.imageUrl}
                 alt="concert_image"
                 fill
                 priority
@@ -58,7 +57,8 @@ const ArtConatiner = ({ type, title }: Props) => {
               <Link key={art.id} href={art.redirectUrl} target="_blank">
                 <AspectRatio ratio={2 / 3} className="relative cursor-pointer">
                   <Image
-                    src={`${art.imageUrl}?v=${createdDate}`}
+                    key={art.title}
+                    src={art.imageUrl}
                     alt="concert_image"
                     fill
                     priority
