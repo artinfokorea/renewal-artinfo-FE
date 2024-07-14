@@ -28,7 +28,7 @@ const config = {
     ],
 
     formats: ["image/webp"],
-    minimumCacheTTL: 60 * 60 * 24 * 30,
+    minimumCacheTTL: 60 * 60 * 24,
   },
 }
 
