@@ -50,7 +50,7 @@ const MainJobsContainer = () => {
               className="relative cursor-pointer rounded-lg border-2 border-whitesmoke"
             >
               <FallbackImage
-                key={job.imageUrl}
+                key={job.id}
                 src={job.imageUrl}
                 alt="job_image"
                 fill
@@ -74,7 +74,7 @@ const MainJobsContainer = () => {
                   className="relative cursor-pointer rounded-lg border-2 border-whitesmoke"
                 >
                   <FallbackImage
-                    key={job.imageUrl}
+                    key={job.id}
                     src={job.imageUrl}
                     alt="job_image"
                     fill
