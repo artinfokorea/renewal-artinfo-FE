@@ -368,6 +368,6 @@ input[type="number"] {
 }
 
 /* 채용 배너 광고 크기 조절 */
-#aswift_2_host {
+[id^="aswift_"][id$="_host"] {
   width: 100% !important;
 }
