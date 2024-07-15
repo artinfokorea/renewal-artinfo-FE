@@ -61,6 +61,7 @@ export default function RootLayout({
           async
           src={`https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=${process.env.AD_SENSE_ID}`}
           crossOrigin="anonymous"
+          data-full-width-responsive="true"
         ></Script>
         <Script
           strategy="afterInteractive"
