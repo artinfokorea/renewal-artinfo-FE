@@ -2,16 +2,14 @@ import React, { FormEvent, useState } from "react"
 import { Input } from "../ui/input"
 import SearchIcon from "../icons/SearchIcon"
 import CloseIcon from "../icons/CloseIcon"
-import { usePathname, useRouter } from "next/navigation"
+import { useRouter } from "next/navigation"
 
 interface Props {
-  totalCount?: number
-  title?: string
+  children?: React.ReactNode
 }
 
-const ListSearchForm = ({ totalCount, title }: Props) => {
+const ListSearchForm = ({ children }: Props) => {
   const [searchInput, setSearchInput] = useState("")
-  const pathname = usePathname()
   const router = useRouter()
 
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
@@ -28,11 +26,8 @@ const ListSearchForm = ({ totalCount, title }: Props) => {
   }
 
   return (
-    <div className="mx-auto mt-8 flex max-w-screen-sm flex-col items-center px-4 md:mt-20">
-      <h4 className="text-lg font-bold md:text-2xl">
-        {totalCount && <span className="text-main">{totalCount}</span>}
-        {title}
-      </h4>
+    <div className="mx-auto mt-8 flex max-w-screen-sm flex-col items-center md:mt-20">
+      {children}
       <form className="relative mt-4 w-full" onSubmit={handleSubmit}>
         <Input
           value={searchInput}

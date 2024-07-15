@@ -1,7 +1,7 @@
 import { IconProps } from "@/interface"
 import React from "react"
 
-const HomeIcon = ({ className }: IconProps) => {
+const HomeIcon = ({ className = "size-6" }: IconProps) => {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"

@@ -1,6 +1,6 @@
 import { IconProps } from "@/interface"
 
-const HamburgerIcon = ({ className }: IconProps) => {
+const HamburgerIcon = ({ className = "size-6" }: IconProps) => {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"

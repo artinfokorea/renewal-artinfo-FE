@@ -1,7 +1,7 @@
 import { IconProps } from "@/interface"
 import React from "react"
 
-const PlusIcon = ({ className }: IconProps) => {
+const PlusIcon = ({ className = "size-6" }: IconProps) => {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"

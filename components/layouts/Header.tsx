@@ -25,6 +25,10 @@ export const NavItems = [
     label: "레슨",
   },
   {
+    href: "/news",
+    label: "뉴스",
+  },
+  {
     href: "/inquiry",
     label: "문의",
   },

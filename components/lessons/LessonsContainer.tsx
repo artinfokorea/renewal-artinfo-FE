@@ -39,11 +39,12 @@ const LessonsContainer = () => {
   return (
     <div className="mx-auto max-w-screen-lg px-4">
       {/* Desktop Filter */}
-      <ListSearchForm
-        totalCount={lessonsCount?.totalCount}
-        title="명의 전문가가
-        준비중이에요."
-      />
+      <ListSearchForm>
+        <h4 className="text-lg font-bold md:text-2xl">
+          <span className="text-main">{lessonsCount?.totalCount || "00"}</span>
+          명의 전문가가 준비중이에요.
+        </h4>
+      </ListSearchForm>
 
       <section className="flex">
         <form className="hidden min-w-[180px] flex-col text-gray-400 lg:flex">
