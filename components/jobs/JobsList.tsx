@@ -51,7 +51,7 @@ const JobsList = () => {
   }, [inView, hasNextPage])
 
   return (
-    <div className="mt-4">
+    <div className="mt-4 max-w-full">
       {jobs?.pages?.map(page =>
         page?.jobs?.map((job, index) => {
           return job.type === JobType.RELIGION ? (
