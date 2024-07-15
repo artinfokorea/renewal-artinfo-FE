@@ -36,9 +36,9 @@ const JobsContainer = () => {
   }, [provinceIds])
 
   return (
-    <div className="mx-auto max-w-screen-lg px-4">
+    <div className="mx-auto max-w-screen-lg">
       <ListSearchForm>
-        <h4 className="text-lg font-bold md:text-2xl">
+        <h4 className="text-xl font-bold md:text-2xl">
           취업은 아트인포와 함께
         </h4>
       </ListSearchForm>

@@ -52,7 +52,7 @@ const MainJobsContainer = () => {
               <FallbackImage
                 key={Date.now()}
                 src={job.imageUrl}
-                alt="job_image"
+                alt={`${job.companyName}_job_image`}
                 fill
                 fallbackText={job.companyName}
                 quality={100}
@@ -76,7 +76,7 @@ const MainJobsContainer = () => {
                   <FallbackImage
                     key={Date.now()}
                     src={job.imageUrl}
-                    alt="job_image"
+                    alt={`${job.companyName}_job_image`}
                     fill
                     priority
                     fallbackText={job.companyName}

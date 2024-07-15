@@ -35,7 +35,7 @@ const DetailContainer = ({ deleteJob, job }: Props) => {
           <div className="relative h-[244px] w-full md:w-[400px]">
             <FallbackImage
               src={job?.imageUrl}
-              alt="job_image"
+              alt={`${job?.companyName}_job_image`}
               fill
               fallbackText={job.companyName}
               quality={100}

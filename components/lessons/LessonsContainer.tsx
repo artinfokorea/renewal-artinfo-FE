@@ -37,10 +37,10 @@ const LessonsContainer = () => {
   }, [provinceIds])
 
   return (
-    <div className="mx-auto max-w-screen-lg px-4">
+    <div className="mx-auto max-w-screen-lg">
       {/* Desktop Filter */}
       <ListSearchForm>
-        <h4 className="text-lg font-bold md:text-2xl">
+        <h4 className="text-xl font-bold md:text-2xl">
           <span className="text-main">{lessonsCount?.totalCount || "00"}</span>
           명의 전문가가 준비중이에요.
         </h4>

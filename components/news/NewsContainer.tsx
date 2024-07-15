@@ -7,9 +7,9 @@ import NewsList from "./NewsList"
 
 const NewsContainer = () => {
   return (
-    <div className="mx-auto max-w-screen-lg px-4">
+    <div className="mx-auto max-w-screen-lg">
       <ListSearchForm>
-        <h4 className="text-lg font-bold md:text-2xl">
+        <h4 className="text-xl font-bold md:text-2xl">
           아트인포 예술 뉴스 <span className="pl-[2px] text-main">00</span>
         </h4>
       </ListSearchForm>

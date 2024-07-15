@@ -24,7 +24,7 @@ const JobCard = forwardRef<HTMLDivElement, Props>(
               <div className="relative h-[100px] w-[170px] rounded-xl border-2 border-whitesmoke md:h-[140px] md:w-[230px]">
                 <FallbackImage
                   src={job.imageUrl}
-                  alt="job_image"
+                  alt={`${job.companyName}_job_image`}
                   fill
                   fallbackText={job.companyName}
                   className="rounded-xl"

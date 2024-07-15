@@ -46,7 +46,7 @@ const LessonList = () => {
   }, [inView, hasNextPage])
 
   return (
-    <div className="mt-4 grid grid-cols-2 gap-4 md:grid-cols-3 md:gap-8">
+    <div className="mt-4 grid grid-cols-2 gap-4 px-4 md:grid-cols-3 md:gap-8">
       {lessons?.pages?.map(page =>
         page?.lessons?.map((lesson, index) => {
           return (

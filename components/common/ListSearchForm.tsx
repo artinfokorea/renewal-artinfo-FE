@@ -26,9 +26,9 @@ const ListSearchForm = ({ children }: Props) => {
   }
 
   return (
-    <div className="mx-auto mt-8 flex max-w-screen-sm flex-col items-center md:mt-20">
+    <div className="mx-auto mt-8 flex max-w-screen-sm flex-col items-center px-4 md:mt-20">
       {children}
-      <form className="relative mt-4 w-full" onSubmit={handleSubmit}>
+      <form className="relative mt-2 w-full" onSubmit={handleSubmit}>
         <Input
           value={searchInput}
           onChange={e => setSearchInput(e.target.value)}

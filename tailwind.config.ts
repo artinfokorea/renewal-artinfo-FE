@@ -24,6 +24,9 @@ module.exports = withMT({
       },
     },
     extend: {
+      aspectRatio: {
+        "27/17": "27 / 17",
+      },
       colors: {
         kakao: "#FEE500",
         google: "#f44336",
