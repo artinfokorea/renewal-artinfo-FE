@@ -369,5 +369,4 @@ input[type="number"] {
 
 /* 채용 배너 광고 크기 조절 */
 [id^="aswift_"][id$="_host"] iframe {
-  max-width: 90% !important;
 }
