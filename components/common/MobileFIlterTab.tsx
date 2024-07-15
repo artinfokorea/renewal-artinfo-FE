@@ -99,7 +99,7 @@ const MobileFilterTab = ({ provinces, page, artFields }: Props) => {
   }, [selectedProfessional])
 
   return (
-    <div className="relative flex flex-col rounded border lg:hidden">
+    <div className="relative mx-4 flex flex-col rounded border lg:hidden">
       <div
         className={`grid text-sm text-main ${
           page === "JOB" ? "grid-cols-3" : "grid-cols-2"

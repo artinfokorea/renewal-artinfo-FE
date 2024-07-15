@@ -36,7 +36,7 @@ const JobsContainer = () => {
   }, [provinceIds])
 
   return (
-    <div className="mx-auto max-w-screen-lg px-4">
+    <div className="mx-auto max-w-screen-lg">
       <ListSearchForm title="취업은 아트인포와 함께" />
 
       <section className="flex">
@@ -44,7 +44,7 @@ const JobsContainer = () => {
         <JobListCheckBoxes artFields={artFields?.majorGroups} />
 
         <div className="flex w-full flex-col md:ml-12 md:mt-4 md:flex-1">
-          <div className="hidden items-center justify-between lg:flex">
+          <div className="mx-4 hidden items-center justify-between lg:flex">
             <div className="flex flex-wrap gap-2">
               <Button
                 onClick={() => setIsProvinceDialog(!isProvinceDialog)}

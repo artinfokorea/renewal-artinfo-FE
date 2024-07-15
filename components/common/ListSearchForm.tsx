@@ -28,7 +28,7 @@ const ListSearchForm = ({ totalCount, title }: Props) => {
   }
 
   return (
-    <div className="mx-auto mt-8 flex max-w-screen-sm flex-col items-center md:mt-20">
+    <div className="mx-auto mt-8 flex max-w-screen-sm flex-col items-center px-4 md:mt-20">
       <h4 className="text-lg font-bold md:text-2xl">
         {totalCount && <span className="text-main">{totalCount}</span>}
         {title}

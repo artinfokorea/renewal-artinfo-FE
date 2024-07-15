@@ -17,7 +17,7 @@ const ReligionCard = forwardRef<HTMLDivElement, Props>(
 
     return (
       <Link href={`${pathname}/${job.id}`}>
-        <div className="flex h-[130px] items-center rounded-xl md:h-[192px] md:hover:bg-[#f5f5f5]">
+        <div className="mx-4 flex h-[130px] items-center rounded-xl md:h-[192px] md:hover:bg-[#f5f5f5]">
           <div className="flex items-center md:px-4">
             <div className="flex h-[100px] w-[170px] items-center justify-center rounded-xl border-2 border-whitesmoke bg-white px-2 md:h-[140px] md:w-[230px]">
               <span className="break-all text-center text-base font-bold md:text-xl">
