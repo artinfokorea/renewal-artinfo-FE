@@ -1,10 +1,8 @@
 import { JobType } from "@/types/jobs"
 import { ProfessionalFieldTypes } from "@/types/majors"
+import { ListRequest } from "."
 
-export interface JobsRequest {
-  page?: number
-  size: number
-  keyword?: string
+export interface JobsRequest extends ListRequest {
   professionalFields?: ProfessionalFieldTypes[]
   types?: JobType[]
   provinceIds?: number[]

@@ -100,6 +100,7 @@ export const updateArtOrganization = async (
   return response
 }
 
+/* 채용 총 갯수 조회 */
 export const getJobsCount = async (): Promise<{ totalCount: number }> => {
   try {
     const response =

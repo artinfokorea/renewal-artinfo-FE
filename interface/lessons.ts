@@ -1,9 +1,7 @@
 import { ProfessionalFieldTypes } from "@/types/majors"
+import { ListRequest } from "."
 
-export interface LessonsRequest {
-  page?: number
-  size: number
-  keyword?: string
+export interface LessonsRequest extends ListRequest {
   professionalFields?: ProfessionalFieldTypes[]
   provinceIds?: number[]
 }

@@ -60,3 +60,9 @@ export type ScrollApiResponse<T, K extends string> = {
 export interface IconProps {
   className?: string
 }
+
+export interface ListRequest {
+  page?: number
+  size: number
+  keyword?: string
+}

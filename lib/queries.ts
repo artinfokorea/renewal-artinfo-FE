@@ -2,8 +2,10 @@ import { getAds } from "@/apis/ad"
 import { getInfiniteJobs, getJob, getJobs, getJobsCount } from "@/apis/jobs"
 import { getInfiniteLessons, getLesson, getLessonsCount } from "@/apis/lessons"
 import { getArtCategories, getArtFileds, getMajors } from "@/apis/majors"
+import { getInfiniteNews, getNewsCount, getNewsDetail } from "@/apis/news"
 import { getProvinces } from "@/apis/system"
 import { getMe } from "@/apis/users"
+import { ListRequest } from "@/interface"
 import { JobsRequest } from "@/interface/jobs"
 import { LessonsRequest } from "@/interface/lessons"
 import { ArtFieldRequest } from "@/interface/majors"
@@ -40,9 +42,9 @@ const provinces = createQueryKeys("provinces", {
 })
 
 const lessons = createQueryKeys("lessons", {
-  detail: (LessonId: number) => ({
-    queryKey: [LessonId],
-    queryFn: () => getLesson(LessonId),
+  detail: (lessonId: number) => ({
+    queryKey: [lessonId],
+    queryFn: () => getLesson(lessonId),
   }),
   list: (filters: LessonsRequest) => ({
     queryKey: ["list", { filters }],
@@ -55,7 +57,7 @@ const lessons = createQueryKeys("lessons", {
   }),
   count: () => ({
     queryKey: ["count"],
-    queryFn: () => getLessonsCount(),
+    queryFn: getLessonsCount,
   }),
 })
 
@@ -66,10 +68,26 @@ const users = createQueryKeys("users", {
   }),
 })
 
+const news = createQueryKeys("news", {
+  detail: (newsId: number) => ({
+    queryKey: [newsId],
+    queryFn: () => getNewsDetail(newsId),
+  }),
+  infiniteList: (filters: ListRequest) => ({
+    queryKey: ["infiniteList", { filters }],
+    queryFn: ({ pageParam }: { pageParam: number }) =>
+      getInfiniteNews({ ...filters, page: pageParam }),
+  }),
+  count: () => ({
+    queryKey: ["count"],
+    queryFn: getNewsCount,
+  }),
+})
+
 const jobs = createQueryKeys("jobs", {
-  detail: (JobId: number) => ({
-    queryKey: [JobId],
-    queryFn: () => getJob(JobId),
+  detail: (jobId: number) => ({
+    queryKey: [jobId],
+    queryFn: () => getJob(jobId),
   }),
   list: (filters: JobsRequest) => ({
     queryKey: ["list", { filters }],
@@ -82,7 +100,7 @@ const jobs = createQueryKeys("jobs", {
   }),
   count: () => ({
     queryKey: ["count"],
-    queryFn: () => getJobsCount(),
+    queryFn: getJobsCount,
   }),
 })
 
@@ -93,4 +111,5 @@ export const queries = mergeQueryKeys(
   provinces,
   lessons,
   users,
+  news,
 )
