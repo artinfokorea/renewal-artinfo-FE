@@ -5,6 +5,7 @@ import { useSuspenseInfiniteQuery } from "@tanstack/react-query"
 import { useSearchParams } from "next/navigation"
 import React, { useEffect } from "react"
 import { useInView } from "react-intersection-observer"
+import NewsCard from "./NewsCard"
 
 const NewsList = () => {
   const searchParams = useSearchParams()
@@ -37,7 +38,21 @@ const NewsList = () => {
     }
   }, [inView, hasNextPage])
 
-  return <div>hihi</div>
+  return (
+    <div className="mt-4">
+      {newsList?.pages?.map(page =>
+        page?.news?.map((news, index) => {
+          return (
+            <NewsCard
+              ref={ref}
+              news={news}
+              isLastPage={!(hasNextPage && index === page.news.length - 5)}
+            />
+          )
+        }),
+      )}
+    </div>
+  )
 }
 
 export default NewsList
