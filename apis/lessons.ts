@@ -29,11 +29,12 @@ export const getLessons = async (
     const params = new URLSearchParams()
     for (const [key, value] of Object.entries(request)) {
       if (Array.isArray(value)) {
-        value.forEach(v => params.append(key + "[]", v))
+        value.forEach(v => params.append(key, v.toString()))
       } else if (value) {
-        params.append(key, value)
+        params.append(key, value.toString())
       }
     }
+
     const response = await publicApiRequest.get<
       ListApiResponse<LESSON, "lessons">
     >("/lessons", {
@@ -66,9 +67,10 @@ export const getLessonQualification = async (): Promise<SuccessResponse> => {
 
 export const getLessonsCount = async (): Promise<{ totalCount: number }> => {
   try {
-    const response = await publicApiRequest.get<
-      DetailApiResponse<{ totalCount: number }>
-    >("/lessons/count")
+    const response =
+      await publicApiRequest.get<DetailApiResponse<{ totalCount: number }>>(
+        "/lessons/count",
+      )
     return response.item
   } catch (error) {
     throw new Error(exceptionHandler(error, "API getLessonsCount error"))

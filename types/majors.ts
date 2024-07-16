@@ -3,6 +3,7 @@ export enum ProfessionalFieldTypes {
   POPULAR_MUSIC = "POPULAR_MUSIC",
   TRADITIONAL_MUSIC = "TRADITIONAL_MUSIC",
   ADMINISTRATION = "ADMINISTRATION",
+  ART = "ART",
 }
 
 export enum ArtType {
@@ -47,12 +48,19 @@ export const MajorCategoryValues = [
     key: ProfessionalFieldTypes.ADMINISTRATION,
     value: "사무",
   },
+  {
+    key: ProfessionalFieldTypes.ART,
+    value: "미술",
+  },
 ]
 
 export const ProfessinalValues: { [key in ProfessionalFieldTypes]: string } =
   MajorCategoryValues.reduce<{
     [key in ProfessionalFieldTypes]: string
-  }>((acc, curr) => {
-    acc[curr.key] = curr.value
-    return acc
-  }, {} as { [key in ProfessionalFieldTypes]: string })
+  }>(
+    (acc, curr) => {
+      acc[curr.key] = curr.value
+      return acc
+    },
+    {} as { [key in ProfessionalFieldTypes]: string },
+  )

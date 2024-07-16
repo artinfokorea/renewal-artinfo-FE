@@ -32,11 +32,12 @@ export const getJobs = async (
     const params = new URLSearchParams()
     for (const [key, value] of Object.entries(request)) {
       if (Array.isArray(value)) {
-        value.forEach(v => params.append(key + "[]", v))
+        value.forEach(v => params.append(key, v.toString()))
       } else if (value) {
-        params.append(key, value)
+        params.append(key, value.toString())
       }
     }
+
     const response = await publicApiRequest.get<ListApiResponse<JOB, "jobs">>(
       "/jobs",
       {

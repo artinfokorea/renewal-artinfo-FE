@@ -6,9 +6,8 @@ import { ArtFieldRequest } from "@/interface/majors"
 
 export const getMajors = async (): Promise<ListResponse<MAJOR, "majors">> => {
   try {
-    const response = await publicApiRequest.get<
-      ListApiResponse<MAJOR, "majors">
-    >("/majors")
+    const response =
+      await publicApiRequest.get<ListApiResponse<MAJOR, "majors">>("/majors")
     return response.item
   } catch (error) {
     throw new Error(exceptionHandler(error, "API getMajors error"))
@@ -17,9 +16,10 @@ export const getMajors = async (): Promise<ListResponse<MAJOR, "majors">> => {
 
 export const getArtCategories = async () => {
   try {
-    const response = await publicApiRequest.get<
-      ListApiResponse<MajorGroup, "majorGroups">
-    >("/majors/art")
+    const response =
+      await publicApiRequest.get<ListApiResponse<MajorGroup, "majorGroups">>(
+        "/majors/art",
+      )
     return response.item
   } catch (error) {
     throw new Error(exceptionHandler(error, "API getArtCategories error"))
@@ -31,9 +31,9 @@ export const getArtFileds = async (request: ArtFieldRequest) => {
     const params = new URLSearchParams()
     for (const [key, value] of Object.entries(request)) {
       if (Array.isArray(value)) {
-        value.forEach(v => params.append(key + "[]", v))
+        value.forEach(v => params.append(key, v.toString()))
       } else if (value) {
-        params.append(key, value)
+        params.append(key, value.toString())
       }
     }
     const response = await publicApiRequest.get<
