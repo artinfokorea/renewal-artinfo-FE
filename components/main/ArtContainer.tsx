@@ -36,7 +36,7 @@ const ArtConatiner = ({ type, title }: Props) => {
           >
             <AspectRatio ratio={2 / 3} className="relative cursor-pointer">
               <Image
-                key={art.id}
+                key={Date.now()}
                 src={art.imageUrl}
                 alt="art_image"
                 fill
@@ -57,7 +57,7 @@ const ArtConatiner = ({ type, title }: Props) => {
               <Link key={art.id} href={art.redirectUrl} target="_blank">
                 <AspectRatio ratio={2 / 3} className="relative cursor-pointer">
                   <Image
-                    key={art.id}
+                    key={Date.now()}
                     src={art.imageUrl}
                     alt="art_image"
                     fill
