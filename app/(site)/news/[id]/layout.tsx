@@ -1,4 +1,5 @@
 import { getJob } from "@/apis/jobs"
+import { getNewsDetail } from "@/apis/news"
 import type { Metadata } from "next"
 
 interface Props {
@@ -9,17 +10,17 @@ export const generateMetadata = async ({
   params,
 }: Props): Promise<Metadata> => {
   const { id } = params
-  const data = await getJob(Number(id))
+  const data = await getNewsDetail(Number(id))
 
   const pageTitle = data?.title
-  const pageImage = data?.imageUrl
+  const pageImage = data?.thumbnailImageUrl
 
   return {
-    title: `채용 | ${pageTitle}`,
+    title: `뉴스 | ${pageTitle}`,
     description: `${pageTitle} | 아트인포`,
     openGraph: {
       title: pageTitle,
-      description: "아트인포 채용",
+      description: "아트인포 뉴스",
       images: {
         url:
           pageImage ??

@@ -11,9 +11,15 @@ export type USER = {
   iconImageUrl?: string
   majors?: MAJOR[]
   schools?: SCHOOL[]
+  type: UserType
 }
 
 export type SCHOOL = {
   type: SchoolType
   name: string
+}
+
+export enum UserType {
+  CLIENT = "CLIENT",
+  ADMIN = "ADMIN",
 }

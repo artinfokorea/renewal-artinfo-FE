@@ -366,7 +366,3 @@ input[type="number"] {
     border-left: 4px solid #e5e5e5;
   }
 }
-
-/* 채용 배너 광고 크기 조절 */
-[id^="aswift_"][id$="_host"] iframe {
-}
