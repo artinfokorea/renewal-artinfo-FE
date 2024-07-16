@@ -52,11 +52,14 @@ const SignInForm = () => {
   }
 
   const handleSignIn = async (payload: FormData) => {
+    let callbackUrl = prevPath || "/"
+    if (prevPath) Cookies.remove("prevPath")
+
     try {
       await startTransition(
         signIn("signin-email", {
           ...payload,
-          callbackUrl: prevPath || "/",
+          callbackUrl,
         }),
       )
     } catch (error: any) {

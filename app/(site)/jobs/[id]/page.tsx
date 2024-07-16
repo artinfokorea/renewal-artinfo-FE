@@ -89,10 +89,16 @@ const page = () => {
     }
   }
 
+  const handleAlertDialog = () => {
+    Cookies.set("prevPath", pathname, { expires: 1 / 288 })
+    router.push("/auth/sign-in")
+  }
+
   useEffect(() => {
     setIsLoginModalOpen(!data)
-    Cookies.set("prevPath", pathname, { expires: 1 / 288 })
   }, [data])
+
+  console.log("job", job)
 
   return (
     <section>
@@ -108,7 +114,7 @@ const page = () => {
       )}
       <AlertDialog
         isOpen={isLoginModalOpen}
-        handleDialog={() => router.push("/auth/sign-in")}
+        handleDialog={handleAlertDialog}
         title="로그인이 필요합니다."
       >
         <div className="my-4 flex flex-col justify-center gap-4">
@@ -116,7 +122,7 @@ const page = () => {
             채용 상세를 확인하려면 로그인이 필요합니다.
           </p>
           <Button
-            onClick={() => router.push("/auth/sign-in")}
+            onClick={handleAlertDialog}
             className="bg-main text-white hover:bg-blue-600"
           >
             로그인

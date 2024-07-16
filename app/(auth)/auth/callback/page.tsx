@@ -35,6 +35,11 @@ const Callback = () => {
       }
     } else if (state === "google") {
       const googleMetaDataArr = window.location.hash.replace("#", "").split("&")
+
+      let callbackUrl = prevPath || "/"
+
+      if (prevPath) Cookies.remove("prevPath")
+
       if (googleMetaDataArr) {
         const obj = googleMetaDataArr.reduce((a: any, b) => {
           const splits = b.split("=")
@@ -46,7 +51,7 @@ const Callback = () => {
           signIn("sns", {
             accessToken: obj.access_token,
             type: "GOOGLE",
-            callbackUrl: prevPath || "/",
+            callbackUrl,
           })
         } else {
           router.push("auth")
@@ -56,7 +61,12 @@ const Callback = () => {
   }, [])
 
   const checkKakaoLogin = async (code: string) => {
+    let callbackUrl = prevPath || "/"
+
+    if (prevPath) Cookies.remove("prevPath")
+
     const Kakao = (window as any).Kakao
+
     if (Kakao && !Kakao.isInitialized()) {
       Kakao.init(process.env.NEXT_PUBLIC_KAKAO_API_KEY)
     }
@@ -74,7 +84,7 @@ const Callback = () => {
       signIn("sns", {
         accessToken: res.access_token,
         type: "KAKAO",
-        callbackUrl: prevPath || "/",
+        callbackUrl,
       })
     } catch (e: any) {
       console.error("kakao login error", e)
@@ -82,6 +92,10 @@ const Callback = () => {
   }
 
   const checkNaverLogin = (naverLogin: any) => {
+    let callbackUrl = prevPath || "/"
+
+    if (prevPath) Cookies.remove("prevPath")
+
     naverLogin.init()
 
     naverLogin.getLoginStatus(function (status: boolean) {
@@ -89,7 +103,7 @@ const Callback = () => {
         signIn("sns", {
           accessToken: naverLogin.loginStatus.accessToken.accessToken,
           type: "NAVER",
-          callbackUrl: prevPath || "/",
+          callbackUrl,
         })
       }
     })

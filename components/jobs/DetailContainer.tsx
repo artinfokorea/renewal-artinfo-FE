@@ -9,7 +9,7 @@ import filters from "@/lib/filters"
 import FallbackImage from "../common/FallbackImage"
 import ItemManageBox from "../common/ItemManageBox"
 import ConfirmDialog from "../dialog/ConfirmDialog"
-import { JOB, JobType } from "@/types/jobs"
+import { JOB } from "@/types/jobs"
 import { useSession } from "next-auth/react"
 
 interface Props {
@@ -87,8 +87,8 @@ const DetailContainer = ({ deleteJob, job }: Props) => {
               )
             })}
           </div>
-          <p className="text-sm font-medium text-coolgray md:text-lg">
-            {job?.address}
+          <p className="words-keep keep-all break-keep text-sm font-medium text-coolgray md:text-lg">
+            {job?.address} {job?.addressDetail}
           </p>
           <div className="flex items-center justify-between text-sm font-medium text-coolgray md:text-lg">
             <span>{job?.companyName}</span>
