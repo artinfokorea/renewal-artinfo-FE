@@ -2,13 +2,13 @@
 
 import React, { Suspense } from "react"
 import ListSearchForm from "../common/ListSearchForm"
-import { Loading } from "../common/Loading"
 import NewsList from "./NewsList"
 import { useQuery } from "@tanstack/react-query"
 import { queries } from "@/lib/queries"
 import { UserType } from "@/types/users"
 import { Button } from "../ui/button"
 import { usePathname, useRouter } from "next/navigation"
+import NewsSkeleton from "../skeleton/NewsSkeleton"
 
 const NewsContainer = () => {
   const { data: user } = useQuery(queries.users.detail())
@@ -33,7 +33,7 @@ const NewsContainer = () => {
         </div>
       )}
       <section>
-        <Suspense fallback={<Loading />}>
+        <Suspense fallback={<NewsSkeleton />}>
           <NewsList />
         </Suspense>
       </section>

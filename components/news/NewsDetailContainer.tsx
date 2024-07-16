@@ -7,6 +7,7 @@ import React, { useState } from "react"
 import ItemManageBox from "../common/ItemManageBox"
 import { useRouter } from "next/navigation"
 import ConfirmDialog from "../dialog/ConfirmDialog"
+import { useSession } from "next-auth/react"
 
 interface Props {
   news: NEWS
@@ -17,8 +18,12 @@ const NewsDetailContainer = ({ news, deleteNews }: Props) => {
   const filter = filters()
   const router = useRouter()
   const [isDeleteConfirmDialog, setIsDeleteConfirmDialog] = useState(false)
+  const { data } = useSession()
 
-  const { data: user } = useQuery(queries.users.detail())
+  const { data: user } = useQuery({
+    ...queries.users.detail(),
+    enabled: !!data?.user,
+  })
 
   return (
     <div className="mx-auto max-w-screen-lg px-8">
@@ -40,7 +45,7 @@ const NewsDetailContainer = ({ news, deleteNews }: Props) => {
       )}
 
       <div
-        className="editor_view ck-content mt-20 font-medium md:break-keep md:text-lg"
+        className="editor_view ck-content mt-20 font-medium tracking-wide md:break-keep md:text-lg"
         dangerouslySetInnerHTML={{
           __html: news.contents,
         }}

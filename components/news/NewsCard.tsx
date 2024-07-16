@@ -16,7 +16,7 @@ const NewsCard = forwardRef<HTMLDivElement, Props>(
 
     return (
       <Link href={`${pathname}/${news.id}`}>
-        <div className="flex flex-col gap-4 rounded-md p-4 md:mx-4 md:flex-row-reverse md:hover:bg-whitesmoke">
+        <div className="flex flex-col gap-8 rounded-md p-4 md:mx-4 md:flex-row-reverse md:hover:bg-whitesmoke">
           <div className="relative aspect-[27/17] w-full md:basis-1/3">
             <FallbackImage
               src={news.thumbnailImageUrl}
@@ -30,10 +30,10 @@ const NewsCard = forwardRef<HTMLDivElement, Props>(
             <h3 className="line-clamp-2 text-xl tracking-wider md:text-2xl">
               {news.title}
             </h3>
-            <span className="line-clamp-4 text-sm font-medium leading-7 text-coolgray md:text-base">
+            <span className="line-clamp-4 text-sm leading-7 tracking-wide text-coolgray md:text-base">
               {news.summary}
             </span>
-            <span className="text-sm font-medium text-coolgray md:mt-auto md:text-base">
+            <span className="text-sm text-coolgray md:mt-auto md:text-base">
               {filter.YYYYMMDD(news.createdAt)}
             </span>
           </div>
