@@ -366,3 +366,130 @@ input[type="number"] {
     border-left: 4px solid #e5e5e5;
   }
 }
+
+.ck-content {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen,
+    Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
+  font-size: 1em;
+  line-height: 1.6;
+  word-wrap: break-word;
+}
+.ck-content h1 {
+  font-size: 2.38em;
+  font-weight: 700;
+}
+
+.ck-content h2 {
+  font-size: 2em;
+  font-weight: 700;
+}
+
+.ck-content h3 {
+  font-size: 1.72em;
+  font-weight: 700;
+}
+
+.ck-content h4 {
+  font-size: 1.45em;
+  font-weight: 700;
+}
+
+.ck-content ul,
+.ck-content ol {
+  padding-left: 40px;
+}
+
+.ck-content ol {
+  list-style-type: decimal;
+}
+
+.ck-content ul {
+  list-style-type: disc;
+}
+
+.ck-content blockquote {
+  overflow: hidden;
+  padding-right: 1.5em;
+  padding-left: 1.5em;
+  margin-left: 0;
+  margin-right: 0;
+  font-style: italic;
+  border-left: 5px solid #ccc;
+}
+
+/* 기본 이미지 스타일 */
+.ck-content .image {
+  display: table;
+  clear: both;
+  text-align: center;
+  margin: 1em auto;
+}
+
+.ck-content .image img {
+  display: block;
+  margin: 0 auto;
+  max-width: 100%;
+  min-width: 50px;
+}
+
+/* 이미지 캡션 스타일 */
+.ck-content .image > figcaption {
+  display: table-caption;
+  caption-side: bottom;
+  word-break: break-word;
+  color: #333;
+  background-color: #f7f7f7;
+  padding: 0.6em;
+  font-size: 0.75em;
+  outline-offset: -1px;
+}
+
+/* 이미지 정렬 스타일 */
+.ck-content .image-style-side,
+.ck-content .image-style-align-left,
+.ck-content .image-style-align-center,
+.ck-content .image-style-align-right {
+  max-width: 50%;
+}
+
+.ck-content .image-style-side {
+  float: right;
+  margin-left: var(--ck-image-style-spacing);
+}
+
+.ck-content .image-style-align-left {
+  float: left;
+  margin-right: var(--ck-image-style-spacing);
+}
+
+.ck-content .image-style-align-center {
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.ck-content .image-style-align-right {
+  float: right;
+  margin-left: var(--ck-image-style-spacing);
+}
+
+/* 이미지 크기 스타일 */
+.ck-content .image-style-block-quad {
+  width: 100%;
+  max-width: 100%;
+}
+
+.ck-content .image-style-block-wide {
+  max-width: 75%;
+}
+
+/* 반응형 이미지 처리 */
+@media screen and (max-width: 620px) {
+  .ck-content .image-style-side,
+  .ck-content .image-style-align-left,
+  .ck-content .image-style-align-center,
+  .ck-content .image-style-align-right {
+    max-width: 100%;
+    float: none;
+    margin: 0 auto;
+  }
+}

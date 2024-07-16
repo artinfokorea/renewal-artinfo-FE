@@ -40,7 +40,7 @@ const NewsDetailContainer = ({ news, deleteNews }: Props) => {
       )}
 
       <div
-        className="editor_view mt-20 font-medium md:break-keep md:text-lg"
+        className="editor_view ck-content mt-20 font-medium md:break-keep md:text-lg"
         dangerouslySetInnerHTML={{
           __html: news.contents,
         }}

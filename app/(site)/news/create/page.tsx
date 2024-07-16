@@ -1,3 +1,4 @@
+import NewsCreateContainer from "@/components/news/NewsCreateContainer"
 import { getUser } from "@/lib/serverUserFetch"
 import { UserType } from "@/types/users"
 import { redirect } from "next/navigation"
@@ -10,7 +11,11 @@ const page = async () => {
     redirect("/news")
   }
 
-  return <div>create</div>
+  return (
+    <section className="mx-auto max-w-screen-lg">
+      <NewsCreateContainer />
+    </section>
+  )
 }
 
 export default page

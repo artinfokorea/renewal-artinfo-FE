@@ -161,3 +161,10 @@ export const profileSchema = yup.object().shape({
   imageUrl: stringNullSchema,
   phone: stringNullSchema,
 })
+
+export const newsSchema = yup.object().shape({
+  title: createStringRequiredSchema("제목을 입력해주세요."),
+  summary: createStringRequiredSchema("생년월일을 입력해주세요."),
+  contents: createStringRequiredSchema("내용을 입력해주세요."),
+  thumbnailImageUrl: createStringRequiredSchema("이미지를 등록해주세요."),
+})

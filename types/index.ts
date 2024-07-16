@@ -120,4 +120,5 @@ export enum UploadTarget {
   USER = "USER",
   JOB = "JOB",
   LESSON = "LESSON",
+  NEWS = "NEWS",
 }
