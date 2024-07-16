@@ -39,7 +39,7 @@ const NewsList = () => {
   }, [inView, hasNextPage])
 
   return (
-    <div className="mt-4 flex flex-col gap-2">
+    <div className="flex flex-col gap-2 md:mt-4">
       {newsList?.pages?.map(page =>
         page?.news?.map((news, index) => {
           return (
