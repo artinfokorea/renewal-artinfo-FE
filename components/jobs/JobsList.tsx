@@ -22,8 +22,6 @@ const JobsList = () => {
     threshold: 0.5,
   })
 
-  console.log(professionals)
-
   const {
     data: jobs,
     hasNextPage,
