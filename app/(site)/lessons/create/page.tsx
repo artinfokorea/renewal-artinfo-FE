@@ -2,46 +2,58 @@
 
 import React, { useEffect, useState } from "react"
 import { usePathname, useRouter, useSearchParams } from "next/navigation"
-import useToast from "@/hooks/useToast"
-import { useLoading } from "@toss/use-loading"
 import { createLesson, getLessonQualification } from "@/apis/lessons"
 import LessonForm, { LessonFormData } from "@/components/lessons/LessonForm"
-import { useQueryClient } from "@tanstack/react-query"
 import { queries } from "@/lib/queries"
 import AlertDialog from "@/components/dialog/AlertDialog"
 import { Button } from "@/components/ui/button"
+import useMutation from "@/hooks/useMutation"
+import { LessonPayload } from "@/interface/lessons"
 
 const page = () => {
-  const { successToast, errorToast } = useToast()
   const [qualificationErrorMessages, setQualificationErrorMessages] = useState()
-  const [isHandleFormLoading, handleFormTransition] = useLoading()
   const [isQualificationDialog, setIsQualificationDialog] = useState(false)
   const [isDuplicateDialog, setIsDuplicateDialog] = useState(false)
   const router = useRouter()
   const pathname = usePathname()
-  const queryClient = useQueryClient()
+
+  const { handleForm, isLoading } = useMutation<LessonPayload>({
+    createFn: (payload: LessonPayload) => createLesson(payload),
+    queryKey: [...queries.lessons._def],
+    redirectPath: pathname.slice(0, pathname.lastIndexOf("/")),
+    successMessage: {
+      create: "레슨이 수정되었습니다.",
+    },
+  })
 
   const handleLessonForm = async (payload: LessonFormData) => {
     const { areas, pay, imageUrl, introduction, career } = payload
-    try {
-      await handleFormTransition(
-        createLesson({
-          areas,
-          pay,
-          imageUrl,
-          introduction,
-          career: career || "",
-        }),
-      )
-      successToast("레슨이 등록되었습니다.")
-      queryClient.invalidateQueries({
-        queryKey: queries.lessons._def,
-      })
-      router.push(pathname.slice(0, pathname.lastIndexOf("/")))
-    } catch (error: any) {
-      errorToast(error.message)
-      console.log(error)
-    }
+    handleForm({
+      areas,
+      pay,
+      imageUrl,
+      introduction,
+      career: career || "",
+    })
+    // try {
+    //   await handleFormTransition(
+    //     createLesson({
+    //       areas,
+    //       pay,
+    //       imageUrl,
+    //       introduction,
+    //       career: career || "",
+    //     }),
+    //   )
+    //   successToast("레슨이 등록되었습니다.")
+    //   queryClient.invalidateQueries({
+    //     queryKey: queries.lessons._def,
+    //   })
+    //   router.push(pathname.slice(0, pathname.lastIndexOf("/")))
+    // } catch (error: any) {
+    //   errorToast(error.message)
+    //   console.log(error)
+    // }
   }
 
   useEffect(() => {
@@ -59,10 +71,7 @@ const page = () => {
   }, [])
   return (
     <section className="mx-auto max-w-screen-lg">
-      <LessonForm
-        handleLesson={handleLessonForm}
-        isFormLoading={isHandleFormLoading}
-      />
+      <LessonForm handleLesson={handleLessonForm} isFormLoading={isLoading} />
       <AlertDialog
         title="레슨 등록 권한이 없습니다."
         isOpen={isQualificationDialog}

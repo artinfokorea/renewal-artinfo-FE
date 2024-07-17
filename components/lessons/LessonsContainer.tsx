@@ -10,7 +10,6 @@ import { Badge } from "../ui/badge"
 import ProvinceDialog from "../dialog/ProvinceDialog"
 import LessonList from "./LessonList"
 import LessonListSkeleton from "../skeleton/LessonListSkeleton"
-import { ArtType } from "@/types/majors"
 import ProfessionalCheckBoxes from "../common/ProfessionalCheckBoxes"
 import MobileFilterTab from "../common/MobileFIlterTab"
 import AddButton from "../common/AddButton"
@@ -22,9 +21,9 @@ const LessonsContainer = () => {
   const [isProvinceDialog, setIsProvinceDialog] = useState(false)
   const pathname = usePathname()
 
-  const [artFields, provinceList, lessonsCount, majorList] = useQueries({
+  const [lessonFields, provinceList, lessonsCount, majorList] = useQueries({
     queries: [
-      queries.majors.artFields({ artCategories: [ArtType.MUSIC] }),
+      queries.lessons.fields(),
       queries.provinces.list(),
       queries.lessons.count(),
       queries.majors.list(),
@@ -51,7 +50,7 @@ const LessonsContainer = () => {
 
       <section className="flex">
         <form className="hidden min-w-[180px] flex-col text-gray-400 lg:flex">
-          <ProfessionalCheckBoxes artFields={artFields?.data?.majorGroups} />
+          <ProfessionalCheckBoxes artFields={lessonFields?.data?.majorGroups} />
         </form>
         <div className="flex w-full flex-col md:ml-12 md:mt-4 md:flex-1">
           <div className="hidden items-center justify-between lg:flex">
@@ -89,7 +88,7 @@ const LessonsContainer = () => {
           {/* Mobile Filter */}
           <MobileFilterTab
             majors={majorList?.data?.majors}
-            artFields={artFields?.data?.majorGroups}
+            artFields={lessonFields?.data?.majorGroups}
             provinces={provinceList?.data?.provinces}
             page="LESSON"
           />

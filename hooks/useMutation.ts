@@ -6,10 +6,14 @@ import { useRouter } from "next/navigation"
 interface MutationsProps<T> {
   createFn?: (data: T) => Promise<any>
   updateFn?: (id: number, data: T) => Promise<any>
-  deleteFn?: (id: number) => Promise<any>
+  deleteFn?: (id?: number) => Promise<any>
   queryKey: string[]
   redirectPath: string
-  successMessage: string
+  successMessage: {
+    create?: string
+    update?: string
+    delete?: string
+  }
 }
 
 const useMutation = <T>({
@@ -29,10 +33,10 @@ const useMutation = <T>({
     try {
       if (id && updateFn) {
         await startTransition(updateFn(id, data))
-        successToast(successMessage)
+        successToast(successMessage?.update || "수정되었습니다.")
       } else if (createFn) {
         await startTransition(createFn(data))
-        successToast(successMessage)
+        successToast(successMessage?.create || "등록되었습니다.")
       }
       router.push(redirectPath)
       queryClient.invalidateQueries({
@@ -44,12 +48,12 @@ const useMutation = <T>({
     }
   }
 
-  const handleDelete = async (id: number) => {
+  const handleDelete = async (id?: number) => {
     if (!deleteFn) return
 
     try {
       await startTransition(deleteFn(id))
-      successToast(successMessage)
+      successToast(successMessage?.delete || "삭제되었습니다.")
       router.push(redirectPath)
       queryClient.invalidateQueries({
         queryKey,

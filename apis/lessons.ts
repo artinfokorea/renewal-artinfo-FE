@@ -10,6 +10,7 @@ import {
   ScrollApiResponse,
   SuccessResponse,
 } from "@/interface"
+import { ArtField } from "@/types/majors"
 
 export const getLesson = async (id: number): Promise<LESSON> => {
   try {
@@ -63,6 +64,16 @@ export const getLessonQualification = async (): Promise<SuccessResponse> => {
     "/lessons/qualification",
   )
   return response
+}
+
+export const getLessonFields = async (): Promise<
+  ListResponse<ArtField, "majorGroups">
+> => {
+  const response =
+    await publicApiRequest.get<ListApiResponse<ArtField, "majorGroups">>(
+      "/lessons/fields",
+    )
+  return response.item
 }
 
 export const getLessonsCount = async (): Promise<{ totalCount: number }> => {

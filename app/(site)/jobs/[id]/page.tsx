@@ -34,10 +34,13 @@ const page = () => {
   const { handleForm, isLoading, handleDelete } = useMutation<JobPayload>({
     updateFn: (jobId: number, payload: JobPayload) =>
       updateArtOrganization(jobId, payload),
-    deleteFn: (jobId: number) => deleteJob(jobId),
+    deleteFn: (jobId?: number) => deleteJob(jobId as number),
     queryKey: [...queries.jobs._def],
     redirectPath: pathname.slice(0, pathname.lastIndexOf("/")),
-    successMessage: "채용이 등록되었습니다.",
+    successMessage: {
+      create: "채용이 수정되었습니다.",
+      delete: "채용이 삭제되었습니다.",
+    },
   })
 
   const { data: job } = useSuspenseQuery(queries.jobs.detail(Number(params.id)))

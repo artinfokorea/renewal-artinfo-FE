@@ -22,7 +22,9 @@ const page = () => {
     createFn: (payload: JobPayload) => createFullTimeJob(payload),
     queryKey: [...queries.jobs._def],
     redirectPath: pathname.slice(0, pathname.lastIndexOf("/")),
-    successMessage: "채용이 등록되었습니다.",
+    successMessage: {
+      create: "채용이 등록되었습니다.",
+    },
   })
 
   const handleFullTimeJob = async (payload: CreateFulltimeJobFormData) => {

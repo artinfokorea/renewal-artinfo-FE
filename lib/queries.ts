@@ -1,6 +1,11 @@
 import { getAds } from "@/apis/ad"
 import { getInfiniteJobs, getJob, getJobs, getJobsCount } from "@/apis/jobs"
-import { getInfiniteLessons, getLesson, getLessonsCount } from "@/apis/lessons"
+import {
+  getInfiniteLessons,
+  getLesson,
+  getLessonFields,
+  getLessonsCount,
+} from "@/apis/lessons"
 import { getArtCategories, getArtFileds, getMajors } from "@/apis/majors"
 import { getInfiniteNews, getNewsCount, getNewsDetail } from "@/apis/news"
 import { getProvinces } from "@/apis/system"
@@ -42,6 +47,10 @@ const provinces = createQueryKeys("provinces", {
 })
 
 const lessons = createQueryKeys("lessons", {
+  fields: () => ({
+    queryKey: ["fields"],
+    queryFn: getLessonFields,
+  }),
   detail: (lessonId: number) => ({
     queryKey: [lessonId],
     queryFn: () => getLesson(lessonId),
