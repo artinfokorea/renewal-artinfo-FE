@@ -13,11 +13,12 @@ export const generateMetadata = async ({
   const data = await getNewsDetail(Number(id))
 
   const pageTitle = data?.title
+  const pageDescription = data?.summary.substring(0, 40)
   const pageImage = data?.thumbnailImageUrl
 
   return {
     title: `뉴스 | ${pageTitle}`,
-    description: `${pageTitle} | 아트인포`,
+    description: `${pageDescription} | 아트인포`,
     openGraph: {
       title: pageTitle,
       description: "아트인포 뉴스",
