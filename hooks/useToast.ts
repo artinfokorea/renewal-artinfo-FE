@@ -1,6 +1,6 @@
-"use client";
+"use client"
 
-import { toast } from "react-hot-toast";
+import { toast } from "react-hot-toast"
 
 const useToast = () => {
   const successToast = (text: string) =>
@@ -19,7 +19,7 @@ const useToast = () => {
         role: "status",
         "aria-live": "polite",
       },
-    });
+    })
 
   const errorToast = (text: string) =>
     toast.error(text, {
@@ -37,8 +37,8 @@ const useToast = () => {
         role: "status",
         "aria-live": "polite",
       },
-    });
-  return { successToast, errorToast };
-};
+    })
+  return { successToast, errorToast }
+}
 
-export default useToast;
+export default useToast

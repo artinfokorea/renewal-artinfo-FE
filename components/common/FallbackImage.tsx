@@ -3,8 +3,8 @@
 import Image, { ImageProps } from "next/image"
 import React, { useState } from "react"
 
-interface Props extends Omit<ImageProps, "src"> {
-  src: string
+interface FallbackImageProps extends Omit<ImageProps, "src"> {
+  src?: string
   fallbackText?: string
   fallbackSrc?: string
 }
@@ -17,42 +17,30 @@ const FallbackImage = ({
   fallbackText,
   fallbackSrc = "/img/placeholder-user.png",
   ...props
-}: Props) => {
+}: FallbackImageProps) => {
   const [imgError, setImgError] = useState(false)
 
-  const handleError = () => {
-    setImgError(true)
-  }
+  const handleError = () => setImgError(true)
 
-  if (imgError) {
-    if (fallbackText) {
-      return (
-        <div className="flex h-full items-center justify-center">
-          <span className="font-serif text-base font-bold text-black md:text-xl">
-            {fallbackText}
-          </span>
-        </div>
-      )
-    }
+  if (!src && fallbackText) {
     return (
-      <Image
-        src={fallbackSrc}
-        alt={alt}
-        width={width}
-        height={height}
-        {...props}
-      />
+      <div className="flex h-full items-center justify-center">
+        <span className="font-serif text-base font-bold text-black md:text-xl">
+          {fallbackText}
+        </span>
+      </div>
     )
   }
 
+  const imageSrc = imgError || !src ? fallbackSrc : src
+
   return (
     <Image
-      key={src}
-      src={src || fallbackSrc}
+      src={imageSrc}
       alt={alt}
       width={width}
       height={height}
-      onError={handleError}
+      onError={!imgError ? handleError : undefined}
       {...props}
     />
   )

@@ -6,11 +6,9 @@ import FullTimeJobForm, {
   CreateFulltimeJobFormData,
 } from "@/components/jobs/FullTimeJobForm"
 import { Button } from "@/components/ui/button"
-import useToast from "@/hooks/useToast"
 import { queries } from "@/lib/queries"
 import { JobType } from "@/types/jobs"
-import { useQueryClient, useSuspenseQuery } from "@tanstack/react-query"
-import { useLoading } from "@toss/use-loading"
+import { useSuspenseQuery } from "@tanstack/react-query"
 import { useSession } from "next-auth/react"
 import {
   useParams,
@@ -20,34 +18,32 @@ import {
 } from "next/navigation"
 import { useEffect, useState } from "react"
 import Cookies from "js-cookie"
+import useMutation from "@/hooks/useMutation"
+import { JobPayload } from "@/interface/jobs"
 
 const page = () => {
   const params = useParams()
-  const { successToast, errorToast } = useToast()
-  const queryClient = useQueryClient()
   const router = useRouter()
   const pathname = usePathname()
   const searchParams = useSearchParams()
   const pageType = searchParams.get("type") as "edit" | "create"
   const jobType = searchParams.get("jobType") as JobType
-  const [isHandleFormLoading, handleFormTransition] = useLoading()
   const [isLoginModalOpen, setIsLoginModalOpen] = useState(false)
   const { data } = useSession()
+
+  const { handleForm, isLoading, handleDelete } = useMutation<JobPayload>({
+    updateFn: (jobId: number, payload: JobPayload) =>
+      updateArtOrganization(jobId, payload),
+    deleteFn: (jobId: number) => deleteJob(jobId),
+    queryKey: [...queries.jobs._def],
+    redirectPath: pathname.slice(0, pathname.lastIndexOf("/")),
+    successMessage: "채용이 등록되었습니다.",
+  })
 
   const { data: job } = useSuspenseQuery(queries.jobs.detail(Number(params.id)))
 
   const handleDeleteJob = async () => {
-    try {
-      await deleteJob(Number(params.id))
-      successToast("채용이 삭제되었습니다.")
-      queryClient.invalidateQueries({
-        queryKey: queries.jobs._def,
-      })
-      router.push(pathname.slice(0, pathname.lastIndexOf("/")))
-    } catch (error: any) {
-      errorToast(error.message)
-      console.log("error", error)
-    }
+    handleDelete(Number(params.id))
   }
 
   const handleUpdateFulltimeJob = async (
@@ -63,30 +59,20 @@ const page = () => {
       contents,
       recruitSiteUrl,
     } = payload
-
-    try {
-      await handleFormTransition(
-        updateArtOrganization(Number(params.id), {
-          title,
-          companyName,
-          address,
-          addressDetail,
-          imageUrl: imageUrl || "",
-          majorIds: majors.map(major => major.id),
-          contents,
-          type: jobType,
-          recruitSiteUrl: recruitSiteUrl || "",
-        }),
-      )
-      successToast("채용이 수정되었습니다.")
-      queryClient.invalidateQueries({
-        queryKey: queries.jobs._def,
-      })
-      router.push(pathname.slice(0, pathname.lastIndexOf("/")))
-    } catch (error: any) {
-      errorToast(error.message)
-      console.log(error)
-    }
+    handleForm(
+      {
+        title,
+        companyName,
+        address,
+        addressDetail,
+        imageUrl: imageUrl || "",
+        majorIds: majors.map(major => major.id),
+        contents,
+        type: jobType,
+        recruitSiteUrl: recruitSiteUrl || "",
+      },
+      Number(params.id),
+    )
   }
 
   const handleAlertDialog = () => {
@@ -98,14 +84,12 @@ const page = () => {
     setIsLoginModalOpen(!data)
   }, [data])
 
-  console.log("job", job)
-
   return (
     <section>
       {pageType === "edit" ? (
         <FullTimeJobForm
           handleFullTimeJob={handleUpdateFulltimeJob}
-          isLoading={isHandleFormLoading}
+          isLoading={isLoading}
           job={job}
           withImage={jobType !== JobType.RELIGION}
         />
