@@ -4,20 +4,17 @@ import React, { useEffect, useMemo, useState } from "react"
 import MobileProvinceFilter from "../common/MobileProvinceFilter"
 import MobileProfessionalFilter from "./MobileProfessionalFilter"
 import MobileRecruitTypeFilter from "./MobileRecruitTypeFilter"
-import {
-  ArtField,
-  ProfessinalValues,
-  ProfessionalFieldTypes,
-} from "@/types/majors"
+import { ArtField, MAJOR, ProfessionalFieldTypes } from "@/types/majors"
 import { useRouter, useSearchParams } from "next/navigation"
 
 interface Props {
   provinces?: PROVINCE[]
   page: "LESSON" | "JOB"
   artFields?: ArtField[]
+  majors?: MAJOR[]
 }
 
-const MobileFilterTab = ({ provinces, page, artFields }: Props) => {
+const MobileFilterTab = ({ provinces, page, artFields, majors }: Props) => {
   const searchParams = useSearchParams()
   const router = useRouter()
   const recruit = searchParams.get("recruit") as JobType
@@ -58,6 +55,29 @@ const MobileFilterTab = ({ provinces, page, artFields }: Props) => {
     setSelectedProfessional(professional)
     setMobileSearchTab(undefined)
   }
+
+  const majorCategories = Array.from(
+    new Set(majors?.map(major => major.secondGroupEn)),
+  ).map(key => {
+    const major = majors?.find(m => m.secondGroupEn === key)
+    return {
+      key,
+      value: major?.secondGroupKo,
+    }
+  })
+
+  const ProfessinalValues: { [key in ProfessionalFieldTypes]: string } =
+    majorCategories?.reduce<{
+      [key in ProfessionalFieldTypes]: string
+    }>(
+      (acc, curr) => {
+        if (curr.value) {
+          acc[curr.key] = curr.value
+        }
+        return acc
+      },
+      {} as { [key in ProfessionalFieldTypes]: string },
+    )
 
   const selectedProvince = useMemo(() => {
     return provinces?.filter(

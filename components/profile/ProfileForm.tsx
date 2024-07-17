@@ -143,7 +143,7 @@ const ProfileForm = ({
           <div className="mt-4 flex flex-col gap-2 text-base md:mt-0 md:gap-0 md:text-lg">
             <div className="mb-2 mt-8 flex items-center gap-4 font-medium">
               {isUpdateForm ? (
-                <div className="flex flex-col">
+                <div className="mx-auto flex flex-col">
                   <Input
                     {...register("name")}
                     className="mx-auto w-[150px] rounded-lg border px-2 py-1 focus:outline-none md:ml-10 md:w-[200px]"

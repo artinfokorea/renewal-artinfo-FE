@@ -4,7 +4,7 @@ import { useQuery } from "@tanstack/react-query"
 import React from "react"
 import CloseIcon from "../icons/CloseIcon"
 import { Button } from "../ui/button"
-import { MAJOR, MajorCategoryValues } from "@/types/majors"
+import { MAJOR } from "@/types/majors"
 
 interface Props {
   open: boolean
@@ -28,6 +28,16 @@ const MajorDialog = ({
     if (!multiple) close()
   }
 
+  const majorCategories = Array.from(
+    new Set(data?.majors.map(major => major.secondGroupEn)),
+  ).map(key => {
+    const major = data?.majors.find(m => m.secondGroupEn === key)
+    return {
+      key,
+      value: major?.secondGroupKo,
+    }
+  })
+
   const selectedMajorIds = selectedMajors.map(major => major.id)
 
   return (
@@ -49,7 +59,7 @@ const MajorDialog = ({
           </div>
           <div className="border-b-2 border-whitesmoke" />
           <div className="p-4 md:px-8">
-            {MajorCategoryValues.map(({ key, value }) => (
+            {majorCategories?.map(({ key, value }) => (
               <div key={key} className="my-3 flex flex-col gap-3">
                 <span className="font-bold text-coolgray">{value}</span>
                 <div className="flex flex-wrap gap-2">

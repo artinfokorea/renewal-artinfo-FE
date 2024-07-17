@@ -1,7 +1,7 @@
 "use client"
 
 import { queries } from "@/lib/queries"
-import { useQuery } from "@tanstack/react-query"
+import { useQueries } from "@tanstack/react-query"
 import { usePathname, useRouter, useSearchParams } from "next/navigation"
 import ListSearchForm from "../common/ListSearchForm"
 import { Suspense, useMemo, useState } from "react"
@@ -22,16 +22,17 @@ const LessonsContainer = () => {
   const [isProvinceDialog, setIsProvinceDialog] = useState(false)
   const pathname = usePathname()
 
-  const { data: artFields } = useQuery(
-    queries.majors.artFields({ artCategories: [ArtType.MUSIC] }),
-  )
-
-  const { data: provinceList } = useQuery(queries.provinces.list())
-
-  const { data: lessonsCount } = useQuery(queries.lessons.count())
+  const [artFields, provinceList, lessonsCount, majorList] = useQueries({
+    queries: [
+      queries.majors.artFields({ artCategories: [ArtType.MUSIC] }),
+      queries.provinces.list(),
+      queries.lessons.count(),
+      queries.majors.list(),
+    ],
+  })
 
   const selectedProvinces = useMemo(() => {
-    return provinceList?.provinces?.filter(province =>
+    return provinceList?.data?.provinces?.filter(province =>
       provinceIds.includes(province.id.toString()),
     )
   }, [provinceIds])
@@ -41,14 +42,16 @@ const LessonsContainer = () => {
       {/* Desktop Filter */}
       <ListSearchForm>
         <h4 className="text-xl font-bold md:text-2xl">
-          <span className="text-main">{lessonsCount?.totalCount || "00"}</span>
+          <span className="text-main">
+            {lessonsCount?.data?.totalCount || "00"}
+          </span>
           명의 전문가가 준비중이에요.
         </h4>
       </ListSearchForm>
 
       <section className="flex">
         <form className="hidden min-w-[180px] flex-col text-gray-400 lg:flex">
-          <ProfessionalCheckBoxes artFields={artFields?.majorGroups} />
+          <ProfessionalCheckBoxes artFields={artFields?.data?.majorGroups} />
         </form>
         <div className="flex w-full flex-col md:ml-12 md:mt-4 md:flex-1">
           <div className="hidden items-center justify-between lg:flex">
@@ -85,8 +88,9 @@ const LessonsContainer = () => {
 
           {/* Mobile Filter */}
           <MobileFilterTab
-            artFields={artFields?.majorGroups}
-            provinces={provinceList?.provinces}
+            majors={majorList?.data?.majors}
+            artFields={artFields?.data?.majorGroups}
+            provinces={provinceList?.data?.provinces}
             page="LESSON"
           />
 
@@ -95,7 +99,7 @@ const LessonsContainer = () => {
           </Suspense>
         </div>
         <ProvinceDialog
-          provinces={provinceList?.provinces}
+          provinces={provinceList?.data?.provinces}
           open={isProvinceDialog}
           close={() => setIsProvinceDialog(false)}
           multiple={true}
