@@ -15,10 +15,10 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
   return {
     title: `레슨 | ${pageTitle}`,
-    description: `${pageTitle} ${pageDescription} 레슨 | 아트인포`,
+    description: `아트인포 | ${pageDescription} 레슨 ${pageTitle}`,
     openGraph: {
       title: pageTitle,
-      description: `${pageTitle} ${pageDescription} 레슨 | 아트인포`,
+      description: `아트인포 | ${pageDescription} 레슨 ${pageTitle} `,
       images: {
         url:
           pageImage ??

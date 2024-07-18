@@ -16,10 +16,10 @@ export const generateMetadata = async ({
 
   return {
     title: `채용 | ${pageTitle}`,
-    description: `${data.companyName} 채용 | 아트인포`,
+    description: `아트인포 | ${data.companyName}`,
     openGraph: {
       title: pageTitle,
-      description: "아트인포 채용",
+      description: `아트인포 | ${data.companyName}`,
       images: {
         url:
           pageImage ??
