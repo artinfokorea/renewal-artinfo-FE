@@ -25,7 +25,7 @@ export const generateMetadata = async ({
       images: {
         url:
           pageImage ??
-          "https://ycuajmirzlqpgzuonzca.supabase.co/storage/v1/object/public/artinfo/concerts/288/1694427064047.jpg",
+          "https://artinfo.s3.ap-northeast-2.amazonaws.com/prod/upload/1710/images/20240718/original/CQXcP0odQYM.1721277434724.png",
         alt: "아트인포-ARTINFO",
       },
     },
