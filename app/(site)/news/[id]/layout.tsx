@@ -15,6 +15,7 @@ export const generateMetadata = async ({
   const pageTitle = data?.title
   const pageDescription = data?.summary.substring(0, 40)
   const pageImage = data?.thumbnailImageUrl
+  const defaultImage = "/img/metadata_image.png"
 
   return {
     title: `뉴스 | ${pageTitle}`,
@@ -23,9 +24,7 @@ export const generateMetadata = async ({
       title: `뉴스 | ${pageTitle}`,
       description: `아트인포 | ${pageDescription}`,
       images: {
-        url:
-          pageImage ??
-          "https://artinfo.s3.ap-northeast-2.amazonaws.com/prod/upload/1710/images/20240718/original/CQXcP0odQYM.1721277434724.png",
+        url: pageImage ?? defaultImage,
         alt: "아트인포-ARTINFO",
       },
     },

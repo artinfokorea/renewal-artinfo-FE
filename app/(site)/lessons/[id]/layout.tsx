@@ -12,6 +12,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const pageTitle = data?.name
   const pageDescription = data?.majors && data?.majors.join(", ")
   const pageImage = data?.imageUrl
+  const defaultImage = "/img/metadata_image.png"
 
   return {
     title: `레슨 | ${pageTitle}`,
@@ -20,9 +21,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       title: pageTitle,
       description: `아트인포 | ${pageDescription} 레슨 ${pageTitle} `,
       images: {
-        url:
-          pageImage ??
-          "https://artinfo.s3.ap-northeast-2.amazonaws.com/prod/upload/1710/images/20240718/original/CQXcP0odQYM.1721277434724.png",
+        url: pageImage ?? defaultImage,
         alt: "아트인포-ARTINFO",
       },
     },

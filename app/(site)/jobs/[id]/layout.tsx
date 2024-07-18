@@ -13,6 +13,7 @@ export const generateMetadata = async ({
 
   const pageTitle = data?.title
   const pageImage = data?.imageUrl
+  const defaultImage = "/img/metadata_image.png"
 
   return {
     title: `채용 | ${pageTitle}`,
@@ -21,9 +22,7 @@ export const generateMetadata = async ({
       title: pageTitle,
       description: `아트인포 | ${data.companyName}`,
       images: {
-        url:
-          pageImage ??
-          "https://artinfo.s3.ap-northeast-2.amazonaws.com/prod/upload/1710/images/20240718/original/CQXcP0odQYM.1721277434724.png",
+        url: pageImage ?? defaultImage,
         alt: "아트인포-ARTINFO",
       },
     },
