@@ -16,17 +16,19 @@ const LessonList = () => {
   const keyword = searchParams.get("keyword") as string
   const provinceIds = searchParams.getAll("provinceId") as string[]
 
+  const queryParams = {
+    size: 10,
+    keyword,
+    professionalFields: professionals.map(professionals => professionals),
+    provinceIds: provinceIds.map(id => Number(id)),
+  }
+
   const {
     data: lessons,
     hasNextPage,
     fetchNextPage,
   } = useSuspenseInfiniteQuery<ScrollApiResponse<LESSON, "lessons">>({
-    ...queries.lessons.infiniteList({
-      size: 10,
-      keyword,
-      professionalFields: professionals.map(professionals => professionals),
-      provinceIds: provinceIds.map(id => Number(id)),
-    }),
+    ...queries.lessons.infiniteList(queryParams),
     initialPageParam: 1,
     getNextPageParam: lastPage => {
       if (!lastPage.isLast) return lastPage.nextPage

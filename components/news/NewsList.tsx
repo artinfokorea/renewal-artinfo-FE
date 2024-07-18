@@ -11,6 +11,11 @@ const NewsList = () => {
   const searchParams = useSearchParams()
   const keyword = searchParams.get("keyword") as string
 
+  const queryParams = {
+    size: 10,
+    keyword,
+  }
+
   const [ref, inView] = useInView({
     delay: 100,
     threshold: 0.5,
@@ -21,10 +26,7 @@ const NewsList = () => {
     hasNextPage,
     fetchNextPage,
   } = useSuspenseInfiniteQuery<ScrollApiResponse<NEWS, "news">>({
-    ...queries.news.infiniteList({
-      size: 10,
-      keyword,
-    }),
+    ...queries.news.infiniteList(queryParams),
     initialPageParam: 1,
     getNextPageParam: lastPage => {
       if (!lastPage.isLast) return lastPage.nextPage

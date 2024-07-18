@@ -17,6 +17,18 @@ const JobsList = () => {
   ) as ProfessionalFieldTypes[]
   const keyword = searchParams.get("keyword") as string
   const provinceIds = searchParams.getAll("provinceId") as string[]
+
+  const queryParams = {
+    size: 10,
+    types:
+      recruits.length > 0
+        ? recruits
+        : [JobType.ART_ORGANIZATION, JobType.LECTURER, JobType.RELIGION],
+    keyword,
+    professionalFields: professionals.map(professional => professional),
+    provinceIds: provinceIds.map(id => Number(id)),
+  }
+
   const [ref, inView] = useInView({
     delay: 100,
     threshold: 0.5,
@@ -27,16 +39,7 @@ const JobsList = () => {
     hasNextPage,
     fetchNextPage,
   } = useSuspenseInfiniteQuery<ScrollApiResponse<JOB, "jobs">>({
-    ...queries.jobs.infiniteList({
-      size: 10,
-      types:
-        recruits.length > 0
-          ? recruits
-          : [JobType.ART_ORGANIZATION, JobType.LECTURER, JobType.RELIGION],
-      keyword,
-      professionalFields: professionals.map(professional => professional),
-      provinceIds: provinceIds.map(id => Number(id)),
-    }),
+    ...queries.jobs.infiniteList(queryParams),
     initialPageParam: 1,
     getNextPageParam: lastPage => {
       if (!lastPage.isLast) return lastPage.nextPage
