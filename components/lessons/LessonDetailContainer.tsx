@@ -78,7 +78,7 @@ const LessonDetailContainer = ({ lesson, deleteLesson }: Props) => {
             <div className="flex items-center gap-4 text-base md:text-lg">
               <span className="font-bold">전공</span>
               <div>
-                {lesson?.majors?.map((major, index) => (
+                {lesson?.majors?.map(major => (
                   <Badge
                     key={major}
                     className="mx-1 rounded-xl bg-main text-xs text-white md:text-sm"

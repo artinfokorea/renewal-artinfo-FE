@@ -10,15 +10,15 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const data = await getLesson(Number(id))
 
   const pageTitle = data?.name
-  const pageDescription = data?.major.substring(0, 100)
+  const pageDescription = data?.majors && data?.majors.join(", ")
   const pageImage = data?.imageUrl
 
   return {
     title: `레슨 | ${pageTitle}`,
-    description: `${pageTitle} ${pageDescription} | 아트인포`,
+    description: `${pageTitle} ${pageDescription} 레슨 | 아트인포`,
     openGraph: {
       title: pageTitle,
-      description: "아트인포 레슨",
+      description: `${pageTitle} ${pageDescription} 레슨 | 아트인포`,
       images: {
         url:
           pageImage ??
