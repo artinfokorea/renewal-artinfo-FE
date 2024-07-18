@@ -21,7 +21,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       title: pageTitle,
       description: `아트인포 | ${pageDescription} 레슨 ${pageTitle} `,
       images: {
-        url: pageImage ?? defaultImage,
+        url: pageImage || defaultImage,
         alt: "아트인포-ARTINFO",
       },
     },

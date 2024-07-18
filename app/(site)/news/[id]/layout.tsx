@@ -24,7 +24,7 @@ export const generateMetadata = async ({
       title: `뉴스 | ${pageTitle}`,
       description: `아트인포 | ${pageDescription}`,
       images: {
-        url: pageImage ?? defaultImage,
+        url: pageImage || defaultImage,
         alt: "아트인포-ARTINFO",
       },
     },
