@@ -9,6 +9,9 @@ interface FallbackImageProps extends Omit<ImageProps, "src"> {
   fallbackSrc?: string
 }
 
+const blurDataUrl =
+  "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAJoAAAB2CAYAAAAweYruAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAE1SURBVHgB7dIxAQAgEAAhtX/Yb6ApvAkysGfmLvjsLAiIRkI0EqKREI2EaCREIyEaCdFIiEZCNBKikRCNhGgkRCMhGgnRSIhGQjQSopEQjYRoJEQjIRoJ0UiIRkI0EqKREI2EaCREIyEaCdFIiEZCNBKikRCNhGgkRCMhGgnRSIhGQjQSopEQjYRoJEQjIRoJ0UiIRkI0EqKREI2EaCREIyEaCdFIiEZCNBKikRCNhGgkRCMhGgnRSIhGQjQSopEQjYRoJEQjIRoJ0UiIRkI0EqKREI2EaCREIyEaCdFIiEZCNBKikRCNhGgkRCMhGgnRSIhGQjQSopEQjYRoJEQjIRoJ0UiIRkI0EqKREI2EaCREIyEaCdFIiEZCNBKikRCNhGgkRCMhGgnRSIhGQjQSopEQjcQDmXkEu5jIEjMAAAAASUVORK5CYII="
+
 const FallbackImage = ({
   src,
   alt,
@@ -42,6 +45,8 @@ const FallbackImage = ({
       width={width}
       height={height}
       onError={!imgError ? handleError : undefined}
+      placeholder="blur"
+      blurDataURL={blurDataUrl}
       {...props}
     />
   )

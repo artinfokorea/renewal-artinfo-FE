@@ -1,9 +1,7 @@
 "use client"
 
 import React from "react"
-
-import Image from "next/image"
-import { AD, AdvertisementType } from "@/types/ads"
+import { AdvertisementType } from "@/types/ads"
 import Link from "next/link"
 import { useSuspenseQuery } from "@tanstack/react-query"
 import { queries } from "@/lib/queries"
@@ -11,6 +9,7 @@ import { Swiper, SwiperSlide } from "swiper/react"
 import "swiper/css"
 import { Pagination } from "swiper/modules"
 import { AspectRatio } from "../ui/aspect-ratio"
+import FallbackImage from "../common/FallbackImage"
 
 interface Props {
   type: AdvertisementType
@@ -35,8 +34,7 @@ const ArtConatiner = ({ type, title }: Props) => {
             }`}
           >
             <AspectRatio ratio={2 / 3} className="relative cursor-pointer">
-              <Image
-                key={Date.now()}
+              <FallbackImage
                 src={art.imageUrl}
                 alt="art_image"
                 fill
@@ -56,7 +54,7 @@ const ArtConatiner = ({ type, title }: Props) => {
             <SwiperSlide key={art.id} style={{ width: "200px" }}>
               <Link key={art.id} href={art.redirectUrl} target="_blank">
                 <AspectRatio ratio={2 / 3} className="relative cursor-pointer">
-                  <Image
+                  <FallbackImage
                     key={Date.now()}
                     src={art.imageUrl}
                     alt="art_image"

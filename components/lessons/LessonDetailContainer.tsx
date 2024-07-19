@@ -14,6 +14,7 @@ import { useSession } from "next-auth/react"
 import ItemManageBox from "../common/ItemManageBox"
 import { usePathname, useRouter } from "next/navigation"
 import ConfirmDialog from "../dialog/ConfirmDialog"
+import FallbackImage from "../common/FallbackImage"
 
 interface Props {
   lesson: LESSON
@@ -47,7 +48,7 @@ const LessonDetailContainer = ({ lesson, deleteLesson }: Props) => {
       <div className="flex flex-col md:flex-row md:gap-24">
         {lesson?.imageUrl && (
           <div className="relative mx-auto h-[320px] w-[240px] md:h-[300px] md:w-[220px]">
-            <Image
+            <FallbackImage
               src={lesson?.imageUrl}
               alt="lesson_image"
               fill

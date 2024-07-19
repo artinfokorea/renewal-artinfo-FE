@@ -13,6 +13,7 @@ import { AdvertisementType } from "@/types/ads"
 import Link from "next/link"
 import { useSuspenseQuery } from "@tanstack/react-query"
 import { queries } from "@/lib/queries"
+import FallbackImage from "../common/FallbackImage"
 
 const BannerContainer = () => {
   const plugin = useRef(
@@ -35,7 +36,7 @@ const BannerContainer = () => {
           <CarouselItem key={ad.id}>
             <Link href={ad.redirectUrl} target="_blank">
               <AspectRatio ratio={4 / 1} className="relative cursor-pointer">
-                <Image
+                <FallbackImage
                   src={ad.imageUrl}
                   alt="banner_image"
                   fill
