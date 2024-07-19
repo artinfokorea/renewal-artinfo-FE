@@ -28,7 +28,7 @@ const config = {
     ],
 
     formats: ["image/webp"],
-    minimumCacheTTL: 60 * 60 * 24,
+    minimumCacheTTL: 60 * 60,
   },
 }
 
@@ -38,18 +38,4 @@ const nextConfig = withPWA({
   runtimeCaching: [],
 })(config)
 
-// const sentryWebpackPluginOptions = {
-//   org: "artinfo",
-//   project: "javascript-nextjs",
-//   silent: true,
-//   widenClientFileUpload: true,
-//   transpileClientSDK: true,
-//   tunnelRoute: "/monitoring",
-//   hideSourceMaps: true,
-//   disableLogger: true,
-//   automaticVercelMonitors: true,
-// }
-
 export default nextConfig
-
-// export default withSentryConfig(nextConfig);
