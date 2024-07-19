@@ -1,5 +1,4 @@
 import withPWA from "next-pwa"
-// import { withSentryConfig } from '@sentry/nextjs';
 
 /** @type {import('next').NextConfig} */
 
@@ -28,7 +27,7 @@ const config = {
     ],
 
     formats: ["image/webp"],
-    minimumCacheTTL: 60 * 60,
+    minimumCacheTTL: 60,
   },
 }
 

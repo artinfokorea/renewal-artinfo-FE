@@ -36,7 +36,7 @@ const FallbackImage = ({
 
   return (
     <Image
-      key={Date.now()}
+      key={imageSrc}
       src={imageSrc}
       alt={alt}
       width={width}
