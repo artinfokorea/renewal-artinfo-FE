@@ -26,7 +26,7 @@ const NewsDetailContainer = ({ news, deleteNews }: Props) => {
   })
 
   return (
-    <div className="mx-auto max-w-screen-lg px-8">
+    <div className="mx-auto max-w-screen-lg px-4">
       <div className="flex flex-col gap-4 md:gap-8">
         <h2 className="mt-28 break-keep text-center text-[26px] md:text-5xl">
           {news.title}
