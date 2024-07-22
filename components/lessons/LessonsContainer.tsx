@@ -92,7 +92,6 @@ const LessonsContainer = () => {
             provinces={provinceList?.data?.provinces}
             page="LESSON"
           />
-
           <Suspense fallback={<LessonListSkeleton />}>
             <LessonList />
           </Suspense>
