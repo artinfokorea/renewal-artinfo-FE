@@ -2,7 +2,7 @@
 
 import React from "react"
 import { JobType } from "@/types/jobs"
-import { createFullTimeJob } from "@/apis/jobs"
+import { createFullTimeJob } from "@/services/jobs"
 import { usePathname, useRouter, useSearchParams } from "next/navigation"
 import { queries } from "@/lib/queries"
 import JobTypeSelectDialog from "@/components/jobs/JobTypeSelectDIalog"

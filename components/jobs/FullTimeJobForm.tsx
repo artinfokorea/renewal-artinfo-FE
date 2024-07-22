@@ -18,7 +18,7 @@ import useToast from "@/hooks/useToast"
 import ImageField from "../common/ImageField"
 import { Spinner } from "../common/Loading"
 import { jobSchema } from "@/lib/schemas"
-import { uploadImages } from "@/apis/system"
+import { uploadImages } from "@/services/system"
 import { useLoading } from "@toss/use-loading"
 import { UploadTarget } from "@/types"
 

@@ -1,15 +1,15 @@
-import { getAds } from "@/apis/ad"
-import { getInfiniteJobs, getJob, getJobs, getJobsCount } from "@/apis/jobs"
+import { getAds } from "@/services/ad"
+import { getInfiniteJobs, getJob, getJobs, getJobsCount } from "@/services/jobs"
 import {
   getInfiniteLessons,
   getLesson,
   getLessonFields,
   getLessonsCount,
-} from "@/apis/lessons"
-import { getArtCategories, getArtFileds, getMajors } from "@/apis/majors"
-import { getInfiniteNews, getNewsCount, getNewsDetail } from "@/apis/news"
-import { getProvinces } from "@/apis/system"
-import { getMe } from "@/apis/users"
+} from "@/services/lessons"
+import { getArtCategories, getArtFileds, getMajors } from "@/services/majors"
+import { getInfiniteNews, getNewsCount, getNewsDetail } from "@/services/news"
+import { getProvinces } from "@/services/system"
+import { getMe } from "@/services/users"
 import { ListRequest } from "@/interface"
 import { JobsRequest } from "@/interface/jobs"
 import { LessonsRequest } from "@/interface/lessons"

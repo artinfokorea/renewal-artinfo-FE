@@ -12,7 +12,7 @@ import {
   isDuplicateEmail,
   sendEmailVerificationCode,
   signUp,
-} from "@/apis/auth"
+} from "@/services/auth"
 import { useRouter } from "next/navigation"
 import { useLoading } from "@toss/use-loading"
 import InputField from "../common/InputField"

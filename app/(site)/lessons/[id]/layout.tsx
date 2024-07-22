@@ -1,4 +1,4 @@
-import { getLesson } from "@/apis/lessons"
+import { getLesson } from "@/services/lessons"
 import type { Metadata } from "next"
 
 interface Props {

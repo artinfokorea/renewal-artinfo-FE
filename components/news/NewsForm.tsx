@@ -1,6 +1,6 @@
 "use client"
 
-import { uploadImages } from "@/apis/system"
+import { uploadImages } from "@/services/system"
 import useToast from "@/hooks/useToast"
 import { newsSchema } from "@/lib/schemas"
 import { UploadTarget } from "@/types"

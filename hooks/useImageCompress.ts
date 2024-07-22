@@ -3,7 +3,7 @@
 import { useState, useCallback } from "react"
 import imageCompression from "browser-image-compression"
 import { useLoading } from "@toss/use-loading"
-import { uploadImages } from "@/apis/system"
+import { uploadImages } from "@/services/system"
 import { UploadTarget } from "@/types"
 
 interface CompressOptions {

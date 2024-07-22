@@ -2,7 +2,7 @@ import { CKEditor } from "@ckeditor/ckeditor5-react"
 import ClassicEditor from "@ckeditor/ckeditor5-build-classic"
 import "@ckeditor/ckeditor5-build-classic/build/translations/ko"
 import "ckeditor5/ckeditor5.css"
-import { uploadImages } from "@/apis/system"
+import { uploadImages } from "@/services/system"
 import { UploadTarget } from "@/types"
 
 interface Props {

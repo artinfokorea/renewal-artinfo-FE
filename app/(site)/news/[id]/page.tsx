@@ -1,6 +1,6 @@
 "use client"
 
-import { deleteNews } from "@/apis/news"
+import { deleteNews } from "@/services/news"
 import NewsDetailContainer from "@/components/news/NewsDetailContainer"
 import useMutation from "@/hooks/useMutation"
 import { queries } from "@/lib/queries"

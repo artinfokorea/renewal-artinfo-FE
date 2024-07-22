@@ -1,5 +1,5 @@
 "use client"
-import { deleteJob, updateArtOrganization } from "@/apis/jobs"
+import { deleteJob, updateArtOrganization } from "@/services/jobs"
 import AlertDialog from "@/components/dialog/AlertDialog"
 import DetailContainer from "@/components/jobs/DetailContainer"
 import FullTimeJobForm, {

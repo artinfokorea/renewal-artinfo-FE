@@ -3,7 +3,7 @@
 import React, { useMemo, useCallback } from "react"
 import "react-quill/dist/quill.snow.css"
 import ReactQuill from "react-quill"
-import { uploadImages } from "@/apis/system"
+import { uploadImages } from "@/services/system"
 import { UploadTarget } from "@/types"
 import "./editor.css"
 

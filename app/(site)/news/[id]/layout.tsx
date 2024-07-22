@@ -1,5 +1,5 @@
-import { getJob } from "@/apis/jobs"
-import { getNewsDetail } from "@/apis/news"
+import { getJob } from "@/services/jobs"
+import { getNewsDetail } from "@/services/news"
 import type { Metadata } from "next"
 
 interface Props {

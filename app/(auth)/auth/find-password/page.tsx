@@ -4,8 +4,8 @@ import {
   checkEmailVerificationCode,
   isDuplicateEmail,
   sendEmailVerificationCode,
-} from "@/apis/auth"
-import { updateUserPassword } from "@/apis/users"
+} from "@/services/auth"
+import { updateUserPassword } from "@/services/users"
 import FindPasswordForm, {
   PasswordFormData,
 } from "@/components/sign/FIndPasswordForm"

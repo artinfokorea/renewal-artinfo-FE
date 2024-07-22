@@ -10,7 +10,7 @@ import InputField from "../common/InputField"
 import InputWithButton from "../common/InputWithButton"
 import Link from "next/link"
 import { findPasswordSchema } from "@/lib/schemas"
-import { isDuplicateEmail } from "@/apis/auth"
+import { isDuplicateEmail } from "@/services/auth"
 
 export type PasswordFormData = yup.InferType<typeof findPasswordSchema>
 

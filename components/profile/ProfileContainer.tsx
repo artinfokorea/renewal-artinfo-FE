@@ -9,9 +9,13 @@ import {
   sendPhoneVerificationCode,
   uploadImages,
   verifyPhoneCode,
-} from "@/apis/system"
+} from "@/services/system"
 import useToast from "@/hooks/useToast"
-import { updateUser, updateUserPassword, updateUserPhone } from "@/apis/users"
+import {
+  updateUser,
+  updateUserPassword,
+  updateUserPhone,
+} from "@/services/users"
 import { SchoolType } from "@/types/lessons"
 import { useQuery, useQueryClient } from "@tanstack/react-query"
 import { queries } from "@/lib/queries"
@@ -25,7 +29,7 @@ import PasswordDialog, {
 import {
   sendEmailVerificationCode,
   checkEmailVerificationCode,
-} from "@/apis/auth"
+} from "@/services/auth"
 import { MAJOR } from "@/types/majors"
 import { profileSchema } from "@/lib/schemas"
 import { UploadTarget } from "@/types"

@@ -1,6 +1,6 @@
 "use client"
 
-import { deleteLesson, updateLesson } from "@/apis/lessons"
+import { deleteLesson, updateLesson } from "@/services/lessons"
 import LessonDetailContainer from "@/components/lessons/LessonDetailContainer"
 import LessonForm, { LessonFormData } from "@/components/lessons/LessonForm"
 import useMutation from "@/hooks/useMutation"
