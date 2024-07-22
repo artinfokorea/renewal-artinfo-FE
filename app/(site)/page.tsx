@@ -1,9 +1,9 @@
 "use client"
 
 import React, { Suspense } from "react"
-import BannerContainer from "@/components/main/BannerContainer"
-import ArtContainer from "@/components/main/ArtContainer"
-import MainJobsContainer from "@/components/main/MainJobsContainer"
+import BannerContainer from "@/components/containers/main/BannerContainer"
+import ArtContainer from "@/components/containers/main/MainArtContainer"
+import MainJobsContainer from "@/components/containers/main/MainJobsContainer"
 import BannerSkeleton from "@/components/skeleton/BannerSkeleton"
 import ArtSkeleton from "@/components/skeleton/ArtSkeleton"
 import MainJobSkeleton from "@/components/skeleton/MainJobSkeleton"

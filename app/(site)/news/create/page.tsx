@@ -1,4 +1,4 @@
-import NewsCreateContainer from "@/components/news/NewsCreateContainer"
+import NewsCreateContainer from "@/components/containers/news/NewsCreateContainer"
 import { getUser } from "@/lib/serverUserFetch"
 import { UserType } from "@/types/users"
 import { redirect } from "next/navigation"

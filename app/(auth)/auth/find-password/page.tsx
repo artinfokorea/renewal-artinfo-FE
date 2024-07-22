@@ -8,7 +8,7 @@ import {
 import { updateUserPassword } from "@/services/users"
 import FindPasswordForm, {
   PasswordFormData,
-} from "@/components/sign/FIndPasswordForm"
+} from "@/components/form/user/FIndPasswordForm"
 import useToast from "@/hooks/useToast"
 import { useLoading } from "@toss/use-loading"
 import { useRouter } from "next/navigation"

@@ -1,4 +1,4 @@
-import ProfileContainer from "@/components/profile/ProfileContainer"
+import ProfileContainer from "@/components/containers/profile/ProfileContainer"
 import React from "react"
 import GetQueryClient from "@/app/GetQueryClient"
 import { HydrationBoundary, dehydrate } from "@tanstack/react-query"

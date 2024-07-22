@@ -3,7 +3,9 @@
 import React, { useEffect, useState } from "react"
 import { usePathname, useRouter, useSearchParams } from "next/navigation"
 import { createLesson, getLessonQualification } from "@/services/lessons"
-import LessonForm, { LessonFormData } from "@/components/lessons/LessonForm"
+import LessonForm, {
+  LessonFormData,
+} from "@/components/form/service/LessonForm"
 import { queries } from "@/lib/queries"
 import AlertDialog from "@/components/dialog/AlertDialog"
 import { Button } from "@/components/ui/button"
@@ -35,25 +37,6 @@ const page = () => {
       introduction,
       career: career || "",
     })
-    // try {
-    //   await handleFormTransition(
-    //     createLesson({
-    //       areas,
-    //       pay,
-    //       imageUrl,
-    //       introduction,
-    //       career: career || "",
-    //     }),
-    //   )
-    //   successToast("레슨이 등록되었습니다.")
-    //   queryClient.invalidateQueries({
-    //     queryKey: queries.lessons._def,
-    //   })
-    //   router.push(pathname.slice(0, pathname.lastIndexOf("/")))
-    // } catch (error: any) {
-    //   errorToast(error.message)
-    //   console.log(error)
-    // }
   }
 
   useEffect(() => {

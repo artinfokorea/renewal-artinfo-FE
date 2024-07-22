@@ -1,7 +1,7 @@
 "use client"
 
 import { deleteNews } from "@/services/news"
-import NewsDetailContainer from "@/components/news/NewsDetailContainer"
+import NewsDetailContainer from "@/components/containers/news/NewsDetailContainer"
 import useMutation from "@/hooks/useMutation"
 import { queries } from "@/lib/queries"
 import { useSuspenseQuery } from "@tanstack/react-query"

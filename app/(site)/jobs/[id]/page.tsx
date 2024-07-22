@@ -1,10 +1,10 @@
 "use client"
 import { deleteJob, updateArtOrganization } from "@/services/jobs"
 import AlertDialog from "@/components/dialog/AlertDialog"
-import DetailContainer from "@/components/jobs/DetailContainer"
+import DetailContainer from "@/components/containers/jobs/JobDetailContainer"
 import FullTimeJobForm, {
   CreateFulltimeJobFormData,
-} from "@/components/jobs/FullTimeJobForm"
+} from "@/components/form/service/FullTimeJobForm"
 import { Button } from "@/components/ui/button"
 import { queries } from "@/lib/queries"
 import { JobType } from "@/types/jobs"

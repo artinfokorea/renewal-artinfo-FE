@@ -1,8 +1,10 @@
 "use client"
 
 import { deleteLesson, updateLesson } from "@/services/lessons"
-import LessonDetailContainer from "@/components/lessons/LessonDetailContainer"
-import LessonForm, { LessonFormData } from "@/components/lessons/LessonForm"
+import LessonDetailContainer from "@/components/containers/lessons/LessonDetailContainer"
+import LessonForm, {
+  LessonFormData,
+} from "@/components/form/service/LessonForm"
 import useMutation from "@/hooks/useMutation"
 import { LessonPayload } from "@/interface/lessons"
 import { queries } from "@/lib/queries"
