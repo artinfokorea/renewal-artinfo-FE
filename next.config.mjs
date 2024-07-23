@@ -3,7 +3,9 @@ import withPWA from "next-pwa"
 /** @type {import('next').NextConfig} */
 
 const config = {
+  reactStrictMode: process.env === "development" ? true : false,
   env: {
+    DEV_ENV: process.env.DEV_ENV,
     REST_API_BASE_URL: process.env.REST_API_BASE_URL,
     NEXTAUTH_SECRET: process.env.NEXTAUTH_SECRET,
     DEV_ENV: process.env.DEV_ENV,
