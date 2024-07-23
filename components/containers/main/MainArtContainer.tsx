@@ -23,7 +23,7 @@ const ArtConatiner = ({ type, title }: Props) => {
     <section className="my-12 md:my-16">
       <h3 className="mb-4 text-xl font-bold">#{title}</h3>
       {/*  Desktop Art Section */}
-      <div className="hidden grid-cols-2 gap-8 md:grid md:grid-cols-4 lg:gap-8">
+      <div className="hidden grid-cols-2 gap-8 md:grid md:grid-cols-4">
         {arts?.map((art, index) => (
           <Link
             key={art.id}

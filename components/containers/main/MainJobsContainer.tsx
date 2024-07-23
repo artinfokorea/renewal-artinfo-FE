@@ -36,7 +36,7 @@ const MainJobsContainer = () => {
         </Link>
       </div>
       {/* // Desktop Job Section */}
-      <div className="mb-12 mt-4 hidden grid-cols-2 gap-4 md:grid md:grid-cols-3 md:gap-8">
+      <div className="mb-12 mt-4 hidden grid-cols-2 md:grid md:grid-cols-3 md:gap-8">
         {data?.jobs?.map((job, index) => (
           <Link
             key={job.title}

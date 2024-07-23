@@ -15,6 +15,7 @@ const page = () => {
       <Suspense fallback={<BannerSkeleton />}>
         <BannerContainer />
       </Suspense>
+
       <Suspense fallback={<ArtSkeleton />}>
         <ArtContainer type={AdvertisementType.CONCERT} title="공연" />
       </Suspense>
