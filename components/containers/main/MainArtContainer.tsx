@@ -1,6 +1,6 @@
 "use client"
 
-import React from "react"
+import React, { memo } from "react"
 import { AdvertisementType } from "@/types/ads"
 import Link from "next/link"
 import { useSuspenseQuery } from "@tanstack/react-query"
@@ -19,6 +19,7 @@ interface Props {
 const ArtConatiner = ({ type, title }: Props) => {
   const { data: arts } = useSuspenseQuery(queries.ads.list(type))
 
+  console.log("2")
   return (
     <section className="my-12 md:my-16">
       <h3 className="mb-4 text-xl font-bold">#{title}</h3>

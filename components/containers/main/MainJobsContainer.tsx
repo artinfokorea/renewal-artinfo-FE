@@ -4,7 +4,7 @@ import { queries } from "@/lib/queries"
 import { JobType } from "@/types/jobs"
 import { useSuspenseQuery } from "@tanstack/react-query"
 import Link from "next/link"
-import React from "react"
+import React, { memo } from "react"
 import { Swiper, SwiperSlide } from "swiper/react"
 import "swiper/css"
 import { Pagination } from "swiper/modules"
@@ -27,6 +27,7 @@ const MainJobsContainer = () => {
     }),
   )
 
+  console.log("3")
   return (
     <section className="my-12 md:my-16">
       <div className="flex justify-between">

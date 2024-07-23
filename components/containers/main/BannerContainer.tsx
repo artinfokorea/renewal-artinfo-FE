@@ -1,6 +1,6 @@
 "use client"
 
-import React, { useRef } from "react"
+import React, { memo, useRef } from "react"
 import Autoplay from "embla-carousel-autoplay"
 import {
   Carousel,
@@ -23,6 +23,7 @@ const BannerContainer = () => {
     queries.ads.list(AdvertisementType.BANNER),
   )
 
+  console.log("1")
   return (
     <Carousel
       className="my-6 w-full md:my-16"

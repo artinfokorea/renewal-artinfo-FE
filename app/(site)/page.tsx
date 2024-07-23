@@ -1,6 +1,6 @@
 "use client"
 
-import React, { Suspense } from "react"
+import React, { Suspense, memo } from "react"
 import BannerContainer from "@/components/containers/main/BannerContainer"
 import ArtContainer from "@/components/containers/main/MainArtContainer"
 import MainJobsContainer from "@/components/containers/main/MainJobsContainer"
@@ -9,13 +9,36 @@ import ArtSkeleton from "@/components/skeleton/ArtSkeleton"
 import MainJobSkeleton from "@/components/skeleton/MainJobSkeleton"
 import { AdvertisementType } from "@/types/ads"
 
+const BannerSection = () => (
+  <Suspense fallback={<BannerSkeleton />}>
+    <BannerContainer />
+  </Suspense>
+)
+
+const ConcertSection = () => (
+  <Suspense fallback={<ArtSkeleton />}>
+    <ArtContainer type={AdvertisementType.CONCERT} title="공연" />
+  </Suspense>
+)
+
+const JobSection = () => (
+  <Suspense fallback={<MainJobSkeleton />}>
+    <MainJobsContainer />
+  </Suspense>
+)
+
+const ExhibitionSection = () => (
+  <Suspense fallback={<ArtSkeleton />}>
+    <ArtContainer type={AdvertisementType.EXHIBITION} title="전시" />
+  </Suspense>
+)
+
 const page = () => {
   return (
     <div className="mx-auto h-full max-w-screen-lg px-4">
-      <Suspense fallback={<BannerSkeleton />}>
+      {/* <Suspense fallback={<BannerSkeleton />}>
         <BannerContainer />
       </Suspense>
-
       <Suspense fallback={<ArtSkeleton />}>
         <ArtContainer type={AdvertisementType.CONCERT} title="공연" />
       </Suspense>
@@ -24,7 +47,11 @@ const page = () => {
       </Suspense>
       <Suspense fallback={<ArtSkeleton />}>
         <ArtContainer type={AdvertisementType.EXHIBITION} title="전시" />
-      </Suspense>
+      </Suspense> */}
+      <BannerSection />
+      <ConcertSection />
+      <JobSection />
+      <ExhibitionSection />
 
       <article className="my-12 hidden h-[100px] rounded-xl bg-whitesmoke md:my-16 md:flex md:h-[120px]">
         <div className="relative mx-auto flex h-full max-w-screen-md items-center justify-center">

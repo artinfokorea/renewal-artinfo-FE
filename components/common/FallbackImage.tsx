@@ -39,7 +39,6 @@ const FallbackImage = ({
 
   return (
     <Image
-      key={imageSrc}
       src={imageSrc}
       alt={alt}
       width={width}
