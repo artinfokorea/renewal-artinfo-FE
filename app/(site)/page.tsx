@@ -32,7 +32,6 @@ const page = async () => {
     ])
   } catch (error) {
     console.error("Failed to prefetch queries:", error)
-    throw error
   }
 
   const dehydratedState = dehydrate(queryClient)
