@@ -1,3 +1,5 @@
+"use client"
+
 import ArtContainer from "@/components/containers/main/MainArtContainer"
 import GetQueryClient from "@/app/GetQueryClient"
 import { HydrationBoundary, dehydrate } from "@tanstack/react-query"
@@ -7,44 +9,61 @@ import { ProfessionalFieldTypes } from "@/types/majors"
 import { JobType } from "@/types/jobs"
 import BannerContainer from "@/components/containers/main/BannerContainer"
 import MainJobsContainer from "@/components/containers/main/MainJobsContainer"
+import { Suspense } from "react"
+import BannerSkeleton from "@/components/skeleton/BannerSkeleton"
+import ArtSkeleton from "@/components/skeleton/ArtSkeleton"
+import MainJobSkeleton from "@/components/skeleton/MainJobSkeleton"
 
-const page = async () => {
-  const queryClient = GetQueryClient()
+const page = () => {
+  // const queryClient = GetQueryClient()
 
-  try {
-    await Promise.all([
-      queryClient.prefetchQuery(queries.ads.list(AdvertisementType.CONCERT)),
-      queryClient.prefetchQuery(queries.ads.list(AdvertisementType.EXHIBITION)),
-      queryClient.prefetchQuery(
-        queries.jobs.list({
-          page: 1,
-          size: 5,
-          types: [JobType.ART_ORGANIZATION, JobType.LECTURER],
-          professionalFields: [
-            ProfessionalFieldTypes.CLASSIC,
-            ProfessionalFieldTypes.POPULAR_MUSIC,
-            ProfessionalFieldTypes.TRADITIONAL_MUSIC,
-            ProfessionalFieldTypes.ADMINISTRATION,
-          ],
-        }),
-      ),
-      queryClient.prefetchQuery(queries.ads.list(AdvertisementType.BANNER)),
-    ])
-  } catch (error) {
-    console.error("Failed to prefetch queries:", error)
-    throw error
-  }
+  // try {
+  //   await Promise.all([
+  //     queryClient.prefetchQuery(queries.ads.list(AdvertisementType.CONCERT)),
+  //     queryClient.prefetchQuery(queries.ads.list(AdvertisementType.EXHIBITION)),
+  //     queryClient.prefetchQuery(
+  //       queries.jobs.list({
+  //         page: 1,
+  //         size: 5,
+  //         types: [JobType.ART_ORGANIZATION, JobType.LECTURER],
+  //         professionalFields: [
+  //           ProfessionalFieldTypes.CLASSIC,
+  //           ProfessionalFieldTypes.POPULAR_MUSIC,
+  //           ProfessionalFieldTypes.TRADITIONAL_MUSIC,
+  //           ProfessionalFieldTypes.ADMINISTRATION,
+  //         ],
+  //       }),
+  //     ),
+  //     queryClient.prefetchQuery(queries.ads.list(AdvertisementType.BANNER)),
+  //   ])
+  // } catch (error) {
+  //   console.error("Failed to prefetch queries:", error)
+  //   throw error
+  // }
 
-  const dehydratedState = dehydrate(queryClient)
+  // const dehydratedState = dehydrate(queryClient)
 
   return (
     <div className="mx-auto h-full max-w-screen-lg px-4">
-      <HydrationBoundary state={dehydratedState}>
+      {/* <HydrationBoundary state={dehydratedState}>
         <BannerContainer />
         <ArtContainer type={AdvertisementType.CONCERT} title="공연" />
         <MainJobsContainer />
         <ArtContainer type={AdvertisementType.EXHIBITION} title="전시" />
-      </HydrationBoundary>
+      </HydrationBoundary> */}
+
+      <Suspense fallback={<BannerSkeleton />}>
+        <BannerContainer />
+      </Suspense>
+      <Suspense fallback={<ArtSkeleton />}>
+        <ArtContainer type={AdvertisementType.CONCERT} title="공연" />
+      </Suspense>
+      <Suspense fallback={<MainJobSkeleton />}>
+        <MainJobsContainer />
+      </Suspense>
+      <Suspense fallback={<ArtSkeleton />}>
+        <ArtContainer type={AdvertisementType.EXHIBITION} title="전시" />
+      </Suspense>
 
       <article className="my-12 hidden h-[100px] rounded-xl bg-whitesmoke md:my-16 md:flex md:h-[120px]">
         <div className="relative mx-auto flex h-full max-w-screen-md items-center justify-center">
