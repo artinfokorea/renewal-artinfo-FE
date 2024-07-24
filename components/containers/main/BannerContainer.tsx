@@ -10,7 +10,7 @@ import {
 import { AspectRatio } from "../../ui/aspect-ratio"
 import { AdvertisementType } from "@/types/ads"
 import Link from "next/link"
-import { useQuery, useSuspenseQuery } from "@tanstack/react-query"
+import { useQuery } from "@tanstack/react-query"
 import { queries } from "@/lib/queries"
 import FallbackImage from "../../common/FallbackImage"
 
@@ -19,7 +19,7 @@ const BannerContainer = () => {
     Autoplay({ delay: 5000, stopOnInteraction: true, loop: true }),
   )
 
-  const { data: ads } = useSuspenseQuery({
+  const { data: ads } = useQuery({
     ...queries.ads.list(AdvertisementType.BANNER),
     staleTime: Infinity,
     refetchOnMount: false,

@@ -2,9 +2,9 @@
 
 import { queries } from "@/lib/queries"
 import { JobType } from "@/types/jobs"
-import { useQuery, useSuspenseQuery } from "@tanstack/react-query"
+import { useQuery } from "@tanstack/react-query"
 import Link from "next/link"
-import React, { memo } from "react"
+import React from "react"
 import { Swiper, SwiperSlide } from "swiper/react"
 import "swiper/css"
 import { Pagination } from "swiper/modules"
@@ -13,7 +13,7 @@ import { AspectRatio } from "../../ui/aspect-ratio"
 import { ProfessionalFieldTypes } from "@/types/majors"
 
 const MainJobsContainer = () => {
-  const { data } = useSuspenseQuery(
+  const { data } = useQuery(
     queries.jobs.list({
       page: 1,
       size: 5,
