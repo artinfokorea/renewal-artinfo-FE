@@ -1,6 +1,6 @@
 "use client"
 
-import React, { memo, useRef } from "react"
+import React, { useRef } from "react"
 import Autoplay from "embla-carousel-autoplay"
 import {
   Carousel,
@@ -10,7 +10,7 @@ import {
 import { AspectRatio } from "../../ui/aspect-ratio"
 import { AdvertisementType } from "@/types/ads"
 import Link from "next/link"
-import { useSuspenseQuery } from "@tanstack/react-query"
+import { useQuery } from "@tanstack/react-query"
 import { queries } from "@/lib/queries"
 import FallbackImage from "../../common/FallbackImage"
 
@@ -19,11 +19,13 @@ const BannerContainer = () => {
     Autoplay({ delay: 5000, stopOnInteraction: true, loop: true }),
   )
 
-  const { data: ads } = useSuspenseQuery(
-    queries.ads.list(AdvertisementType.BANNER),
-  )
+  const { data: ads } = useQuery({
+    ...queries.ads.list(AdvertisementType.BANNER),
+    staleTime: Infinity,
+    refetchOnMount: false,
+    refetchOnWindowFocus: false,
+  })
 
-  console.log("1")
   return (
     <Carousel
       className="my-6 w-full md:my-16"

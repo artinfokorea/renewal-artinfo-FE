@@ -58,18 +58,16 @@ export default function RootLayout({
         suppressHydrationWarning
       >
         <Script
-          async
+          strategy="beforeInteractive"
           src={`https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=${process.env.AD_SENSE_ID}`}
-          crossOrigin="anonymous"
-          data-full-width-responsive="true"
-        ></Script>
+        />
         <Script
-          strategy="afterInteractive"
+          strategy="beforeInteractive"
           src={`https://www.googletagmanager.com/gtag/js?id=${gtag.GA_TRACKING_ID}`}
         />
         <Script
           id="gtag-init"
-          strategy="afterInteractive"
+          strategy="beforeInteractive"
           dangerouslySetInnerHTML={{
             __html: `
             window.dataLayer = window.dataLayer || [];
