@@ -19,12 +19,7 @@ const BannerContainer = () => {
     Autoplay({ delay: 5000, stopOnInteraction: true, loop: true }),
   )
 
-  const { data: ads } = useQuery({
-    ...queries.ads.list(AdvertisementType.BANNER),
-    staleTime: Infinity,
-    refetchOnMount: false,
-    refetchOnWindowFocus: false,
-  })
+  const { data: ads } = useQuery(queries.ads.list(AdvertisementType.BANNER))
 
   return (
     <Carousel
@@ -42,8 +37,6 @@ const BannerContainer = () => {
                   src={ad.imageUrl}
                   alt="banner_image"
                   fill
-                  priority
-                  quality={100}
                   className="rounded-xl"
                   sizes="(max-width: 768px) 100px 180px, 960px 240px"
                 />

@@ -76,9 +76,7 @@ const MainJobsContainer = () => {
                     src={job.imageUrl}
                     alt={`${job.companyName}_job_image`}
                     fill
-                    priority
                     fallbackText={job.companyName}
-                    quality={100}
                     sizes="(max-width: 768px) 100px 180px, 198px 280px"
                     className="rounded-md"
                   />
