@@ -33,6 +33,7 @@ const page = async () => {
             ProfessionalFieldTypes.POPULAR_MUSIC,
             ProfessionalFieldTypes.TRADITIONAL_MUSIC,
             ProfessionalFieldTypes.ADMINISTRATION,
+            ProfessionalFieldTypes.ART,
           ],
         }),
       ),
