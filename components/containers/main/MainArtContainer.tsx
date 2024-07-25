@@ -19,6 +19,8 @@ interface Props {
 const ArtConatiner = ({ type, title }: Props) => {
   const { data: arts } = useQuery(queries.ads.list(type))
 
+  console.log(type, arts)
+
   return (
     <section className="my-12 md:my-16">
       <h3 className="mb-4 text-xl font-bold">#{title}</h3>
