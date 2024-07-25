@@ -44,6 +44,7 @@ const MainJobsContainer = () => {
             className={`${
               index < 2 ? "block" : index < 3 ? "hidden md:block" : "hidden"
             }`}
+            prefetch={false}
           >
             <AspectRatio
               ratio={5 / 3}
@@ -67,7 +68,7 @@ const MainJobsContainer = () => {
         <Swiper spaceBetween={10} slidesPerView="auto" modules={[Pagination]}>
           {data?.jobs.map(job => (
             <SwiperSlide key={job.id} style={{ width: "150px" }}>
-              <Link key={job.id} href={`/jobs/${job.id}`}>
+              <Link key={job.id} href={`/jobs/${job.id}`} prefetch={false}>
                 <AspectRatio
                   ratio={5 / 3}
                   className="relative cursor-pointer rounded-lg border-2 border-whitesmoke"

@@ -18,7 +18,10 @@ const BannerContainer = () => {
     Autoplay({ delay: 5000, stopOnInteraction: true, loop: true }),
   )
 
-  const { data: ads } = useQuery(queries.ads.list(AdvertisementType.BANNER))
+  const { data: ads } = useQuery({
+    ...queries.ads.list(AdvertisementType.BANNER),
+    refetchOnMount: true,
+  })
 
   return (
     <Carousel

@@ -13,17 +13,15 @@ import BannerContainer from "@/components/containers/main/BannerContainer"
 import MainJobsContainer from "@/components/containers/main/MainJobsContainer"
 
 const page = async () => {
-  const queryClient = new QueryClient()
+  const queryClient = GetQueryClient()
 
   try {
     await Promise.all([
       queryClient.prefetchQuery({
         ...queries.ads.list(AdvertisementType.CONCERT),
-        staleTime: 1000,
       }),
       queryClient.prefetchQuery({
         ...queries.ads.list(AdvertisementType.EXHIBITION),
-        staleTime: 1000,
       }),
       queryClient.prefetchQuery(
         queries.jobs.list({
@@ -40,7 +38,6 @@ const page = async () => {
       ),
       queryClient.prefetchQuery({
         ...queries.ads.list(AdvertisementType.BANNER),
-        staleTime: 1000,
       }),
     ])
   } catch (error) {
