@@ -38,7 +38,10 @@ const page = async () => {
           ],
         }),
       ),
-      queryClient.prefetchQuery(queries.ads.list(AdvertisementType.BANNER)),
+      queryClient.prefetchQuery({
+        ...queries.ads.list(AdvertisementType.BANNER),
+        staleTime: 0,
+      }),
     ])
   } catch (error) {
     console.error("Failed to prefetch queries:", error)
