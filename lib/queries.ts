@@ -60,7 +60,7 @@ const lessons = createQueryKeys("lessons", {
     queryFn: () => getJobs(filters),
   }),
   infiniteList: (filters: LessonsRequest) => ({
-    queryKey: ["infiniteList", { filters }],
+    queryKey: [{ filters }],
     queryFn: ({ pageParam }: { pageParam: number }) =>
       getInfiniteLessons({ ...filters, page: pageParam }),
   }),
@@ -83,7 +83,7 @@ const news = createQueryKeys("news", {
     queryFn: () => getNewsDetail(newsId),
   }),
   infiniteList: (filters: ListRequest) => ({
-    queryKey: ["infiniteList", { filters }],
+    queryKey: [{ filters }],
     queryFn: ({ pageParam }: { pageParam: number }) =>
       getInfiniteNews({ ...filters, page: pageParam }),
   }),
@@ -103,7 +103,7 @@ const jobs = createQueryKeys("jobs", {
     queryFn: () => getJobs(filters),
   }),
   infiniteList: (filters: JobsRequest) => ({
-    queryKey: ["infiniteList", { filters }],
+    queryKey: [{ filters }],
     queryFn: ({ pageParam }: { pageParam: number }) =>
       getInfiniteJobs({ ...filters, page: pageParam }),
   }),

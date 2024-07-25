@@ -25,8 +25,8 @@ const page = async () => {
         ...queries.ads.list(AdvertisementType.EXHIBITION),
         staleTime: 0,
       }),
-      queryClient.prefetchQuery({
-        ...queries.jobs.list({
+      queryClient.prefetchQuery(
+        queries.jobs.list({
           page: 1,
           size: 5,
           types: [JobType.ART_ORGANIZATION, JobType.LECTURER],
@@ -37,12 +37,8 @@ const page = async () => {
             ProfessionalFieldTypes.ADMINISTRATION,
           ],
         }),
-        staleTime: 0,
-      }),
-      queryClient.prefetchQuery({
-        ...queries.ads.list(AdvertisementType.BANNER),
-        staleTime: 0,
-      }),
+      ),
+      queryClient.prefetchQuery(queries.ads.list(AdvertisementType.BANNER)),
     ])
   } catch (error) {
     console.error("Failed to prefetch queries:", error)
