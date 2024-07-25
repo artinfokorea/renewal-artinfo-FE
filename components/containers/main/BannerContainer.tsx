@@ -7,7 +7,6 @@ import {
   CarouselContent,
   CarouselItem,
 } from "@/components/ui/carousel"
-import { AspectRatio } from "../../ui/aspect-ratio"
 import { AdvertisementType } from "@/types/ads"
 import Link from "next/link"
 import { useQuery } from "@tanstack/react-query"
@@ -32,15 +31,16 @@ const BannerContainer = () => {
         {ads?.map(ad => (
           <CarouselItem key={ad.id}>
             <Link href={ad.redirectUrl} target="_blank">
-              <AspectRatio ratio={4 / 1} className="relative cursor-pointer">
+              <div className="relative aspect-[4/1] w-full">
                 <FallbackImage
                   src={ad.imageUrl}
                   alt="banner_image"
+                  priority
                   fill
                   className="rounded-xl"
-                  sizes="(max-width: 768px) 100px 180px, 960px 240px"
+                  sizes="100vw"
                 />
-              </AspectRatio>
+              </div>
             </Link>
           </CarouselItem>
         ))}
