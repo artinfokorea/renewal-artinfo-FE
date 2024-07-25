@@ -17,10 +17,16 @@ const page = async () => {
 
   try {
     await Promise.all([
-      queryClient.prefetchQuery(queries.ads.list(AdvertisementType.CONCERT)),
-      queryClient.prefetchQuery(queries.ads.list(AdvertisementType.EXHIBITION)),
-      queryClient.prefetchQuery(
-        queries.jobs.list({
+      queryClient.prefetchQuery({
+        ...queries.ads.list(AdvertisementType.CONCERT),
+        staleTime: 0,
+      }),
+      queryClient.prefetchQuery({
+        ...queries.ads.list(AdvertisementType.EXHIBITION),
+        staleTime: 0,
+      }),
+      queryClient.prefetchQuery({
+        ...queries.jobs.list({
           page: 1,
           size: 5,
           types: [JobType.ART_ORGANIZATION, JobType.LECTURER],
@@ -31,8 +37,12 @@ const page = async () => {
             ProfessionalFieldTypes.ADMINISTRATION,
           ],
         }),
-      ),
-      queryClient.prefetchQuery(queries.ads.list(AdvertisementType.BANNER)),
+        staleTime: 0,
+      }),
+      queryClient.prefetchQuery({
+        ...queries.ads.list(AdvertisementType.BANNER),
+        staleTime: 0,
+      }),
     ])
   } catch (error) {
     console.error("Failed to prefetch queries:", error)
