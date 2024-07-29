@@ -25,7 +25,7 @@ const NewsCreateContainer = () => {
     enabled: !!newsId,
   })
 
-  const { handleForm, isLoading } = useMutation<NewsPayload>({
+  const { handleSubmit, isLoading } = useMutation<NewsPayload>({
     createFn: (payload: NewsPayload) => createNews(payload),
     updateFn: (id: number, payload: NewsPayload) => updateNews(id, payload),
     queryKey: [...queries.news._def],
@@ -37,7 +37,7 @@ const NewsCreateContainer = () => {
   })
 
   const handleNewsForm = async (payload: NewsFormData) => {
-    !newsId ? handleForm(payload) : handleForm(payload, Number(newsId))
+    !newsId ? handleSubmit(payload) : handleSubmit(payload, Number(newsId))
   }
 
   const handleUploadedFiles = async (files: File[]) => {

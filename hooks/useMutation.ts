@@ -29,7 +29,7 @@ const useMutation = <T>({
   const [isLoading, startTransition] = useLoading()
   const { successToast, errorToast } = useToast()
 
-  const handleForm = async (data: T, id?: number) => {
+  const handleSubmit = async (data: T, id?: number) => {
     try {
       if (id && updateFn) {
         await startTransition(updateFn(id, data))
@@ -65,7 +65,7 @@ const useMutation = <T>({
   }
 
   return {
-    handleForm,
+    handleSubmit,
     handleDelete,
     isLoading,
   }

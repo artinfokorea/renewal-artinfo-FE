@@ -18,7 +18,7 @@ const page = () => {
   const pathname = usePathname()
   const router = useRouter()
 
-  const { handleForm, isLoading } = useMutation<JobPayload>({
+  const { handleSubmit, isLoading } = useMutation<JobPayload>({
     createFn: (payload: JobPayload) => createFullTimeJob(payload),
     queryKey: [...queries.jobs._def],
     redirectPath: pathname.slice(0, pathname.lastIndexOf("/")),
@@ -38,7 +38,7 @@ const page = () => {
       contents,
       recruitSiteUrl,
     } = payload
-    handleForm({
+    handleSubmit({
       title,
       companyName,
       address,

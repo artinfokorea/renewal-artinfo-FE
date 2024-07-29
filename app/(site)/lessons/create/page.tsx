@@ -19,7 +19,7 @@ const page = () => {
   const router = useRouter()
   const pathname = usePathname()
 
-  const { handleForm, isLoading } = useMutation<LessonPayload>({
+  const { handleSubmit, isLoading } = useMutation<LessonPayload>({
     createFn: (payload: LessonPayload) => createLesson(payload),
     queryKey: [...queries.lessons._def],
     redirectPath: pathname.slice(0, pathname.lastIndexOf("/")),
@@ -30,7 +30,7 @@ const page = () => {
 
   const handleLessonForm = async (payload: LessonFormData) => {
     const { areas, pay, imageUrl, introduction, career } = payload
-    handleForm({
+    handleSubmit({
       areas,
       pay,
       imageUrl,

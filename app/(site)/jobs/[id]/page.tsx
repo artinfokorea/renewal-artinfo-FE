@@ -31,7 +31,7 @@ const page = () => {
   const [isLoginModalOpen, setIsLoginModalOpen] = useState(false)
   const { data } = useSession()
 
-  const { handleForm, isLoading, handleDelete } = useMutation<JobPayload>({
+  const { handleSubmit, isLoading, handleDelete } = useMutation<JobPayload>({
     updateFn: (jobId: number, payload: JobPayload) =>
       updateArtOrganization(jobId, payload),
     deleteFn: (jobId?: number) => deleteJob(jobId as number),
@@ -62,7 +62,7 @@ const page = () => {
       contents,
       recruitSiteUrl,
     } = payload
-    handleForm(
+    handleSubmit(
       {
         title,
         companyName,

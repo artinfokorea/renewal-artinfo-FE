@@ -21,7 +21,7 @@ const page = () => {
     queries.lessons.detail(Number(params.id)),
   )
 
-  const { handleForm, isLoading, handleDelete } = useMutation<LessonPayload>({
+  const { handleSubmit, isLoading, handleDelete } = useMutation<LessonPayload>({
     createFn: (payload: LessonPayload) => updateLesson(payload),
     deleteFn: deleteLesson,
     queryKey: [...queries.lessons._def],
@@ -35,7 +35,7 @@ const page = () => {
   const handleLessonForm = async (payload: LessonFormData) => {
     const { areas, pay, imageUrl, introduction, career } = payload
 
-    await handleForm({
+    await handleSubmit({
       areas,
       pay,
       imageUrl,
