@@ -1,4 +1,3 @@
-import { getJob } from "@/services/jobs"
 import { getNewsDetail } from "@/services/news"
 import type { Metadata } from "next"
 

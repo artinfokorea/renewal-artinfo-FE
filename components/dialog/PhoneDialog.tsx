@@ -1,6 +1,4 @@
-import { queries } from "@/lib/queries"
 import { Dialog, DialogPanel, DialogTitle } from "@headlessui/react"
-import { useQuery } from "@tanstack/react-query"
 import React, { ChangeEvent, useEffect, useState } from "react"
 import CloseIcon from "../icons/CloseIcon"
 import { Button } from "../ui/button"

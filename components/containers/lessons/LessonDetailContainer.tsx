@@ -3,7 +3,6 @@
 import { queries } from "@/lib/queries"
 import { useQuery } from "@tanstack/react-query"
 import React, { useState } from "react"
-import Image from "next/image"
 import filters from "@/lib/filters"
 import ClipBoardIcon from "../../icons/ClipBoardIcon"
 import useToast from "@/hooks/useToast"

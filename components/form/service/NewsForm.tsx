@@ -1,12 +1,8 @@
 "use client"
 
-import { uploadImages } from "@/services/system"
-import useToast from "@/hooks/useToast"
 import { newsSchema } from "@/lib/schemas"
-import { UploadTarget } from "@/types"
 import { NEWS } from "@/types/news"
 import { yupResolver } from "@hookform/resolvers/yup"
-import { useLoading } from "@toss/use-loading"
 import React, { useRef } from "react"
 import { useForm } from "react-hook-form"
 import * as yup from "yup"

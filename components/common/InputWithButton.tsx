@@ -1,21 +1,15 @@
-import {
-  FieldError,
-  FieldValues,
-  Path,
-  UseFormRegister,
-} from 'react-hook-form';
-import { cn } from '@/lib/utils';
-import { Label } from '../ui/label';
-import { Button } from '../ui/button';
+import { FieldError, FieldValues, Path, UseFormRegister } from "react-hook-form"
+import { cn } from "@/lib/utils"
+import { Label } from "../ui/label"
 
-interface Props<T extends FieldValues> extends React.ComponentProps<'input'> {
-  label: string;
-  id: Path<T>;
-  type: string;
-  placeholder: string;
-  register: UseFormRegister<T>;
-  errors?: FieldError;
-  children?: React.ReactNode;
+interface Props<T extends FieldValues> extends React.ComponentProps<"input"> {
+  label: string
+  id: Path<T>
+  type: string
+  placeholder: string
+  register: UseFormRegister<T>
+  errors?: FieldError
+  children?: React.ReactNode
 }
 
 const InputWithButton = <T extends FieldValues>({
@@ -30,29 +24,29 @@ const InputWithButton = <T extends FieldValues>({
   ...props
 }: Props<T>) => {
   return (
-    <div className="flex flex-col gap-2 my-2">
+    <div className="my-2 flex flex-col gap-2">
       <Label
         htmlFor={id}
-        className="block pb-1 text-sm font-semibold text-tertiary"
+        className="text-tertiary block pb-1 text-sm font-semibold"
       >
         {label}
       </Label>
       <div className="relative">
         <input
-          {...register(id, { valueAsNumber: type === 'number' })}
+          {...register(id, { valueAsNumber: type === "number" })}
           id={id}
           type={type}
           placeholder={placeholder}
           className={cn(
-            'w-full rounded border px-2 py-1.5 text-xs leading-tight text-black',
-            className
+            "w-full rounded border px-2 py-1.5 text-xs leading-tight text-black",
+            className,
           )}
           {...props}
         />
         {children}
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default InputWithButton;
+export default InputWithButton

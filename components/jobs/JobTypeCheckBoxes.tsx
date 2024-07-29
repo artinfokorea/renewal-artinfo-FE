@@ -1,6 +1,5 @@
 import { JobType, JobTypeList } from "@/types/jobs"
 import { useRouter, useSearchParams } from "next/navigation"
-import { Label } from "../ui/label"
 import CheckboxField from "../common/CheckboxField"
 import { useEffect, useState } from "react"
 
