@@ -6,7 +6,7 @@ const LessonListSkeleton = () => {
       {Array.from({ length: 10 }, (_, index) => index).map(index => (
         <div
           key={index}
-          className="h-[240px] w-[170px] animate-pulse rounded rounded-bl-3xl bg-gray-200 md:h-[300px] md:w-[200px]"
+          className="aspect-[20/27] animate-pulse rounded rounded-bl-3xl bg-gray-200"
         />
       ))}
     </div>
