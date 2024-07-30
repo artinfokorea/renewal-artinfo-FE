@@ -1,4 +1,5 @@
-import { getJob } from "@/services/jobs"
+import GetQueryClient from "@/app/GetQueryClient"
+import { queries } from "@/lib/queries"
 import type { Metadata } from "next"
 
 interface Props {
@@ -8,8 +9,10 @@ interface Props {
 export const generateMetadata = async ({
   params,
 }: Props): Promise<Metadata> => {
+  const queryClient = GetQueryClient()
   const { id } = params
-  const data = await getJob(Number(id))
+
+  const data = await queryClient.fetchQuery(queries.jobs.detail(Number(id)))
 
   const pageTitle = data?.title
   const pageImage = data?.imageUrl

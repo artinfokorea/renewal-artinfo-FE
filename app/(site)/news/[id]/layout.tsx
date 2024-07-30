@@ -1,4 +1,5 @@
-import { getNewsDetail } from "@/services/news"
+import GetQueryClient from "@/app/GetQueryClient"
+import { queries } from "@/lib/queries"
 import type { Metadata } from "next"
 
 interface Props {
@@ -8,8 +9,9 @@ interface Props {
 export const generateMetadata = async ({
   params,
 }: Props): Promise<Metadata> => {
+  const queryClient = GetQueryClient()
   const { id } = params
-  const data = await getNewsDetail(Number(id))
+  const data = await queryClient.fetchQuery(queries.news.detail(Number(id)))
 
   const pageTitle = data?.title
   const pageDescription = data?.summary.substring(0, 40)
