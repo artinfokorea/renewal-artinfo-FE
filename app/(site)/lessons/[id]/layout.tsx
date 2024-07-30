@@ -1,4 +1,4 @@
-import GetQueryClient from "@/app/GetQueryClient"
+import GetQueryClient from "@/lib/GetQueryClient"
 import { queries } from "@/lib/queries"
 import type { Metadata } from "next"
 

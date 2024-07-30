@@ -1,5 +1,5 @@
 import ArtContainer from "@/components/containers/main/MainArtContainer"
-import GetQueryClient from "@/app/GetQueryClient"
+import GetQueryClient from "@/lib/GetQueryClient"
 import { HydrationBoundary, dehydrate } from "@tanstack/react-query"
 import { queries } from "@/lib/queries"
 import { AdvertisementType } from "@/types/ads"
