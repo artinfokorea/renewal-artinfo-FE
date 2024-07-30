@@ -1,123 +1,47 @@
-"use client"
-import { deleteJob, updateArtOrganization } from "@/services/jobs"
-import AlertDialog from "@/components/dialog/AlertDialog"
-import DetailContainer from "@/components/containers/jobs/JobDetailContainer"
-import FullTimeJobForm, {
-  CreateFulltimeJobFormData,
-} from "@/components/form/service/FullTimeJobForm"
-import { Button } from "@/components/ui/button"
+import JobDetailCient from "@/components/jobs/JobDetailClient"
+import GetQueryClient from "@/lib/GetQueryClient"
 import { queries } from "@/lib/queries"
-import { JobType } from "@/types/jobs"
-import { useSuspenseQuery } from "@tanstack/react-query"
-import { useSession } from "next-auth/react"
-import {
-  useParams,
-  usePathname,
-  useRouter,
-  useSearchParams,
-} from "next/navigation"
-import { useEffect, useState } from "react"
-import Cookies from "js-cookie"
-import useMutation from "@/hooks/useMutation"
-import { JobPayload } from "@/interface/jobs"
+import { Metadata } from "next"
+import React from "react"
 
-const page = () => {
-  const params = useParams()
-  const router = useRouter()
-  const pathname = usePathname()
-  const searchParams = useSearchParams()
-  const pageType = searchParams.get("type") as "edit" | "create"
-  const jobType = searchParams.get("jobType") as JobType
-  const [isLoginModalOpen, setIsLoginModalOpen] = useState(false)
-  const { data } = useSession()
+interface Props {
+  params: { id: string }
+}
 
-  const { handleSubmit, isLoading, handleDelete } = useMutation<JobPayload>({
-    updateFn: (jobId: number, payload: JobPayload) =>
-      updateArtOrganization(jobId, payload),
-    deleteFn: (jobId?: number) => deleteJob(jobId as number),
-    queryKey: [...queries.jobs._def],
-    redirectPath: pathname.slice(0, pathname.lastIndexOf("/")),
-    successMessage: {
-      create: "채용이 수정되었습니다.",
-      delete: "채용이 삭제되었습니다.",
-    },
-  })
+export const generateMetadata = async ({
+  params,
+}: Props): Promise<Metadata> => {
+  const queryClient = GetQueryClient()
+  const { id } = params
 
-  const { data: job } = useSuspenseQuery(queries.jobs.detail(Number(params.id)))
+  const data = await queryClient.fetchQuery(queries.jobs.detail(Number(id)))
 
-  const handleDeleteJob = async () => {
-    handleDelete(Number(params.id))
-  }
+  const pageTitle = data?.title
+  const pageImage = data?.imageUrl
+  const defaultImage = "/img/metadata_image.png"
 
-  const handleUpdateFulltimeJob = async (
-    payload: CreateFulltimeJobFormData,
-  ) => {
-    const {
-      title,
-      companyName,
-      address,
-      addressDetail,
-      imageUrl,
-      majors,
-      contents,
-      recruitSiteUrl,
-    } = payload
-    handleSubmit(
-      {
-        title,
-        companyName,
-        address,
-        addressDetail,
-        imageUrl: imageUrl || "",
-        majorIds: majors.map(major => major.id),
-        contents,
-        type: jobType,
-        recruitSiteUrl: recruitSiteUrl || "",
+  return {
+    title: `채용 | ${pageTitle}`,
+    description: `아트인포 | ${data.companyName}`,
+    openGraph: {
+      title: pageTitle,
+      description: `아트인포 | ${data.companyName}`,
+      images: {
+        url: pageImage || defaultImage,
+        alt: "아트인포-ARTINFO",
       },
-      Number(params.id),
-    )
+    },
   }
+}
 
-  const handleAlertDialog = () => {
-    Cookies.set("prevPath", pathname, { expires: 1 / 288 })
-    router.push("/auth/sign-in")
-  }
+const page = async ({ params }: Props) => {
+  const queryClient = GetQueryClient()
 
-  useEffect(() => {
-    setIsLoginModalOpen(!data)
-  }, [data])
-
-  return (
-    <section>
-      {pageType === "edit" ? (
-        <FullTimeJobForm
-          handleFullTimeJob={handleUpdateFulltimeJob}
-          isLoading={isLoading}
-          job={job}
-          withImage={jobType !== JobType.RELIGION}
-        />
-      ) : (
-        <DetailContainer job={job} deleteJob={handleDeleteJob} />
-      )}
-      <AlertDialog
-        isOpen={isLoginModalOpen}
-        handleDialog={handleAlertDialog}
-        title="로그인이 필요합니다."
-      >
-        <div className="my-4 flex flex-col justify-center gap-4">
-          <p className="text-sm text-silver md:text-base">
-            채용 상세를 확인하려면 로그인이 필요합니다.
-          </p>
-          <Button
-            onClick={handleAlertDialog}
-            className="bg-main text-white hover:bg-blue-600"
-          >
-            로그인
-          </Button>
-        </div>
-      </AlertDialog>
-    </section>
+  const job = await queryClient.fetchQuery(
+    queries.jobs.detail(Number(params.id)),
   )
+
+  return <JobDetailCient job={job} />
 }
 
 export default page

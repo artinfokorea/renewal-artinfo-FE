@@ -17,7 +17,7 @@ const JobCard = forwardRef<HTMLDivElement, Props>(
     const filter = filters()
 
     return (
-      <Link href={`${pathname}/${job.id}`}>
+      <Link href={`${pathname}/${job.id}`} prefetch={false}>
         <div className="mx-4 flex h-[130px] items-center rounded-xl md:h-[192px] md:hover:bg-[#f5f5f5]">
           <div className="flex items-center md:px-4">
             {job.imageUrl ? (
