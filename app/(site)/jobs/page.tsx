@@ -95,6 +95,7 @@ const page = () => {
           <Suspense fallback={<JobListSkeleton />}>
             <JobsList />
           </Suspense>
+          <JobListSkeleton />
         </div>
         <ProvinceDialog
           provinces={provinceList?.data?.provinces}
