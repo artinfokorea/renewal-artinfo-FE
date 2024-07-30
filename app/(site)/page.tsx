@@ -1,12 +1,12 @@
-import ArtContainer from "@/components/containers/main/MainArtContainer"
+import ArtContainer from "@/components/main/MainArtContainer"
 import GetQueryClient from "@/lib/GetQueryClient"
 import { HydrationBoundary, dehydrate } from "@tanstack/react-query"
 import { queries } from "@/lib/queries"
 import { AdvertisementType } from "@/types/ads"
 import { ProfessionalFieldTypes } from "@/types/majors"
 import { JobType } from "@/types/jobs"
-import BannerContainer from "@/components/containers/main/BannerContainer"
-import MainJobsContainer from "@/components/containers/main/MainJobsContainer"
+import BannerContainer from "@/components/main/BannerContainer"
+import MainJobsContainer from "@/components/main/MainJobsContainer"
 
 const page = async () => {
   const queryClient = GetQueryClient()

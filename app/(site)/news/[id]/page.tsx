@@ -1,33 +1,51 @@
-"use client"
-
-import { deleteNews } from "@/services/news"
-import NewsDetailContainer from "@/components/containers/news/NewsDetailContainer"
-import useMutation from "@/hooks/useMutation"
 import { queries } from "@/lib/queries"
-import { useSuspenseQuery } from "@tanstack/react-query"
-import { useParams, usePathname } from "next/navigation"
 import React from "react"
+import GetQueryClient from "@/lib/GetQueryClient"
+import { Metadata } from "next"
+import NewsDetailClient from "@/components/news/NewsDetailClient"
 
-const page = () => {
-  const params = useParams()
-  const pathname = usePathname()
+interface Props {
+  params: { id: string }
+}
 
-  const { data: news } = useSuspenseQuery(
-    queries.news.detail(Number(params.id)),
-  )
+const getNewsDetail = async (id: number) => {
+  const queryClient = GetQueryClient()
+  const news = await queryClient.fetchQuery(queries.news.detail(Number(id)))
+  return news
+}
 
-  const { handleDelete } = useMutation({
-    deleteFn: () => deleteNews(Number(params.id) as number),
-    queryKey: [...queries.news._def],
-    redirectPath: pathname.slice(0, pathname.lastIndexOf("/")),
-    successMessage: {
-      delete: "뉴스가 삭제되었습니다.",
+export const generateMetadata = async ({
+  params,
+}: Props): Promise<Metadata> => {
+  const { id } = params
+  const data = await getNewsDetail(Number(id))
+
+  const pageTitle = data?.title
+  const pageDescription = data?.summary.substring(0, 40)
+  const pageImage = data?.thumbnailImageUrl
+  const defaultImage = "/img/metadata_image.png"
+
+  return {
+    title: `뉴스 | ${pageTitle}`,
+    description: `아트인포 | ${pageDescription}`,
+    openGraph: {
+      title: `뉴스 | ${pageTitle}`,
+      description: `아트인포 | ${pageDescription}`,
+      images: {
+        url: pageImage || defaultImage,
+        alt: "아트인포-ARTINFO",
+      },
     },
-  })
+  }
+}
+
+const page = async ({ params }: Props) => {
+  const { id } = params
+  const news = await getNewsDetail(Number(id))
 
   return (
     <section>
-      <NewsDetailContainer news={news} deleteNews={handleDelete} />
+      <NewsDetailClient news={news} />
     </section>
   )
 }

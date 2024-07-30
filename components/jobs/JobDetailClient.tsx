@@ -1,14 +1,13 @@
 "use client"
 import { deleteJob, updateArtOrganization } from "@/services/jobs"
 import AlertDialog from "@/components/dialog/AlertDialog"
-import DetailContainer from "@/components/containers/jobs/JobDetailContainer"
+import DetailContainer from "@/components/jobs/JobDetailContainer"
 import FullTimeJobForm, {
   CreateFulltimeJobFormData,
-} from "@/components/form/service/FullTimeJobForm"
+} from "@/components/jobs/FullTimeJobForm"
 import { Button } from "@/components/ui/button"
 import { queries } from "@/lib/queries"
 import { JOB, JobType } from "@/types/jobs"
-import { useSuspenseQuery } from "@tanstack/react-query"
 import { useSession } from "next-auth/react"
 import {
   useParams,
@@ -46,8 +45,6 @@ const JobDetailCient = ({ job }: Props) => {
       delete: "채용이 삭제되었습니다.",
     },
   })
-
-  // const { data: job } = useSuspenseQuery(queries.jobs.detail(Number(params.id)))
 
   const handleDeleteJob = async () => {
     handleDelete(Number(params.id))

@@ -1,62 +1,50 @@
-"use client"
-
-import { deleteLesson, updateLesson } from "@/services/lessons"
-import LessonDetailContainer from "@/components/containers/lessons/LessonDetailContainer"
-import LessonForm, {
-  LessonFormData,
-} from "@/components/form/service/LessonForm"
-import useMutation from "@/hooks/useMutation"
-import { LessonPayload } from "@/interface/lessons"
+import LessonDetailClient from "@/components/lessons/LessonDetailClient"
+import GetQueryClient from "@/lib/GetQueryClient"
 import { queries } from "@/lib/queries"
-import { useSuspenseQuery } from "@tanstack/react-query"
-import { useParams, usePathname, useSearchParams } from "next/navigation"
+import { Metadata } from "next"
+import React from "react"
 
-const page = () => {
-  const searchParams = useSearchParams()
-  const pageType = searchParams.get("type")
-  const params = useParams()
-  const pathname = usePathname()
+interface Props {
+  params: { id: string; lng?: string }
+}
 
-  const { data: lesson } = useSuspenseQuery(
-    queries.lessons.detail(Number(params.id)),
+const getLessonDetail = async (id: number) => {
+  const queryClient = GetQueryClient()
+  const lesson = await queryClient.fetchQuery(
+    queries.lessons.detail(Number(id)),
   )
+  return lesson
+}
 
-  const { handleSubmit, isLoading, handleDelete } = useMutation<LessonPayload>({
-    createFn: (payload: LessonPayload) => updateLesson(payload),
-    deleteFn: deleteLesson,
-    queryKey: [...queries.lessons._def],
-    redirectPath: pathname.slice(0, pathname.lastIndexOf("/")),
-    successMessage: {
-      create: "레슨이 수정되었습니다.",
-      delete: "레슨이 삭제되었습니다.",
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
+  const { id } = params
+
+  const data = await getLessonDetail(Number(id))
+
+  const pageTitle = data?.name
+  const pageDescription = data?.majors && data?.majors.join(", ")
+  const pageImage = data?.imageUrl
+  const defaultImage = "/img/metadata_image.png"
+
+  return {
+    title: `레슨 | ${pageTitle}`,
+    description: `아트인포 | ${pageDescription} 레슨 ${pageTitle}`,
+    openGraph: {
+      title: pageTitle,
+      description: `아트인포 | ${pageDescription} 레슨 ${pageTitle} `,
+      images: {
+        url: pageImage || defaultImage,
+        alt: "아트인포-ARTINFO",
+      },
     },
-  })
-
-  const handleLessonForm = async (payload: LessonFormData) => {
-    const { areas, pay, imageUrl, introduction, career } = payload
-
-    await handleSubmit({
-      areas,
-      pay,
-      imageUrl,
-      introduction,
-      career: career || "",
-    })
   }
+}
+const page = async ({ params }: Props) => {
+  const { id } = params
 
-  return (
-    <section className="mx-auto max-w-screen-lg">
-      {pageType === "edit" ? (
-        <LessonForm
-          lesson={lesson}
-          handleLesson={handleLessonForm}
-          isFormLoading={isLoading}
-        />
-      ) : (
-        <LessonDetailContainer lesson={lesson} deleteLesson={handleDelete} />
-      )}
-    </section>
-  )
+  const lesson = await getLessonDetail(Number(id))
+
+  return <LessonDetailClient lesson={lesson} />
 }
 
 export default page

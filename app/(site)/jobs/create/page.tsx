@@ -8,7 +8,7 @@ import { queries } from "@/lib/queries"
 import JobTypeSelectDialog from "@/components/jobs/JobTypeSelectDIalog"
 import FullTimeJobForm, {
   CreateFulltimeJobFormData,
-} from "@/components/form/service/FullTimeJobForm"
+} from "@/components/jobs/FullTimeJobForm"
 import useMutation from "@/hooks/useMutation"
 import { JobPayload } from "@/interface/jobs"
 

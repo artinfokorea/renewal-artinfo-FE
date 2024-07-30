@@ -12,7 +12,7 @@ import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 import MobileFilterTab from "@/components/common/MobileFIlterTab"
 import JobListSkeleton from "@/components/skeleton/JobListSkeleton"
-import JobsList from "@/components/list/JobsList"
+import JobsList from "@/components/jobs/JobsList"
 import ProvinceDialog from "@/components/dialog/ProvinceDialog"
 import AddButton from "@/components/common/AddButton"
 

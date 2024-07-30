@@ -3,9 +3,7 @@
 import React, { useEffect, useState } from "react"
 import { usePathname, useRouter, useSearchParams } from "next/navigation"
 import { createLesson, getLessonQualification } from "@/services/lessons"
-import LessonForm, {
-  LessonFormData,
-} from "@/components/form/service/LessonForm"
+import LessonForm, { LessonFormData } from "@/components/lessons/LessonForm"
 import { queries } from "@/lib/queries"
 import AlertDialog from "@/components/dialog/AlertDialog"
 import { Button } from "@/components/ui/button"

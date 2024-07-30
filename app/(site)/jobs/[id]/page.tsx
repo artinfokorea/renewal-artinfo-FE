@@ -8,13 +8,18 @@ interface Props {
   params: { id: string }
 }
 
+const getJobDetail = async (id: number) => {
+  const queryClient = GetQueryClient()
+  const job = await queryClient.fetchQuery(queries.jobs.detail(Number(id)))
+  return job
+}
+
 export const generateMetadata = async ({
   params,
 }: Props): Promise<Metadata> => {
-  const queryClient = GetQueryClient()
   const { id } = params
 
-  const data = await queryClient.fetchQuery(queries.jobs.detail(Number(id)))
+  const data = await getJobDetail(Number(id))
 
   const pageTitle = data?.title
   const pageImage = data?.imageUrl
@@ -35,11 +40,9 @@ export const generateMetadata = async ({
 }
 
 const page = async ({ params }: Props) => {
-  const queryClient = GetQueryClient()
+  const { id } = params
 
-  const job = await queryClient.fetchQuery(
-    queries.jobs.detail(Number(params.id)),
-  )
+  const job = await getJobDetail(Number(id))
 
   return <JobDetailCient job={job} />
 }

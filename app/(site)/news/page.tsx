@@ -9,7 +9,7 @@ import { useSession } from "next-auth/react"
 import ListSearchForm from "@/components/common/ListSearchForm"
 import { Button } from "@/components/ui/button"
 import NewsSkeleton from "@/components/skeleton/NewsSkeleton"
-import NewsList from "@/components/list/NewsList"
+import NewsList from "@/components/news/NewsList"
 
 const page = () => {
   const router = useRouter()

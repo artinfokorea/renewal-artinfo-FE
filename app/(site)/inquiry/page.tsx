@@ -1,9 +1,7 @@
 "use client"
 
 import { createInquiry } from "@/services/inquries"
-import InquiryForm, {
-  InquiryFormData,
-} from "@/components/form/service/InquiryForm"
+import InquiryForm, { InquiryFormData } from "@/components/inquiry/InquiryForm"
 import useToast from "@/hooks/useToast"
 import { useLoading } from "@toss/use-loading"
 import { useRouter } from "next/navigation"
