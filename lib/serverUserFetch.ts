@@ -1,4 +1,3 @@
-import { cookies } from "next/headers"
 import { USER } from "@/types/users"
 import { DetailApiResponse } from "@/interface"
 import { getServerSession } from "next-auth"

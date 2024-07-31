@@ -13,7 +13,7 @@ import { SchoolType } from "@/types/lessons"
 import { useQuery, useQueryClient } from "@tanstack/react-query"
 import { queries } from "@/lib/queries"
 import PhoneDialog from "@/components/dialog/PhoneDialog"
-import ProfileForm, { ProfileFormData } from "@/components/auth/ProfileForm"
+import ProfileForm, { ProfileFormData } from "@/components/profile/ProfileForm"
 import PasswordDialog, {
   PasswordFormData,
 } from "@/components/dialog/PasswordDialog"
@@ -32,9 +32,7 @@ const ProfileContainer = () => {
   const queryClient = useQueryClient()
   const { successToast, errorToast } = useToast()
 
-  const { data: user } = useQuery({
-    ...queries.users.detail(),
-  })
+  const { data: user } = useQuery(queries.users.detail())
 
   const updateProfile = async (payload: ProfileFormData) => {
     const {
