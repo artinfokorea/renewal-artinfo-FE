@@ -13,7 +13,7 @@ import { useSuspenseQuery } from "@tanstack/react-query"
 import { queries } from "@/lib/queries"
 import FallbackImage from "../common/FallbackImage"
 
-const BannerContainer = ({ updatedAt }: { updatedAt: number }) => {
+const BannerContainer = () => {
   const plugin = useRef(
     Autoplay({ delay: 5000, stopOnInteraction: true, loop: true }),
   )
@@ -21,7 +21,6 @@ const BannerContainer = ({ updatedAt }: { updatedAt: number }) => {
   const { data: ads } = useSuspenseQuery({
     ...queries.ads.list(AdvertisementType.BANNER),
     staleTime: 10 * 1000,
-    initialDataUpdatedAt: updatedAt,
   })
 
   return (

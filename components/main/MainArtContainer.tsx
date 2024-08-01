@@ -14,14 +14,12 @@ import FallbackImage from "../common/FallbackImage"
 interface Props {
   type: AdvertisementType
   title: string
-  updatedAt: number
 }
 
-const ArtConatiner = ({ type, title, updatedAt }: Props) => {
+const ArtConatiner = ({ type, title }: Props) => {
   const { data: arts } = useSuspenseQuery({
     ...queries.ads.list(type),
     staleTime: 10 * 1000,
-    initialDataUpdatedAt: updatedAt,
   })
 
   return (

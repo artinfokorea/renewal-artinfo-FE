@@ -48,18 +48,10 @@ const page = async () => {
   return (
     <div className="mx-auto h-full max-w-screen-lg px-4">
       <HydrationBoundary state={dehydratedState}>
-        <BannerContainer updatedAt={updatedAt} />
-        <ArtContainer
-          type={AdvertisementType.CONCERT}
-          title="공연"
-          updatedAt={updatedAt}
-        />
+        <BannerContainer />
+        <ArtContainer type={AdvertisementType.CONCERT} title="공연" />
         <MainJobsContainer />
-        <ArtContainer
-          type={AdvertisementType.EXHIBITION}
-          title="전시"
-          updatedAt={updatedAt}
-        />
+        <ArtContainer type={AdvertisementType.EXHIBITION} title="전시" />
       </HydrationBoundary>
 
       <article className="my-12 hidden h-[100px] rounded-xl bg-whitesmoke md:my-16 md:flex md:h-[120px]">
