@@ -20,7 +20,7 @@ const BannerContainer = () => {
 
   const { data: ads } = useQuery({
     ...queries.ads.list(AdvertisementType.BANNER),
-    refetchOnMount: true,
+    staleTime: 3000,
   })
 
   return (

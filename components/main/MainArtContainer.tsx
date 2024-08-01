@@ -19,7 +19,7 @@ interface Props {
 const ArtConatiner = ({ type, title }: Props) => {
   const { data: arts } = useQuery({
     ...queries.ads.list(type),
-    refetchOnMount: true,
+    staleTime: 3000,
   })
 
   return (
