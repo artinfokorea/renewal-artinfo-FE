@@ -3,7 +3,7 @@
 import React from "react"
 import { AdvertisementType } from "@/types/ads"
 import Link from "next/link"
-import { useQuery } from "@tanstack/react-query"
+import { useSuspenseQuery } from "@tanstack/react-query"
 import { queries } from "@/lib/queries"
 import { Swiper, SwiperSlide } from "swiper/react"
 import "swiper/css"
@@ -14,12 +14,14 @@ import FallbackImage from "../common/FallbackImage"
 interface Props {
   type: AdvertisementType
   title: string
+  updatedAt: number
 }
 
-const ArtConatiner = ({ type, title }: Props) => {
-  const { data: arts } = useQuery({
+const ArtConatiner = ({ type, title, updatedAt }: Props) => {
+  const { data: arts } = useSuspenseQuery({
     ...queries.ads.list(type),
-    staleTime: 3000,
+    staleTime: 10 * 1000,
+    initialDataUpdatedAt: updatedAt,
   })
 
   return (

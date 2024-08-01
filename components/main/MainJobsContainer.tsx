@@ -2,7 +2,7 @@
 
 import { queries } from "@/lib/queries"
 import { JobType } from "@/types/jobs"
-import { useQuery } from "@tanstack/react-query"
+import { useSuspenseQuery } from "@tanstack/react-query"
 import Link from "next/link"
 import React from "react"
 import { Swiper, SwiperSlide } from "swiper/react"
@@ -13,7 +13,7 @@ import { AspectRatio } from "../ui/aspect-ratio"
 import { ProfessionalFieldTypes } from "@/types/majors"
 
 const MainJobsContainer = () => {
-  const { data } = useQuery(
+  const { data } = useSuspenseQuery(
     queries.jobs.list({
       page: 1,
       size: 5,
@@ -33,7 +33,7 @@ const MainJobsContainer = () => {
       <div className="flex justify-between">
         <h3 className="text-xl font-bold">#채용</h3>
         <Link href="/jobs">
-          <h5 className="font-bold text-dimgray">더보기</h5>
+          <h5 className="font-bold text-silver">더보기</h5>
         </Link>
       </div>
       {/* // Desktop Job Section */}

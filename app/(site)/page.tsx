@@ -15,11 +15,9 @@ const page = async () => {
     await Promise.all([
       queryClient.prefetchQuery({
         ...queries.ads.list(AdvertisementType.CONCERT),
-        staleTime: 3000,
       }),
       queryClient.prefetchQuery({
         ...queries.ads.list(AdvertisementType.EXHIBITION),
-        staleTime: 3000,
       }),
       queryClient.prefetchQuery(
         queries.jobs.list({
@@ -37,22 +35,31 @@ const page = async () => {
       ),
       queryClient.prefetchQuery({
         ...queries.ads.list(AdvertisementType.BANNER),
-        staleTime: 3000,
       }),
     ])
   } catch (error) {
     console.error("Failed to prefetch queries:", error)
   }
 
+  const updatedAt = Date.now()
+
   const dehydratedState = dehydrate(queryClient)
 
   return (
     <div className="mx-auto h-full max-w-screen-lg px-4">
       <HydrationBoundary state={dehydratedState}>
-        <BannerContainer />
-        <ArtContainer type={AdvertisementType.CONCERT} title="공연" />
+        <BannerContainer updatedAt={updatedAt} />
+        <ArtContainer
+          type={AdvertisementType.CONCERT}
+          title="공연"
+          updatedAt={updatedAt}
+        />
         <MainJobsContainer />
-        <ArtContainer type={AdvertisementType.EXHIBITION} title="전시" />
+        <ArtContainer
+          type={AdvertisementType.EXHIBITION}
+          title="전시"
+          updatedAt={updatedAt}
+        />
       </HydrationBoundary>
 
       <article className="my-12 hidden h-[100px] rounded-xl bg-whitesmoke md:my-16 md:flex md:h-[120px]">
