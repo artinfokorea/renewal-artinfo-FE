@@ -1,8 +1,8 @@
-import withPWA from "next-pwa"
+import nextPWA from "next-pwa"
 
 /** @type {import('next').NextConfig} */
 
-const isProduction = process.env.NODE_ENV === "production"
+const isProduction = process.env.DEV_ENV === "production"
 
 const config = {
   reactStrictMode: false,
@@ -10,7 +10,6 @@ const config = {
     DEV_ENV: process.env.DEV_ENV,
     REST_API_BASE_URL: process.env.REST_API_BASE_URL,
     NEXTAUTH_SECRET: process.env.NEXTAUTH_SECRET,
-    DEV_ENV: process.env.DEV_ENV,
     GTAG_ID: process.env.GTAG_ID,
     AD_SENSE_ID: process.env.AD_SENSE_ID,
   },
@@ -35,10 +34,12 @@ const config = {
   },
 }
 
-const nextConfig = withPWA({
+const withPWA = nextPWA({
   dest: "public",
   disable: !isProduction,
   runtimeCaching: [],
-})(config)
+})
+
+const nextConfig = withPWA(config)
 
 export default nextConfig
