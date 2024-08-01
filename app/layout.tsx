@@ -35,6 +35,11 @@ export const metadata: Metadata = {
       },
     ],
   },
+  appleWebApp: {
+    capable: true,
+    statusBarStyle: "default",
+    title: "아트인포-ARTINFO",
+  },
   manifest: "/manifest.json",
   verification: {
     other: {
