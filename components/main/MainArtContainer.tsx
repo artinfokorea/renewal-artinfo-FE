@@ -1,6 +1,6 @@
 "use client"
 
-import React from "react"
+import React, { useEffect } from "react"
 import { AdvertisementType } from "@/types/ads"
 import Link from "next/link"
 import { useSuspenseQuery } from "@tanstack/react-query"
