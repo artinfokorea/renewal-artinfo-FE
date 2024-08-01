@@ -2,6 +2,8 @@ import withPWA from "next-pwa"
 
 /** @type {import('next').NextConfig} */
 
+const isProduction = process.env.NODE_ENV === "production"
+
 const config = {
   reactStrictMode: false,
   env: {
@@ -35,7 +37,7 @@ const config = {
 
 const nextConfig = withPWA({
   dest: "public",
-  disable: process.env.DEV_ENV === "development",
+  disable: !isProduction,
   runtimeCaching: [],
 })(config)
 
