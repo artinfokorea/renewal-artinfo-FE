@@ -19,9 +19,11 @@ const Callback = () => {
     const hashParams = new URLSearchParams(window.location.hash.substring(1))
     const state = searchParams.get("state") || hashParams.get("state")
     const code = searchParams.get("code")
-    console.log("callback")
+
     if (state === "naver") {
       naver = (window as any).naver
+
+      console.log("naver", naver)
       naverLogin = new naver.LoginWithNaverId({
         clientId: process.env.NEXT_PUBLIC_NAVER_CLIENT_ID,
         callbackUrl: process.env.NEXT_PUBLIC_REDIRECT_URL,
