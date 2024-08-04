@@ -80,8 +80,6 @@ const SignInForm = () => {
   const kakaoLogin = async () => {
     const kakao = kakaoInit()
 
-    console.log(kakao, "kakao login")
-
     kakao.Auth.authorize({
       redirectUri: `${process.env.NEXT_PUBLIC_REDIRECT_URL}auth/callback`,
       state: "kakao",
@@ -174,20 +172,14 @@ const SignInForm = () => {
         <button
           type="button"
           className="inline-flex h-[48px] w-[48px] items-center justify-center rounded-lg text-white shadow-md transition duration-150 ease-in-out focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 disabled:opacity-50"
-          onClick={() => {
-            console.log("naver login")
-            handleNaverLogin()
-          }}
+          onClick={handleNaverLogin}
         >
           <img src="/naver_logo.png" alt="naver_logo" />
         </button>
         <button
           type="button"
           className="inline-flex h-[48px] w-[48px] items-center justify-center rounded-lg bg-[#FEE500] text-white shadow-md transition duration-150 ease-in-out focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 disabled:opacity-50"
-          onClick={() => {
-            console.log("kakao login")
-            kakaoLogin()
-          }}
+          onClick={kakaoLogin}
         >
           <img src="/kakao_logo.png" alt="kakao_logo" />
         </button>
