@@ -19,7 +19,7 @@ const Callback = () => {
     const hashParams = new URLSearchParams(window.location.hash.substring(1))
     const state = searchParams.get("state") || hashParams.get("state")
     const code = searchParams.get("code")
-
+    console.log("callback")
     if (state === "naver") {
       naver = (window as any).naver
       naverLogin = new naver.LoginWithNaverId({

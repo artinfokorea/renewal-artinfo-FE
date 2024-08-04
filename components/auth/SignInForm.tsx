@@ -80,6 +80,8 @@ const SignInForm = () => {
   const kakaoLogin = async () => {
     const kakao = kakaoInit()
 
+    console.log(kakao, "kakao login")
+
     kakao.Auth.authorize({
       redirectUri: `${process.env.NEXT_PUBLIC_REDIRECT_URL}auth/callback`,
       state: "kakao",
