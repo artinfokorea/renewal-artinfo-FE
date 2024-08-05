@@ -22,7 +22,6 @@ const BannerContainer = () => {
 
   const { data: ads } = useSuspenseQuery({
     ...queries.ads.list(AdvertisementType.BANNER),
-    staleTime: 10 * 1000,
   })
 
   return (
