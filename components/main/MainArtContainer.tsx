@@ -1,6 +1,5 @@
 "use client"
 
-import React, { useEffect } from "react"
 import { AdvertisementType } from "@/types/ads"
 import Link from "next/link"
 import { useSuspenseQuery } from "@tanstack/react-query"
@@ -20,7 +19,6 @@ const ArtConatiner = ({ type, title }: Props) => {
   const { data: arts } = useSuspenseQuery({
     ...queries.ads.list(type),
     staleTime: 10 * 1000,
-    refetchOnMount: false,
   })
 
   return (

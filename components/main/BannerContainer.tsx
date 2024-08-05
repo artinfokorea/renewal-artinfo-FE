@@ -9,11 +9,13 @@ import {
 } from "@/components/ui/carousel"
 import { AdvertisementType } from "@/types/ads"
 import Link from "next/link"
-import { useSuspenseQuery } from "@tanstack/react-query"
+import { useQueryClient, useSuspenseQuery } from "@tanstack/react-query"
 import { queries } from "@/lib/queries"
 import FallbackImage from "../common/FallbackImage"
 
 const BannerContainer = () => {
+  const queryClient = useQueryClient()
+
   const plugin = useRef(
     Autoplay({ delay: 5000, stopOnInteraction: true, loop: true }),
   )
@@ -21,7 +23,6 @@ const BannerContainer = () => {
   const { data: ads } = useSuspenseQuery({
     ...queries.ads.list(AdvertisementType.BANNER),
     staleTime: 10 * 1000,
-    refetchOnMount: false,
   })
 
   return (
