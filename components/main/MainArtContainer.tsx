@@ -18,6 +18,8 @@ interface Props {
 const ArtConatiner = ({ type, title }: Props) => {
   const { data: arts } = useSuspenseQuery({
     ...queries.ads.list(type),
+    refetchInterval: 1000 * 60,
+    refetchOnMount: false,
   })
 
   return (
