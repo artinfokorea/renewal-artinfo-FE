@@ -20,6 +20,7 @@ const ArtConatiner = ({ type, title }: Props) => {
   const { data: arts } = useSuspenseQuery({
     ...queries.ads.list(type),
     staleTime: 10 * 1000,
+    refetchOnMount: false,
   })
 
   return (

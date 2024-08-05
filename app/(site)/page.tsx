@@ -15,11 +15,9 @@ const page = async () => {
     await Promise.all([
       queryClient.prefetchQuery({
         ...queries.ads.list(AdvertisementType.CONCERT),
-        staleTime: 10 * 1000,
       }),
       queryClient.prefetchQuery({
         ...queries.ads.list(AdvertisementType.EXHIBITION),
-        staleTime: 10 * 1000,
       }),
       queryClient.prefetchQuery(
         queries.jobs.list({
@@ -37,7 +35,6 @@ const page = async () => {
       ),
       queryClient.prefetchQuery({
         ...queries.ads.list(AdvertisementType.BANNER),
-        staleTime: 10 * 1000,
       }),
     ])
   } catch (error) {
