@@ -8,6 +8,8 @@ import { JobType } from "@/types/jobs"
 import BannerContainer from "@/components/main/BannerContainer"
 import MainJobsContainer from "@/components/main/MainJobsContainer"
 
+export const dynamic = "force-dynamic"
+
 const page = async () => {
   const queryClient = GetQueryClient()
 
