@@ -2,20 +2,20 @@
 
 import React, { useState, useMemo, Suspense } from "react"
 import { usePathname, useRouter, useSearchParams } from "next/navigation"
-import { useQueries } from "@tanstack/react-query"
+import { useQueries, useQuery } from "@tanstack/react-query"
 import { queries } from "@/lib/queries"
-import { ArtType } from "@/types/majors"
-import Cookies from "js-cookie"
 import ListSearchForm from "@/components/common/ListSearchForm"
-import JobListCheckBoxes from "@/components/jobs/JobListCheckBoxes"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
+import { ArtType } from "@/types/majors"
+import CreateLinkButton from "@/components/common/CreateLinkButton"
 import MobileFilterTab from "@/components/common/MobileFIlterTab"
-import JobListSkeleton from "@/components/skeleton/JobListSkeleton"
-import JobsList from "@/components/jobs/JobsList"
 import ProvinceDialog from "@/components/dialog/ProvinceDialog"
 import AddButton from "@/components/common/AddButton"
-import CreateLinkButton from "@/components/common/CreateLinkButton"
+import LessonListSkeleton from "@/components/skeleton/LessonListSkeleton"
+import EventList from "@/components/events/EventList"
+
+//artinfo.s3.ap-northeast-2.amazonaws.com/prod/upload/1710/images/20240806/original/v8ofDoqEE16.1722905864785.png"
 
 const page = () => {
   const searchParams = useSearchParams()
@@ -24,9 +24,9 @@ const page = () => {
   const pathname = usePathname()
   const [isProvinceDialog, setIsProvinceDialog] = useState(false)
 
-  const [artFields, provinceList, majorList] = useQueries({
+  const [lessonFields, provinceList, majorList] = useQueries({
     queries: [
-      queries.majors.artFields({ artCategories: [ArtType.MUSIC] }),
+      queries.lessons.fields(),
       queries.provinces.list(),
       queries.majors.list(),
     ],
@@ -41,16 +41,15 @@ const page = () => {
   return (
     <div className="mx-auto max-w-screen-lg">
       <ListSearchForm>
-        <h4 className="text-xl font-bold md:text-2xl">
-          취업은 아트인포와 함께
-        </h4>
+        <h4 className="text-xl font-bold md:text-2xl">기대되는 공연</h4>
       </ListSearchForm>
       <section className="flex">
         {/* Desktop Filter */}
-        <JobListCheckBoxes artFields={artFields?.data?.majorGroups} />
-
+        <form className="hidden min-w-[180px] flex-col text-gray-400 lg:flex">
+          {/* <ProfessionalCheckBoxes artFields={lessonFields?.data?.majorGroups} /> */}
+        </form>
         <div className="flex w-full flex-col md:ml-12 md:mt-4 md:flex-1">
-          <div className="mx-4 hidden items-center justify-between lg:flex">
+          <div className="hidden items-center justify-between lg:flex">
             <div className="flex flex-wrap gap-2">
               <Button
                 onClick={() => setIsProvinceDialog(!isProvinceDialog)}
@@ -75,24 +74,17 @@ const page = () => {
               })}
             </div>
             <CreateLinkButton
-              onClick={() => {
-                Cookies.set("prevPath", pathname, { expires: 1 / 288 })
-                router.push(`${pathname}/create`)
-              }}
+              onClick={() => router.push(`${pathname}/create`)}
             />
           </div>
-
           {/* Mobile Filter */}
           <MobileFilterTab
             majors={majorList?.data?.majors}
+            artFields={lessonFields?.data?.majorGroups}
             provinces={provinceList?.data?.provinces}
-            page="JOB"
-            artFields={artFields?.data?.majorGroups}
+            page="LESSON"
           />
-
-          <Suspense fallback={<JobListSkeleton />}>
-            <JobsList />
-          </Suspense>
+          <EventList />
         </div>
         <ProvinceDialog
           provinces={provinceList?.data?.provinces}

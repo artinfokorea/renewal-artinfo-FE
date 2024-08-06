@@ -1,6 +1,7 @@
 "use client"
 
 import AddButton from "@/components/common/AddButton"
+import CreateLinkButton from "@/components/common/CreateLinkButton"
 import ListSearchForm from "@/components/common/ListSearchForm"
 import MobileFilterTab from "@/components/common/MobileFIlterTab"
 import ProfessionalCheckBoxes from "@/components/common/ProfessionalCheckBoxes"
@@ -38,7 +39,6 @@ const page = () => {
 
   return (
     <div className="mx-auto max-w-screen-lg">
-      {/* Desktop Filter */}
       <ListSearchForm>
         <h4 className="text-xl font-bold md:text-2xl">
           <span className="text-main">
@@ -49,6 +49,7 @@ const page = () => {
       </ListSearchForm>
 
       <section className="flex">
+        {/* Desktop Filter */}
         <form className="hidden min-w-[180px] flex-col text-gray-400 lg:flex">
           <ProfessionalCheckBoxes artFields={lessonFields?.data?.majorGroups} />
         </form>
@@ -77,12 +78,9 @@ const page = () => {
                 )
               })}
             </div>
-            <Button
-              className="rounded-3xl bg-main px-6 py-2 text-white"
+            <CreateLinkButton
               onClick={() => router.push(`${pathname}/create`)}
-            >
-              등록
-            </Button>
+            />
           </div>
 
           {/* Mobile Filter */}
