@@ -34,6 +34,19 @@ export const NavItems = [
   },
 ]
 
+const NavMenu = ({ href, label }: { href: string; label: string }) => {
+  const pathname = usePathname()
+  const isActive = pathname.includes(href)
+  return (
+    <Link
+      href={href}
+      className={`mx-3 font-semibold ${isActive && "text-main"}`}
+    >
+      {label}
+    </Link>
+  )
+}
+
 const Header = () => {
   const pathname = usePathname()
   const router = useRouter()
@@ -84,20 +97,10 @@ const Header = () => {
           <NavigationMenu className="ml-12 hidden md:flex">
             <NavigationMenuList>
               <NavigationMenuItem>
-                {NavItems.map(({ href, label }) => {
-                  const isActive = pathname.includes(href)
-                  return (
-                    <Link
-                      href={href}
-                      key={href}
-                      className={`mx-3 font-semibold ${
-                        isActive && "text-main"
-                      }`}
-                    >
-                      {label}
-                    </Link>
-                  )
-                })}
+                <NavMenu href="/jobs" label="채용" />
+                <NavMenu href="/lessons" label="레슨" />
+                <NavMenu href="/news" label="뉴스" />
+                <NavMenu href="/inquiry" label="문의" />
               </NavigationMenuItem>
             </NavigationMenuList>
           </NavigationMenu>
@@ -117,7 +120,6 @@ const Header = () => {
         <MobileDropDown
           isBarOpen={isBarOpen}
           handleBar={() => setIsBarOpen(!isBarOpen)}
-          items={NavItems}
           handleSign={handleSign}
         />
       </div>

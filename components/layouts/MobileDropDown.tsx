@@ -12,14 +12,27 @@ import { usePathname } from "next/navigation"
 import { useSession } from "next-auth/react"
 
 interface Props {
-  items: { href: string; label: string }[]
   isBarOpen: boolean
   handleBar: () => void
   handleSign: () => void
 }
 
-const MobileDropDown = ({ isBarOpen, handleBar, items, handleSign }: Props) => {
+const DropDownMenu = ({ href, label }: { href: string; label: string }) => {
   const pathname = usePathname()
+  const isActive = pathname.includes(href)
+  return (
+    <MenuItem key={href}>
+      <Link
+        href={href}
+        className={`w-full py-2 font-semibold ${isActive && "text-main"}`}
+      >
+        {label}
+      </Link>
+    </MenuItem>
+  )
+}
+
+const MobileDropDown = ({ isBarOpen, handleBar, handleSign }: Props) => {
   const { data } = useSession()
 
   return (
@@ -45,21 +58,10 @@ const MobileDropDown = ({ isBarOpen, handleBar, items, handleSign }: Props) => {
               static
               className="mobile-dropdown absolute -left-3 top-8 z-30 mt-3 flex w-screen flex-col gap-3 bg-white p-4 shadow-sm focus:outline-none"
             >
-              {items.map(({ href, label }) => {
-                const isActive = pathname.includes(href)
-                return (
-                  <MenuItem key={href}>
-                    <Link
-                      href={href}
-                      className={`w-full py-2 font-semibold ${
-                        isActive && "text-main"
-                      }`}
-                    >
-                      {label}
-                    </Link>
-                  </MenuItem>
-                )
-              })}
+              <DropDownMenu href="/jobs" label="채용" />
+              <DropDownMenu href="/lessons" label="레슨" />
+              <DropDownMenu href="/news" label="뉴스" />
+              <DropDownMenu href="/inquiry" label="문의" />
               <div className="mx-auto my-4 w-full border-b-[1px] border-whitesmoke" />
               <MenuItem>
                 <Link href="/my-profile" className="my-2 w-full font-bold">
