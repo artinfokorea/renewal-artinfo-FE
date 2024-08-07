@@ -8,6 +8,7 @@ import ItemManageBox from "../common/ItemManageBox"
 import { useRouter } from "next/navigation"
 import ConfirmDialog from "../dialog/ConfirmDialog"
 import { useSession } from "next-auth/react"
+import NewsCommentContainer from "./NewsCommentContainer"
 
 interface Props {
   news: NEWS
@@ -50,6 +51,7 @@ const NewsDetailContainer = ({ news, deleteNews }: Props) => {
           __html: news.contents,
         }}
       />
+      <NewsCommentContainer />
       <ConfirmDialog
         isOpen={isDeleteConfirmDialog}
         handleDialog={() => setIsDeleteConfirmDialog(!isDeleteConfirmDialog)}
