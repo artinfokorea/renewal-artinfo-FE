@@ -118,14 +118,18 @@ const ProfileForm = ({
       const uploadResponse = await uploadTransition(
         uploadImages(UploadTarget.USER, files, true),
       )
-
-      successToast("프로필 이미지가 등록되었습니다.")
-      setValue("imageUrl", uploadResponse.images[0].url as string)
+      setValue("imageUrl", uploadResponse.images[0].url as string, {
+        shouldDirty: true,
+        shouldTouch: true,
+      })
+      successToast(`새 이미지가 등록되었습니다. \n 확인을 눌러주세요.`)
     } catch (error: any) {
       errorToast(error.message)
       console.log(error)
     }
   }
+
+  console.log("isDirty", isDirty)
 
   return (
     <form className="mt-12 flex">
