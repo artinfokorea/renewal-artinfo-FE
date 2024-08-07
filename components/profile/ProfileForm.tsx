@@ -129,8 +129,6 @@ const ProfileForm = ({
     }
   }
 
-  console.log("isDirty", isDirty)
-
   return (
     <form className="mt-12 flex">
       <div className="hidden w-[300px] flex-col gap-4 whitespace-nowrap border-r-2 border-whitesmoke p-4 md:flex md:p-8">
