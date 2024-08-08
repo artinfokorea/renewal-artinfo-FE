@@ -20,8 +20,9 @@ interface Props {
 const DropDownMenu = ({ href, label }: { href: string; label: string }) => {
   const pathname = usePathname()
   const isActive = pathname.includes(href)
+
   return (
-    <MenuItem key={href}>
+    <MenuItem>
       <Link
         href={href}
         className={`w-full py-2 font-semibold ${isActive && "text-main"}`}
@@ -63,11 +64,8 @@ const MobileDropDown = ({ isBarOpen, handleBar, handleSign }: Props) => {
               <DropDownMenu href="/news" label="뉴스" />
               <DropDownMenu href="/inquiry" label="문의" />
               <div className="mx-auto my-4 w-full border-b-[1px] border-whitesmoke" />
-              <MenuItem>
-                <Link href="/my-profile" className="my-2 w-full font-bold">
-                  내정보
-                </Link>
-              </MenuItem>
+              <DropDownMenu href="/my-profile" label="내 정보" />
+
               <MenuItem>
                 {data?.user ? (
                   <span
