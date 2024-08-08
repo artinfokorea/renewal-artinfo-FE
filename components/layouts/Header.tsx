@@ -15,25 +15,6 @@ import { queries } from "@/lib/queries"
 import MobileDropDown from "./MobileDropDown"
 import DeskTopDropDown from "./DeskTopDropDown"
 
-export const NavItems = [
-  {
-    href: "/jobs",
-    label: "채용",
-  },
-  {
-    href: "/lessons",
-    label: "레슨",
-  },
-  {
-    href: "/news",
-    label: "뉴스",
-  },
-  {
-    href: "/inquiry",
-    label: "문의",
-  },
-]
-
 const NavMenu = ({ href, label }: { href: string; label: string }) => {
   const pathname = usePathname()
   const isActive = pathname.includes(href)
