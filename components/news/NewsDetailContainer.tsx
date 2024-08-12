@@ -51,7 +51,6 @@ const NewsDetailContainer = ({ news, deleteNews }: Props) => {
           __html: news.contents,
         }}
       />
-      <NewsCommentContainer />
       <ConfirmDialog
         isOpen={isDeleteConfirmDialog}
         handleDialog={() => setIsDeleteConfirmDialog(!isDeleteConfirmDialog)}
