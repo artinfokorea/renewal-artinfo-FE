@@ -169,6 +169,6 @@ export const newsSchema = yup.object().shape({
   thumbnailImageUrl: createStringRequiredSchema("이미지를 등록해주세요."),
 })
 
-export const newsCommentSchema = yup.object().shape({
+export const commentSchema = yup.object().shape({
   contents: createStringRequiredSchema("내용을 입력해주세요."),
 })

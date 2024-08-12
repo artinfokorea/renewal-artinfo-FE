@@ -1,4 +1,4 @@
-import { useQueryClient } from "@tanstack/react-query"
+import { QueryKey, useQueryClient } from "@tanstack/react-query"
 import useToast from "./useToast"
 import { useLoading } from "@toss/use-loading"
 import { useRouter } from "next/navigation"
@@ -7,8 +7,8 @@ interface MutationsProps<T> {
   createFn?: (data: T) => Promise<any>
   updateFn?: (id: number, data: T) => Promise<any>
   deleteFn?: (id?: number) => Promise<any>
-  queryKey: string[]
-  redirectPath: string
+  queryKey: QueryKey
+  redirectPath?: string
   successMessage: {
     create?: string
     update?: string
@@ -38,7 +38,7 @@ const useMutation = <T>({
         await startTransition(createFn(data))
         successToast(successMessage?.create || "등록되었습니다.")
       }
-      router.push(redirectPath)
+      if (redirectPath) router.push(redirectPath)
       queryClient.invalidateQueries({
         queryKey,
       })
@@ -54,7 +54,7 @@ const useMutation = <T>({
     try {
       await startTransition(deleteFn(id))
       successToast(successMessage?.delete || "삭제되었습니다.")
-      router.push(redirectPath)
+      if (redirectPath) router.push(redirectPath)
       queryClient.invalidateQueries({
         queryKey,
       })
