@@ -75,7 +75,12 @@ const CommentContainer = () => {
         />
       ))}
       {(commentList?.totalCount ?? 0) > size && (
-        <MoreButton more={() => setSize(size + 5)} label="더보기" size="md" />
+        <MoreButton
+          more={() => setSize(size + 5)}
+          label="더보기"
+          size="md"
+          className="mx-auto"
+        />
       )}
     </div>
   )

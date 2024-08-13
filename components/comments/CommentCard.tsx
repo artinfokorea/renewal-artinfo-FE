@@ -38,6 +38,8 @@ const CommentCard = ({
     enabled: !!data?.user,
   })
 
+  console.log("comment", comment)
+
   const {
     register,
     handleSubmit,
@@ -63,7 +65,7 @@ const CommentCard = ({
   }, [isSubmitSuccessful])
 
   return (
-    <div className={`my-4 flex min-h-16 gap-3 ${isChild && "ml-12"}`}>
+    <div className={`my-6 flex gap-3 ${isChild && "ml-12"}`}>
       <div className="relative h-10 min-w-10">
         <FallbackImage
           src={comment?.userIconImageUrl}
@@ -119,7 +121,7 @@ const CommentCard = ({
       </div>
       <div className="relative flex items-start">
         <div className="flex items-center">
-          {!isChild && !isEdit && (
+          {!isEdit && (
             <button
               className="w-10 text-sm text-coolgray"
               onClick={() => {

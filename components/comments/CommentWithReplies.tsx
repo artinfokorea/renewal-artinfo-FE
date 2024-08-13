@@ -22,17 +22,18 @@ const CommentWithReplies = ({
   handleCreate,
 }: Props) => {
   const params = useParams()
-  const [nestedCommentsSize, setNestedCommentsSize] = useState(5)
+
   const [parentCommentId, setParentCommentId] = useState<number>()
+  const [showNestedComments, setShowNestedComments] = useState(false)
 
   const { data: nestedComments } = useQuery({
     ...queries.comments.news({
       newsId: Number(params.id),
       page: 1,
-      size: nestedCommentsSize,
+      size: 20,
       parentId: comment?.id,
     }),
-    enabled: comment.childrenCount > 0,
+    enabled: comment.childrenCount > 0 && showNestedComments,
   })
 
   return (
@@ -57,14 +58,24 @@ const CommentWithReplies = ({
           isChild
           deleteComment={handleDelete}
           handleUpdate={handleUpdate}
+          handleReply={() => setParentCommentId(comment.id)}
         />
       ))}
-      {comment.childrenCount > nestedCommentsSize && (
+      {comment.childrenCount > 0 && !showNestedComments && (
         <MoreButton
-          more={() => setNestedCommentsSize(nestedCommentsSize + 5)}
-          label="답글 더보기"
+          more={() => setShowNestedComments(!showNestedComments)}
+          label={`답글 ${comment.childrenCount}개`}
           size="sm"
+          className="ml-12 hidden md:flex"
         />
+      )}
+      {comment.childrenCount > 0 && !showNestedComments && (
+        <button
+          className="ml-12 font-bold md:hidden"
+          onClick={() => setShowNestedComments(!showNestedComments)}
+        >
+          <p>답글 더보기</p>
+        </button>
       )}
     </>
   )
