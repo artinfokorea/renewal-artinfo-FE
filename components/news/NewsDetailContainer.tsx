@@ -3,12 +3,12 @@ import { queries } from "@/lib/queries"
 import { NEWS } from "@/types/news"
 import { UserType } from "@/types/users"
 import { useQuery } from "@tanstack/react-query"
-import React, { useState } from "react"
+import React, { Suspense, useState } from "react"
 import ItemManageBox from "../common/ItemManageBox"
 import { useRouter } from "next/navigation"
 import ConfirmDialog from "../dialog/ConfirmDialog"
 import { useSession } from "next-auth/react"
-import NewsCommentContainer from "./NewsCommentContainer"
+import CommentContainer from "../comments/CommentContainer"
 
 interface Props {
   news: NEWS
@@ -51,6 +51,8 @@ const NewsDetailContainer = ({ news, deleteNews }: Props) => {
           __html: news.contents,
         }}
       />
+      <CommentContainer />
+
       <ConfirmDialog
         isOpen={isDeleteConfirmDialog}
         handleDialog={() => setIsDeleteConfirmDialog(!isDeleteConfirmDialog)}

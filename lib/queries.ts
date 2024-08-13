@@ -16,6 +16,8 @@ import { LessonsRequest } from "@/interface/lessons"
 import { ArtFieldRequest } from "@/interface/majors"
 import { AdvertisementType } from "@/types/ads"
 import { createQueryKeys, mergeQueryKeys } from "@lukemorales/query-key-factory"
+import { getNewsComments } from "@/services/comments"
+import { CommentsRequest } from "@/interface/comments"
 
 const ads = createQueryKeys("ads", {
   list: (type: AdvertisementType) => ({
@@ -30,11 +32,11 @@ const majors = createQueryKeys("majors", {
     queryFn: getMajors,
   }),
   artCategories: () => ({
-    queryKey: ["artCategories"],
+    queryKey: [""],
     queryFn: getArtCategories,
   }),
   artFields: (request: ArtFieldRequest) => ({
-    queryKey: ["artFields", request],
+    queryKey: ["", request],
     queryFn: () => getArtFileds(request),
   }),
 })
@@ -48,7 +50,7 @@ const provinces = createQueryKeys("provinces", {
 
 const lessons = createQueryKeys("lessons", {
   fields: () => ({
-    queryKey: ["fields"],
+    queryKey: [""],
     queryFn: getLessonFields,
   }),
   detail: (lessonId: number) => ({
@@ -56,7 +58,7 @@ const lessons = createQueryKeys("lessons", {
     queryFn: () => getLesson(lessonId),
   }),
   list: (filters: LessonsRequest) => ({
-    queryKey: ["list", { filters }],
+    queryKey: ["", { filters }],
     queryFn: () => getJobs(filters),
   }),
   infiniteList: (filters: LessonsRequest) => ({
@@ -65,14 +67,14 @@ const lessons = createQueryKeys("lessons", {
       getInfiniteLessons({ ...filters, page: pageParam }),
   }),
   count: () => ({
-    queryKey: ["count"],
+    queryKey: [""],
     queryFn: getLessonsCount,
   }),
 })
 
 const users = createQueryKeys("users", {
   detail: () => ({
-    queryKey: ["me"],
+    queryKey: [""],
     queryFn: () => getMe(),
   }),
 })
@@ -88,8 +90,15 @@ const news = createQueryKeys("news", {
       getInfiniteNews({ ...filters, page: pageParam }),
   }),
   count: () => ({
-    queryKey: ["count"],
+    queryKey: [""],
     queryFn: getNewsCount,
+  }),
+})
+
+const comments = createQueryKeys("comments", {
+  news: (filters: CommentsRequest) => ({
+    queryKey: [filters.newsId, { filters }],
+    queryFn: () => getNewsComments(filters),
   }),
 })
 
@@ -99,7 +108,7 @@ const jobs = createQueryKeys("jobs", {
     queryFn: () => getJob(jobId),
   }),
   list: (filters: JobsRequest) => ({
-    queryKey: ["list", { filters }],
+    queryKey: [{ filters }],
     queryFn: () => getJobs(filters),
   }),
   infiniteList: (filters: JobsRequest) => ({
@@ -108,7 +117,7 @@ const jobs = createQueryKeys("jobs", {
       getInfiniteJobs({ ...filters, page: pageParam }),
   }),
   count: () => ({
-    queryKey: ["count"],
+    queryKey: [""],
     queryFn: getJobsCount,
   }),
 })
@@ -121,4 +130,5 @@ export const queries = mergeQueryKeys(
   lessons,
   users,
   news,
+  comments,
 )
