@@ -56,7 +56,7 @@ const CommentForm = ({ handleCreateComment, isLoading }: Props) => {
         id="contents"
         {...register("contents")}
         placeholder="댓글을 남겨주세요."
-        className="h-20 w-full resize-none rounded-md border border-gray-300 px-16 py-6 placeholder:font-semibold focus:outline-none md:px-24 md:py-6"
+        className="h-20 w-full resize-none rounded-md border border-gray-300 px-[72px] py-6 placeholder:font-semibold focus:outline-none md:px-24 md:py-6"
       />
       <Button
         type="button"
