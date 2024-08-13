@@ -18,7 +18,7 @@ interface Props {
   deleteComment: (id: number) => void
   isChild?: boolean
   handleUpdate: (id: number, payload: CommentFormData) => void
-  handleReply?: (parentId: number) => void
+  handleReply: (parentId: number) => void
 }
 
 const CommentCard = ({
@@ -37,8 +37,6 @@ const CommentCard = ({
     ...queries.users.detail(),
     enabled: !!data?.user,
   })
-
-  console.log("comment", comment)
 
   const {
     register,
@@ -59,6 +57,8 @@ const CommentCard = ({
     deleteComment(id)
     setIsDeleteConfirmDialog(false)
   }
+
+  const openReplyForm = () => handleReply(comment.id)
 
   useEffect(() => {
     if (isSubmitSuccessful) setIsEdit(false)
@@ -123,10 +123,8 @@ const CommentCard = ({
         <div className="flex items-center">
           {!isEdit && (
             <button
-              className="w-10 text-sm text-coolgray"
-              onClick={() => {
-                handleReply && handleReply(comment.id)
-              }}
+              className="hidden w-10 text-sm text-coolgray md:block"
+              onClick={openReplyForm}
             >
               답글
             </button>
@@ -138,6 +136,7 @@ const CommentCard = ({
                 setIsDeleteConfirmDialog(!isDeleteConfirmDialog)
               }
               handleEdit={() => setIsEdit(!isEdit)}
+              handleReply={openReplyForm}
             />
           )}
         </div>

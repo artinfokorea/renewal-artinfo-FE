@@ -11,14 +11,21 @@ import TrashIcon from "../icons/TrashIcon"
 import { Fragment } from "react"
 import FlagIcon from "../icons/FlagIcon"
 import useToast from "@/hooks/useToast"
+import ChatIcon from "../icons/ChatIcon"
 
 interface Props {
   isAuthor: boolean
   handleDelete: () => void
   handleEdit: () => void
+  handleReply: () => void
 }
 
-const CommentMenu = ({ isAuthor, handleDelete, handleEdit }: Props) => {
+const CommentMenu = ({
+  isAuthor,
+  handleDelete,
+  handleEdit,
+  handleReply,
+}: Props) => {
   const { successToast } = useToast()
 
   return (
@@ -58,6 +65,14 @@ const CommentMenu = ({ isAuthor, handleDelete, handleEdit }: Props) => {
           </MenuItems>
         ) : (
           <MenuItems className="absolute right-0 top-10 z-50 w-24 rounded-lg bg-white shadow-xl md:left-0">
+            <MenuItem>
+              <button className="flex h-10 w-24 cursor-pointer items-center justify-between rounded-lg rounded-b-lg px-4 hover:bg-whitesmoke">
+                <ChatIcon className="h-5 w-5" />{" "}
+                <span onClick={handleReply} className="text-sm">
+                  답글
+                </span>
+              </button>
+            </MenuItem>
             <MenuItem>
               <button className="flex h-10 w-24 cursor-pointer items-center justify-between rounded-lg rounded-b-lg px-4 hover:bg-whitesmoke">
                 <FlagIcon className="h-5 w-5" />{" "}
