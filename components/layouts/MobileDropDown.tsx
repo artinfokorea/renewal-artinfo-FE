@@ -33,7 +33,7 @@ const DropDownMenu = ({ href, label }: { href: string; label: string }) => {
   )
 }
 
-const MobileDropDown = ({ isBarOpen, handleBar, handleSign }: Props) => {
+const MobileDropDown = ({ handleBar, handleSign }: Props) => {
   const { data } = useSession()
 
   return (

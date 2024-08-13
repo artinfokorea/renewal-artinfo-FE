@@ -9,4 +9,5 @@ export type COMMENT = {
   userNickname?: string
   userIconImageUrl?: string
   createdAt: Date
+  childrenCount: number
 }

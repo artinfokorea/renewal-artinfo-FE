@@ -7,7 +7,6 @@ import {
 } from "@/components/ui/dropdown-menu"
 import { USER } from "@/types/users"
 import Link from "next/link"
-import Image from "next/image"
 import FallbackImage from "../common/FallbackImage"
 
 interface Props {
@@ -25,6 +24,7 @@ const DeskTopDropDown = ({ user, handleSign }: Props) => {
             alt="user_profile_image"
             fill
             sizes="150px"
+            unoptimized
             className="rounded-full"
           />
         </div>

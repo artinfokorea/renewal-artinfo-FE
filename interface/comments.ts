@@ -2,8 +2,8 @@ import { CommentType } from "@/types/comments"
 import { ListRequest } from "."
 
 export interface CommentPayload {
-  type: CommentType
-  targetId: number
+  type?: CommentType
+  targetId?: number
   parentId?: number
   contents: string
 }

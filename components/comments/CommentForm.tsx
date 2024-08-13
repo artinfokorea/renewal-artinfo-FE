@@ -1,7 +1,9 @@
+"use client"
+
 import { commentSchema } from "@/lib/schemas"
 import { Textarea } from "@headlessui/react"
 import { yupResolver } from "@hookform/resolvers/yup"
-import React from "react"
+import React, { useEffect } from "react"
 import * as yup from "yup"
 import { useForm } from "react-hook-form"
 import { useQuery } from "@tanstack/react-query"
@@ -13,7 +15,7 @@ import { Button } from "../ui/button"
 export type CommentFormData = yup.InferType<typeof commentSchema>
 
 interface Props {
-  handleCreateComment: (payload: CommentFormData) => void
+  handleCreateComment: (payload: CommentFormData, parentId?: number) => void
   isLoading: boolean
 }
 
@@ -27,17 +29,21 @@ const CommentForm = ({ handleCreateComment, isLoading }: Props) => {
   const {
     register,
     handleSubmit,
-    watch,
-    setValue,
-    formState: { errors, isValid },
+    reset,
+    getValues,
+    formState: { isValid, isSubmitSuccessful },
   } = useForm<CommentFormData>({
     resolver: yupResolver(commentSchema),
     mode: "onChange",
   })
 
+  useEffect(() => {
+    if (isSubmitSuccessful) reset()
+  }, [isSubmitSuccessful])
+
   return (
     <form className="relative">
-      <div className="absolute left-8 top-5 h-10 w-10">
+      <div className="absolute left-4 top-5 h-10 w-10 md:left-8">
         <FallbackImage
           src={user?.iconImageUrl}
           alt="user_profile_image"
@@ -50,13 +56,15 @@ const CommentForm = ({ handleCreateComment, isLoading }: Props) => {
         id="contents"
         {...register("contents")}
         placeholder="댓글을 남겨주세요."
-        className="h-20 w-full resize-none rounded-md border border-gray-300 px-24 py-6 placeholder:font-semibold focus:outline-none"
+        className="h-20 w-full resize-none rounded-md border border-gray-300 px-16 py-6 placeholder:font-semibold focus:outline-none md:px-24 md:py-6"
       />
       <Button
         type="button"
         disabled={!isValid || isLoading}
-        onClick={handleSubmit(handleCreateComment)}
-        className="absolute bottom-7 right-8 h-8 rounded-full bg-main px-5 text-xs font-semibold text-white"
+        onClick={handleSubmit(() =>
+          handleCreateComment({ contents: getValues("contents") }),
+        )}
+        className="absolute bottom-7 right-3 h-8 rounded-full bg-main px-5 text-xs font-semibold text-white md:right-8"
       >
         등록
       </Button>
