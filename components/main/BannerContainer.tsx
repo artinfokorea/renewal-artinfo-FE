@@ -1,6 +1,6 @@
 "use client"
 
-import React, { useRef } from "react"
+import React, { useEffect, useRef } from "react"
 import Autoplay from "embla-carousel-autoplay"
 import {
   Carousel,
@@ -17,6 +17,12 @@ const BannerContainer = () => {
   const plugin = useRef(
     Autoplay({ delay: 5000, stopOnInteraction: true, loop: true }),
   )
+
+  useEffect(() => {
+    const NaverIdLogin = (window as any).naver
+
+    console.log("NaverIdLogin", NaverIdLogin)
+  }, [])
 
   const { data: ads } = useSuspenseQuery({
     ...queries.ads.list(AdvertisementType.BANNER),

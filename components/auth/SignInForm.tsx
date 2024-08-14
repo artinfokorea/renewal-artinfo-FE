@@ -89,6 +89,7 @@ const SignInForm = () => {
 
   const handleNaverLogin = () => {
     const NaverIdLogin = (window as any).naver
+
     const naverLogin = new NaverIdLogin.LoginWithNaverId({
       clientId: process.env.NEXT_PUBLIC_NAVER_CLIENT_ID,
       callbackUrl: `${process.env.NEXT_PUBLIC_REDIRECT_URL}auth/callback?state=naver`,
