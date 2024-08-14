@@ -18,6 +18,11 @@ const BannerContainer = () => {
     Autoplay({ delay: 5000, stopOnInteraction: true, loop: true }),
   )
 
+  useEffect(() => {
+    const NaverIdLogin = (window as any).naver
+    console.log("NaverIdLogin", NaverIdLogin)
+  }, [])
+
   const { data: ads } = useSuspenseQuery({
     ...queries.ads.list(AdvertisementType.BANNER),
   })

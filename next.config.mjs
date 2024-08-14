@@ -7,6 +7,7 @@ const isProduction = process.env.DEV_ENV === "production"
 const config = {
   reactStrictMode: false,
   env: {
+    NAVER_SECRET_KEY: process.env.NAVER_SECRET_KEY,
     DEV_ENV: process.env.DEV_ENV,
     REST_API_BASE_URL: process.env.REST_API_BASE_URL,
     NEXTAUTH_SECRET: process.env.NEXTAUTH_SECRET,

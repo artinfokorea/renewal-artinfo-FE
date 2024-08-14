@@ -20,9 +20,6 @@ const page = () => {
     const code = searchParams.get("code")
 
     if (state === "naver") {
-      // let callbackUrl = prevPath || "/"
-
-      // if (prevPath) Cookies.remove("prevPath")
       const NaverIdLogin = (window as any).naver
       const naverLogin = new NaverIdLogin.LoginWithNaverId({
         clientId: process.env.NEXT_PUBLIC_NAVER_CLIENT_ID,
@@ -30,24 +27,6 @@ const page = () => {
         isPopup: false,
       })
       checkNaverLogin(naverLogin)
-
-      // fetch("/api/auth/naver", {
-      //   method: "POST",
-      //   headers: { "Content-Type": "application/json" },
-      //   body: JSON.stringify({ code, state }),
-      // })
-      //   .then(response => response.json())
-      //   .then(data => {
-      //     // 로그인 성공 처리
-      //     console.log("Login success:", data)
-      //     // signIn("sns", {
-      //     //   accessToken: data.token,
-      //     //   type: "NAVER",
-      //     //   callbackUrl,
-      //     // }).catch(error => {
-      //     //   console.error("Login failed:", error)
-      //     // })
-      //   })
     } else if (state === "kakao") {
       if (code) {
         checkKakaoLogin(code)
