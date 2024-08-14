@@ -10,9 +10,6 @@ const Callback = () => {
   const router = useRouter()
   const prevPath = Cookies.get("prevPath")
 
-  let naver
-  let naverLogin: any
-
   useEffect(() => {
     if (typeof window === "undefined") return
 
@@ -21,9 +18,9 @@ const Callback = () => {
     const code = searchParams.get("code")
 
     if (state === "naver") {
-      naver = (window as any).naver
+      const NaverIdLogin = (window as any).naver
 
-      naverLogin = new naver.LoginWithNaverId({
+      const naverLogin = new NaverIdLogin.LoginWithNaverId({
         clientId: process.env.NEXT_PUBLIC_NAVER_CLIENT_ID,
         callbackUrl: process.env.NEXT_PUBLIC_REDIRECT_URL,
         isPopup: false,
