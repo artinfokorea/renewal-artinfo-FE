@@ -24,17 +24,25 @@ const CommentWithReplies = ({
   const params = useParams()
 
   const [parentCommentId, setParentCommentId] = useState<number>()
-  const [showNestedComments, setShowNestedComments] = useState(false)
+  const [showNestedCommentsSize, setNestedCommentsSize] = useState(0)
 
   const { data: nestedComments } = useQuery({
     ...queries.comments.news({
       newsId: Number(params.id),
       page: 1,
-      size: 20,
+      size: showNestedCommentsSize,
       parentId: comment?.id,
     }),
-    enabled: comment.childrenCount > 0 && showNestedComments,
+    enabled: comment.childrenCount > 0 && showNestedCommentsSize > 0,
   })
+
+  const isNestedComments =
+    comment.childrenCount > 0 && comment.childrenCount > showNestedCommentsSize
+
+  const moreButtonLabel =
+    showNestedCommentsSize > 0
+      ? "답글 더보기"
+      : `답글 ${comment.childrenCount}개`
 
   return (
     <>
@@ -61,18 +69,18 @@ const CommentWithReplies = ({
           handleReply={() => setParentCommentId(comment.id)}
         />
       ))}
-      {comment.childrenCount > 0 && !showNestedComments && (
+      {isNestedComments && (
         <MoreButton
-          more={() => setShowNestedComments(!showNestedComments)}
-          label={`답글 ${comment.childrenCount}개`}
+          more={() => setNestedCommentsSize(showNestedCommentsSize + 5)}
+          label={moreButtonLabel}
           size="sm"
           className="ml-12 hidden md:flex"
         />
       )}
-      {comment.childrenCount > 0 && !showNestedComments && (
+      {isNestedComments && (
         <button
           className="ml-12 font-bold md:hidden"
-          onClick={() => setShowNestedComments(!showNestedComments)}
+          onClick={() => setNestedCommentsSize(showNestedCommentsSize + 5)}
         >
           <p>답글 더보기</p>
         </button>

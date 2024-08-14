@@ -44,11 +44,19 @@ const CommentMenu = ({
         {isAuthor ? (
           <MenuItems className="absolute right-0 top-10 z-50 w-24 rounded-lg bg-white shadow-xl md:left-0">
             <MenuItem>
+              <button className="flex h-10 w-24 cursor-pointer items-center justify-between rounded-lg rounded-b-lg px-4 hover:bg-whitesmoke">
+                <ChatIcon className="hidden h-5 w-5 md:block" />{" "}
+                <span onClick={handleReply} className="text-sm">
+                  답글
+                </span>
+              </button>
+            </MenuItem>
+            <MenuItem>
               <button
                 onClick={handleEdit}
                 className="flex h-10 w-24 cursor-pointer items-center justify-between rounded-t-lg px-4 hover:bg-whitesmoke"
               >
-                <EditIcon className="h-5 w-5" />{" "}
+                <EditIcon className="hidden h-5 w-5 md:block" />{" "}
                 <span className="text-sm">수정</span>
               </button>
             </MenuItem>
@@ -58,7 +66,7 @@ const CommentMenu = ({
                 onClick={handleDelete}
                 className="flex h-10 w-24 cursor-pointer items-center justify-between rounded-b-lg px-4 hover:bg-whitesmoke"
               >
-                <TrashIcon className="h-5 w-5" />{" "}
+                <TrashIcon className="hidden h-5 w-5 md:block" />{" "}
                 <span className="text-sm">삭제</span>
               </button>
             </MenuItem>
@@ -67,7 +75,7 @@ const CommentMenu = ({
           <MenuItems className="absolute right-0 top-10 z-50 w-24 rounded-lg bg-white shadow-xl md:left-0">
             <MenuItem>
               <button className="flex h-10 w-24 cursor-pointer items-center justify-between rounded-lg rounded-b-lg px-4 hover:bg-whitesmoke">
-                <ChatIcon className="h-5 w-5" />{" "}
+                <ChatIcon className="hidden h-5 w-5 md:block" />{" "}
                 <span onClick={handleReply} className="text-sm">
                   답글
                 </span>
@@ -75,7 +83,7 @@ const CommentMenu = ({
             </MenuItem>
             <MenuItem>
               <button className="flex h-10 w-24 cursor-pointer items-center justify-between rounded-lg rounded-b-lg px-4 hover:bg-whitesmoke">
-                <FlagIcon className="h-5 w-5" />{" "}
+                <FlagIcon className="hidden h-5 w-5 md:block" />{" "}
                 <span
                   onClick={() => successToast("신고가 접수되었습니다.")}
                   className="text-sm"

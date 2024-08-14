@@ -115,7 +115,7 @@ const CommentCard = ({
               </div>
             </div>
           ) : (
-            <p className="text-sm">{comment.contents}</p>
+            <p className="whitespace-pre-wrap text-sm">{comment.contents}</p>
           )}
         </div>
       </div>
