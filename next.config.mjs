@@ -6,7 +6,6 @@ const isProduction = process.env.DEV_ENV === "production"
 
 const config = {
   reactStrictMode: false,
-  isrMemoryCacheSize: 0,
   env: {
     DEV_ENV: process.env.DEV_ENV,
     REST_API_BASE_URL: process.env.REST_API_BASE_URL,
