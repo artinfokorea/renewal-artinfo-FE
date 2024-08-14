@@ -1,4 +1,5 @@
 import { Metadata } from "next"
+import Script from "next/script"
 
 export const metadata: Metadata = {
   title: "로그인-ARTINFO",
@@ -11,5 +12,15 @@ export default function RootLayout({
 }: {
   children: React.ReactNode
 }) {
-  return <main>{children}</main>
+  return (
+    <>
+      {/* <script
+        src="https://static.nid.naver.com/js/naveridlogin_js_sdk_2.0.2.js"
+        defer
+      /> */}
+      <Script src="https://developers.kakao.com/sdk/js/kakao.js" />
+      <Script src="https://static.nid.naver.com/js/naveridlogin_js_sdk_2.0.2.js" />
+      <main>{children}</main>
+    </>
+  )
 }

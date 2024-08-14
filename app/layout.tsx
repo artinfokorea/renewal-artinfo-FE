@@ -62,11 +62,9 @@ export default function RootLayout({
         suppressHydrationWarning
       >
         <Script
-          strategy="beforeInteractive"
           src={`https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=${process.env.AD_SENSE_ID}`}
         />
         <Script
-          strategy="beforeInteractive"
           src={`https://www.googletagmanager.com/gtag/js?id=${gtag.GA_TRACKING_ID}`}
         />
 
@@ -84,13 +82,7 @@ export default function RootLayout({
           `,
           }}
         />
-        <script
-          src="https://static.nid.naver.com/js/naveridlogin_js_sdk_2.0.2.js"
-          defer
-        />
 
-        <Script src="https://developers.kakao.com/sdk/js/kakao.js" />
-        {/* <Script src="https://static.nid.naver.com/js/naveridlogin_js_sdk_2.0.2.js" /> */}
         <ClientProvider>{children}</ClientProvider>
       </body>
     </html>
