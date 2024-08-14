@@ -34,8 +34,6 @@ const SignInForm = () => {
   })
 
   useEffect(() => {
-    const NaverIdLogin = (window as any).naver
-    console.log("NaverIdLogin", NaverIdLogin)
     if (error) {
       setErrorMessage(getErrorMessage(error))
     }

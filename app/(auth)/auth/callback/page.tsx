@@ -12,8 +12,6 @@ const page = () => {
 
   useEffect(() => {
     if (typeof window === "undefined") return
-    const NaverIdLogin = (window as any).naver
-    console.log("const NaverIdLogin = (window as any).naver", NaverIdLogin)
 
     const hashParams = new URLSearchParams(window.location.hash.substring(1))
     const state = searchParams.get("state") || hashParams.get("state")
