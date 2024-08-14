@@ -5,7 +5,7 @@ import { useRouter, useSearchParams } from "next/navigation"
 import React, { useEffect } from "react"
 import Cookies from "js-cookie"
 
-const Callback = () => {
+const page = () => {
   const searchParams = useSearchParams()
   const router = useRouter()
   const prevPath = Cookies.get("prevPath")
@@ -16,9 +16,9 @@ const Callback = () => {
     const hashParams = new URLSearchParams(window.location.hash.substring(1))
     const state = searchParams.get("state") || hashParams.get("state")
     const code = searchParams.get("code")
-    const NaverIdLogin = (window as any).naver
 
-    if (state === "naver" && NaverIdLogin.LoginWithNaverId) {
+    if (state === "naver") {
+      const NaverIdLogin = (window as any).naver
       const naverLogin = new NaverIdLogin.LoginWithNaverId({
         clientId: process.env.NEXT_PUBLIC_NAVER_CLIENT_ID,
         callbackUrl: process.env.NEXT_PUBLIC_REDIRECT_URL,
@@ -109,4 +109,4 @@ const Callback = () => {
   return <div></div>
 }
 
-export default Callback
+export default page
