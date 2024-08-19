@@ -125,12 +125,14 @@ const CommentCard = ({
       <div className="relative flex items-start">
         {!isEdit && (
           <div className="hidden items-center gap-2 md:flex">
-            <button
-              onClick={openReplyForm}
-              className="whitespace-nowrap text-sm font-semibold text-coolgray"
-            >
-              답글
-            </button>
+            {data && (
+              <button
+                onClick={openReplyForm}
+                className="whitespace-nowrap text-sm font-semibold text-coolgray"
+              >
+                답글
+              </button>
+            )}
             <CommentDesktopMenu
               isAuthor={isAuthor}
               handleDelete={() =>
@@ -141,13 +143,14 @@ const CommentCard = ({
           </div>
         )}
 
-        <div className="flex items-center md:hidden">
-          {!isEdit && (
-            <button onClick={() => setIsMobileMenu(!isMobileMenu)}>
-              <EllipsisVerticalIcon />
-            </button>
-          )}
-        </div>
+        {!isEdit && (
+          <button
+            className="flex items-center md:hidden"
+            onClick={() => setIsMobileMenu(!isMobileMenu)}
+          >
+            <EllipsisVerticalIcon />
+          </button>
+        )}
       </div>
       <CommentMobileMenu
         isAuthor={isAuthor}
