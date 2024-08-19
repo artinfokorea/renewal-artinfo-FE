@@ -1,6 +1,6 @@
 "use client"
 
-import { useQuery } from "@tanstack/react-query"
+import { useQuery, useQueryClient } from "@tanstack/react-query"
 import { queries } from "@/lib/queries"
 import { useParams } from "next/navigation"
 import { CommentType } from "@/types/comments"
@@ -19,6 +19,7 @@ import MoreButton from "../common/MoreButton"
 const CommentContainer = () => {
   const params = useParams()
   const [size, setSize] = useState(5)
+  const queryClient = useQueryClient()
   const { handleSubmit, isLoading, handleDelete } = useMutation<CommentPayload>(
     {
       createFn: (payload: CommentPayload) => createComment(payload),
@@ -56,6 +57,18 @@ const CommentContainer = () => {
     handleSubmit(form)
   }
 
+  const moreFetch = async () => {
+    await queryClient.prefetchQuery(
+      queries.comments.news({
+        newsId: Number(params.id),
+        page: 1,
+        size: size + 5,
+      }),
+    )
+
+    setSize(size + 5)
+  }
+
   return (
     <div className="my-12">
       <CommentForm
@@ -76,7 +89,7 @@ const CommentContainer = () => {
       ))}
       {(commentList?.totalCount ?? 0) > size && (
         <MoreButton
-          more={() => setSize(size + 5)}
+          more={moreFetch}
           label="더보기"
           size="md"
           className="mx-auto"

@@ -1,5 +1,5 @@
 import { COMMENT } from "@/types/comments"
-import React, { useRef, useState } from "react"
+import React, { useState } from "react"
 import CommentCard from "./CommentCard"
 import { useQuery, useQueryClient } from "@tanstack/react-query"
 import { queries } from "@/lib/queries"
@@ -7,7 +7,6 @@ import { useParams } from "next/navigation"
 import { CommentFormData } from "./CommentForm"
 import CommentReplyForm from "./CommentReplyForm"
 import MoreButton from "../common/MoreButton"
-import { Spinner } from "../common/Loading"
 
 interface Props {
   comment: COMMENT
@@ -23,7 +22,6 @@ const CommentWithReplies = ({
   handleCreate,
 }: Props) => {
   const params = useParams()
-  const nestedCommentRef = useRef(null)
   const [parentCommentId, setParentCommentId] = useState<number>()
   const [showNestedCommentsSize, setNestedCommentsSize] = useState(0)
   const queryClient = useQueryClient()
@@ -46,14 +44,7 @@ const CommentWithReplies = ({
       ? "답글 더보기"
       : `답글 ${comment.childrenCount}개`
 
-  const moreFetch = async (event: React.MouseEvent<HTMLButtonElement>) => {
-    // if (!event.target) return
-
-    // const buttonRect = (
-    //   event.target as HTMLButtonElement
-    // ).getBoundingClientRect()
-    // const buttonTopRelativeToViewport = buttonRect.top
-
+  const moreFetch = async () => {
     await queryClient.prefetchQuery(
       queries.comments.news({
         newsId: Number(params.id),
@@ -64,13 +55,6 @@ const CommentWithReplies = ({
     )
 
     setNestedCommentsSize(showNestedCommentsSize + 5)
-
-    // if (nestedCommentRef.current) {
-    //   const yOffset = +300
-    //   const y = buttonTopRelativeToViewport + window.scrollY + yOffset
-
-    //   window.scrollTo({ top: y, behavior: "smooth" })
-    // }
   }
 
   return (
@@ -88,18 +72,16 @@ const CommentWithReplies = ({
           cancelReply={() => setParentCommentId(undefined)}
         />
       )}
-      <div ref={nestedCommentRef}>
-        {nestedComments?.comments.map(nestedComment => (
-          <CommentCard
-            key={nestedComment.id}
-            comment={nestedComment}
-            isChild
-            deleteComment={handleDelete}
-            handleUpdate={handleUpdate}
-            handleReply={() => setParentCommentId(comment.id)}
-          />
-        ))}
-      </div>
+      {nestedComments?.comments.map(nestedComment => (
+        <CommentCard
+          key={nestedComment.id}
+          comment={nestedComment}
+          isChild
+          deleteComment={handleDelete}
+          handleUpdate={handleUpdate}
+          handleReply={() => setParentCommentId(comment.id)}
+        />
+      ))}
       {isNestedComments && (
         <MoreButton
           more={moreFetch}
