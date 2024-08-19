@@ -1,12 +1,13 @@
 import { COMMENT } from "@/types/comments"
-import React, { useState } from "react"
+import React, { useRef, useState } from "react"
 import CommentCard from "./CommentCard"
-import { useQuery } from "@tanstack/react-query"
+import { useQuery, useQueryClient } from "@tanstack/react-query"
 import { queries } from "@/lib/queries"
 import { useParams } from "next/navigation"
 import { CommentFormData } from "./CommentForm"
 import CommentReplyForm from "./CommentReplyForm"
 import MoreButton from "../common/MoreButton"
+import { Spinner } from "../common/Loading"
 
 interface Props {
   comment: COMMENT
@@ -22,8 +23,10 @@ const CommentWithReplies = ({
   handleCreate,
 }: Props) => {
   const params = useParams()
+  const nestedCommentRef = useRef(null)
   const [parentCommentId, setParentCommentId] = useState<number>()
   const [showNestedCommentsSize, setNestedCommentsSize] = useState(0)
+  const queryClient = useQueryClient()
 
   const { data: nestedComments } = useQuery({
     ...queries.comments.news({
@@ -43,6 +46,33 @@ const CommentWithReplies = ({
       ? "답글 더보기"
       : `답글 ${comment.childrenCount}개`
 
+  const moreFetch = async (event: React.MouseEvent<HTMLButtonElement>) => {
+    // if (!event.target) return
+
+    // const buttonRect = (
+    //   event.target as HTMLButtonElement
+    // ).getBoundingClientRect()
+    // const buttonTopRelativeToViewport = buttonRect.top
+
+    await queryClient.prefetchQuery(
+      queries.comments.news({
+        newsId: Number(params.id),
+        page: 1,
+        size: showNestedCommentsSize + 5,
+        parentId: comment.id,
+      }),
+    )
+
+    setNestedCommentsSize(showNestedCommentsSize + 5)
+
+    // if (nestedCommentRef.current) {
+    //   const yOffset = +300
+    //   const y = buttonTopRelativeToViewport + window.scrollY + yOffset
+
+    //   window.scrollTo({ top: y, behavior: "smooth" })
+    // }
+  }
+
   return (
     <>
       <CommentCard
@@ -58,29 +88,28 @@ const CommentWithReplies = ({
           cancelReply={() => setParentCommentId(undefined)}
         />
       )}
-      {nestedComments?.comments.map(nestedComment => (
-        <CommentCard
-          key={nestedComment.id}
-          comment={nestedComment}
-          isChild
-          deleteComment={handleDelete}
-          handleUpdate={handleUpdate}
-          handleReply={() => setParentCommentId(comment.id)}
-        />
-      ))}
+      <div ref={nestedCommentRef}>
+        {nestedComments?.comments.map(nestedComment => (
+          <CommentCard
+            key={nestedComment.id}
+            comment={nestedComment}
+            isChild
+            deleteComment={handleDelete}
+            handleUpdate={handleUpdate}
+            handleReply={() => setParentCommentId(comment.id)}
+          />
+        ))}
+      </div>
       {isNestedComments && (
         <MoreButton
-          more={() => setNestedCommentsSize(showNestedCommentsSize + 5)}
+          more={moreFetch}
           label={moreButtonLabel}
           size="sm"
           className="ml-12 hidden md:flex"
         />
       )}
       {isNestedComments && (
-        <button
-          className="ml-12 font-bold md:hidden"
-          onClick={() => setNestedCommentsSize(showNestedCommentsSize + 5)}
-        >
+        <button className="ml-12 font-bold md:hidden" onClick={moreFetch}>
           <p>답글 더보기</p>
         </button>
       )}

@@ -1,8 +1,8 @@
-import React from "react"
+import React, { MouseEventHandler } from "react"
 import DownIcon from "../icons/DownIcon"
 
 interface Props {
-  more: () => void
+  more: MouseEventHandler<HTMLButtonElement>
   label: string
   size: "sm" | "md"
   className?: string
