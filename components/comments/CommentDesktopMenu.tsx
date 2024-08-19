@@ -44,11 +44,12 @@ const CommentDesktopMenu = ({
         {isAuthor ? (
           <MenuItems className="absolute right-0 top-10 z-50 w-24 rounded-lg bg-white shadow-xl md:left-0">
             <MenuItem>
-              <button className="flex h-10 w-24 cursor-pointer items-center justify-between rounded-lg rounded-b-lg px-4 hover:bg-whitesmoke">
+              <button
+                className="flex h-10 w-24 cursor-pointer items-center justify-between rounded-lg rounded-b-lg px-4 hover:bg-whitesmoke"
+                onClick={handleReply}
+              >
                 <ChatIcon className="hidden h-5 w-5 md:block" />{" "}
-                <span onClick={handleReply} className="text-sm">
-                  답글
-                </span>
+                <span className="text-sm">답글</span>
               </button>
             </MenuItem>
             <MenuItem>

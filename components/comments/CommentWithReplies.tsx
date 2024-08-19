@@ -22,7 +22,6 @@ const CommentWithReplies = ({
   handleCreate,
 }: Props) => {
   const params = useParams()
-
   const [parentCommentId, setParentCommentId] = useState<number>()
   const [showNestedCommentsSize, setNestedCommentsSize] = useState(0)
 
