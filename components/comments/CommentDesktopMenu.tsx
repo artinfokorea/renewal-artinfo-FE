@@ -11,21 +11,14 @@ import TrashIcon from "../icons/TrashIcon"
 import { Fragment } from "react"
 import FlagIcon from "../icons/FlagIcon"
 import useToast from "@/hooks/useToast"
-import ChatIcon from "../icons/ChatIcon"
 
 interface Props {
   isAuthor: boolean
   handleDelete: () => void
   handleEdit: () => void
-  handleReply: () => void
 }
 
-const CommentDesktopMenu = ({
-  isAuthor,
-  handleDelete,
-  handleEdit,
-  handleReply,
-}: Props) => {
+const CommentDesktopMenu = ({ isAuthor, handleDelete, handleEdit }: Props) => {
   const { successToast } = useToast()
 
   return (
@@ -43,15 +36,6 @@ const CommentDesktopMenu = ({
       >
         {isAuthor ? (
           <MenuItems className="absolute right-0 top-10 z-50 w-24 rounded-lg bg-white shadow-xl md:left-0">
-            <MenuItem>
-              <button
-                className="flex h-10 w-24 cursor-pointer items-center justify-between rounded-lg rounded-b-lg px-4 hover:bg-whitesmoke"
-                onClick={handleReply}
-              >
-                <ChatIcon className="hidden h-5 w-5 md:block" />{" "}
-                <span className="text-sm">답글</span>
-              </button>
-            </MenuItem>
             <MenuItem>
               <button
                 onClick={handleEdit}
@@ -74,14 +58,6 @@ const CommentDesktopMenu = ({
           </MenuItems>
         ) : (
           <MenuItems className="absolute right-0 top-10 z-50 w-24 rounded-lg bg-white shadow-xl md:left-0">
-            <MenuItem>
-              <button className="flex h-10 w-24 cursor-pointer items-center justify-between rounded-lg rounded-b-lg px-4 hover:bg-whitesmoke">
-                <ChatIcon className="hidden h-5 w-5 md:block" />{" "}
-                <span onClick={handleReply} className="text-sm">
-                  답글
-                </span>
-              </button>
-            </MenuItem>
             <MenuItem>
               <button className="flex h-10 w-24 cursor-pointer items-center justify-between rounded-lg rounded-b-lg px-4 hover:bg-whitesmoke">
                 <FlagIcon className="hidden h-5 w-5 md:block" />{" "}

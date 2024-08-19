@@ -61,10 +61,7 @@ const CommentCard = ({
     setIsDeleteConfirmDialog(false)
   }
 
-  const openReplyForm = () => {
-    console.log("comment.id", comment.id)
-    handleReply(comment.id)
-  }
+  const openReplyForm = () => handleReply(comment.id)
 
   useEffect(() => {
     if (isSubmitSuccessful) setIsEdit(false)
@@ -126,18 +123,24 @@ const CommentCard = ({
         </div>
       </div>
       <div className="relative flex items-start">
-        <div className="hidden items-center md:flex">
-          {!isEdit && (
+        {!isEdit && (
+          <div className="hidden items-center gap-2 md:flex">
+            <button
+              onClick={openReplyForm}
+              className="whitespace-nowrap text-sm font-semibold text-coolgray"
+            >
+              답글
+            </button>
             <CommentDesktopMenu
               isAuthor={isAuthor}
               handleDelete={() =>
                 setIsDeleteConfirmDialog(!isDeleteConfirmDialog)
               }
               handleEdit={() => setIsEdit(!isEdit)}
-              handleReply={openReplyForm}
             />
-          )}
-        </div>
+          </div>
+        )}
+
         <div className="flex items-center md:hidden">
           {!isEdit && (
             <button onClick={() => setIsMobileMenu(!isMobileMenu)}>
