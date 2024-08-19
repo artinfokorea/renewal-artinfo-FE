@@ -6,12 +6,14 @@ import { useSession } from "next-auth/react"
 import { useQuery } from "@tanstack/react-query"
 import { queries } from "@/lib/queries"
 import ConfirmDialog from "../dialog/ConfirmDialog"
-import CommentMenu from "./CommentMenu"
+import CommentDesktopMenu from "./CommentDesktopMenu"
 import { Textarea } from "@headlessui/react"
 import { useForm } from "react-hook-form"
 import { CommentFormData } from "./CommentForm"
 import { yupResolver } from "@hookform/resolvers/yup"
 import { commentSchema } from "@/lib/schemas"
+import CommentMobileMenu from "./CommentMobileMenu"
+import EllipsisVerticalIcon from "../icons/EllipsisVerticalIcon"
 
 interface Props {
   comment: COMMENT
@@ -31,6 +33,7 @@ const CommentCard = ({
   const filter = filters()
   const [isDeleteConfirmDialog, setIsDeleteConfirmDialog] = useState(false)
   const [isEdit, setIsEdit] = useState(false)
+  const [isMobileMenu, setIsMobileMenu] = useState(false)
 
   const { data } = useSession()
   const { data: user } = useQuery({
@@ -120,27 +123,42 @@ const CommentCard = ({
         </div>
       </div>
       <div className="relative flex items-start">
-        <div className="flex items-center">
+        <div className="hidden items-center md:flex">
           {!isEdit && (
-            <button
-              className="hidden w-10 text-sm text-coolgray md:block"
-              onClick={openReplyForm}
-            >
-              답글
-            </button>
+            <>
+              <button
+                className="w-10 text-sm text-coolgray"
+                onClick={openReplyForm}
+              >
+                답글
+              </button>
+              <CommentDesktopMenu
+                isAuthor={isAuthor}
+                handleDelete={() =>
+                  setIsDeleteConfirmDialog(!isDeleteConfirmDialog)
+                }
+                handleEdit={() => setIsEdit(!isEdit)}
+                handleReply={openReplyForm}
+              />
+            </>
           )}
+        </div>
+        <div className="flex items-center md:hidden">
           {!isEdit && (
-            <CommentMenu
-              isAuthor={isAuthor}
-              handleDelete={() =>
-                setIsDeleteConfirmDialog(!isDeleteConfirmDialog)
-              }
-              handleEdit={() => setIsEdit(!isEdit)}
-              handleReply={openReplyForm}
-            />
+            <button onClick={() => setIsMobileMenu(!isMobileMenu)}>
+              <EllipsisVerticalIcon />
+            </button>
           )}
         </div>
       </div>
+      <CommentMobileMenu
+        isAuthor={isAuthor}
+        handleDialog={() => setIsMobileMenu(!isMobileMenu)}
+        handleDelete={() => setIsDeleteConfirmDialog(!isDeleteConfirmDialog)}
+        handleEdit={() => setIsEdit(!isEdit)}
+        handleReply={openReplyForm}
+        isOpen={isMobileMenu}
+      />
       <ConfirmDialog
         isOpen={isDeleteConfirmDialog}
         handleDialog={() => setIsDeleteConfirmDialog(!isDeleteConfirmDialog)}

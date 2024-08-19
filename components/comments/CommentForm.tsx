@@ -55,12 +55,12 @@ const CommentForm = ({ handleCreateComment, isLoading }: Props) => {
       <Textarea
         id="contents"
         {...register("contents")}
-        placeholder="댓글을 남겨주세요."
+        placeholder={`${data?.user ? "댓글을 입력해주세요." : "로그인 후 이용해주세요."}`}
         className="h-20 w-full resize-none rounded-md border border-gray-300 px-[72px] py-6 placeholder:font-semibold focus:outline-none md:px-24 md:py-6"
       />
       <Button
         type="button"
-        disabled={!isValid || isLoading}
+        disabled={!isValid || isLoading || !data}
         onClick={handleSubmit(() =>
           handleCreateComment({ contents: getValues("contents") }),
         )}

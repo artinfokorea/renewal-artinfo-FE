@@ -493,3 +493,7 @@ input[type="number"] {
     margin: 0 auto;
   }
 }
+
+.mobile-comment-menu svg {
+  display: none !important;
+}

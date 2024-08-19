@@ -20,7 +20,7 @@ interface Props {
   handleReply: () => void
 }
 
-const CommentMenu = ({
+const CommentDesktopMenu = ({
   isAuthor,
   handleDelete,
   handleEdit,
@@ -98,4 +98,4 @@ const CommentMenu = ({
     </Menu>
   )
 }
-export default CommentMenu
+export default CommentDesktopMenu
