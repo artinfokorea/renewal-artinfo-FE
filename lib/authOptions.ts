@@ -1,5 +1,6 @@
 import { User } from "next-auth"
 import CredentialsProvider from "next-auth/providers/credentials"
+import { signOut } from "next-auth/react"
 import { cookies } from "next/headers"
 
 const handleRefreshToken = async ({
@@ -170,6 +171,12 @@ export const authOptions = {
       session.token = token
 
       return session
+    },
+  },
+  events: {
+    signOut: () => {
+      const accessToken = cookies().get("accessToken")
+      if (accessToken) cookies().delete("accessToken")
     },
   },
 }

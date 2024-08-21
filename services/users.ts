@@ -6,9 +6,8 @@ import { UserPayload } from "@/interface/users"
 
 export const getMe = async (): Promise<USER> => {
   try {
-    const response = await authApiRequest.get<DetailApiResponse<USER>>(
-      "/users/me",
-    )
+    const response =
+      await authApiRequest.get<DetailApiResponse<USER>>("/users/me")
     return response.item
   } catch (error) {
     throw new Error(exceptionHandler(error, "API getMe error"))

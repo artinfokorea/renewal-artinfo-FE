@@ -3,6 +3,7 @@ import { DetailApiResponse } from "@/interface"
 import { getServerSession } from "next-auth"
 import { authOptions } from "./authOptions"
 import { redirect } from "next/navigation"
+import { cookies } from "next/headers"
 
 export const getUser = async (): Promise<USER> => {
   const session = await getServerSession(authOptions)
@@ -20,5 +21,12 @@ export const getUser = async (): Promise<USER> => {
   }
 
   const data: DetailApiResponse<USER> = await res.json()
+
   return data.item
+}
+
+export const removeToken = () => {
+  const accessToken = cookies().get("accessToken")
+
+  if (accessToken) cookies().delete("accessToken")
 }
