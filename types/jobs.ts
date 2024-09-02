@@ -106,4 +106,5 @@ export enum SearchType {
   REGION = "REGION",
   MAJOR = "MAJOR",
   RECRUIT = "RECRUIT",
+  CATEGORY = "CATEGORY",
 }

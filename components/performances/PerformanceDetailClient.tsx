@@ -14,9 +14,14 @@ import {
 import { useEffect, useState } from "react"
 import useMutation from "@/hooks/useMutation"
 import { JobPayload } from "@/interface/jobs"
-import EventDetailContainer from "./EventDetailContainer"
+import PerformanceDetailContainer from "./PerformanceDetailContainer"
+import { PERFORMANCE_DETAIL } from "@/types/performances"
 
-const EventDetailClient = () => {
+interface Props {
+  performance: PERFORMANCE_DETAIL
+}
+
+const PerformanceDetailClient = ({ performance }: Props) => {
   const params = useParams()
   const router = useRouter()
   const pathname = usePathname()
@@ -70,7 +75,7 @@ const EventDetailClient = () => {
 
   return (
     <section className="mx-auto max-w-screen-lg">
-      <EventDetailContainer />
+      <PerformanceDetailContainer />
       {/* {pageType === "edit" ? (
         <FullTimeJobForm
           handleFullTimeJob={handleUpdateFulltimeJob}
@@ -102,4 +107,4 @@ const EventDetailClient = () => {
   )
 }
 
-export default EventDetailClient
+export default PerformanceDetailClient

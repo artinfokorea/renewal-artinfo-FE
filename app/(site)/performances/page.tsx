@@ -2,20 +2,17 @@
 
 import React, { useState, useMemo, Suspense } from "react"
 import { usePathname, useRouter, useSearchParams } from "next/navigation"
-import { useQueries, useQuery } from "@tanstack/react-query"
+import { useQuery } from "@tanstack/react-query"
 import { queries } from "@/lib/queries"
 import ListSearchForm from "@/components/common/ListSearchForm"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
-import { ArtType } from "@/types/majors"
 import CreateLinkButton from "@/components/common/CreateLinkButton"
-import MobileFilterTab from "@/components/common/MobileFIlterTab"
 import ProvinceDialog from "@/components/dialog/ProvinceDialog"
 import AddButton from "@/components/common/AddButton"
-import LessonListSkeleton from "@/components/skeleton/LessonListSkeleton"
-import EventList from "@/components/events/EventList"
-
-//artinfo.s3.ap-northeast-2.amazonaws.com/prod/upload/1710/images/20240806/original/v8ofDoqEE16.1722905864785.png"
+import PerformanceList from "@/components/performances/PerformanceList"
+import PerformanceMobileFilterTab from "@/components/performances/PerformanceMobileFilterTab"
+import PerformanceCheckBoxes from "@/components/performances/PerformanceCheckBoxes"
 
 const page = () => {
   const searchParams = useSearchParams()
@@ -24,16 +21,10 @@ const page = () => {
   const pathname = usePathname()
   const [isProvinceDialog, setIsProvinceDialog] = useState(false)
 
-  const [lessonFields, provinceList, majorList] = useQueries({
-    queries: [
-      queries.lessons.fields(),
-      queries.provinces.list(),
-      queries.majors.list(),
-    ],
-  })
+  const { data: provinceList } = useQuery(queries.provinces.list())
 
   const selectedProvinces = useMemo(() => {
-    return provinceList?.data?.provinces?.filter(province =>
+    return provinceList?.provinces?.filter(province =>
       provinceIds.includes(province.id.toString()),
     )
   }, [provinceIds])
@@ -46,6 +37,7 @@ const page = () => {
       <section className="flex">
         {/* Desktop Filter */}
         <form className="hidden min-w-[180px] flex-col text-gray-400 lg:flex">
+          <PerformanceCheckBoxes />
           {/* <ProfessionalCheckBoxes artFields={lessonFields?.data?.majorGroups} /> */}
         </form>
         <div className="flex w-full flex-col md:ml-12 md:mt-4 md:flex-1">
@@ -78,16 +70,11 @@ const page = () => {
             />
           </div>
           {/* Mobile Filter */}
-          <MobileFilterTab
-            majors={majorList?.data?.majors}
-            artFields={lessonFields?.data?.majorGroups}
-            provinces={provinceList?.data?.provinces}
-            page="LESSON"
-          />
-          <EventList />
+          <PerformanceMobileFilterTab provinces={provinceList?.provinces} />
+          <PerformanceList />
         </div>
         <ProvinceDialog
-          provinces={provinceList?.data?.provinces}
+          provinces={provinceList?.provinces}
           open={isProvinceDialog}
           close={() => setIsProvinceDialog(false)}
           multiple={true}

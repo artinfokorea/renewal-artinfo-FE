@@ -10,7 +10,7 @@ import {
   DetailApiResponse,
 } from "@/interface"
 import { JobPayload, JobsRequest, PartTimePayload } from "@/interface/jobs"
-import { PERFORMANCE } from "@/types/performances"
+import { PERFORMANCE, PERFORMANCE_DETAIL } from "@/types/performances"
 import {
   PerformancePayload,
   PerformancesRequest,
@@ -55,11 +55,13 @@ export const getPerformances = async (
 }
 
 /* 공연 상세 조회 */
-export const getPerformance = async (id: number): Promise<PERFORMANCE> => {
+export const getPerformance = async (
+  id: number,
+): Promise<PERFORMANCE_DETAIL> => {
   try {
-    const response = await publicApiRequest.get<DetailApiResponse<PERFORMANCE>>(
-      `/performances/${id}`,
-    )
+    const response = await publicApiRequest.get<
+      DetailApiResponse<PERFORMANCE_DETAIL>
+    >(`/performances/${id}`)
     return response.item
   } catch (error) {
     throw new Error(exceptionHandler(error, "API getPerformance error"))

@@ -61,6 +61,7 @@ const MobileDropDown = ({ handleBar, handleSign }: Props) => {
             >
               <DropDownMenu href="/jobs" label="채용" />
               <DropDownMenu href="/lessons" label="레슨" />
+              <DropDownMenu href="/performances" label="공연" />
               <DropDownMenu href="/news" label="뉴스" />
               <DropDownMenu href="/inquiry" label="문의" />
               <div className="mx-auto my-4 w-full border-b-[1px] border-whitesmoke" />

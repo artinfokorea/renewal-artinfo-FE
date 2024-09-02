@@ -20,7 +20,7 @@ const KakaoMap = dynamic(() => import("@/components/common/KakaoMap"), {
   ),
 })
 
-const EventDetailContainer = () => {
+const PerformanceDetailContainer = () => {
   const [isDeleteConfirmDialog, setIsDeleteConfirmDialog] = useState(false)
   const [selectedIndex, setSelectedIndex] = useState(0)
   const { data } = useSession()
@@ -209,4 +209,4 @@ const EventDetailContainer = () => {
   )
 }
 
-export default EventDetailContainer
+export default PerformanceDetailContainer

@@ -18,6 +18,13 @@ import { AdvertisementType } from "@/types/ads"
 import { createQueryKeys, mergeQueryKeys } from "@lukemorales/query-key-factory"
 import { getNewsComments } from "@/services/comments"
 import { CommentsRequest } from "@/interface/comments"
+import {
+  getInfinitePerformances,
+  getPerformance,
+  getPerformances,
+  getPerformancesCount,
+} from "@/services/performances"
+import { PerformancesRequest } from "@/interface/performances"
 
 const ads = createQueryKeys("ads", {
   list: (type: AdvertisementType) => ({
@@ -122,6 +129,26 @@ const jobs = createQueryKeys("jobs", {
   }),
 })
 
+const performances = createQueryKeys("performances", {
+  detail: (performanceId: number) => ({
+    queryKey: [performanceId],
+    queryFn: () => getPerformance(performanceId),
+  }),
+  list: (filters: PerformancesRequest) => ({
+    queryKey: [{ filters }],
+    queryFn: () => getPerformances(filters),
+  }),
+  infiniteList: (filters: PerformancesRequest) => ({
+    queryKey: [{ filters }],
+    queryFn: ({ pageParam }: { pageParam: number }) =>
+      getInfinitePerformances({ ...filters, page: pageParam }),
+  }),
+  count: () => ({
+    queryKey: [""],
+    queryFn: getPerformancesCount,
+  }),
+})
+
 export const queries = mergeQueryKeys(
   ads,
   jobs,
@@ -131,4 +158,5 @@ export const queries = mergeQueryKeys(
   users,
   news,
   comments,
+  performances,
 )

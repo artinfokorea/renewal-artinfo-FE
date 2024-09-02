@@ -29,7 +29,6 @@ const config = {
         pathname: "**",
       },
     ],
-
     formats: ["image/webp"],
     minimumCacheTTL: 60,
   },
