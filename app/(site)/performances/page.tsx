@@ -2,7 +2,7 @@
 
 import React, { useState, useMemo, Suspense } from "react"
 import { usePathname, useRouter, useSearchParams } from "next/navigation"
-import { useQuery } from "@tanstack/react-query"
+import { useQueries } from "@tanstack/react-query"
 import { queries } from "@/lib/queries"
 import ListSearchForm from "@/components/common/ListSearchForm"
 import { Button } from "@/components/ui/button"
@@ -22,10 +22,12 @@ const page = () => {
   const pathname = usePathname()
   const [isProvinceDialog, setIsProvinceDialog] = useState(false)
 
-  const { data: provinceList } = useQuery(queries.provinces.list())
+  const [provinceList, performanceCount] = useQueries({
+    queries: [queries.provinces.list(), queries.performances.count()],
+  })
 
   const selectedProvinces = useMemo(() => {
-    return provinceList?.provinces?.filter(province =>
+    return provinceList?.data?.provinces?.filter(province =>
       provinceIds.includes(province.id.toString()),
     )
   }, [provinceIds])
@@ -33,7 +35,10 @@ const page = () => {
   return (
     <div className="mx-auto max-w-screen-lg">
       <ListSearchForm>
-        <h4 className="text-xl font-bold md:text-2xl">기대되는 공연</h4>
+        <h4 className="text-xl font-semibold md:text-2xl">
+          기대되는 공연{" "}
+          <span className="text-main">{performanceCount.data?.totalCount}</span>
+        </h4>
       </ListSearchForm>
       <section className="flex">
         {/* Desktop Filter */}
@@ -71,14 +76,16 @@ const page = () => {
             />
           </div>
           {/* Mobile Filter */}
-          <PerformanceMobileFilterTab provinces={provinceList?.provinces} />
+          <PerformanceMobileFilterTab
+            provinces={provinceList?.data?.provinces}
+          />
 
           <Suspense fallback={<PerformanceListSkeleton />}>
             <PerformanceList />
           </Suspense>
         </div>
         <ProvinceDialog
-          provinces={provinceList?.provinces}
+          provinces={provinceList?.data?.provinces}
           open={isProvinceDialog}
           close={() => setIsProvinceDialog(false)}
           multiple={true}

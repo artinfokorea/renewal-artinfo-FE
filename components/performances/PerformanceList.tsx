@@ -11,12 +11,12 @@ const PerformanceList = () => {
   const searchParams = useSearchParams()
   const keyword = searchParams.get("keyword") as string
   const provinceIds = searchParams.getAll("provinceId") as string[]
-  const category = searchParams.get("category") as PerformanceCategory
+  const category = searchParams.getAll("category") as PerformanceCategory[]
 
   const queryParams = {
     size: 10,
     keyword,
-    categories: category ? [category] : [],
+    categories: category ? category : [],
     provinceIds: provinceIds.map(id => Number(id)),
   }
 

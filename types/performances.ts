@@ -35,6 +35,13 @@ export const PerformanceCategoryValues = {
 
 export const PerformanceCategoryList = Object.values(PerformanceCategory)
 
+export const performanceCategoryArray = Object.entries(
+  PerformanceCategoryValues,
+).map(([value, title]) => ({
+  title,
+  value: value as PerformanceCategory,
+}))
+
 export type AREA = {
   name: string
   seatScale: number

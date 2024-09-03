@@ -1,7 +1,7 @@
 "use client"
 
 import React from "react"
-import { JobType } from "@/types/jobs"
+import { JobType, JobTypeList } from "@/types/jobs"
 import { createFullTimeJob } from "@/services/jobs"
 import { usePathname, useRouter, useSearchParams } from "next/navigation"
 import { queries } from "@/lib/queries"
@@ -11,6 +11,7 @@ import FullTimeJobForm, {
 } from "@/components/jobs/FullTimeJobForm"
 import useMutation from "@/hooks/useMutation"
 import { JobPayload } from "@/interface/jobs"
+import FormTypeSelectDialog from "@/components/dialog/FormTypeSelectDialog"
 
 const page = () => {
   const searchParams = useSearchParams()
@@ -54,10 +55,12 @@ const page = () => {
   return (
     <section>
       {!jobType ? (
-        <JobTypeSelectDialog
-          handleSelectedJobType={(jobType: JobType) =>
+        <FormTypeSelectDialog<JobType>
+          handleSelected={(jobType: JobType) =>
             router.push(`${pathname}?jobType=${jobType}`)
           }
+          label="채용 선택"
+          list={JobTypeList}
         />
       ) : (
         <FullTimeJobForm

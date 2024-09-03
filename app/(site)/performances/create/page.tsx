@@ -1,6 +1,6 @@
 "use client"
 
-import { usePathname, useRouter } from "next/navigation"
+import { usePathname, useRouter, useSearchParams } from "next/navigation"
 import { queries } from "@/lib/queries"
 import useMutation from "@/hooks/useMutation"
 import { PerformancePayload } from "@/interface/performances"
@@ -8,11 +8,17 @@ import { createPerformance } from "@/services/performances"
 import PerformanceForm, {
   PerformanceFormData,
 } from "@/components/performances/PerformanceForm"
-import { PerformanceCategory } from "@/types/performances"
+import {
+  PerformanceCategory,
+  performanceCategoryArray,
+} from "@/types/performances"
+import FormTypeSelectDialog from "@/components/dialog/FormTypeSelectDialog"
 
 const page = () => {
-  const router = useRouter()
+  const seasrchParams = useSearchParams()
+  const category = seasrchParams.get("category") as PerformanceCategory
   const pathname = usePathname()
+  const router = useRouter()
 
   const { handleSubmit, isLoading } = useMutation<PerformancePayload>({
     createFn: (payload: PerformancePayload) => createPerformance(payload),
@@ -41,7 +47,7 @@ const page = () => {
     } = payload
 
     handleSubmit({
-      category: PerformanceCategory.CLASSIC,
+      category,
       title,
       posterImageUrl,
       startAt,
@@ -60,10 +66,20 @@ const page = () => {
 
   return (
     <section className="mx-auto max-w-screen-lg">
-      <PerformanceForm
-        handlePerformanceForm={handlePerformanceForm}
-        isFormLoading={isLoading}
-      />
+      {!category ? (
+        <FormTypeSelectDialog<PerformanceCategory>
+          handleSelected={(category: PerformanceCategory) =>
+            router.push(`${pathname}?category=${category}`)
+          }
+          label="공연 선택"
+          list={performanceCategoryArray}
+        />
+      ) : (
+        <PerformanceForm
+          handlePerformanceForm={handlePerformanceForm}
+          isFormLoading={isLoading}
+        />
+      )}
     </section>
   )
 }

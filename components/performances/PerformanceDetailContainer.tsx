@@ -1,4 +1,4 @@
-import React, { useState } from "react"
+import React, { useEffect, useState } from "react"
 import ConfirmDialog from "../dialog/ConfirmDialog"
 import { useQuery } from "@tanstack/react-query"
 import { queries } from "@/lib/queries"
@@ -11,6 +11,7 @@ import ItemManageBox from "../common/ItemManageBox"
 import dynamic from "next/dynamic"
 import { Spinner } from "../common/Loading"
 import { PERFORMANCE_DETAIL } from "@/types/performances"
+import DOMPurify from "dompurify"
 
 const KakaoMap = dynamic(() => import("@/components/common/KakaoMap"), {
   ssr: false,
@@ -32,6 +33,7 @@ const PerformanceDetailContainer = ({
 }: Props) => {
   const [isDeleteConfirmDialog, setIsDeleteConfirmDialog] = useState(false)
   const [selectedIndex, setSelectedIndex] = useState(0)
+  const [parsedContent, setParsedContent] = useState("")
   const { data } = useSession()
   const router = useRouter()
   const pathname = usePathname()
@@ -41,6 +43,24 @@ const PerformanceDetailContainer = ({
     ...queries.users.detail(),
     enabled: !!data?.user,
   })
+
+  useEffect(() => {
+    const parseContent = async () => {
+      if (typeof window !== "undefined") {
+        const parser = new DOMParser()
+        const doc = parser.parseFromString(
+          performance.introduction,
+          "text/html",
+        )
+        doc.querySelectorAll("img").forEach(img => {
+          img.src = img.src.replace(/^http:\/\//i, "https://")
+        })
+        const result = DOMPurify.sanitize(doc.body.innerHTML)
+        setParsedContent(result)
+      }
+    }
+    parseContent()
+  }, [performance.introduction])
 
   const detailItems = [
     {
@@ -79,7 +99,7 @@ const PerformanceDetailContainer = ({
   const eventInfo = [
     {
       title: "좌석수",
-      content: performance.area?.seatScale,
+      content: `${performance.area?.seatScale}석`,
     },
     {
       title: "시설특성",
@@ -156,13 +176,21 @@ const PerformanceDetailContainer = ({
         onChange={setSelectedIndex}
       >
         <TabList
-          className={`grid rounded border-2 border-whitesmoke ${performance.area && "grid-cols-2"} `}
+          className={`grid rounded border border-whitesmoke font-medium ${performance.area && "grid-cols-2"} `}
         >
-          <Tab className="py-2 text-sm text-main data-[selected]:bg-whitesmoke md:text-base">
+          <Tab
+            className={({ selected }) =>
+              `py-2 text-sm active:outline-none md:text-base ${selected ? "border-t-2 border-main bg-white text-main" : "bg-whitesmoke text-black"}`
+            }
+          >
             소개
           </Tab>
           {performance.area && (
-            <Tab className="py-2 text-sm text-main data-[selected]:bg-whitesmoke md:text-base">
+            <Tab
+              className={({ selected }) =>
+                `py-2 text-sm active:outline-none md:text-base ${selected ? "border-t-2 border-main bg-white text-main" : "bg-whitesmoke text-black"}`
+              }
+            >
               공연장
             </Tab>
           )}
@@ -173,7 +201,7 @@ const PerformanceDetailContainer = ({
               <div
                 className="editor_view ck-content"
                 dangerouslySetInnerHTML={{
-                  __html: performance?.introduction,
+                  __html: parsedContent,
                 }}
               />
             )}
