@@ -44,8 +44,8 @@ const PerformanceAreaDialog = ({ isOpen, handleDialog, handleArea }: Props) => {
   }, [handleDialog])
 
   const hasNextPage =
-    areas?.performanceAreas.length &&
-    areas.performanceAreas.length < (areas?.totalCount as number)
+    (areas?.performanceAreas?.length ?? 0) > 0 &&
+    (areas?.performanceAreas?.length ?? 0) < (areas?.totalCount ?? 0)
 
   const handleLoadMore = () => {
     if (scrollContainerRef.current) {
@@ -59,6 +59,8 @@ const PerformanceAreaDialog = ({ isOpen, handleDialog, handleArea }: Props) => {
       scrollContainerRef.current.scrollTop = scrollPosition
     }
   }, [areas])
+
+  console.log("hasNextPage", hasNextPage)
 
   return (
     <Transition appear show={isOpen} as={Fragment}>
@@ -94,7 +96,7 @@ const PerformanceAreaDialog = ({ isOpen, handleDialog, handleArea }: Props) => {
                   <Input
                     value={keyword}
                     onChange={e => setKeyword(e.target.value)}
-                    className="border-grayfont w-full rounded-md border p-2 focus:outline-none"
+                    className="w-full rounded-md border border-grayfont p-2 focus:outline-none"
                   />
                 </form>
                 <div
@@ -108,7 +110,7 @@ const PerformanceAreaDialog = ({ isOpen, handleDialog, handleArea }: Props) => {
                     >
                       <div>
                         <p className="text-gray-600">{area.name}</p>
-                        <p className="text-sm text-gray-400">{area.address} </p>
+                        <p className="text-sm text-gray-400">{area.address}</p>
                       </div>
                       <button
                         type="button"
@@ -122,7 +124,7 @@ const PerformanceAreaDialog = ({ isOpen, handleDialog, handleArea }: Props) => {
                   {hasNextPage && (
                     <button
                       onClick={handleLoadMore}
-                      className="border-grayfont w-full rounded border py-2 text-blue-600"
+                      className="w-full rounded border border-grayfont py-2 text-blue-600"
                     >
                       더보기
                     </button>
