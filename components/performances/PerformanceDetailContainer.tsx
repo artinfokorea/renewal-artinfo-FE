@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react"
+import React, { useState } from "react"
 import ConfirmDialog from "../dialog/ConfirmDialog"
 import { useQuery } from "@tanstack/react-query"
 import { queries } from "@/lib/queries"
@@ -11,7 +11,6 @@ import ItemManageBox from "../common/ItemManageBox"
 import dynamic from "next/dynamic"
 import { Spinner } from "../common/Loading"
 import { PERFORMANCE_DETAIL } from "@/types/performances"
-import DOMPurify from "dompurify"
 
 const KakaoMap = dynamic(() => import("@/components/common/KakaoMap"), {
   ssr: false,
