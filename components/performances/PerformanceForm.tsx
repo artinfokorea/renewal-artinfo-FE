@@ -85,6 +85,7 @@ const PerformanceForm = ({
 
   const handleArea = (area: PERFORMANCE_AREA) => {
     setValue("area", area)
+    setValue("customAreaName", "")
     clearErrors()
   }
 
@@ -102,6 +103,8 @@ const PerformanceForm = ({
       console.log(error)
     }
   }
+
+  console.log('watch("area")', watch("area"))
 
   return (
     <>
@@ -187,20 +190,24 @@ const PerformanceForm = ({
               </span>
               <div className="w-full flex-1 flex-col">
                 <div className="flex flex-col items-center gap-2 md:flex-row md:gap-4">
-                  {watch("area") ? (
-                    <p className="w-full">{watch("area")?.name}</p>
-                  ) : (
+                  {isDirectInput ? (
                     <Input
                       {...register("customAreaName")}
-                      disabled={!isDirectInput}
-                      placeholder={`${isDirectInput ? "공연장소를 입력해주세요." : ""}`}
-                      className="w-full rounded border-2 border-whitesmoke py-1 focus:outline-none disabled:border-none disabled:bg-gray-200"
+                      placeholder="공연장소를 입력해주세요."
+                      className="w-full rounded border-2 border-whitesmoke px-2 py-1 focus:outline-none disabled:border-none disabled:bg-gray-200"
                     />
+                  ) : watch("area") ? (
+                    <p className="w-full">{watch("area")?.name}</p>
+                  ) : (
+                    <p className="w-full">{watch("customAreaName")}</p>
                   )}
                   <div className="flex w-full gap-2">
                     <Button
                       type="button"
-                      onClick={() => setIsAreaSearchDialog(true)}
+                      onClick={() => {
+                        setIsDirectInput(false)
+                        setIsAreaSearchDialog(true)
+                      }}
                       className="h-8 whitespace-nowrap rounded-lg border px-2 font-medium text-main"
                     >
                       장소검색
