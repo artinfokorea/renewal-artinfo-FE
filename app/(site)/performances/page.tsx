@@ -34,7 +34,7 @@ const page = () => {
 
   return (
     <div className="mx-auto max-w-screen-lg">
-      <ListSearchForm>
+      <ListSearchForm placeholder="제목, 출연진, 공연장 등을 검색해보세요.">
         <h4 className="text-xl font-semibold md:text-2xl">
           기대되는 공연{" "}
           <span className="text-main">{performanceCount.data?.totalCount}</span>

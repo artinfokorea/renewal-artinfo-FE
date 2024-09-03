@@ -6,9 +6,10 @@ import { useRouter } from "next/navigation"
 
 interface Props {
   children?: React.ReactNode
+  placeholder?: string
 }
 
-const ListSearchForm = ({ children }: Props) => {
+const ListSearchForm = ({ children, placeholder }: Props) => {
   const [searchInput, setSearchInput] = useState("")
   const router = useRouter()
 
@@ -33,7 +34,7 @@ const ListSearchForm = ({ children }: Props) => {
           value={searchInput}
           onChange={e => setSearchInput(e.target.value)}
           className="w-full rounded-3xl border-2 border-main px-14 text-base text-black placeholder-gray-400 md:py-6"
-          placeholder="직군, 전공, 분야 등을 검색해보세요."
+          placeholder={placeholder || "직군, 전공, 분야 등을 검색해보세요."}
         />
         <button type="submit">
           <SearchIcon className="absolute left-5 top-[11px] h-5 w-5 text-gray-400 md:top-[14px] md:h-6 md:w-6" />

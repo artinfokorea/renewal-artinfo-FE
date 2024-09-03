@@ -33,7 +33,6 @@ const PerformanceDetailContainer = ({
 }: Props) => {
   const [isDeleteConfirmDialog, setIsDeleteConfirmDialog] = useState(false)
   const [selectedIndex, setSelectedIndex] = useState(0)
-  const [parsedContent, setParsedContent] = useState("")
   const { data } = useSession()
   const router = useRouter()
   const pathname = usePathname()
@@ -43,24 +42,6 @@ const PerformanceDetailContainer = ({
     ...queries.users.detail(),
     enabled: !!data?.user,
   })
-
-  useEffect(() => {
-    const parseContent = async () => {
-      if (typeof window !== "undefined") {
-        const parser = new DOMParser()
-        const doc = parser.parseFromString(
-          performance.introduction,
-          "text/html",
-        )
-        doc.querySelectorAll("img").forEach(img => {
-          img.src = img.src.replace(/^http:\/\//i, "https://")
-        })
-        const result = DOMPurify.sanitize(doc.body.innerHTML)
-        setParsedContent(result)
-      }
-    }
-    parseContent()
-  }, [performance.introduction])
 
   const detailItems = [
     {
@@ -117,7 +98,7 @@ const PerformanceDetailContainer = ({
 
   return (
     <div className="mt-8 px-4 md:mt-16">
-      <h2 className="my-4 text-center text-xl md:text-left md:text-2xl">
+      <h2 className="my-8 text-center text-xl md:text-left md:text-2xl">
         {performance.title}
       </h2>
       <div className="flex flex-col md:flex-row md:gap-12">
@@ -133,7 +114,7 @@ const PerformanceDetailContainer = ({
             sizes="(max-width: 768px) 100px 180px, (max-width: 1200px) 200px, 200px"
           />
         </div>
-        <div className="my-4 flex flex-1 flex-col gap-3 text-sm md:text-base">
+        <div className="my-8 flex flex-1 flex-col gap-3 text-sm md:my-4 md:text-base">
           {detailItems.map(({ title, content }) => (
             <div className="flex" key={title}>
               <span className="basis-1/4 font-semibold text-grey md:basis-1/6">
@@ -180,7 +161,7 @@ const PerformanceDetailContainer = ({
         >
           <Tab
             className={({ selected }) =>
-              `py-2 text-sm active:outline-none md:text-base ${selected ? "border-t-2 border-main bg-white text-main" : "bg-whitesmoke text-black"}`
+              `py-2 text-sm focus:outline-none md:text-base ${selected ? "border-t-2 border-main bg-white text-main" : "bg-whitesmoke text-black"}`
             }
           >
             소개
@@ -188,7 +169,7 @@ const PerformanceDetailContainer = ({
           {performance.area && (
             <Tab
               className={({ selected }) =>
-                `py-2 text-sm active:outline-none md:text-base ${selected ? "border-t-2 border-main bg-white text-main" : "bg-whitesmoke text-black"}`
+                `py-2 text-sm focus:outline-none md:text-base ${selected ? "border-t-2 border-main bg-white text-main" : "bg-whitesmoke text-black"}`
               }
             >
               공연장
@@ -196,12 +177,12 @@ const PerformanceDetailContainer = ({
           )}
         </TabList>
         <TabPanels>
-          <TabPanel>
+          <TabPanel className="py-8">
             {performance?.introduction && (
               <div
                 className="editor_view ck-content"
                 dangerouslySetInnerHTML={{
-                  __html: parsedContent,
+                  __html: performance.introduction,
                 }}
               />
             )}
