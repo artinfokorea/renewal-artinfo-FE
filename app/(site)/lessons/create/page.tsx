@@ -22,7 +22,7 @@ const page = () => {
     queryKey: [...queries.lessons._def],
     redirectPath: pathname.slice(0, pathname.lastIndexOf("/")),
     successMessage: {
-      create: "레슨이 수정되었습니다.",
+      create: "레슨이 등록되었습니다.",
     },
   })
 

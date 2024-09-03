@@ -21,6 +21,7 @@ import { CommentsRequest } from "@/interface/comments"
 import {
   getInfinitePerformances,
   getPerformance,
+  getPerformanceAreas,
   getPerformances,
   getPerformancesCount,
 } from "@/services/performances"
@@ -146,6 +147,10 @@ const performances = createQueryKeys("performances", {
   count: () => ({
     queryKey: [""],
     queryFn: getPerformancesCount,
+  }),
+  areas: (request: ListRequest) => ({
+    queryKey: [request],
+    queryFn: () => getPerformanceAreas(request),
   }),
 })
 

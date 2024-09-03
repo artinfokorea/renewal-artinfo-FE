@@ -8,8 +8,9 @@ export type PERFORMANCE = {
 
 export type PERFORMANCE_DETAIL = {
   customAreaName: string
-  area: AREA
-  tile: string
+  authorId: number
+  area?: AREA
+  time: string
   age: string
   ticketPrice: string
   cast: string
@@ -42,4 +43,10 @@ export type AREA = {
   latitude: number
   longitude: number
   siteUrl: string
+}
+
+export type PERFORMANCE_AREA = {
+  id: number
+  name: string
+  address: string
 }

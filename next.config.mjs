@@ -18,16 +18,24 @@ const config = {
     remotePatterns: [
       {
         protocol: "https",
-        hostname: "ycuajmirzlqpgzuonzca.supabase.co",
-        port: "",
-        pathname: "**",
+        hostname: "**", // 모든 도메인을 허용
       },
       {
-        protocol: "https",
-        hostname: "artinfo.s3.ap-northeast-2.amazonaws.com",
-        port: "",
-        pathname: "**",
+        protocol: "http",
+        hostname: "**", // http 프로토콜의 모든 도메인을 허용
       },
+      // {
+      //   protocol: "https",
+      //   hostname: "ycuajmirzlqpgzuonzca.supabase.co",
+      //   port: "",
+      //   pathname: "**",
+      // },
+      // {
+      //   protocol: "https",
+      //   hostname: "artinfo.s3.ap-northeast-2.amazonaws.com",
+      //   port: "",
+      //   pathname: "**",
+      // },
     ],
     formats: ["image/webp"],
     minimumCacheTTL: 60,

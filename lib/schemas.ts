@@ -162,6 +162,28 @@ export const profileSchema = yup.object().shape({
   phone: stringNullSchema,
 })
 
+export const performanceSchema = yup.object().shape({
+  title: createStringRequiredSchema("제목을 입력해주세요."),
+  startAt: yup.date().required("시작일을 입력해주세요."),
+  endAt: yup.date().required("종료일을 입력해주세요."),
+  time: yup.string().required("공연 시간을 입력해주세요."),
+  age: createStringRequiredSchema("관람 연령을 입력해주세요."),
+  ticketPrice: createStringRequiredSchema("티켓 가격을 입력해주세요."),
+  cast: createStringRequiredSchema("출연진을 입력해주세요."),
+  host: createStringRequiredSchema("주관-주최를 입력해주세요."),
+  customAreaName: stringNullSchema,
+  posterImageUrl: createStringRequiredSchema("포스터 이미지를 등록해주세요."),
+  reservationUrl: linkUrlSchema,
+  area: yup
+    .object()
+    .shape({
+      id: yup.number().required("공연장을 선택해주세요."),
+      name: yup.string().required("공연장을 선택해주세요."),
+    })
+    .nullable(),
+  introduction: createStringRequiredSchema("소개를 입력해주세요."),
+})
+
 export const newsSchema = yup.object().shape({
   title: createStringRequiredSchema("제목을 입력해주세요."),
   summary: createStringRequiredSchema("생년월일을 입력해주세요."),

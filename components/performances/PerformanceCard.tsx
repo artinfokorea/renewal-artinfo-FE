@@ -3,6 +3,7 @@ import { usePathname } from "next/navigation"
 import React, { forwardRef } from "react"
 import FallbackImage from "../common/FallbackImage"
 import { PERFORMANCE } from "@/types/performances"
+import filters from "@/lib/filters"
 
 interface Props {
   isLastPage: boolean
@@ -13,16 +14,15 @@ const PerformanceCard = forwardRef<HTMLDivElement, Props>(
   ({ isLastPage, performance }, ref) => {
     const pathname = usePathname()
 
-    // const province = lesson.area?.split(" ")[0].substring(0, 2)
-
-    // const area = lesson.area?.split(" ")[1]
+    const filter = filters()
 
     return (
       <Link href={`${pathname}/${performance.id}`} prefetch={false}>
         <div className="relative aspect-[3/4]">
           <FallbackImage
-            src="https://artinfo.s3.ap-northeast-2.amazonaws.com/prod/upload/1710/images/20240806/original/v8ofDoqEE16.1722905864785.png"
-            alt={`test_lesson_image `}
+            src={performance.posterImageUrl}
+            fallbackSrc="/img/metadata_image.png"
+            alt="performance_image"
             className="rounded-[10px]"
             fill
             quality={100}
@@ -31,10 +31,10 @@ const PerformanceCard = forwardRef<HTMLDivElement, Props>(
         </div>
         <div className="my-4 flex flex-col items-center gap-3">
           <h4 className="break-keep text-center text-xs font-bold md:text-base">
-            제6회 알티밋 (Altimeets) 정기공연: Unity
+            {performance.title}
           </h4>
           <span className="text-[10px] text-grey md:text-xs">
-            2024.10.06 ~ 2024.10.06
+            {`${filter.YYYYMMDD(performance.startAt)} ~ ${filter.YYYYMMDD(performance.endAt)}`}
           </span>
         </div>
 

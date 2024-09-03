@@ -8,9 +8,14 @@ import {
   ListApiResponse,
   ScrollApiResponse,
   DetailApiResponse,
+  ListRequest,
 } from "@/interface"
 import { JobPayload, JobsRequest, PartTimePayload } from "@/interface/jobs"
-import { PERFORMANCE, PERFORMANCE_DETAIL } from "@/types/performances"
+import {
+  PERFORMANCE,
+  PERFORMANCE_AREA,
+  PERFORMANCE_DETAIL,
+} from "@/types/performances"
 import {
   PerformancePayload,
   PerformancesRequest,
@@ -78,7 +83,7 @@ export const deletePerformance = async (
   return response
 }
 
-/* 예술단체 or 강사생성 */
+/* 공연 생성 */
 export const createPerformance = async (
   payload: PerformancePayload,
 ): Promise<PostResponse> => {
@@ -89,7 +94,7 @@ export const createPerformance = async (
   return response
 }
 
-/* 예술단체 or 강사수정 */
+/* 공연 수정 */
 export const updatePerformance = async (
   performanceId: number,
   payload: PerformancePayload,
@@ -101,7 +106,7 @@ export const updatePerformance = async (
   return response
 }
 
-/* 채용 총 갯수 조회 */
+/* 공연 총 갯수 조회 */
 export const getPerformancesCount = async (): Promise<{
   totalCount: number
 }> => {
@@ -112,5 +117,21 @@ export const getPerformancesCount = async (): Promise<{
     return response.item
   } catch (error) {
     throw new Error(exceptionHandler(error, "API getPerformancesCount error"))
+  }
+}
+
+/* 공연장 조회 */
+export const getPerformanceAreas = async (
+  request: ListRequest,
+): Promise<ListResponse<PERFORMANCE_AREA, "performanceAreas">> => {
+  try {
+    const response = await publicApiRequest.get<
+      ListApiResponse<PERFORMANCE_AREA, "performanceAreas">
+    >("/performances/areas", {
+      params: request,
+    })
+    return response.item
+  } catch (error) {
+    throw new Error(exceptionHandler(error, "API getPerformanceAreas error"))
   }
 }

@@ -12,12 +12,13 @@ export interface PerformancePayload {
   posterImageUrl: string
   startAt: Date
   endAt: Date
-  customAreaName: string
-  areaId: number
+  time: string
+  customAreaName?: string
+  areaId?: number
   age: string
   ticketPrice: string
   cast: string
   host: string
-  reservationUrl: string
+  reservationUrl?: string
   introduction: string
 }

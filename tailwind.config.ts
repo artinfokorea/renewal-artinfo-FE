@@ -57,6 +57,7 @@ module.exports = withMT({
         lavenderblue: "#cad4ff",
         navy: "#3f51b5",
         skyblue: "#7493FF",
+        grayfont: "#bdbdbd",
       },
       keyframes: {
         "accordion-down": {
