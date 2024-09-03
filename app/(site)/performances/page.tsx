@@ -13,6 +13,7 @@ import AddButton from "@/components/common/AddButton"
 import PerformanceList from "@/components/performances/PerformanceList"
 import PerformanceMobileFilterTab from "@/components/performances/PerformanceMobileFilterTab"
 import PerformanceCheckBoxes from "@/components/performances/PerformanceCheckBoxes"
+import PerformanceListSkeleton from "@/components/skeleton/PerformanceListSkeleton"
 
 const page = () => {
   const searchParams = useSearchParams()
@@ -71,7 +72,10 @@ const page = () => {
           </div>
           {/* Mobile Filter */}
           <PerformanceMobileFilterTab provinces={provinceList?.provinces} />
-          <PerformanceList />
+
+          <Suspense fallback={<PerformanceListSkeleton />}>
+            <PerformanceList />
+          </Suspense>
         </div>
         <ProvinceDialog
           provinces={provinceList?.provinces}

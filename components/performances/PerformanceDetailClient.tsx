@@ -1,17 +1,12 @@
 "use client"
-import { deleteJob, updateArtOrganization } from "@/services/jobs"
-import FullTimeJobForm, {
-  CreateFulltimeJobFormData,
-} from "@/components/jobs/FullTimeJobForm"
-import { queries } from "@/lib/queries"
 
+import { queries } from "@/lib/queries"
 import {
   useParams,
   usePathname,
   useRouter,
   useSearchParams,
 } from "next/navigation"
-import { useEffect, useState } from "react"
 import useMutation from "@/hooks/useMutation"
 import PerformanceDetailContainer from "./PerformanceDetailContainer"
 import { PERFORMANCE_DETAIL, PerformanceCategory } from "@/types/performances"
@@ -25,8 +20,8 @@ interface Props {
 
 const PerformanceDetailClient = ({ performance }: Props) => {
   const params = useParams()
-  const router = useRouter()
   const pathname = usePathname()
+  const router = useRouter()
   const searchParams = useSearchParams()
   const pageType = searchParams.get("type") as "edit" | "create"
 
@@ -34,18 +29,15 @@ const PerformanceDetailClient = ({ performance }: Props) => {
     useMutation<PerformancePayload>({
       updateFn: (performanceId: number, payload: PerformancePayload) =>
         updatePerformance(performanceId, payload),
-      deleteFn: () => deletePerformance(),
-      queryKey: [...queries.performances._def],
+      deleteFn: (performanceId?: number) =>
+        deletePerformance(performanceId as number),
+      queryKey: queries.performances._def,
       redirectPath: pathname.slice(0, pathname.lastIndexOf("/")),
       successMessage: {
         create: "공연이 수정되었습니다.",
         delete: "공연이 삭제되었습니다.",
       },
     })
-
-  const deletePerformance = async () => {
-    handleDelete(Number(params.id))
-  }
 
   const handlePerformanceForm = async (payload: PerformanceFormData) => {
     const {
@@ -63,7 +55,8 @@ const PerformanceDetailClient = ({ performance }: Props) => {
       reservationUrl,
       introduction,
     } = payload
-    handleSubmit(
+
+    await handleSubmit(
       {
         category: PerformanceCategory.CLASSIC,
         title,
@@ -82,6 +75,8 @@ const PerformanceDetailClient = ({ performance }: Props) => {
       },
       Number(params.id),
     )
+
+    router.refresh()
   }
 
   return (
@@ -93,7 +88,10 @@ const PerformanceDetailClient = ({ performance }: Props) => {
           isFormLoading={isLoading}
         />
       ) : (
-        <PerformanceDetailContainer performance={performance} />
+        <PerformanceDetailContainer
+          performance={performance}
+          deletePerformance={() => handleDelete(Number(params.id))}
+        />
       )}
     </section>
   )

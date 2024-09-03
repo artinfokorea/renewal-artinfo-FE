@@ -6,7 +6,7 @@ import LessonForm, { LessonFormData } from "@/components/lessons/LessonForm"
 import useMutation from "@/hooks/useMutation"
 import { LessonPayload } from "@/interface/lessons"
 import { queries } from "@/lib/queries"
-import { usePathname, useSearchParams } from "next/navigation"
+import { usePathname, useRouter, useSearchParams } from "next/navigation"
 import { LESSON } from "@/types/lessons"
 
 interface Props {
@@ -17,6 +17,7 @@ const LessonDetailClient = ({ lesson }: Props) => {
   const searchParams = useSearchParams()
   const pageType = searchParams.get("type")
   const pathname = usePathname()
+  const router = useRouter()
 
   const { handleSubmit, isLoading, handleDelete } = useMutation<LessonPayload>({
     createFn: (payload: LessonPayload) => updateLesson(payload),
@@ -39,6 +40,8 @@ const LessonDetailClient = ({ lesson }: Props) => {
       introduction,
       career: career || "",
     })
+
+    router.refresh()
   }
 
   return (

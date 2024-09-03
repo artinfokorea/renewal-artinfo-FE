@@ -23,9 +23,13 @@ const KakaoMap = dynamic(() => import("@/components/common/KakaoMap"), {
 
 interface Props {
   performance: PERFORMANCE_DETAIL
+  deletePerformance: () => void
 }
 
-const PerformanceDetailContainer = ({ performance }: Props) => {
+const PerformanceDetailContainer = ({
+  performance,
+  deletePerformance,
+}: Props) => {
   const [isDeleteConfirmDialog, setIsDeleteConfirmDialog] = useState(false)
   const [selectedIndex, setSelectedIndex] = useState(0)
   const { data } = useSession()
@@ -201,14 +205,13 @@ const PerformanceDetailContainer = ({ performance }: Props) => {
           )}
         </TabPanels>
       </TabGroup>
-
-      {/* <ConfirmDialog
+      <ConfirmDialog
         isOpen={isDeleteConfirmDialog}
         handleDialog={() => setIsDeleteConfirmDialog(!isDeleteConfirmDialog)}
         title="공연 삭제"
         description="공연을 삭제하시겠습니까?"
-        action={deleteLesson}
-      /> */}
+        action={deletePerformance}
+      />
     </div>
   )
 }

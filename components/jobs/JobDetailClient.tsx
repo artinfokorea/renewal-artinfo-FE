@@ -63,7 +63,7 @@ const JobDetailCient = ({ job }: Props) => {
       contents,
       recruitSiteUrl,
     } = payload
-    handleSubmit(
+    await handleSubmit(
       {
         title,
         companyName,
@@ -77,6 +77,8 @@ const JobDetailCient = ({ job }: Props) => {
       },
       Number(params.id),
     )
+
+    router.refresh()
   }
 
   const handleAlertDialog = () => {

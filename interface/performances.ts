@@ -10,8 +10,8 @@ export interface PerformancePayload {
   category: PerformanceCategory
   title: string
   posterImageUrl: string
-  startAt: Date
-  endAt: Date
+  startAt: string
+  endAt: string
   time: string
   customAreaName?: string
   areaId?: number

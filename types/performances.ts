@@ -2,8 +2,8 @@ export type PERFORMANCE = {
   id: number
   title: string
   posterImageUrl: string
-  startAt: Date
-  endAt: Date
+  startAt: string
+  endAt: string
 }
 
 export type PERFORMANCE_DETAIL = {

@@ -2,7 +2,7 @@ import PerformanceDetailClient from "@/components/performances/PerformanceDetail
 import GetQueryClient from "@/lib/GetQueryClient"
 import { queries } from "@/lib/queries"
 import { Metadata } from "next"
-import React from "react"
+import React, { cache } from "react"
 
 interface Props {
   params: { id: string; lng?: string }

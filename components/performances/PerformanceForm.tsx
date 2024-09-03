@@ -17,6 +17,7 @@ import FileUploader from "../common/FileUploader"
 import { Button } from "../ui/button"
 import { useRouter } from "next/navigation"
 import PerformanceAreaDialog from "../dialog/PerformanceAreaDialog"
+import filters from "@/lib/filters"
 
 const CKEditor = dynamic(() => import("@/components/ckEditor/CKEditor"), {
   loading: () => (
@@ -46,6 +47,7 @@ const PerformanceForm = ({
   const [isDirectInput, setIsDirectInput] = useState(false)
   const [isAreaSearchDialog, setIsAreaSearchDialog] = useState(false)
   const router = useRouter()
+  const filter = filters()
 
   const {
     register,
@@ -58,8 +60,12 @@ const PerformanceForm = ({
     defaultValues: {
       title: performance?.title,
       posterImageUrl: performance?.posterImageUrl || "",
-      startAt: performance?.startAt || undefined,
-      endAt: performance?.endAt || undefined,
+      startAt: performance?.startAt
+        ? (filter.YYYYMMDD(performance.startAt, "YYYY-MM-DD") as string)
+        : undefined,
+      endAt: performance?.endAt
+        ? (filter.YYYYMMDD(performance.endAt, "YYYY-MM-DD") as string)
+        : undefined,
       time: performance?.time || "",
       customAreaName: performance?.customAreaName || "",
       area: performance?.area || undefined,
@@ -134,7 +140,7 @@ const PerformanceForm = ({
 
           <div className="flex flex-1 flex-col gap-[6px] py-2 md:ml-12">
             <div className="flex items-center gap-2">
-              <span className="text-grayfont basis-1/6 font-semibold">
+              <span className="basis-1/6 font-semibold text-grayfont">
                 공연기간
               </span>
               <div className="flex-1">
@@ -172,7 +178,7 @@ const PerformanceForm = ({
               </div>
             </div>
             <div className="flex items-center gap-2">
-              <span className="text-grayfont basis-1/6 font-semibold">
+              <span className="basis-1/6 font-semibold text-grayfont">
                 공연장소
               </span>
               <div className="flex flex-1 flex-col items-center gap-2 md:flex-row md:gap-4">
@@ -208,7 +214,7 @@ const PerformanceForm = ({
               </div>
             </div>
             <div className="flex items-center gap-2">
-              <span className="text-grayfont basis-1/6 font-semibold">
+              <span className="basis-1/6 font-semibold text-grayfont">
                 공연시간
               </span>
               <div className="flex-1">
@@ -229,7 +235,7 @@ const PerformanceForm = ({
               </div>
             </div>
             <div className="flex items-center gap-2">
-              <span className="text-grayfont basis-1/6 font-semibold">
+              <span className="basis-1/6 font-semibold text-grayfont">
                 관람연령
               </span>
               <div className="flex-1">
@@ -250,7 +256,7 @@ const PerformanceForm = ({
               </div>
             </div>
             <div className="flex items-center gap-2">
-              <span className="text-grayfont basis-1/6 font-semibold">
+              <span className="basis-1/6 font-semibold text-grayfont">
                 티켓가격
               </span>
               <div className="flex-1">
@@ -271,7 +277,7 @@ const PerformanceForm = ({
               </div>
             </div>
             <div className="flex items-center gap-2">
-              <span className="text-grayfont basis-1/6 font-semibold">
+              <span className="basis-1/6 font-semibold text-grayfont">
                 출연진
               </span>
               <div className="flex-1">
@@ -293,7 +299,7 @@ const PerformanceForm = ({
             </div>
 
             <div className="flex items-center gap-2">
-              <span className="text-grayfont basis-1/6 whitespace-nowrap font-semibold">
+              <span className="basis-1/6 whitespace-nowrap font-semibold text-grayfont">
                 주관 ∙ 주최
               </span>
               <div className="flex-1">
@@ -314,7 +320,7 @@ const PerformanceForm = ({
               </div>
             </div>
             <div className="flex items-center gap-2">
-              <span className="text-grayfont basis-1/6 whitespace-nowrap font-semibold">
+              <span className="basis-1/6 whitespace-nowrap font-semibold text-grayfont">
                 예매처 주소
               </span>
               <div className="flex-1">
@@ -337,7 +343,7 @@ const PerformanceForm = ({
           </div>
         </div>
         <div className="my-8">
-          <h4 className="text-grayfont text-center font-medium md:text-xl">
+          <h4 className="text-center font-medium text-grayfont md:text-xl">
             공연 소개
           </h4>
           <div className="my-6 h-[300px] md:h-[500px]">

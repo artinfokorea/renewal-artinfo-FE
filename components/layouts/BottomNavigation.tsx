@@ -53,10 +53,10 @@ const BottomNavigation = () => {
         <NavMenu title="홈" href="/" icon={HomeIcon} />
         <NavMenu title="채용" href="/jobs" icon={BriefcaseIcon} />
         <NavMenu title="레슨" href="/lessons" icon={BookIcon} />
-        <NavMenu title="공연" href="/performances" icon={CalendarDaysIcon} />
+        {/* <NavMenu title="공연" href="/performances" icon={CalendarDaysIcon} /> */}
         <NavMenu title="뉴스" href="/news" icon={NewsPaperIcon} />
 
-        {/* {data?.user ? (
+        {data?.user ? (
           <Link
             href="/my-profile"
             className={`flex h-full flex-col items-center text-gray-500 focus:outline-none ${
@@ -80,7 +80,7 @@ const BottomNavigation = () => {
               <span className="mt-[2px] text-xs font-medium">문의</span>
             </div>
           </Link>
-        )} */}
+        )}
       </div>
     </footer>
   )

@@ -164,9 +164,9 @@ export const profileSchema = yup.object().shape({
 
 export const performanceSchema = yup.object().shape({
   title: createStringRequiredSchema("제목을 입력해주세요."),
-  startAt: yup.date().required("시작일을 입력해주세요."),
-  endAt: yup.date().required("종료일을 입력해주세요."),
-  time: yup.string().required("공연 시간을 입력해주세요."),
+  startAt: createStringRequiredSchema("시작일을 입력해주세요."),
+  endAt: createStringRequiredSchema("종료일을 입력해주세요."),
+  time: createStringRequiredSchema("공연 시간을 입력해주세요."),
   age: createStringRequiredSchema("관람 연령을 입력해주세요."),
   ticketPrice: createStringRequiredSchema("티켓 가격을 입력해주세요."),
   cast: createStringRequiredSchema("출연진을 입력해주세요."),
