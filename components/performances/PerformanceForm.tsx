@@ -54,6 +54,7 @@ const PerformanceForm = ({
     handleSubmit,
     watch,
     setValue,
+    clearErrors,
     formState: { errors },
   } = useForm<PerformanceFormData>({
     resolver: yupResolver(performanceSchema),
@@ -82,7 +83,10 @@ const PerformanceForm = ({
     fileUploader.current?.click()
   }
 
-  const handleArea = (area: PERFORMANCE_AREA) => setValue("area", area)
+  const handleArea = (area: PERFORMANCE_AREA) => {
+    setValue("area", area)
+    clearErrors()
+  }
 
   const deleteImage = () => setValue("posterImageUrl", "")
 
@@ -181,36 +185,61 @@ const PerformanceForm = ({
               <span className="basis-1/6 font-semibold text-grayfont">
                 공연장소
               </span>
-              <div className="flex flex-1 flex-col items-center gap-2 md:flex-row md:gap-4">
-                {watch("area") && !isDirectInput ? (
-                  <p className="w-full">{watch("area")?.name}</p>
-                ) : (
-                  <Input
-                    {...register("customAreaName")}
-                    disabled={!isDirectInput}
-                    placeholder={`${isDirectInput ? "공연장소를 입력해주세요." : ""}`}
-                    className="w-full rounded border-2 border-whitesmoke py-1 focus:outline-none disabled:border-none disabled:bg-gray-200"
-                  />
-                )}
-                <div className="flex w-full gap-2">
-                  <Button
-                    type="button"
-                    onClick={() => setIsAreaSearchDialog(true)}
-                    className="h-8 whitespace-nowrap rounded-lg border px-2 font-medium text-main"
-                  >
-                    장소검색
-                  </Button>
-                  <Button
-                    type="button"
-                    onClick={() => {
-                      setValue("area", null)
-                      setIsDirectInput(true)
-                    }}
-                    className="h-8 whitespace-nowrap rounded-lg border px-2 font-medium text-main"
-                  >
-                    직접입력
-                  </Button>
+              <div className="w-full flex-1 flex-col">
+                <div className="flex flex-col items-center gap-2 md:flex-row md:gap-4">
+                  {watch("area") ? (
+                    <p className="w-full">{watch("area")?.name}</p>
+                  ) : (
+                    <Input
+                      {...register("customAreaName")}
+                      disabled={!isDirectInput}
+                      placeholder={`${isDirectInput ? "공연장소를 입력해주세요." : ""}`}
+                      className="w-full rounded border-2 border-whitesmoke py-1 focus:outline-none disabled:border-none disabled:bg-gray-200"
+                    />
+                  )}
+                  <div className="flex w-full gap-2">
+                    <Button
+                      type="button"
+                      onClick={() => setIsAreaSearchDialog(true)}
+                      className="h-8 whitespace-nowrap rounded-lg border px-2 font-medium text-main"
+                    >
+                      장소검색
+                    </Button>
+                    <Button
+                      type="button"
+                      onClick={() => {
+                        setValue("area", null)
+                        setIsDirectInput(true)
+                      }}
+                      className="h-8 whitespace-nowrap rounded-lg border px-2 font-medium text-main"
+                    >
+                      직접입력
+                    </Button>
+                  </div>
                 </div>
+                {errors.customAreaName ? (
+                  <ErrorMessage
+                    errors={errors}
+                    name="customAreaName"
+                    render={({ message }) => (
+                      <p className="text-xs font-semibold text-error">
+                        {message}
+                      </p>
+                    )}
+                  />
+                ) : (
+                  errors.area && (
+                    <ErrorMessage
+                      errors={errors}
+                      name="area"
+                      render={({ message }) => (
+                        <p className="text-xs font-semibold text-error">
+                          {message}
+                        </p>
+                      )}
+                    />
+                  )
+                )}
               </div>
             </div>
             <div className="flex items-center gap-2">

@@ -171,14 +171,36 @@ export const performanceSchema = yup.object().shape({
   ticketPrice: createStringRequiredSchema("티켓 가격을 입력해주세요."),
   cast: createStringRequiredSchema("출연진을 입력해주세요."),
   host: createStringRequiredSchema("주관-주최를 입력해주세요."),
-  customAreaName: stringNullSchema,
+  customAreaName: yup
+    .string()
+    .test(
+      "conditional-required",
+      "지역을 선택해주세요.",
+      function (value, context) {
+        if (!context.parent.area && !value) {
+          return false
+        }
+        return true
+      },
+    ),
   posterImageUrl: createStringRequiredSchema("포스터 이미지를 등록해주세요."),
   reservationUrl: linkUrlSchema,
   area: yup
     .object()
     .shape({
-      id: yup.number().required("공연장을 선택해주세요."),
-      name: yup.string().required("공연장을 선택해주세요."),
+      id: yup
+        .number()
+        .test(
+          "conditional-required",
+          "지역을 선택해주세요.",
+          function (value, context) {
+            if (context.parent.customAreaName === undefined && !value) {
+              return false
+            }
+            return true
+          },
+        ),
+      name: yup.string(),
     })
     .nullable(),
   introduction: createStringRequiredSchema("소개를 입력해주세요."),
