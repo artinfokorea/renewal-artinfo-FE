@@ -104,8 +104,6 @@ const PerformanceForm = ({
     }
   }
 
-  console.log('watch("area")', watch("area"))
-
   return (
     <>
       <form
