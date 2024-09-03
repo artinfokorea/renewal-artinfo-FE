@@ -4,7 +4,7 @@ import { ErrorMessage } from "@hookform/error-message"
 import { yupResolver } from "@hookform/resolvers/yup"
 import { Spinner } from "../common/Loading"
 import dynamic from "next/dynamic"
-import React, { useRef, useState } from "react"
+import React, { useEffect, useRef, useState } from "react"
 import { useForm } from "react-hook-form"
 import * as yup from "yup"
 import { PERFORMANCE_AREA, PERFORMANCE_DETAIL } from "@/types/performances"
@@ -58,26 +58,35 @@ const PerformanceForm = ({
     formState: { errors },
   } = useForm<PerformanceFormData>({
     resolver: yupResolver(performanceSchema),
-    defaultValues: {
-      title: performance?.title,
-      posterImageUrl: performance?.posterImageUrl || "",
-      startAt: performance?.startAt
-        ? (filter.YYYYMMDD(performance.startAt, "YYYY-MM-DD") as string)
-        : undefined,
-      endAt: performance?.endAt
-        ? (filter.YYYYMMDD(performance.endAt, "YYYY-MM-DD") as string)
-        : undefined,
-      time: performance?.time || "",
-      customAreaName: performance?.customAreaName || "",
-      area: performance?.area || undefined,
-      age: performance?.age || "",
-      ticketPrice: performance?.ticketPrice || "",
-      cast: performance?.cast || "",
-      host: performance?.host || "",
-      reservationUrl: performance?.reservationUrl || "",
-      introduction: performance?.introduction || "",
-    },
   })
+
+  useEffect(() => {
+    if (performance) {
+      setValue("title", performance?.title)
+      setValue("posterImageUrl", performance?.posterImageUrl || "")
+      setValue(
+        "startAt",
+        performance?.startAt
+          ? (filter.YYYYMMDD(performance.startAt, "YYYY-MM-DD") as string)
+          : "",
+      )
+      setValue(
+        "endAt",
+        performance?.endAt
+          ? (filter.YYYYMMDD(performance.endAt, "YYYY-MM-DD") as string)
+          : "",
+      )
+      setValue("time", performance?.time || "")
+      setValue("customAreaName", performance?.customAreaName || "")
+      setValue("area", performance?.area || null)
+      setValue("age", performance?.age || "")
+      setValue("ticketPrice", performance?.ticketPrice || "")
+      setValue("cast", performance?.cast || "")
+      setValue("host", performance?.host || "")
+      setValue("reservationUrl", performance?.reservationUrl || "")
+      setValue("introduction", performance?.introduction || "")
+    }
+  }, [performance])
 
   const openFileUploader = () => {
     fileUploader.current?.click()
