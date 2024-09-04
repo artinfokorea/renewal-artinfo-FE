@@ -141,7 +141,7 @@ const PerformanceDetailContainer = ({
           <a
             href={performance?.reservationUrl}
             target="_blank"
-            className="mx-4 hidden text-base font-bold text-main md:inline md:text-lg"
+            className="mx-4 text-base font-bold text-main md:text-lg"
           >
             예매처 바로가기
           </a>
