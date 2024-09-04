@@ -44,7 +44,6 @@ const page = () => {
         {/* Desktop Filter */}
         <form className="hidden min-w-[180px] flex-col text-gray-400 lg:flex">
           <PerformanceCheckBoxes />
-          {/* <ProfessionalCheckBoxes artFields={lessonFields?.data?.majorGroups} /> */}
         </form>
         <div className="flex w-full flex-col md:ml-12 md:mt-4 md:flex-1">
           <div className="hidden items-center justify-between lg:flex">

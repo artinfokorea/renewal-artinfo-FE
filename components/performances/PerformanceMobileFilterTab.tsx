@@ -52,24 +52,30 @@ const PerformanceMobileFilterTab = ({ provinces }: Props) => {
 
   useEffect(() => {
     const locationParams = new URLSearchParams(window.location.search)
-    locationParams.delete("provinceId")
-    if (selectedProvinceId)
-      locationParams.append("provinceId", selectedProvinceId)
-    const newUrl = `${window.location.pathname}?${locationParams.toString()}`
-    router.push(newUrl, {
-      scroll: false,
-    })
+    const currentProvinceId = locationParams.get("provinceId")
+
+    if (currentProvinceId !== selectedProvinceId) {
+      locationParams.delete("provinceId")
+      if (selectedProvinceId)
+        locationParams.append("provinceId", selectedProvinceId)
+      const newUrl = `${window.location.pathname}?${locationParams.toString()}`
+      router.push(newUrl, {
+        scroll: false,
+      })
+    }
   }, [selectedProvinceId])
 
   useEffect(() => {
     const locationParams = new URLSearchParams(window.location.search)
-
-    locationParams.delete("category")
-    if (selectedCategory) locationParams.append("category", selectedCategory)
-    const newUrl = `${window.location.pathname}?${locationParams.toString()}`
-    router.push(newUrl, {
-      scroll: false,
-    })
+    const currentCategory = locationParams.get("category")
+    if (currentCategory !== selectedCategory) {
+      locationParams.delete("category")
+      if (selectedCategory) locationParams.append("category", selectedCategory)
+      const newUrl = `${window.location.pathname}?${locationParams.toString()}`
+      router.push(newUrl, {
+        scroll: false,
+      })
+    }
   }, [selectedCategory])
 
   return (
