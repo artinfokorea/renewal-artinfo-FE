@@ -22,7 +22,7 @@ const PerformanceList = () => {
 
   const [ref, inView] = useInView({
     delay: 100,
-    threshold: 0.1,
+    threshold: 0.5,
   })
 
   const {
@@ -49,7 +49,7 @@ const PerformanceList = () => {
       {performances?.pages?.map(page =>
         page?.performances?.map((performance, index) => (
           <PerformanceCard
-            key={index}
+            key={performance.id}
             isLastPage={!hasNextPage && index == 5}
             performance={performance}
             ref={ref}
