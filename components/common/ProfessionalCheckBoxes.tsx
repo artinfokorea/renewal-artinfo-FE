@@ -18,13 +18,22 @@ const ProfessionalCheckBoxes = ({ artFields }: Props) => {
 
   useEffect(() => {
     const locationParams = new URLSearchParams(window.location.search)
-
-    locationParams.delete("professional")
-    checkedProfessionals.forEach(v => locationParams.append("professional", v))
-    const newUrl = `${window.location.pathname}?${locationParams.toString()}`
-    router.push(newUrl, {
-      scroll: false,
-    })
+    const currentProfessionals = searchParams.getAll(
+      "professional",
+    ) as ProfessionalFieldTypes[]
+    if (
+      JSON.stringify(currentProfessionals) !==
+      JSON.stringify(checkedProfessionals)
+    ) {
+      locationParams.delete("professional")
+      checkedProfessionals.forEach(v =>
+        locationParams.append("professional", v),
+      )
+      const newUrl = `${window.location.pathname}?${locationParams.toString()}`
+      router.push(newUrl, {
+        scroll: false,
+      })
+    }
   }, [checkedProfessionals])
 
   const handleProfessionalChange = (key: ProfessionalFieldTypes) => {

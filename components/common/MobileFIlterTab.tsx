@@ -87,35 +87,43 @@ const MobileFilterTab = ({ provinces, page, artFields, majors }: Props) => {
 
   useEffect(() => {
     const locationParams = new URLSearchParams(window.location.search)
-    locationParams.delete("recruit")
-    if (selectedRecruit) locationParams.append("recruit", selectedRecruit)
-    const newUrl = `${window.location.pathname}?${locationParams.toString()}`
-    router.push(newUrl, {
-      scroll: false,
-    })
+    const currentRecruit = locationParams.get("recruit")
+    if (currentRecruit !== selectedRecruit) {
+      locationParams.delete("recruit")
+      if (selectedRecruit) locationParams.append("recruit", selectedRecruit)
+      const newUrl = `${window.location.pathname}?${locationParams.toString()}`
+      router.push(newUrl, {
+        scroll: false,
+      })
+    }
   }, [selectedRecruit])
 
   useEffect(() => {
     const locationParams = new URLSearchParams(window.location.search)
-    locationParams.delete("provinceId")
-    if (selectedProvinceId)
-      locationParams.append("provinceId", selectedProvinceId)
-    const newUrl = `${window.location.pathname}?${locationParams.toString()}`
-    router.push(newUrl, {
-      scroll: false,
-    })
+    const currentProvinceId = locationParams.get("provinceId")
+    if (currentProvinceId !== selectedProvinceId) {
+      locationParams.delete("provinceId")
+      if (selectedProvinceId)
+        locationParams.append("provinceId", selectedProvinceId)
+      const newUrl = `${window.location.pathname}?${locationParams.toString()}`
+      router.push(newUrl, {
+        scroll: false,
+      })
+    }
   }, [selectedProvinceId])
 
   useEffect(() => {
     const locationParams = new URLSearchParams(window.location.search)
-
-    locationParams.delete("professional")
-    if (selectedProfessional)
-      locationParams.append("professional", selectedProfessional)
-    const newUrl = `${window.location.pathname}?${locationParams.toString()}`
-    router.push(newUrl, {
-      scroll: false,
-    })
+    const currentProfessional = locationParams.get("professional")
+    if (currentProfessional !== selectedProfessional) {
+      locationParams.delete("professional")
+      if (selectedProfessional)
+        locationParams.append("professional", selectedProfessional)
+      const newUrl = `${window.location.pathname}?${locationParams.toString()}`
+      router.push(newUrl, {
+        scroll: false,
+      })
+    }
   }, [selectedProfessional])
 
   return (

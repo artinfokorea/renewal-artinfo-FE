@@ -7,33 +7,36 @@ const JobTypeCheckBoxes = () => {
   const searchParams = useSearchParams()
   const router = useRouter()
   const recruits = searchParams.getAll("recruit") as JobType[]
-  const [checkedState, setCheckedState] = useState<JobType[]>(recruits)
+  const [checkedRecruits, setCheckedRecruits] = useState<JobType[]>(recruits)
 
   const handleRecruitChange = (value: JobType) => {
-    if (checkedState.includes(value)) {
-      setCheckedState(checkedState.filter(v => v !== value))
+    if (checkedRecruits.includes(value)) {
+      setCheckedRecruits(checkedRecruits.filter(v => v !== value))
     } else {
-      setCheckedState([...recruits, value])
+      setCheckedRecruits([...recruits, value])
     }
   }
 
   useEffect(() => {
     const locationParams = new URLSearchParams(window.location.search)
-    locationParams.delete("recruit")
-    checkedState.forEach(v => locationParams.append("recruit", v))
-    const newUrl = `${window.location.pathname}?${locationParams.toString()}`
-    router.push(newUrl, {
-      scroll: false,
-    })
-  }, [checkedState])
+    const currentRecruits = locationParams.getAll("recruit") as JobType[]
+    if (JSON.stringify(currentRecruits) !== JSON.stringify(checkedRecruits)) {
+      locationParams.delete("recruit")
+      checkedRecruits.forEach(v => locationParams.append("recruit", v))
+      const newUrl = `${window.location.pathname}?${locationParams.toString()}`
+      router.push(newUrl, {
+        scroll: false,
+      })
+    }
+  }, [checkedRecruits])
 
   return (
     <div className="mt-8">
       <h4 className="text-lg font-semibold">직군</h4>
       <CheckboxField
         title="전체"
-        checked={checkedState.length === 0}
-        handleChange={() => setCheckedState([])}
+        checked={checkedRecruits.length === 0}
+        handleChange={() => setCheckedRecruits([])}
       />
 
       {JobTypeList.map(({ title, value }) => (
@@ -41,7 +44,7 @@ const JobTypeCheckBoxes = () => {
           key={value}
           value={value}
           title={title}
-          checked={checkedState.includes(value)}
+          checked={checkedRecruits.includes(value)}
           handleChange={handleRecruitChange}
         />
       ))}
