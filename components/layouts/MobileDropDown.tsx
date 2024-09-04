@@ -60,8 +60,8 @@ const MobileDropDown = ({ handleBar, handleSign }: Props) => {
               className="mobile-dropdown absolute -left-3 top-8 z-30 mt-3 flex w-screen flex-col gap-3 bg-white p-4 shadow-sm focus:outline-none"
             >
               <DropDownMenu href="/jobs" label="채용" />
+              <DropDownMenu href="/performances" label="공연" />
               <DropDownMenu href="/lessons" label="레슨" />
-              {/* <DropDownMenu href="/performances" label="공연" /> */}
               <DropDownMenu href="/news" label="뉴스" />
               <DropDownMenu href="/inquiry" label="문의" />
               <div className="mx-auto my-4 w-full border-b-[1px] border-whitesmoke" />
