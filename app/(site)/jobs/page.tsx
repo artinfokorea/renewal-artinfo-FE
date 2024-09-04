@@ -16,6 +16,7 @@ import JobsList from "@/components/jobs/JobsList"
 import ProvinceDialog from "@/components/dialog/ProvinceDialog"
 import AddButton from "@/components/common/AddButton"
 import CreateLinkButton from "@/components/common/CreateLinkButton"
+import ArrowUpButton from "@/components/common/ArrowUpButton"
 
 const page = () => {
   const searchParams = useSearchParams()
@@ -99,6 +100,10 @@ const page = () => {
           open={isProvinceDialog}
           close={() => setIsProvinceDialog(false)}
           multiple={true}
+        />
+        <ArrowUpButton
+          onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
+          className="scroll-to-top-button"
         />
         <AddButton
           onClick={() => router.push(`${pathname}/create`)}

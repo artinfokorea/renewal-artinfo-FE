@@ -14,6 +14,7 @@ import PerformanceList from "@/components/performances/PerformanceList"
 import PerformanceMobileFilterTab from "@/components/performances/PerformanceMobileFilterTab"
 import PerformanceCheckBoxes from "@/components/performances/PerformanceCheckBoxes"
 import PerformanceListSkeleton from "@/components/skeleton/PerformanceListSkeleton"
+import ArrowUpButton from "@/components/common/ArrowUpButton"
 
 const page = () => {
   const searchParams = useSearchParams()
@@ -88,6 +89,10 @@ const page = () => {
           open={isProvinceDialog}
           close={() => setIsProvinceDialog(false)}
           multiple={true}
+        />
+        <ArrowUpButton
+          onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
+          className="scroll-to-top-button"
         />
         <AddButton
           onClick={() => router.push(`${pathname}/create`)}

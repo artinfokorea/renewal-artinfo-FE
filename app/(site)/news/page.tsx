@@ -10,6 +10,7 @@ import ListSearchForm from "@/components/common/ListSearchForm"
 import { Button } from "@/components/ui/button"
 import NewsSkeleton from "@/components/skeleton/NewsSkeleton"
 import NewsList from "@/components/news/NewsList"
+import ArrowUpButton from "@/components/common/ArrowUpButton"
 
 const page = () => {
   const router = useRouter()
@@ -47,6 +48,10 @@ const page = () => {
           <NewsList />
         </Suspense>
       </section>
+      <ArrowUpButton
+        onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
+        className="scroll-to-top-button"
+      />
     </div>
   )
 }

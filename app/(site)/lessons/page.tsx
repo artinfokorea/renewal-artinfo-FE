@@ -14,6 +14,7 @@ import { queries } from "@/lib/queries"
 import { useQueries } from "@tanstack/react-query"
 import { usePathname, useRouter, useSearchParams } from "next/navigation"
 import { Suspense, useMemo, useState } from "react"
+import ArrowUpButton from "@/components/common/ArrowUpButton"
 
 const page = () => {
   const searchParams = useSearchParams()
@@ -99,6 +100,10 @@ const page = () => {
           open={isProvinceDialog}
           close={() => setIsProvinceDialog(false)}
           multiple={true}
+        />
+        <ArrowUpButton
+          onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
+          className="scroll-to-top-button"
         />
         <AddButton
           onClick={() => router.push(`${pathname}/create`)}

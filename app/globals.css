@@ -497,3 +497,7 @@ input[type="number"] {
 .mobile-comment-menu svg {
   display: none !important;
 }
+
+.scroll-to-top-button {
+  @apply fixed bottom-48 right-4 z-50 h-12 w-12 rounded-full bg-white shadow-md md:hidden;
+}
