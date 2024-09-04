@@ -39,6 +39,8 @@ const PerformanceList = () => {
   })
 
   useEffect(() => {
+    console.log("inView", inView)
+    console.log("hasNextPage", hasNextPage)
     if (inView && hasNextPage) {
       fetchNextPage()
     }
