@@ -48,10 +48,6 @@ const page = () => {
           <NewsList />
         </Suspense>
       </section>
-      <ArrowUpButton
-        onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
-        className="scroll-to-top-button"
-      />
     </div>
   )
 }

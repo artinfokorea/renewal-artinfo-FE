@@ -22,9 +22,14 @@ const ArtConatiner = ({ type, title }: Props) => {
 
   return (
     <section className="my-12 md:my-16">
-      <h3 className="mb-4 text-xl font-bold">#{title}</h3>
+      <div className="flex items-center justify-between">
+        <h3 className="text-xl font-bold">{title}</h3>
+        <Link href="/performances">
+          <h5 className="font-bold text-silver">더보기</h5>
+        </Link>
+      </div>
       {/*  Desktop Art Section */}
-      <div className="hidden grid-cols-2 gap-8 md:grid md:grid-cols-4">
+      <div className="mt-4 hidden grid-cols-2 gap-8 md:grid md:grid-cols-4">
         {arts?.map((art, index) => (
           <Link
             key={art.id}
@@ -48,7 +53,7 @@ const ArtConatiner = ({ type, title }: Props) => {
         ))}
       </div>
       {/*  Mobile Art Section */}
-      <div className="flex overflow-x-auto md:hidden">
+      <div className="mt-4 flex overflow-x-auto md:hidden">
         <Swiper spaceBetween={10} slidesPerView="auto" modules={[Pagination]}>
           {arts?.map(art => (
             <SwiperSlide key={art.id} style={{ width: "200px" }}>

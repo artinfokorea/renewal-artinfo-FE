@@ -13,9 +13,6 @@ const PerformanceCheckBoxes = () => {
   const [checkedCategories, setCheckedCategories] = useState(categories)
 
   useEffect(() => {
-    console.log("search", window.location.search)
-  }, [])
-  useEffect(() => {
     const locationParams = new URLSearchParams(window.location.search)
     const currentCategories = searchParams.getAll(
       "category",

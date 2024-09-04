@@ -2,7 +2,7 @@ import React, { FormEvent, useState } from "react"
 import { Input } from "../ui/input"
 import SearchIcon from "../icons/SearchIcon"
 import CloseIcon from "../icons/CloseIcon"
-import { useRouter } from "next/navigation"
+import { useRouter, useSearchParams } from "next/navigation"
 
 interface Props {
   children?: React.ReactNode
@@ -10,14 +10,15 @@ interface Props {
 }
 
 const ListSearchForm = ({ children, placeholder }: Props) => {
-  const [searchInput, setSearchInput] = useState("")
+  const searchParams = useSearchParams()
+  const keyword = searchParams.get("keyword") as string
+  const [searchInput, setSearchInput] = useState(keyword || "")
   const router = useRouter()
 
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault()
 
     const searchParams = new URLSearchParams(window.location.search)
-
     searchParams.delete("keyword")
     searchInput && searchParams.append("keyword", searchInput)
 
