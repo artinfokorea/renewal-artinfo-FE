@@ -29,7 +29,7 @@ export enum PerformanceCategory {
 export const PerformanceCategoryValues = {
   CLASSIC: "클래식",
   MUSICAL: "뮤지컬",
-  DANCE: "댄스",
+  DANCE: "무용",
   TRADITIONAL_MUSIC: "국악",
 } as const
 
