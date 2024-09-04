@@ -15,7 +15,7 @@ import { PERFORMANCE_DETAIL } from "@/types/performances"
 const KakaoMap = dynamic(() => import("@/components/common/KakaoMap"), {
   ssr: false,
   loading: () => (
-    <div className="flex h-[400px] items-center justify-center">
+    <div className="flex aspect-[9/4] items-center justify-center">
       <Spinner className="h-8 w-8" />
     </div>
   ),
