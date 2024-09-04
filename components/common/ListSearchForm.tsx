@@ -27,6 +27,16 @@ const ListSearchForm = ({ children, placeholder }: Props) => {
     router.push(newUrl)
   }
 
+  const resetKeyword = () => {
+    setSearchInput("")
+    const searchParams = new URLSearchParams(window.location.search)
+    searchParams.delete("keyword")
+
+    const newUrl = `${window.location.pathname}?${searchParams.toString()}`
+
+    router.push(newUrl)
+  }
+
   return (
     <div className="mx-auto mt-8 flex max-w-screen-sm flex-col items-center px-4 md:mt-20">
       {children}
@@ -44,7 +54,7 @@ const ListSearchForm = ({ children, placeholder }: Props) => {
         {searchInput && (
           <button
             type="button"
-            onClick={() => setSearchInput("")}
+            onClick={resetKeyword}
             className="absolute right-3 top-[10px] md:top-[14px]"
           >
             <CloseIcon className="h-5 w-5 text-gray-400 md:h-6 md:w-6" />

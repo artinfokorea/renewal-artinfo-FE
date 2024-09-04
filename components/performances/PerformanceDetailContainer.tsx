@@ -11,6 +11,8 @@ import ItemManageBox from "../common/ItemManageBox"
 import dynamic from "next/dynamic"
 import { Spinner } from "../common/Loading"
 import { PERFORMANCE_DETAIL } from "@/types/performances"
+import PerformanceDetailItem from "./PerformanceDetailItem"
+import PerformanceAreaItem from "./PerformanceAreaItem"
 
 const KakaoMap = dynamic(() => import("@/components/common/KakaoMap"), {
   ssr: false,
@@ -42,59 +44,6 @@ const PerformanceDetailContainer = ({
     enabled: !!data?.user,
   })
 
-  const detailItems = [
-    {
-      title: "공연기간",
-      content: `${filter.YYYYMMDD(performance.startAt, "YYYY.MM.DD (ddd)")} ~ ${filter.YYYYMMDD(
-        performance.endAt,
-        "YYYY.MM.DD (ddd)",
-      )}`,
-    },
-    {
-      title: "공연장소",
-      content: performance.customAreaName || performance.area?.name,
-    },
-    {
-      title: "공연시간",
-      content: performance.time,
-    },
-    {
-      title: "관람연령",
-      content: performance.age,
-    },
-    {
-      title: "티켓가격",
-      content: performance.ticketPrice,
-    },
-    {
-      title: "출연진",
-      content: performance.cast,
-    },
-    {
-      title: "주관-주최",
-      content: performance.host,
-    },
-  ]
-
-  const eventInfo = [
-    {
-      title: "좌석수",
-      content: `${performance.area?.seatScale}석`,
-    },
-    {
-      title: "시설특성",
-      content: performance.area?.type,
-    },
-    {
-      title: "주소",
-      content: performance.area?.address,
-    },
-    {
-      title: "홈페이지",
-      content: performance.area?.siteUrl,
-    },
-  ]
-
   return (
     <div className="mt-8 px-4 md:mt-16">
       <h2 className="my-8 text-center text-xl md:text-left md:text-2xl">
@@ -114,14 +63,30 @@ const PerformanceDetailContainer = ({
           />
         </div>
         <div className="my-8 flex flex-1 flex-col gap-3 text-sm md:my-4 md:text-base">
-          {detailItems.map(({ title, content }) => (
-            <div className="flex" key={title}>
-              <span className="basis-1/4 font-semibold text-grey md:basis-1/6">
-                {title}
-              </span>
-              <span className="basis-3/4 font-medium">{content}</span>
-            </div>
-          ))}
+          <PerformanceDetailItem
+            title="공연기간"
+            content={`${filter.YYYYMMDD(performance.startAt, "YYYY.MM.DD (ddd)")} ~ ${filter.YYYYMMDD(
+              performance.endAt,
+              "YYYY.MM.DD (ddd)",
+            )}`}
+          />
+          <PerformanceDetailItem
+            title="공연장소"
+            content={
+              (performance.customAreaName || performance.area?.name) as string
+            }
+          />
+          <PerformanceDetailItem title="공연시간" content={performance.time} />
+          <PerformanceDetailItem title="관람연령" content={performance.age} />
+          <PerformanceDetailItem
+            title="티켓가격"
+            content={performance.ticketPrice}
+          />
+          <PerformanceDetailItem title="출연진" content={performance.cast} />
+          <PerformanceDetailItem
+            title="주관 ∙ 주최"
+            content={performance.host}
+          />
         </div>
       </div>
       {user?.id === performance.authorId ? (
@@ -193,14 +158,22 @@ const PerformanceDetailContainer = ({
               </h4>
 
               <div className="my-8 flex flex-col gap-3 text-sm md:text-base">
-                {eventInfo.map(({ title, content }) => (
-                  <div className="flex" key={title}>
-                    <span className="basis-1/6 font-semibold text-grey">
-                      {title}
-                    </span>
-                    <span className="basis-5/6">{content}</span>
-                  </div>
-                ))}
+                <PerformanceAreaItem
+                  title="좌석수"
+                  content={`${performance.area?.seatScale}석`}
+                />
+                <PerformanceAreaItem
+                  title="시설특성"
+                  content={performance.area?.type}
+                />
+                <PerformanceAreaItem
+                  title="주소"
+                  content={performance.area?.address}
+                />
+                <PerformanceAreaItem
+                  title="홈페이지"
+                  content={performance.area?.siteUrl}
+                />
               </div>
               <div className="aspect-[9/4]">
                 <KakaoMap
