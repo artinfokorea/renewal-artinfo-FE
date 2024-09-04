@@ -38,14 +38,7 @@ const PerformanceList = () => {
     },
   })
 
-  console.log(
-    "le",
-    performances.pages.map(page => page.performances.length),
-  )
-
   useEffect(() => {
-    console.log("inView", inView)
-    console.log("hasNextPage", hasNextPage)
     if (inView && hasNextPage) {
       fetchNextPage()
     }
