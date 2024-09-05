@@ -13,6 +13,10 @@ const PerformanceCheckBoxes = () => {
   const [checkedCategories, setCheckedCategories] = useState(categories)
 
   useEffect(() => {
+    const isDesktop = window.innerWidth > 959
+
+    if (!isDesktop) return
+
     const locationParams = new URLSearchParams(window.location.search)
     const currentCategories = searchParams.getAll(
       "category",
@@ -23,7 +27,6 @@ const PerformanceCheckBoxes = () => {
     ) {
       locationParams.delete("category")
       checkedCategories.forEach(v => locationParams.append("category", v))
-
       const newUrl = `${window.location.pathname}?${locationParams.toString()}`
       router.push(newUrl, {
         scroll: false,

@@ -67,15 +67,13 @@ const PerformanceMobileFilterTab = ({ provinces }: Props) => {
 
   useEffect(() => {
     const locationParams = new URLSearchParams(window.location.search)
-    const currentCategory = locationParams.get("category")
-    if (currentCategory !== selectedCategory) {
-      locationParams.delete("category")
-      if (selectedCategory) locationParams.append("category", selectedCategory)
-      const newUrl = `${window.location.pathname}?${locationParams.toString()}`
-      router.push(newUrl, {
-        scroll: false,
-      })
-    }
+
+    locationParams.delete("category")
+    if (selectedCategory) locationParams.append("category", selectedCategory)
+    const newUrl = `${window.location.pathname}?${locationParams.toString()}`
+    router.push(newUrl, {
+      scroll: false,
+    })
   }, [selectedCategory])
 
   return (
