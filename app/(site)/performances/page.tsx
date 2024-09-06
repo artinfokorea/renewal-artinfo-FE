@@ -15,6 +15,7 @@ import PerformanceMobileFilterTab from "@/components/performances/PerformanceMob
 import PerformanceCheckBoxes from "@/components/performances/PerformanceCheckBoxes"
 import PerformanceListSkeleton from "@/components/skeleton/PerformanceListSkeleton"
 import ArrowUpButton from "@/components/common/ArrowUpButton"
+import useBreakPoint from "@/hooks/useBreakPoint"
 
 const page = () => {
   const searchParams = useSearchParams()
@@ -22,6 +23,7 @@ const page = () => {
   const router = useRouter()
   const pathname = usePathname()
   const [isProvinceDialog, setIsProvinceDialog] = useState(false)
+  const isDesktop = useBreakPoint("lg")
 
   const [provinceList, performanceCount] = useQueries({
     queries: [queries.provinces.list(), queries.performances.count()],
@@ -35,7 +37,7 @@ const page = () => {
 
   return (
     <div className="mx-auto max-w-screen-lg">
-      <ListSearchForm placeholder="제목, 출연진, 공연장 등을 검색해보세요.">
+      <ListSearchForm placeholder="제목, 출연진 등을 검색해보세요.">
         <h4 className="text-xl font-semibold md:text-2xl">
           기대되는 공연{" "}
           <span className="text-main">{performanceCount.data?.totalCount}</span>
@@ -43,9 +45,11 @@ const page = () => {
       </ListSearchForm>
       <section className="flex">
         {/* Desktop Filter */}
-        <form className="hidden min-w-[180px] flex-col text-gray-400 lg:flex">
-          <PerformanceCheckBoxes />
-        </form>
+        {isDesktop && (
+          <form className="min-w-[180px] flex-col px-4 text-gray-400">
+            <PerformanceCheckBoxes />
+          </form>
+        )}
         <div className="flex w-full flex-col md:ml-12 md:mt-4 md:flex-1">
           <div className="hidden items-center justify-between lg:flex">
             <div className="flex flex-wrap gap-2">
@@ -76,9 +80,11 @@ const page = () => {
             />
           </div>
           {/* Mobile Filter */}
-          <PerformanceMobileFilterTab
-            provinces={provinceList?.data?.provinces}
-          />
+          {!isDesktop && (
+            <PerformanceMobileFilterTab
+              provinces={provinceList?.data?.provinces}
+            />
+          )}
 
           <Suspense fallback={<PerformanceListSkeleton />}>
             <PerformanceList />

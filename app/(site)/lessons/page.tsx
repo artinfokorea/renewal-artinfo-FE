@@ -15,6 +15,7 @@ import { useQueries } from "@tanstack/react-query"
 import { usePathname, useRouter, useSearchParams } from "next/navigation"
 import { Suspense, useMemo, useState } from "react"
 import ArrowUpButton from "@/components/common/ArrowUpButton"
+import useBreakPoint from "@/hooks/useBreakPoint"
 
 const page = () => {
   const searchParams = useSearchParams()
@@ -22,6 +23,7 @@ const page = () => {
   const router = useRouter()
   const [isProvinceDialog, setIsProvinceDialog] = useState(false)
   const pathname = usePathname()
+  const isDesktop = useBreakPoint("lg")
 
   const [lessonFields, provinceList, lessonsCount, majorList] = useQueries({
     queries: [
@@ -51,9 +53,13 @@ const page = () => {
 
       <section className="flex">
         {/* Desktop Filter */}
-        <form className="hidden min-w-[180px] flex-col text-gray-400 lg:flex">
-          <ProfessionalCheckBoxes artFields={lessonFields?.data?.majorGroups} />
-        </form>
+        {isDesktop && (
+          <form className="min-w-[180px] flex-col px-4 text-gray-400">
+            <ProfessionalCheckBoxes
+              artFields={lessonFields?.data?.majorGroups}
+            />
+          </form>
+        )}
         <div className="flex w-full flex-col md:ml-12 md:mt-4 md:flex-1">
           <div className="hidden items-center justify-between lg:flex">
             <div className="flex flex-wrap gap-2">
@@ -85,12 +91,14 @@ const page = () => {
           </div>
 
           {/* Mobile Filter */}
-          <MobileFilterTab
-            majors={majorList?.data?.majors}
-            artFields={lessonFields?.data?.majorGroups}
-            provinces={provinceList?.data?.provinces}
-            page="LESSON"
-          />
+          {!isDesktop && (
+            <MobileFilterTab
+              majors={majorList?.data?.majors}
+              artFields={lessonFields?.data?.majorGroups}
+              provinces={provinceList?.data?.provinces}
+              page="LESSON"
+            />
+          )}
           <Suspense fallback={<LessonListSkeleton />}>
             <LessonList />
           </Suspense>

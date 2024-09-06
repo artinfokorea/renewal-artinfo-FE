@@ -17,6 +17,7 @@ import ProvinceDialog from "@/components/dialog/ProvinceDialog"
 import AddButton from "@/components/common/AddButton"
 import CreateLinkButton from "@/components/common/CreateLinkButton"
 import ArrowUpButton from "@/components/common/ArrowUpButton"
+import useBreakPoint from "@/hooks/useBreakPoint"
 
 const page = () => {
   const searchParams = useSearchParams()
@@ -24,6 +25,7 @@ const page = () => {
   const router = useRouter()
   const pathname = usePathname()
   const [isProvinceDialog, setIsProvinceDialog] = useState(false)
+  const isDesktop = useBreakPoint("lg")
 
   const [artFields, provinceList, majorList] = useQueries({
     queries: [
@@ -48,7 +50,9 @@ const page = () => {
       </ListSearchForm>
       <section className="flex">
         {/* Desktop Filter */}
-        <JobListCheckBoxes artFields={artFields?.data?.majorGroups} />
+        {isDesktop && (
+          <JobListCheckBoxes artFields={artFields?.data?.majorGroups} />
+        )}
 
         <div className="flex w-full flex-col md:ml-12 md:mt-4 md:flex-1">
           <div className="mx-4 hidden items-center justify-between lg:flex">
@@ -84,12 +88,14 @@ const page = () => {
           </div>
 
           {/* Mobile Filter */}
-          <MobileFilterTab
-            majors={majorList?.data?.majors}
-            provinces={provinceList?.data?.provinces}
-            page="JOB"
-            artFields={artFields?.data?.majorGroups}
-          />
+          {!isDesktop && (
+            <MobileFilterTab
+              majors={majorList?.data?.majors}
+              provinces={provinceList?.data?.provinces}
+              page="JOB"
+              artFields={artFields?.data?.majorGroups}
+            />
+          )}
 
           <Suspense fallback={<JobListSkeleton />}>
             <JobsList />
