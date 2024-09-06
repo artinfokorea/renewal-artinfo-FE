@@ -118,7 +118,7 @@ const FullTimeJobForm = ({
       <h2 className="my-4 text-center font-bold md:my-12 md:text-2xl">
         채용 등록
       </h2>
-      <div className="flex flex-col md:flex-row">
+      <div className="flex flex-col lg:flex-row">
         {withImage && (
           <ImageField
             imageUrl={watch("imageUrl") || ""}
@@ -126,12 +126,12 @@ const FullTimeJobForm = ({
             alt="job_company_image"
             deleteImage={deleteImage}
             openFileUploader={openFileUploader}
-            className="h-[190px] w-full md:h-[244px] md:w-[400px]"
+            className="h-[190px] w-full md:h-[300px] lg:h-[244px] lg:w-[400px]"
           />
         )}
         <div
           className={`flex flex-1 flex-col text-dimgray ${
-            withImage ? "md:ml-16" : "w-full"
+            withImage ? "lg:ml-16" : "w-full"
           }`}
         >
           <div className="md:mt:0 mb-2">

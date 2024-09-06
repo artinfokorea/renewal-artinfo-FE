@@ -41,7 +41,7 @@ const MobileDropDown = ({ handleBar, handleSign }: Props) => {
       {({ open }) => (
         <>
           <MenuButton
-            className="flex focus:outline-none md:hidden"
+            className="flex focus:outline-none lg:hidden"
             onClick={handleBar}
           >
             <HamburgerIcon className="h-7 w-7 text-dimgray" />

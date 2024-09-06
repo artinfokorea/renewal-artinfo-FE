@@ -49,8 +49,8 @@ const PerformanceList = () => {
       {performances?.pages?.map(page =>
         page?.performances?.map((performance, index) => (
           <PerformanceCard
-            key={performance.id}
-            isLastPage={!hasNextPage && index == 5}
+            key={`${categories}${performance.id}${provinceIds}`}
+            isLastPage={!(hasNextPage && index == page.performances.length - 5)}
             performance={performance}
             ref={ref}
           />

@@ -59,14 +59,14 @@ const JobsList = () => {
         page?.jobs?.map((job, index) => {
           return job.type === JobType.RELIGION ? (
             <ReligionCard
-              key={job.id}
+              key={`${job.id}${professionals}${provinceIds}`}
               job={job}
               ref={ref}
               isLastPage={!(hasNextPage && index === page.jobs.length - 5)}
             />
           ) : (
             <JobCard
-              key={job.id}
+              key={`${job.id}${professionals}${provinceIds}`}
               job={job}
               ref={ref}
               isLastPage={!(hasNextPage && index === page.jobs.length - 5)}

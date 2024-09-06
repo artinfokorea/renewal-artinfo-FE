@@ -38,7 +38,7 @@ const PerformanceCard = forwardRef<HTMLDivElement, Props>(
           </span>
         </div>
 
-        {!isLastPage && <div ref={ref} />}
+        {!isLastPage && <div className="h-6 bg-yellow-100" ref={ref} />}
       </Link>
     )
   },

@@ -75,7 +75,7 @@ const Header = () => {
           <Link href="/">
             <h1 className="text-2xl font-bold text-main">ARTINFO</h1>
           </Link>
-          <NavigationMenu className="ml-12 hidden md:flex">
+          <NavigationMenu className="ml-12 hidden lg:flex">
             <NavigationMenuList>
               <NavigationMenuItem>
                 <NavMenu href="/jobs" label="채용" />
@@ -87,7 +87,7 @@ const Header = () => {
             </NavigationMenuList>
           </NavigationMenu>
         </div>
-        <div className="hidden md:flex">
+        <div className="hidden lg:flex">
           {user ? (
             <DeskTopDropDown user={user} handleSign={handleSign} />
           ) : (

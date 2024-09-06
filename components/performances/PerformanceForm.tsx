@@ -133,7 +133,7 @@ const PerformanceForm = ({
             )}
           />
         </div>
-        <div className="mt-4 flex flex-col md:flex-row">
+        <div className="mt-4 flex flex-col lg:flex-row">
           <div>
             <ImageField
               imageUrl={watch("posterImageUrl") || ""}
@@ -141,7 +141,7 @@ const PerformanceForm = ({
               alt="job_company_image"
               deleteImage={deleteImage}
               openFileUploader={openFileUploader}
-              className="h-[190px] w-full md:h-[300px] md:w-[225px]"
+              className="h-[190px] w-full md:h-[300px] lg:w-[225px]"
             />
             <ErrorMessage
               errors={errors}
@@ -152,7 +152,7 @@ const PerformanceForm = ({
             />
           </div>
 
-          <div className="flex flex-1 flex-col gap-[6px] py-2 md:ml-12">
+          <div className="flex flex-1 flex-col gap-[6px] py-2 lg:ml-12">
             <div className="flex items-center gap-2">
               <span className="basis-1/6 font-semibold text-grayfont">
                 공연기간

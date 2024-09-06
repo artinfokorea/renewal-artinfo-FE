@@ -54,7 +54,7 @@ const LessonList = () => {
           return (
             <LessonCard
               lesson={lesson}
-              key={lesson.id}
+              key={`${lesson.id}${professionals}${provinceIds}`}
               ref={ref}
               isLastPage={!(hasNextPage && index === page.lessons.length - 5)}
             />

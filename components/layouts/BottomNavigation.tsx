@@ -47,7 +47,7 @@ const BottomNavigation = () => {
 
   return (
     <footer
-      className={`safe-area fixed bottom-0 left-0 z-50 h-20 w-full border-t-[1px] bg-white md:hidden`}
+      className={`safe-area fixed bottom-0 left-0 z-50 h-20 w-full border-t-[1px] bg-white lg:hidden`}
     >
       <div className={`mx-auto grid h-full grid-cols-5`}>
         <NavMenu title="홈" href="/" icon={HomeIcon} />

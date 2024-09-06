@@ -46,7 +46,7 @@ const NewsList = () => {
         page?.news?.map((news, index) => {
           return (
             <NewsCard
-              key={news.id}
+              key={`${news.id}${keyword}`}
               ref={ref}
               news={news}
               isLastPage={!(hasNextPage && index === page.news.length - 5)}

@@ -115,7 +115,7 @@ const page = () => {
         />
         <AddButton
           onClick={() => router.push(`${pathname}/create`)}
-          className="fixed bottom-32 right-4 z-50 h-12 w-12 rounded-full bg-white shadow-md md:hidden"
+          className="fixed bottom-32 right-4 z-50 h-12 w-12 rounded-full bg-white shadow-md lg:hidden"
         />
       </section>
     </div>
