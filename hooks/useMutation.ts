@@ -31,17 +31,21 @@ const useMutation = <T>({
 
   const handleSubmit = async (data: T, id?: number) => {
     try {
+      let response
+
       if (id && updateFn) {
-        await startTransition(updateFn(id, data))
+        response = await startTransition(updateFn(id, data))
         successToast(successMessage?.update || "수정되었습니다.")
       } else if (createFn) {
-        await startTransition(createFn(data))
+        response = await startTransition(createFn(data))
         successToast(successMessage?.create || "등록되었습니다.")
       }
       if (redirectPath) router.push(redirectPath)
       queryClient.invalidateQueries({
         queryKey,
       })
+
+      return response
     } catch (error: any) {
       errorToast(error.message)
       console.error(error)

@@ -9,6 +9,7 @@ import PerformanceForm, {
   PerformanceFormData,
 } from "@/components/performances/PerformanceForm"
 import {
+  PERFORMANCE,
   PerformanceCategory,
   performanceCategoryArray,
 } from "@/types/performances"
@@ -23,7 +24,6 @@ const page = () => {
   const { handleSubmit, isLoading } = useMutation<PerformancePayload>({
     createFn: (payload: PerformancePayload) => createPerformance(payload),
     queryKey: [...queries.lessons._def],
-    redirectPath: pathname.slice(0, pathname.lastIndexOf("/")),
     successMessage: {
       create: "공연이 등록되었습니다.",
     },
@@ -46,7 +46,7 @@ const page = () => {
       introduction,
     } = payload
 
-    handleSubmit({
+    const newPerformance = await handleSubmit({
       category,
       title,
       posterImageUrl,
@@ -62,6 +62,12 @@ const page = () => {
       reservationUrl: reservationUrl || "",
       introduction,
     })
+
+    if (newPerformance) {
+      router.push(
+        `${pathname.slice(0, pathname.lastIndexOf("/"))}/${newPerformance.item.id}`,
+      )
+    }
   }
 
   return (

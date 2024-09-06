@@ -60,8 +60,6 @@ const PerformanceAreaDialog = ({ isOpen, handleDialog, handleArea }: Props) => {
     }
   }, [areas])
 
-  console.log("hasNextPage", hasNextPage)
-
   return (
     <Transition appear show={isOpen} as={Fragment}>
       <Dialog as="div" className="relative z-10" onClose={handleDialog}>
