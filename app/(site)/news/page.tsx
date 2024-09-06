@@ -10,7 +10,6 @@ import ListSearchForm from "@/components/common/ListSearchForm"
 import { Button } from "@/components/ui/button"
 import NewsSkeleton from "@/components/skeleton/NewsSkeleton"
 import NewsList from "@/components/news/NewsList"
-import ArrowUpButton from "@/components/common/ArrowUpButton"
 
 const page = () => {
   const router = useRouter()
