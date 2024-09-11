@@ -46,7 +46,7 @@ const ArtConatiner = ({ type, title }: Props) => {
                 fill
                 priority
                 quality={100}
-                sizes="(max-width: 768px) 100px 180px, 198px 280px"
+                sizes="(max-width: 1024px) 200px 300px (min-width: 1024px) 224px, 336px"
                 className="rounded-md"
               />
             </AspectRatio>
@@ -65,7 +65,7 @@ const ArtConatiner = ({ type, title }: Props) => {
                     alt="art_image"
                     fill
                     priority
-                    sizes="(max-width: 768px) 100px 180px, 198px 280px"
+                    sizes="(max-width: 1024px) 200px 300px, (min-width: 768px) and (max-width: 1024px) 200px, 198px 280px"
                     className="rounded-md"
                   />
                 </AspectRatio>

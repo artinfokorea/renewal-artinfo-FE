@@ -40,7 +40,7 @@ const BannerContainer = () => {
                   priority
                   fill
                   className="rounded-xl"
-                  sizes="100vw"
+                  sizes="(max-width: 1024px) 100vw, 1024px"
                 />
               </div>
             </Link>
