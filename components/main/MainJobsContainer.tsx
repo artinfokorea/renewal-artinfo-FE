@@ -56,7 +56,6 @@ const MainJobsContainer = () => {
                 alt={`${job.companyName}_job_image`}
                 fill
                 fallbackText={job.companyName}
-                quality={100}
                 sizes="(max-width: 768px) 100px 130px, (max-width: 1200px) 200px, 185px"
                 className="rounded-lg"
               />

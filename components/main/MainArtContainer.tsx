@@ -44,6 +44,7 @@ const ArtConatiner = ({ type, title }: Props) => {
                 src={art.imageUrl}
                 alt="art_image"
                 fill
+                priority
                 quality={100}
                 sizes="(max-width: 768px) 100px 180px, 198px 280px"
                 className="rounded-md"
@@ -63,7 +64,7 @@ const ArtConatiner = ({ type, title }: Props) => {
                     src={art.imageUrl}
                     alt="art_image"
                     fill
-                    quality={100}
+                    priority
                     sizes="(max-width: 768px) 100px 180px, 198px 280px"
                     className="rounded-md"
                   />
