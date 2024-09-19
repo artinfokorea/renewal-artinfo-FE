@@ -109,6 +109,14 @@ const JobDetailContainer = ({ deleteJob, job }: Props) => {
       {user?.id === job?.authorId ? (
         <div className="my-8 flex h-8 items-center gap-4 md:gap-6">
           <div className="w-full flex-1 border-b-2 border-whitesmoke" />
+          <a
+            href={job?.recruitSiteUrl}
+            target="_blank"
+            className="mx-4 hidden text-base font-bold text-main md:inline md:text-lg"
+          >
+            채용 사이트 바로가기
+          </a>
+          <div className="hidden w-full flex-1 border-b-2 border-whitesmoke md:flex" />
           <ItemManageBox
             handleEdit={() =>
               router.push(`${pathname}?type=edit&jobType=${job?.type}`)
