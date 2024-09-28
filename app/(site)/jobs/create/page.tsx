@@ -5,7 +5,6 @@ import { JobType, JobTypeList } from "@/types/jobs"
 import { createFullTimeJob } from "@/services/jobs"
 import { usePathname, useRouter, useSearchParams } from "next/navigation"
 import { queries } from "@/lib/queries"
-import JobTypeSelectDialog from "@/components/jobs/JobTypeSelectDIalog"
 import FullTimeJobForm, {
   CreateFulltimeJobFormData,
 } from "@/components/jobs/FullTimeJobForm"
