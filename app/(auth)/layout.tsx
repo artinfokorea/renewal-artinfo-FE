@@ -18,14 +18,8 @@ export default function RootLayout({
         src="https://static.nid.naver.com/js/naveridlogin_js_sdk_2.0.2.js"
         defer
       /> */}
-      <Script
-        src="https://developers.kakao.com/sdk/js/kakao.js"
-        strategy="beforeInteractive"
-      />
-      <Script
-        src="https://static.nid.naver.com/js/naveridlogin_js_sdk_2.0.2.js"
-        strategy="beforeInteractive"
-      />
+      <script src="https://developers.kakao.com/sdk/js/kakao.js" />
+      <script src="https://static.nid.naver.com/js/naveridlogin_js_sdk_2.0.2.js" />
       <main>{children}</main>
     </>
   )
