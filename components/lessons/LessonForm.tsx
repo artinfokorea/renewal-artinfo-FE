@@ -271,6 +271,7 @@ const LessonForm = ({ handleLesson, isFormLoading, lesson }: Props) => {
             )}
           </Button>
         </div>
+
         <FileUploader ref={fileUploader} uploadedFiles={handleUploadedFiles} />
       </form>
       <DistrictDialog

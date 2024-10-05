@@ -55,7 +55,7 @@ const page = () => {
         )}
 
         <div className="flex w-full flex-col md:ml-12 md:mt-4 md:flex-1">
-          <div className="mx-4 hidden items-center justify-between lg:flex">
+          <div className="hidden items-center justify-between lg:flex">
             <div className="flex flex-wrap gap-2">
               <Button
                 onClick={() => setIsProvinceDialog(!isProvinceDialog)}
