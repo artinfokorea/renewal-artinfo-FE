@@ -10,6 +10,7 @@ import ListSearchForm from "@/components/common/ListSearchForm"
 import { Button } from "@/components/ui/button"
 import NewsSkeleton from "@/components/skeleton/NewsSkeleton"
 import NewsList from "@/components/news/NewsList"
+import CreateLinkButton from "@/components/common/CreateLinkButton"
 
 const page = () => {
   const router = useRouter()
@@ -33,13 +34,8 @@ const page = () => {
         </h4>
       </ListSearchForm>
       {user?.type === UserType.ADMIN && (
-        <div className="flex justify-end px-4">
-          <Button
-            className="rounded-3xl bg-main px-6 py-2 text-white"
-            onClick={() => router.push(`${pathname}/create`)}
-          >
-            등록
-          </Button>
+        <div className="flex justify-end">
+          <CreateLinkButton onClick={() => router.push(`${pathname}/create`)} />
         </div>
       )}
       <section>
