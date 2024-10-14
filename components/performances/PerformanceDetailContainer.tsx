@@ -89,32 +89,29 @@ const PerformanceDetailContainer = ({
           />
         </div>
       </div>
-      {user?.id === performance.authorId ? (
-        <div className="my-8 flex h-8 items-center gap-4 md:gap-6">
-          <div className="w-full flex-1 border-b-2 border-whitesmoke" />
-          <ItemManageBox
-            handleEdit={() => router.push(`${pathname}?type=edit`)}
-            handleDelete={() =>
-              setIsDeleteConfirmDialog(!isDeleteConfirmDialog)
-            }
-            className="h-10"
-          />
-        </div>
-      ) : performance?.reservationUrl ? (
-        <div className="my-8 flex items-center justify-center">
-          <div className="flex-1 border-b-2 border-whitesmoke"></div>
+      <div className="my-8 flex items-center justify-between">
+        <div className="flex-1 border-b-2 border-whitesmoke" />
+
+        {performance?.reservationUrl && (
           <a
-            href={performance?.reservationUrl}
+            href={performance.reservationUrl}
             target="_blank"
             className="mx-4 text-base font-bold text-main md:text-lg"
           >
             예매처 바로가기
           </a>
-          <div className="flex-1 border-b-2 border-whitesmoke"></div>
-        </div>
-      ) : (
-        <div className="my-8 flex flex-1 border-b-2 border-whitesmoke" />
-      )}
+        )}
+        <div className="flex-1 border-b-2 border-whitesmoke" />
+        {user?.id === performance.authorId && (
+          <ItemManageBox
+            handleEdit={() => router.push(`${pathname}?type=edit`)}
+            handleDelete={() =>
+              setIsDeleteConfirmDialog(!isDeleteConfirmDialog)
+            }
+            className="mx-4 h-10"
+          />
+        )}
+      </div>
       <TabGroup
         className="my-8"
         selectedIndex={selectedIndex}
