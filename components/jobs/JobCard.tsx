@@ -40,7 +40,7 @@ const JobCard = forwardRef<HTMLDivElement, Props>(
             </div>
           )}
           <div className="ml-4 flex-1 py-2 md:ml-12">
-            <h4 className="line-clamp-1 break-all text-sm font-bold md:text-xl">
+            <h4 className="line-clamp-2 break-keep text-sm font-bold leading-4 md:text-xl">
               {job.title}
             </h4>
             <div className="my-2 flex items-center gap-2">
@@ -103,7 +103,7 @@ const JobCard = forwardRef<HTMLDivElement, Props>(
               </div>
             </div>
             <div className="flex justify-between gap-2 text-xs text-coolgray md:text-base">
-              <span className="line-clamp-2 break-all">{job.companyName}</span>
+              <span className="line-clamp-1">{job.companyName}</span>
               <span>{filter.YYYYMMDD(job.createdAt)}</span>
             </div>
           </div>
