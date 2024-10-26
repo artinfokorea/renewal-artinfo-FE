@@ -1,11 +1,11 @@
 import { PROVINCE } from "@/types"
-import { JobType, JobTypeValues, SearchType } from "@/types/jobs"
-import React, { useEffect, useMemo, useState } from "react"
+import { JobTypeValues, SearchType } from "@/types/jobs"
+import React, { useMemo } from "react"
 import MobileProvinceFilter from "../common/MobileProvinceFilter"
 import MobileProfessionalFilter from "./MobileProfessionalFilter"
 import MobileRecruitTypeFilter from "./MobileRecruitTypeFilter"
 import { ArtField, MAJOR, ProfessionalFieldTypes } from "@/types/majors"
-import { useRouter, useSearchParams } from "next/navigation"
+import { useFilterState } from "@/hooks/useMobileFilterState"
 
 interface Props {
   provinces?: PROVINCE[]
@@ -15,46 +15,16 @@ interface Props {
 }
 
 const MobileFilterTab = ({ provinces, page, artFields, majors }: Props) => {
-  const searchParams = useSearchParams()
-  const router = useRouter()
-  const recruit = searchParams.get("recruit") as JobType
-  const professional = searchParams.get(
-    "professional",
-  ) as ProfessionalFieldTypes
-  const provinceId = searchParams.get("provinceId") as string
-  const [mobileSearchTab, setMobileSearchTab] = useState<SearchType>()
-  const [selectedRecruit, setSelectedRecruit] = useState<JobType | "">(
-    recruit || "",
-  )
-  const [selectedProvinceId, setSelectedProvinceId] = useState<string>(
-    provinceId || "",
-  )
-  const [selectedProfessional, setSelectedProfessional] = useState<
-    ProfessionalFieldTypes | ""
-  >(professional || "")
-
-  const handleSearchTab = (searchType: SearchType) => {
-    if (mobileSearchTab === searchType) {
-      setMobileSearchTab(undefined)
-    } else {
-      setMobileSearchTab(searchType)
-    }
-  }
-
-  const handleRecruit = (recruit: JobType | "") => {
-    setSelectedRecruit(recruit)
-    setMobileSearchTab(undefined)
-  }
-
-  const handleProvince = (provinceId: string | "") => {
-    setSelectedProvinceId(provinceId)
-    setMobileSearchTab(undefined)
-  }
-
-  const handleProfessional = (professional: ProfessionalFieldTypes | "") => {
-    setSelectedProfessional(professional)
-    setMobileSearchTab(undefined)
-  }
+  const {
+    mobileSearchTab,
+    selectedRecruit,
+    selectedProvinceId,
+    selectedProfessional,
+    handleSearchTab,
+    handleRecruit,
+    handleProvince,
+    handleProfessional,
+  } = useFilterState()
 
   const majorCategories = Array.from(
     new Set(majors?.map(major => major.secondGroupEn)),
@@ -84,47 +54,6 @@ const MobileFilterTab = ({ provinces, page, artFields, majors }: Props) => {
       province => province.id.toString() === selectedProvinceId,
     )[0]
   }, [selectedProvinceId, provinces])
-
-  useEffect(() => {
-    const locationParams = new URLSearchParams(window.location.search)
-    const currentRecruit = locationParams.get("recruit")
-    if (currentRecruit !== selectedRecruit) {
-      locationParams.delete("recruit")
-      if (selectedRecruit) locationParams.append("recruit", selectedRecruit)
-      const newUrl = `${window.location.pathname}?${locationParams.toString()}`
-      router.push(newUrl, {
-        scroll: false,
-      })
-    }
-  }, [selectedRecruit])
-
-  useEffect(() => {
-    const locationParams = new URLSearchParams(window.location.search)
-    const currentProvinceId = locationParams.get("provinceId")
-    if (currentProvinceId !== selectedProvinceId) {
-      locationParams.delete("provinceId")
-      if (selectedProvinceId)
-        locationParams.append("provinceId", selectedProvinceId)
-      const newUrl = `${window.location.pathname}?${locationParams.toString()}`
-      router.push(newUrl, {
-        scroll: false,
-      })
-    }
-  }, [selectedProvinceId])
-
-  useEffect(() => {
-    const locationParams = new URLSearchParams(window.location.search)
-    const currentProfessional = locationParams.get("professional")
-    if (currentProfessional !== selectedProfessional) {
-      locationParams.delete("professional")
-      if (selectedProfessional)
-        locationParams.append("professional", selectedProfessional)
-      const newUrl = `${window.location.pathname}?${locationParams.toString()}`
-      router.push(newUrl, {
-        scroll: false,
-      })
-    }
-  }, [selectedProfessional])
 
   return (
     <div className="relative mx-4 flex flex-col rounded border lg:hidden">
