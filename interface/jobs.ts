@@ -1,4 +1,4 @@
-import { JobType } from "@/types/jobs"
+import { JobType, MajorGroupTypes } from "@/types/jobs"
 import { ProfessionalFieldTypes } from "@/types/majors"
 import { ListRequest } from "."
 
@@ -28,4 +28,29 @@ export interface JobPayload {
   majorIds?: number[]
   type: JobType
   recruitSiteUrl?: string
+}
+
+export interface PartTimeCreatePayload {
+  title: string
+  contents: string
+  companyName: string
+  address: string
+  addressDetail: string
+  fee: number
+  majorIds?: number[]
+  schedules?: Schedule[]
+}
+
+export interface PartTimeUpdatePayload extends PartTimeCreatePayload {
+  isActive: boolean
+}
+
+export interface PartTimeJobRequest extends ListRequest {
+  majorGroups?: MajorGroupTypes[]
+  provinces?: number[]
+}
+
+export interface Schedule {
+  startAt: Date
+  endAt: Date
 }

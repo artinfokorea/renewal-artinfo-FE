@@ -31,10 +31,6 @@ export const JobTypeList = [
     title: "예술단체",
     value: JobType.ART_ORGANIZATION,
   },
-  // {
-  //   title: "오브리",
-  //   value: JobType.PART_TIME,
-  // },
   {
     title: "종교",
     value: JobType.RELIGION,
@@ -107,4 +103,33 @@ export enum SearchType {
   MAJOR = "MAJOR",
   RECRUIT = "RECRUIT",
   CATEGORY = "CATEGORY",
+}
+
+export enum MajorGroupTypes {
+  CONDUCTOR = "CONDUCTOR",
+  KEYBOARD = "KEYBOARD",
+  STRING = "STRING",
+  WOOD_WIND = "WOOD_WIND",
+  PERCUSSION = "PERCUSSION",
+  BRASS_WIND = "BRASS_WIND",
+  VOCAL = "VOCAL",
+  COMPOSER = "COMPOSER",
+}
+
+export const MajorGroupValues = {
+  [MajorGroupTypes.CONDUCTOR]: "지휘",
+  [MajorGroupTypes.KEYBOARD]: "건반악기",
+  [MajorGroupTypes.STRING]: "현악기",
+  [MajorGroupTypes.WOOD_WIND]: "목관악기",
+  [MajorGroupTypes.PERCUSSION]: "타악기",
+  [MajorGroupTypes.BRASS_WIND]: "금관악기",
+  [MajorGroupTypes.VOCAL]: "성악",
+  [MajorGroupTypes.COMPOSER]: "작곡",
+}
+
+export interface ApplyJob {
+  id: number
+  title: string
+  isActive: boolean
+  appliedAt: Date
 }

@@ -46,3 +46,12 @@ export const getArtFileds = async (request: ArtFieldRequest) => {
     throw new Error(exceptionHandler(error, "API getArtFileds error"))
   }
 }
+
+/* 전문 분야 그룹 조회 */
+export const getMajorGroups = async () => {
+  const response =
+    await publicApiRequest.get<ListApiResponse<MajorGroup, "majorGroups">>(
+      "/majors/groups",
+    )
+  return response.item
+}
