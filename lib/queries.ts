@@ -1,17 +1,29 @@
 import { getAds } from "@/services/ad"
-import { getInfiniteJobs, getJob, getJobs, getJobsCount } from "@/services/jobs"
+import {
+  getInfiniteFullTimeJobs,
+  getJob,
+  getPullTimeJobs,
+  getJobsCount,
+  getPartTimeJobs,
+  getInfinitePartTimeJobs,
+} from "@/services/jobs"
 import {
   getInfiniteLessons,
   getLesson,
   getLessonFields,
   getLessonsCount,
 } from "@/services/lessons"
-import { getArtCategories, getArtFileds, getMajors } from "@/services/majors"
+import {
+  getArtCategories,
+  getArtFileds,
+  getMajors,
+  getPartTimeMajorGroups,
+} from "@/services/majors"
 import { getInfiniteNews, getNewsCount, getNewsDetail } from "@/services/news"
 import { getProvinces } from "@/services/system"
 import { getMe } from "@/services/users"
 import { ListRequest } from "@/interface"
-import { JobsRequest } from "@/interface/jobs"
+import { JobsRequest, PartTimeJobRequest } from "@/interface/jobs"
 import { LessonsRequest } from "@/interface/lessons"
 import { ArtFieldRequest } from "@/interface/majors"
 import { AdvertisementType } from "@/types/ads"
@@ -47,6 +59,10 @@ const majors = createQueryKeys("majors", {
     queryKey: ["", request],
     queryFn: () => getArtFileds(request),
   }),
+  partTimeMajorGroups: () => ({
+    queryKey: ["partTimeMajorGroups"],
+    queryFn: getPartTimeMajorGroups,
+  }),
 })
 
 const provinces = createQueryKeys("provinces", {
@@ -67,7 +83,7 @@ const lessons = createQueryKeys("lessons", {
   }),
   list: (filters: LessonsRequest) => ({
     queryKey: ["", { filters }],
-    queryFn: () => getJobs(filters),
+    queryFn: () => getPullTimeJobs(filters),
   }),
   infiniteList: (filters: LessonsRequest) => ({
     queryKey: [{ filters }],
@@ -117,16 +133,25 @@ const jobs = createQueryKeys("jobs", {
   }),
   list: (filters: JobsRequest) => ({
     queryKey: [{ filters }],
-    queryFn: () => getJobs(filters),
+    queryFn: () => getPullTimeJobs(filters),
   }),
   infiniteList: (filters: JobsRequest) => ({
     queryKey: [{ filters }],
     queryFn: ({ pageParam }: { pageParam: number }) =>
-      getInfiniteJobs({ ...filters, page: pageParam }),
+      getInfiniteFullTimeJobs({ ...filters, page: pageParam }),
   }),
   count: () => ({
     queryKey: [""],
     queryFn: getJobsCount,
+  }),
+  partTimeList: (filters: PartTimeJobRequest) => ({
+    queryKey: [{ filters }],
+    queryFn: () => getPartTimeJobs(filters),
+  }),
+  infinitePartTimeList: (filters: PartTimeJobRequest) => ({
+    queryKey: [{ filters }],
+    queryFn: ({ pageParam }: { pageParam: number }) =>
+      getInfinitePartTimeJobs({ ...filters, page: pageParam }),
   }),
 })
 

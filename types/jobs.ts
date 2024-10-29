@@ -105,7 +105,7 @@ export enum SearchType {
   CATEGORY = "CATEGORY",
 }
 
-export enum MajorGroupTypes {
+export enum PartTimeMajor {
   CONDUCTOR = "CONDUCTOR",
   KEYBOARD = "KEYBOARD",
   STRING = "STRING",
@@ -116,15 +116,15 @@ export enum MajorGroupTypes {
   COMPOSER = "COMPOSER",
 }
 
-export const MajorGroupValues = {
-  [MajorGroupTypes.CONDUCTOR]: "지휘",
-  [MajorGroupTypes.KEYBOARD]: "건반악기",
-  [MajorGroupTypes.STRING]: "현악기",
-  [MajorGroupTypes.WOOD_WIND]: "목관악기",
-  [MajorGroupTypes.PERCUSSION]: "타악기",
-  [MajorGroupTypes.BRASS_WIND]: "금관악기",
-  [MajorGroupTypes.VOCAL]: "성악",
-  [MajorGroupTypes.COMPOSER]: "작곡",
+export const PartTimeMajorValues = {
+  [PartTimeMajor.CONDUCTOR]: "지휘",
+  [PartTimeMajor.KEYBOARD]: "건반악기",
+  [PartTimeMajor.STRING]: "현악기",
+  [PartTimeMajor.WOOD_WIND]: "목관악기",
+  [PartTimeMajor.PERCUSSION]: "타악기",
+  [PartTimeMajor.BRASS_WIND]: "금관악기",
+  [PartTimeMajor.VOCAL]: "성악",
+  [PartTimeMajor.COMPOSER]: "작곡",
 }
 
 export interface ApplyJob {
@@ -132,4 +132,9 @@ export interface ApplyJob {
   title: string
   isActive: boolean
   appliedAt: Date
+}
+
+export enum JobTimeType {
+  FULL_TIME = "FULL_TIME",
+  PART_TIME = "PART_TIME",
 }

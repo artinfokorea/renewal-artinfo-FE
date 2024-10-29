@@ -1,4 +1,4 @@
-import { JobType, MajorGroupTypes } from "@/types/jobs"
+import { JobType, PartTimeMajor } from "@/types/jobs"
 import { ProfessionalFieldTypes } from "@/types/majors"
 import { ListRequest } from "."
 
@@ -46,7 +46,7 @@ export interface PartTimeUpdatePayload extends PartTimeCreatePayload {
 }
 
 export interface PartTimeJobRequest extends ListRequest {
-  majorGroups?: MajorGroupTypes[]
+  majorGroups?: PartTimeMajor[]
   provinces?: number[]
 }
 

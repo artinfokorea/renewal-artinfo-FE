@@ -1,7 +1,7 @@
 import { ListApiResponse, ListResponse } from "@/interface"
 import { publicApiRequest } from "."
 import { exceptionHandler } from "./exception-handler"
-import { ArtField, MAJOR, MajorGroup } from "@/types/majors"
+import { ArtField, MAJOR, MajorGroup, PartTimeMajorGroup } from "@/types/majors"
 import { ArtFieldRequest } from "@/interface/majors"
 
 export const getMajors = async (): Promise<ListResponse<MAJOR, "majors">> => {
@@ -48,10 +48,10 @@ export const getArtFileds = async (request: ArtFieldRequest) => {
 }
 
 /* 전문 분야 그룹 조회 */
-export const getMajorGroups = async () => {
+export const getPartTimeMajorGroups = async () => {
   const response =
-    await publicApiRequest.get<ListApiResponse<MajorGroup, "majorGroups">>(
-      "/majors/groups",
-    )
+    await publicApiRequest.get<
+      ListApiResponse<PartTimeMajorGroup, "majorGroups">
+    >("/majors/groups")
   return response.item
 }

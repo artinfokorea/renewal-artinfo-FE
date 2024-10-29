@@ -15,16 +15,15 @@ import {
   JobsRequest,
   PartTimeCreatePayload,
   PartTimeJobRequest,
-  PartTimePayload,
   PartTimeUpdatePayload,
 } from "@/interface/jobs"
 import { USER } from "@/types/users"
 
 /* 채용 스크롤 리스트 조회 */
-export const getInfiniteJobs = async (
+export const getInfiniteFullTimeJobs = async (
   request: JobsRequest,
 ): Promise<ScrollApiResponse<JOB, "jobs">> => {
-  const response = await getJobs(request)
+  const response = await getPullTimeJobs(request)
   return {
     jobs: response.jobs,
     nextPage: request.page ? request.page + 1 : 2,
@@ -34,7 +33,7 @@ export const getInfiniteJobs = async (
 }
 
 /* 채용 리스트 조회 */
-export const getJobs = async (
+export const getPullTimeJobs = async (
   request: JobsRequest,
 ): Promise<ListResponse<JOB, "jobs">> => {
   try {
@@ -56,6 +55,19 @@ export const getJobs = async (
     return response.item
   } catch (error) {
     throw new Error(exceptionHandler(error, "API getJobs error"))
+  }
+}
+
+/* 단기채용 무한 스크롤 조회 */
+export const getInfinitePartTimeJobs = async (
+  request: JobsRequest,
+): Promise<ScrollApiResponse<JOB, "jobs">> => {
+  const response = await getPartTimeJobs(request)
+  return {
+    jobs: response.jobs,
+    nextPage: request.page ? request.page + 1 : 2,
+    isLast: response.jobs.length < request.size,
+    totalCount: response.totalCount ?? 0,
   }
 }
 
@@ -123,7 +135,7 @@ export const createFullTimeJob = async (
 /* 예술단체 or 강사수정 */
 export const updateArtOrganization = async (
   jobId: number,
-  payload: PartTimePayload,
+  payload: JobPayload,
 ): Promise<SuccessResponse> => {
   const response = await authApiRequest.put<SuccessResponse>(
     `/jobs/full-time/${jobId}`,

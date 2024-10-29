@@ -1,9 +1,9 @@
 import { useState, useEffect } from "react"
 import { useRouter, useSearchParams } from "next/navigation"
-import { JobType, SearchType } from "@/types/jobs"
+import { JobType, PartTimeMajor, SearchType } from "@/types/jobs"
 import { ProfessionalFieldTypes } from "@/types/majors"
 
-export const useFilterState = () => {
+export const useMobileFilterState = () => {
   const searchParams = useSearchParams()
   const router = useRouter()
 
@@ -17,6 +17,9 @@ export const useFilterState = () => {
   const [selectedProfessional, setSelectedProfessional] = useState<
     ProfessionalFieldTypes | ""
   >((searchParams.get("professional") as ProfessionalFieldTypes) || "")
+  const [selectedPartTimeMajor, setSelectedPartTimeMajor] = useState<
+    PartTimeMajor | ""
+  >("")
 
   const handleSearchTab = (searchType: SearchType) => {
     if (mobileSearchTab === searchType) {
@@ -24,6 +27,11 @@ export const useFilterState = () => {
     } else {
       setMobileSearchTab(searchType)
     }
+  }
+
+  const handlePartTimeMajor = (major: PartTimeMajor | "") => {
+    setSelectedPartTimeMajor(major)
+    setMobileSearchTab(undefined)
   }
 
   const handleRecruit = (recruit: JobType | "") => {
@@ -40,6 +48,20 @@ export const useFilterState = () => {
     setSelectedProfessional(professional)
     setMobileSearchTab(undefined)
   }
+
+  useEffect(() => {
+    const locationParams = new URLSearchParams(window.location.search)
+    const currentPartTimeMajor = locationParams.get("partTimeMajor")
+    if (currentPartTimeMajor !== selectedPartTimeMajor) {
+      locationParams.delete("partTimeMajor")
+      if (selectedPartTimeMajor)
+        locationParams.append("partTimeMajor", selectedPartTimeMajor)
+      const newUrl = `${window.location.pathname}?${locationParams.toString()}`
+      router.push(newUrl, {
+        scroll: false,
+      })
+    }
+  }, [selectedPartTimeMajor])
 
   useEffect(() => {
     const locationParams = new URLSearchParams(window.location.search)
@@ -84,10 +106,12 @@ export const useFilterState = () => {
 
   return {
     mobileSearchTab,
+    selectedPartTimeMajor,
     selectedRecruit,
     selectedProvinceId,
     selectedProfessional,
     handleSearchTab,
+    handlePartTimeMajor,
     handleRecruit,
     handleProvince,
     handleProfessional,

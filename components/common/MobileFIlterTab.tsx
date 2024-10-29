@@ -1,11 +1,11 @@
 import { PROVINCE } from "@/types"
 import { JobTypeValues, SearchType } from "@/types/jobs"
 import React, { useMemo } from "react"
-import MobileProvinceFilter from "../common/MobileProvinceFilter"
+import MobileProvinceFilter from "./MobileProvinceFilter"
 import MobileProfessionalFilter from "./MobileProfessionalFilter"
 import MobileRecruitTypeFilter from "./MobileRecruitTypeFilter"
 import { ArtField, MAJOR, ProfessionalFieldTypes } from "@/types/majors"
-import { useFilterState } from "@/hooks/useMobileFilterState"
+import { useMobileFilterState } from "@/hooks/useMobileFilterState"
 
 interface Props {
   provinces?: PROVINCE[]
@@ -24,7 +24,7 @@ const MobileFilterTab = ({ provinces, page, artFields, majors }: Props) => {
     handleRecruit,
     handleProvince,
     handleProfessional,
-  } = useFilterState()
+  } = useMobileFilterState()
 
   const majorCategories = Array.from(
     new Set(majors?.map(major => major.secondGroupEn)),

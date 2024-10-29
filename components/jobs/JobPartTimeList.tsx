@@ -1,31 +1,22 @@
 import { ScrollApiResponse } from "@/interface"
 import { queries } from "@/lib/queries"
-import { JOB, JobType } from "@/types/jobs"
+import { JOB, PartTimeMajor } from "@/types/jobs"
 import { useSuspenseInfiniteQuery } from "@tanstack/react-query"
 import { useSearchParams } from "next/navigation"
 import { useInView } from "react-intersection-observer"
 import React, { useEffect } from "react"
-import JobCard from "./JobCard"
-import ReligionCard from "./ReligionCard"
-import { ProfessionalFieldTypes } from "@/types/majors"
+import { JobPartTimeCard } from "./JobPartTimeCard"
 
-const JobsList = () => {
+const JobPartTimeList = () => {
   const searchParams = useSearchParams()
-  const recruits = searchParams.getAll("recruit") as JobType[]
-  const professionals = searchParams.getAll(
-    "professional",
-  ) as ProfessionalFieldTypes[]
+  const partTimeMajors = searchParams.getAll("partTimeMajor") as PartTimeMajor[]
   const keyword = searchParams.get("keyword") as string
   const provinceIds = searchParams.getAll("provinceId") as string[]
 
   const queryParams = {
     size: 10,
-    types:
-      recruits.length > 0
-        ? recruits
-        : [JobType.ART_ORGANIZATION, JobType.LECTURER, JobType.RELIGION],
+    majorGroups: partTimeMajors.length > 0 ? partTimeMajors : [],
     keyword,
-    professionalFields: professionals.map(professional => professional),
     provinceIds: provinceIds.map(id => Number(id)),
   }
 
@@ -35,11 +26,11 @@ const JobsList = () => {
   })
 
   const {
-    data: jobs,
+    data: partTimeJobs,
     hasNextPage,
     fetchNextPage,
   } = useSuspenseInfiniteQuery<ScrollApiResponse<JOB, "jobs">>({
-    ...queries.jobs.infiniteList(queryParams),
+    ...queries.jobs.infinitePartTimeList(queryParams),
     initialPageParam: 1,
     getNextPageParam: lastPage => {
       if (!lastPage.isLast) return lastPage.nextPage
@@ -54,19 +45,12 @@ const JobsList = () => {
   }, [inView, hasNextPage])
 
   return (
-    <div className="mt-4 max-w-full">
-      {jobs?.pages?.map(page =>
+    <div className="mt-4 grid max-w-full grid-cols-1 gap-4 md:grid-cols-2">
+      {partTimeJobs?.pages?.map(page =>
         page?.jobs?.map((job, index) => {
-          return job.type === JobType.RELIGION ? (
-            <ReligionCard
-              key={`${job.id}${professionals}${provinceIds}`}
-              job={job}
-              ref={ref}
-              isLastPage={!(hasNextPage && index === page.jobs.length - 5)}
-            />
-          ) : (
-            <JobCard
-              key={`${job.id}${professionals}${provinceIds}`}
+          return (
+            <JobPartTimeCard
+              key={job.id}
               job={job}
               ref={ref}
               isLastPage={!(hasNextPage && index === page.jobs.length - 5)}
@@ -78,4 +62,4 @@ const JobsList = () => {
   )
 }
 
-export default JobsList
+export default JobPartTimeList

@@ -10,14 +10,19 @@ import ListSearchForm from "@/components/common/ListSearchForm"
 import JobListCheckBoxes from "@/components/jobs/JobListCheckBoxes"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
-import MobileFilterTab from "@/components/common/MobileFIlterTab"
+import MobileFilterTab from "@/components/common/MobileFilterTab"
 import JobListSkeleton from "@/components/skeleton/JobListSkeleton"
-import JobsList from "@/components/jobs/JobsList"
+import JobPullTimeList from "@/components/jobs/JobPullTimeList"
 import ProvinceDialog from "@/components/dialog/ProvinceDialog"
 import AddButton from "@/components/common/AddButton"
 import CreateLinkButton from "@/components/common/CreateLinkButton"
 import ArrowUpButton from "@/components/common/ArrowUpButton"
 import useBreakPoint from "@/hooks/useBreakPoint"
+import { JobTimeType } from "@/types/jobs"
+import JobPartTimeList from "@/components/jobs/JobPartTimeList"
+import { MobileJobTypeTab } from "@/components/jobs/MobileJobTypeTab"
+import { useJobTimeType } from "@/hooks/useJobTimeType"
+import { MobilePartTimeTab } from "@/components/jobs/MobilePartTimeTab"
 
 const page = () => {
   const searchParams = useSearchParams()
@@ -26,12 +31,14 @@ const page = () => {
   const pathname = usePathname()
   const [isProvinceDialog, setIsProvinceDialog] = useState(false)
   const isDesktop = useBreakPoint("lg")
+  const { jobTimeType, handleJobTimeTypeChange } = useJobTimeType()
 
-  const [artFields, provinceList, majorList] = useQueries({
+  const [artFields, provinceList, majorList, partTimeMajors] = useQueries({
     queries: [
       queries.majors.artFields({ artCategories: [ArtType.MUSIC] }),
       queries.provinces.list(),
       queries.majors.list(),
+      queries.majors.partTimeMajorGroups(),
     ],
   })
 
@@ -51,7 +58,12 @@ const page = () => {
       <section className="flex">
         {/* Desktop Filter */}
         {isDesktop && (
-          <JobListCheckBoxes artFields={artFields?.data?.majorGroups} />
+          <JobListCheckBoxes
+            handleJobTimeType={handleJobTimeTypeChange}
+            jobTimeType={jobTimeType}
+            partTimeMajorList={partTimeMajors?.data?.majorGroups}
+            artFields={artFields?.data?.majorGroups}
+          />
         )}
 
         <div className="flex w-full flex-col md:ml-12 md:mt-4 md:flex-1">
@@ -89,17 +101,37 @@ const page = () => {
 
           {/* Mobile Filter */}
           {!isDesktop && (
-            <MobileFilterTab
-              majors={majorList?.data?.majors}
-              provinces={provinceList?.data?.provinces}
-              page="JOB"
-              artFields={artFields?.data?.majorGroups}
-            />
+            <>
+              <MobileJobTypeTab
+                jobTimeType={jobTimeType}
+                handleJobTimeType={handleJobTimeTypeChange}
+              />
+
+              {jobTimeType === JobTimeType.FULL_TIME ? (
+                <MobileFilterTab
+                  majors={majorList?.data?.majors}
+                  provinces={provinceList?.data?.provinces}
+                  page="JOB"
+                  artFields={artFields?.data?.majorGroups}
+                />
+              ) : (
+                <MobilePartTimeTab
+                  provinces={provinceList?.data?.provinces}
+                  partTimeMajors={partTimeMajors?.data?.majorGroups}
+                />
+              )}
+            </>
           )}
 
-          <Suspense fallback={<JobListSkeleton />}>
-            <JobsList />
-          </Suspense>
+          {jobTimeType === JobTimeType.PART_TIME ? (
+            <Suspense fallback={<JobListSkeleton />}>
+              <JobPartTimeList />
+            </Suspense>
+          ) : (
+            <Suspense fallback={<JobListSkeleton />}>
+              <JobPullTimeList />
+            </Suspense>
+          )}
         </div>
         <ProvinceDialog
           provinces={provinceList?.data?.provinces}

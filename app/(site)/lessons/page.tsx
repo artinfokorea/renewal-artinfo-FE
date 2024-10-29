@@ -3,7 +3,6 @@
 import AddButton from "@/components/common/AddButton"
 import CreateLinkButton from "@/components/common/CreateLinkButton"
 import ListSearchForm from "@/components/common/ListSearchForm"
-import MobileFilterTab from "@/components/common/MobileFIlterTab"
 import ProfessionalCheckBoxes from "@/components/common/ProfessionalCheckBoxes"
 import ProvinceDialog from "@/components/dialog/ProvinceDialog"
 import LessonList from "@/components/lessons/LessonList"
@@ -16,6 +15,7 @@ import { usePathname, useRouter, useSearchParams } from "next/navigation"
 import { Suspense, useMemo, useState } from "react"
 import ArrowUpButton from "@/components/common/ArrowUpButton"
 import useBreakPoint from "@/hooks/useBreakPoint"
+import MobileFilterTab from "@/components/common/MobileFilterTab"
 
 const page = () => {
   const searchParams = useSearchParams()
