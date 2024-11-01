@@ -48,6 +48,15 @@ const page = () => {
     )
   }, [provinceIds])
 
+  const goToCreatePage = () => {
+    Cookies.set("prevPath", pathname, { expires: 1 / 288 })
+    if (jobTimeType === JobTimeType.PART_TIME) {
+      router.push(`${pathname}/part-time/create`)
+    } else {
+      router.push(`${pathname}/create`)
+    }
+  }
+
   return (
     <div className="mx-auto max-w-screen-lg">
       <ListSearchForm>
@@ -91,12 +100,7 @@ const page = () => {
                 )
               })}
             </div>
-            <CreateLinkButton
-              onClick={() => {
-                Cookies.set("prevPath", pathname, { expires: 1 / 288 })
-                router.push(`${pathname}/create`)
-              }}
-            />
+            <CreateLinkButton onClick={goToCreatePage} />
           </div>
 
           {/* Mobile Filter */}

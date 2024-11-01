@@ -205,12 +205,26 @@ export const getMyApllyList = async (
   return response.item
 }
 
+/* 단기직 지원 신청 */
+export const applyPartTimeJob = async (
+  jobId: number,
+  profile: string,
+): Promise<SuccessResponse> => {
+  const response = await authApiRequest.post<SuccessResponse>(
+    `/jobs/part-time/${jobId}/apply`,
+    { profile },
+  )
+  return response
+}
+
 /* 연주 상태 수정 */
 export const updateJobStatus = async (
   jobId: number,
+  isActive: boolean,
 ): Promise<SuccessResponse> => {
-  const response = await authApiRequest.get<SuccessResponse>(
+  const response = await authApiRequest.put<SuccessResponse>(
     `/jobs/${jobId}/status`,
+    { isActive },
   )
   return response
 }

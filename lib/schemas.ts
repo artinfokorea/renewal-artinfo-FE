@@ -150,6 +150,20 @@ export const jobSchema = yup.object().shape({
     .required("전공을 선택해주세요."),
 })
 
+export const partTimeSchema = yup.object().shape({
+  title: createStringRequiredSchema("제목을 입력해주세요."),
+  companyName: createStringRequiredSchema("단체 이름을 입력해주세요."),
+  fee: numberSchema,
+  address: createStringRequiredSchema("지역을 선택해주세요."),
+  addressDetail: createStringRequiredSchema("상세 주소를 입력해주세요."),
+  contents: createStringRequiredSchema("내용을 입력해주세요."),
+  majorIds: yup
+    .array()
+    .min(1, "전공을 최소 1개 이상 선택해주세요.")
+    .required("전공을 선택해주세요."),
+  schedules: yup.array().min(1, "일정을 최소 1개 이상 선택해주세요."),
+})
+
 export const profileSchema = yup.object().shape({
   name: nameSchema,
   birth: createStringRequiredSchema("생년월일을 입력해주세요."),

@@ -9,7 +9,6 @@ import PerformanceForm, {
   PerformanceFormData,
 } from "@/components/performances/PerformanceForm"
 import {
-  PERFORMANCE,
   PerformanceCategory,
   performanceCategoryArray,
 } from "@/types/performances"

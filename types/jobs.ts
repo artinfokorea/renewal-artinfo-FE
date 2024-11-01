@@ -1,3 +1,4 @@
+import { Schedule } from "@/interface/jobs"
 import { MAJOR } from "./majors"
 
 export enum JobType {
@@ -96,6 +97,7 @@ export type JOB = {
   address?: string
   addressDetail?: string
   recruitSiteUrl?: string
+  schedules?: Schedule[]
 }
 
 export enum SearchType {
