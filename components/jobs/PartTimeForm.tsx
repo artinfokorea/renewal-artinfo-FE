@@ -10,19 +10,26 @@ import { Button, Input } from "@headlessui/react"
 import { ErrorMessage } from "@hookform/error-message"
 import PlusIcon from "../icons/PlusIcon"
 import TrashIcon from "../icons/TrashIcon"
+import PartTimeMajorDialog from "../dialog/PartTimeMajorDialog"
+import { MajorGroup } from "@/types/majors"
+import dynamic from "next/dynamic"
+import { Spinner } from "../common/Loading"
 
 export type PartTimeFormData = yup.InferType<typeof partTimeSchema>
+
+const CKEditor = dynamic(() => import("@/components/ckEditor/CKEditor"), {
+  loading: () => (
+    <div className="flex h-[400px] items-center justify-center">
+      <Spinner className="h-8 w-8" />
+    </div>
+  ),
+  ssr: false,
+})
 
 interface PartTimeFormProps {
   isLoading: boolean
   handleSubmitForm: (payload: PartTimeFormData) => void
   partTime?: JOB
-}
-
-const initialSchedule = {
-  date: "",
-  startTime: "",
-  endTime: "",
 }
 
 export const PartTimeForm = ({
@@ -33,10 +40,7 @@ export const PartTimeForm = ({
   const router = useRouter()
   const pathname = usePathname()
   const { successToast, errorToast } = useToast()
-  const [schedules, setSchedules] = useState<
-    { date: string; startTime: string; endTime: string }[]
-  >([initialSchedule])
-
+  const [isMajorDialog, setIsMajorDialog] = useState(false)
   const {
     register,
     handleSubmit,
@@ -52,12 +56,41 @@ export const PartTimeForm = ({
       address: partTime?.address,
       addressDetail: partTime?.addressDetail,
       contents: partTime?.contents,
-      schedules: partTime?.schedules,
+      schedules: partTime
+        ? partTime?.schedules?.map(schedule => {
+            const startDate = new Date(schedule.startAt)
+            const endDate = new Date(schedule.endAt)
+
+            return {
+              date: startDate.toISOString().split("T")[0],
+              startTime: startDate.toTimeString().slice(0, 5),
+              endTime: endDate.toTimeString().slice(0, 5),
+            }
+          })
+        : [{ date: "", startTime: "", endTime: "" }],
     },
   })
 
+  // const handleSelectMajor = (selectedMajor: MajorGroup) => {
+  //   const majorIds = watch("majors")?.map(major => major.id)
+
+  //   if (majorIds?.includes(selectedMajor.)) {
+  //     setValue(
+  //       "majors",
+  //       watch("majors")?.filter(major => major.id !== selectedMajor.id),
+  //     )
+  //   } else {
+  //     const mergedMajors = [...(watch("majors") || []), selectedMajor]
+
+  //     setValue("majors", mergedMajors)
+  //   }
+  // }
+
   return (
-    <form className="mt-8 px-4 md:mt-16">
+    <form
+      className="mt-8 px-4 md:mt-16"
+      onSubmit={handleSubmit(handleSubmitForm)}
+    >
       <h4 className="text-center text-xl font-bold md:text-2xl">구인 등록</h4>
       <div className="md:my-8">
         <div className="md:mt:0 mb-2">
@@ -102,58 +135,48 @@ export const PartTimeForm = ({
             <span className="text-xs leading-6">(1회)</span>
           </div>
         </div>
-        <div className="mt-2 flex gap-2 md:mt-6">
+        <div className="mt-2 flex flex-col gap-2 md:mt-6 md:flex-row">
           <Button
-            onClick={() => setSchedules([...schedules, initialSchedule])}
+            onClick={() => {
+              setValue("schedules", [
+                ...watch("schedules"),
+                { date: "", startTime: "", endTime: "" },
+              ])
+            }}
             className="flex h-7 items-center gap-2 rounded-lg border p-2 font-medium text-main"
           >
             <PlusIcon className="h-4 w-4" />
             <span className="text-sm">날짜 추가</span>
           </Button>
           <div className="flex flex-col gap-2 md:gap-4">
-            {schedules.map((schedule, index) => (
+            {watch("schedules")?.map((schedule, index) => (
               <div key={index} className="flex items-center md:gap-6">
                 <Input
-                  value={schedule.date}
-                  onChange={e => {
-                    const newSchedules = [...schedules]
-                    newSchedules[index].date = e.target.value
-                    setSchedules(newSchedules)
-                  }}
+                  {...register(`schedules.${index}.date`)}
                   type="date"
-                  className="ml-2 w-[130px] rounded border border-black px-1"
+                  className="ml-2 w-[110px] rounded border border-black px-1 md:w-[130px]"
                 />
-                <span className="text-main">시간</span>
+                <span className="hidden text-main md:inline">시간</span>
                 <Input
-                  max={schedule.endTime}
-                  value={schedule.startTime}
-                  onChange={e => {
-                    const newSchedules = [...schedules]
-                    newSchedules[index].startTime = e.target.value
-                    setSchedules(newSchedules)
-                  }}
+                  {...register(`schedules.${index}.startTime`)}
                   type="time"
-                  className="ml-2 w-[130px] rounded border border-black px-1"
+                  className="ml-2 w-20 rounded border border-black px-1 md:w-[130px]"
                 />
-                ~
+                <p className="mx-2">~</p>
+
                 <Input
-                  min={schedule.startTime}
-                  value={schedule.endTime}
-                  onChange={e => {
-                    const newSchedules = [...schedules]
-                    newSchedules[index].endTime = e.target.value
-                    setSchedules(newSchedules)
-                  }}
+                  {...register(`schedules.${index}.endTime`)}
                   type="time"
-                  className="ml-2 w-[130px] rounded border border-black px-1"
+                  className="w-20 rounded border border-black px-1 md:w-[130px]"
                 />
                 {index > 0 && (
                   <Button
                     onClick={() => {
-                      const newSchedules = [...schedules]
+                      const newSchedules = [...watch("schedules")]
                       newSchedules.splice(index, 1)
-                      setSchedules(newSchedules)
+                      setValue("schedules", newSchedules)
                     }}
+                    className="ml-1 md:ml-0"
                   >
                     <TrashIcon className="h-6 w-6 rounded border p-1" />
                   </Button>
@@ -169,6 +192,48 @@ export const PartTimeForm = ({
           </Button>
         </div>
       </div>
+      <div className="my-6 h-[300px] md:h-[500px]">
+        <CKEditor
+          value={watch("contents")}
+          onChange={(value: string) => setValue("contents", value)}
+        />
+        <ErrorMessage
+          errors={errors}
+          name="contents"
+          render={({ message }) => (
+            <p className="text-xs font-semibold text-error">{message}</p>
+          )}
+        />
+      </div>
+      <div className="mt-64 flex justify-end gap-2 md:mt-16">
+        <Button
+          type="button"
+          className="h-9 rounded-3xl border px-6 text-sm"
+          onClick={() => router.back()}
+        >
+          취소
+        </Button>
+        <Button
+          disabled={isLoading}
+          type="submit"
+          className="h-9 rounded-3xl bg-main px-6 text-sm text-white"
+        >
+          {isLoading ? (
+            <Spinner className="h-6 w-6" />
+          ) : partTime ? (
+            "수정"
+          ) : (
+            "등록"
+          )}
+        </Button>
+      </div>
+      {/* <PartTimeMajorDialog
+        open={isMajorDialog}
+        close={() => setIsMajorDialog(!isMajorDialog)}
+        selectedMajors={watch("majors")}
+        handleSelectMajor={handleSelectMajor}
+        multiple={true}
+      /> */}
     </form>
   )
 }

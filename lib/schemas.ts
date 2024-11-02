@@ -157,11 +157,21 @@ export const partTimeSchema = yup.object().shape({
   address: createStringRequiredSchema("지역을 선택해주세요."),
   addressDetail: createStringRequiredSchema("상세 주소를 입력해주세요."),
   contents: createStringRequiredSchema("내용을 입력해주세요."),
-  majorIds: yup
+  majors: yup
     .array()
     .min(1, "전공을 최소 1개 이상 선택해주세요.")
     .required("전공을 선택해주세요."),
-  schedules: yup.array().min(1, "일정을 최소 1개 이상 선택해주세요."),
+  schedules: yup
+    .array()
+    .of(
+      yup.object().shape({
+        date: yup.string().required("날짜를 선택해주세요."),
+        startTime: yup.string().required("시작 시간을 선택해주세요."),
+        endTime: yup.string().required("종료 시간을 선택해주세요."),
+      }),
+    )
+    .min(1, "일정을 최소 1개 이상 선택해주세요.")
+    .required("일정을 입력해주세요."),
 })
 
 export const profileSchema = yup.object().shape({

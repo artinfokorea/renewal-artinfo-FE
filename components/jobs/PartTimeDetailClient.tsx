@@ -5,7 +5,12 @@ import { useSession } from "next-auth/react"
 import AlertDialog from "../dialog/AlertDialog"
 import { Button } from "../ui/button"
 import Cookies from "js-cookie"
-import { useParams, usePathname, useRouter } from "next/navigation"
+import {
+  useParams,
+  usePathname,
+  useRouter,
+  useSearchParams,
+} from "next/navigation"
 import { PartTimeDetailContainer } from "./PartTimeDetailContainer"
 import { PartTimeApplyDialog } from "../dialog/PartTimeApplyDialog"
 import { useLoading } from "@toss/use-loading"
@@ -20,11 +25,14 @@ import { useQueryClient, useSuspenseQuery } from "@tanstack/react-query"
 import { queries } from "@/lib/queries"
 import { PartTimeUpdatePayload } from "@/interface/jobs"
 import useMutation from "@/hooks/useMutation"
+import { PartTimeForm, PartTimeFormData } from "./PartTimeForm"
 
 export const PartTimeDetailClient = () => {
   const { data } = useSession()
   const params = useParams()
   const queryClient = useQueryClient()
+  const searchParams = useSearchParams()
+  const type = searchParams.get("type") || "read"
   const router = useRouter()
   const pathname = usePathname()
   const [isLoginModalOpen, setIsLoginModalOpen] = useState(false)
@@ -75,6 +83,25 @@ export const PartTimeDetailClient = () => {
     }
   }
 
+  const handleUpdateSubmit = async (payload: PartTimeFormData) => {
+    const { majors, schedules } = payload
+
+    const newPartTimeJob = await handleSubmit({
+      ...payload,
+      majorIds: majors.map(major => major.id),
+      isActive: true,
+      schedules: schedules?.map(schedule => ({
+        startAt: new Date(schedule.date + "T" + schedule.startTime),
+        endAt: new Date(schedule.date + "T" + schedule.endTime),
+      })),
+    })
+    if (newPartTimeJob) {
+      router.push(
+        `${pathname.slice(0, pathname.lastIndexOf("/"))}/${newPartTimeJob.item.id}`,
+      )
+    }
+  }
+
   const handleApplyDialog = async () => {
     try {
       await qualificationTransition(getLessonQualification())
@@ -86,12 +113,21 @@ export const PartTimeDetailClient = () => {
 
   return (
     <section>
-      <PartTimeDetailContainer
-        job={job}
-        isQualificationLoading={isQualificationLoading}
-        handleApplyDialog={handleApplyDialog}
-        updateStatus={handleUpdatePartTimeStatus}
-      />
+      {type === "read" ? (
+        <PartTimeDetailContainer
+          job={job}
+          isQualificationLoading={isQualificationLoading}
+          handleApplyDialog={handleApplyDialog}
+          updateStatus={handleUpdatePartTimeStatus}
+        />
+      ) : (
+        <PartTimeForm
+          isLoading={isLoading}
+          handleSubmitForm={handleUpdateSubmit}
+          partTime={job}
+        />
+      )}
+
       <AlertDialog
         isOpen={isLoginModalOpen}
         handleDialog={handleAlertDialog}

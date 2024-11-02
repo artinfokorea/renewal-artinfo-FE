@@ -1,6 +1,6 @@
 "use client"
 
-import { PartTimeForm } from "@/components/jobs/PartTimeForm"
+import { PartTimeForm, PartTimeFormData } from "@/components/jobs/PartTimeForm"
 import useMutation from "@/hooks/useMutation"
 import { PartTimeCreatePayload } from "@/interface/jobs"
 import { queries } from "@/lib/queries"
@@ -9,8 +9,6 @@ import { usePathname, useRouter, useSearchParams } from "next/navigation"
 import React from "react"
 
 const page = () => {
-  const searchParams = useSearchParams()
-  const type = searchParams.get("type") as "create" | "edit"
   const pathname = usePathname()
   const router = useRouter()
 
@@ -22,8 +20,17 @@ const page = () => {
     },
   })
 
-  const handleSubmitForm = async (payload: PartTimeCreatePayload) => {
-    const newPartTimeJob = await handleSubmit(payload)
+  const handleSubmitForm = async (payload: PartTimeFormData) => {
+    const { majors, schedules } = payload
+
+    const newPartTimeJob = await handleSubmit({
+      ...payload,
+      majorIds: majors.map(major => major.id),
+      schedules: schedules?.map(schedule => ({
+        startAt: new Date(schedule.date + "T" + schedule.startTime),
+        endAt: new Date(schedule.date + "T" + schedule.endTime),
+      })),
+    })
     if (newPartTimeJob) {
       router.push(
         `${pathname.slice(0, pathname.lastIndexOf("/"))}/${newPartTimeJob.item.id}`,
