@@ -11,7 +11,7 @@ interface MobilePartTimeTabProps {
   partTimeMajors?: PartTimeMajorGroup[]
 }
 
-export const MobilePartTimeTab = ({
+const MobilePartTimeTab = ({
   provinces,
   partTimeMajors,
 }: MobilePartTimeTabProps) => {
@@ -72,3 +72,5 @@ export const MobilePartTimeTab = ({
     </div>
   )
 }
+
+export default MobilePartTimeTab
