@@ -26,12 +26,15 @@ import { queries } from "@/lib/queries"
 import { PartTimeUpdatePayload } from "@/interface/jobs"
 import useMutation from "@/hooks/useMutation"
 import { PartTimeForm, PartTimeFormData } from "./PartTimeForm"
+import { JobTimeType } from "@/types/jobs"
+import useToast from "@/hooks/useToast"
 
 export const PartTimeDetailClient = () => {
   const { data } = useSession()
   const params = useParams()
   const queryClient = useQueryClient()
   const searchParams = useSearchParams()
+  const { successToast, errorToast } = useToast()
   const type = searchParams.get("type") || "read"
   const router = useRouter()
   const pathname = usePathname()
@@ -46,7 +49,7 @@ export const PartTimeDetailClient = () => {
         updatePartTimeJob(jobId, payload),
       deleteFn: (jobId?: number) => deleteJob(jobId as number),
       queryKey: [...queries.jobs._def],
-      redirectPath: pathname.slice(0, pathname.lastIndexOf("/")),
+      redirectPath: `/jobs?jobTimeType=${JobTimeType.PART_TIME}`,
       successMessage: {
         update: "채용이 수정되었습니다.",
         delete: "채용이 삭제되었습니다.",
@@ -56,6 +59,10 @@ export const PartTimeDetailClient = () => {
   useEffect(() => {
     setIsLoginModalOpen(!data)
   }, [data])
+
+  const handleDeleteJob = async () => {
+    handleDelete(Number(params.id))
+  }
 
   const { data: job } = useSuspenseQuery({
     ...queries.jobs.detail(Number(params.id)),
@@ -70,7 +77,9 @@ export const PartTimeDetailClient = () => {
     try {
       await updateJobStatus(job.id, !job.isActive)
       queryClient.invalidateQueries({ queryKey: [...queries.jobs._def] })
+      successToast("채용 상태가 변경되었습니다.")
     } catch (error) {
+      errorToast("채용 상태 변경에 실패하였습니다.")
       console.log(error)
     }
   }
@@ -86,20 +95,19 @@ export const PartTimeDetailClient = () => {
   const handleUpdateSubmit = async (payload: PartTimeFormData) => {
     const { majors, schedules } = payload
 
-    const newPartTimeJob = await handleSubmit({
-      ...payload,
-      majorIds: majors.map(major => major.id),
-      isActive: true,
-      schedules: schedules?.map(schedule => ({
-        startAt: new Date(schedule.date + "T" + schedule.startTime),
-        endAt: new Date(schedule.date + "T" + schedule.endTime),
-      })),
-    })
-    if (newPartTimeJob) {
-      router.push(
-        `${pathname.slice(0, pathname.lastIndexOf("/"))}/${newPartTimeJob.item.id}`,
-      )
-    }
+    await handleSubmit(
+      {
+        ...payload,
+        majorIds: majors.map(major => major.id),
+        isActive: true,
+        schedules: schedules?.map(schedule => ({
+          startAt: new Date(schedule.date + "T" + schedule.startTime),
+          endAt: new Date(schedule.date + "T" + schedule.endTime),
+        })),
+      },
+      Number(params.id),
+    )
+    router.refresh()
   }
 
   const handleApplyDialog = async () => {
@@ -119,6 +127,7 @@ export const PartTimeDetailClient = () => {
           isQualificationLoading={isQualificationLoading}
           handleApplyDialog={handleApplyDialog}
           updateStatus={handleUpdatePartTimeStatus}
+          handleDeleteJob={handleDeleteJob}
         />
       ) : (
         <PartTimeForm

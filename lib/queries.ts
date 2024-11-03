@@ -6,6 +6,9 @@ import {
   getJobsCount,
   getPartTimeJobs,
   getInfinitePartTimeJobs,
+  getMyActivities,
+  getJobApplicants,
+  getMyApllyList,
 } from "@/services/jobs"
 import {
   getInfiniteLessons,
@@ -136,7 +139,7 @@ const jobs = createQueryKeys("jobs", {
     queryFn: () => getPullTimeJobs(filters),
   }),
   infiniteList: (filters: JobsRequest) => ({
-    queryKey: [{ filters }],
+    queryKey: ["fullTimeJobs", { filters }],
     queryFn: ({ pageParam }: { pageParam: number }) =>
       getInfiniteFullTimeJobs({ ...filters, page: pageParam }),
   }),
@@ -149,9 +152,21 @@ const jobs = createQueryKeys("jobs", {
     queryFn: () => getPartTimeJobs(filters),
   }),
   infinitePartTimeList: (filters: PartTimeJobRequest) => ({
-    queryKey: [{ filters }],
+    queryKey: ["partTimeJobs", { filters }],
     queryFn: ({ pageParam }: { pageParam: number }) =>
       getInfinitePartTimeJobs({ ...filters, page: pageParam }),
+  }),
+  myActivities: (filters: ListRequest) => ({
+    queryKey: ["myActivities", filters],
+    queryFn: () => getMyActivities(filters),
+  }),
+  applicantList: (jobId: number) => ({
+    queryKey: ["applicants", jobId],
+    queryFn: () => getJobApplicants(jobId),
+  }),
+  myApplyList: (userId: number, filters: ListRequest) => ({
+    queryKey: ["myApplyList", userId, filters],
+    queryFn: () => getMyApllyList(filters),
   }),
 })
 

@@ -149,7 +149,7 @@ const ProfileContainer = () => {
   }
 
   return (
-    <section className="mx-auto max-w-screen-lg">
+    <>
       <ProfileForm
         user={user}
         isUpdateForm={isUpdateForm}
@@ -174,7 +174,7 @@ const ProfileContainer = () => {
         sendEmailVerifyCode={sendEmailVerifyCode}
         checkEmailVerifyCode={checkEmailVerifyCode}
       />
-    </section>
+    </>
   )
 }
 

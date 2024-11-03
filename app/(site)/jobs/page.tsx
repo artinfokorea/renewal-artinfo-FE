@@ -148,7 +148,7 @@ const page = () => {
           className="scroll-to-top-button"
         />
         <AddButton
-          onClick={() => router.push(`${pathname}/create`)}
+          onClick={goToCreatePage}
           className="fixed bottom-32 right-4 z-50 h-12 w-12 rounded-full bg-white shadow-md lg:hidden"
         />
       </section>

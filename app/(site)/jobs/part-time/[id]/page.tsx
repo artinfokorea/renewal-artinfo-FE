@@ -40,7 +40,7 @@ export const generateMetadata = async ({
   }
 }
 
-const page = async ({ params }: Props) => {
+const page = async () => {
   return <PartTimeDetailClient />
 }
 

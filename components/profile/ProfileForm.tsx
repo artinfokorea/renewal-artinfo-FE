@@ -1,5 +1,3 @@
-import Link from "next/link"
-import { usePathname } from "next/navigation"
 import React, { useEffect, useRef, useState } from "react"
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar"
 import { Input } from "@headlessui/react"
@@ -26,6 +24,7 @@ import useToast from "@/hooks/useToast"
 import { useLoading } from "@toss/use-loading"
 import { uploadImages } from "@/services/system"
 import { UploadTarget } from "@/types"
+import { ProfileSideBar } from "./ProfileSideBar"
 
 interface Props {
   user?: USER
@@ -48,7 +47,6 @@ const ProfileForm = ({
   handlePasswordDialog,
   handleProfile,
 }: Props) => {
-  const pathname = usePathname()
   const fileUploader = useRef<HTMLInputElement>(null)
   const filter = filters()
   const [isMajorDialog, setIsMajorDialog] = useState(false)
@@ -130,23 +128,8 @@ const ProfileForm = ({
   }
 
   return (
-    <form className="mt-12 flex">
-      <div className="hidden w-[300px] flex-col gap-4 whitespace-nowrap border-r-2 border-whitesmoke p-4 md:flex md:p-8">
-        <ul>
-          <li>
-            <Link
-              href="/my-profile"
-              className={`my-4 text-lg font-semibold ${
-                pathname === "/my-profile" && "text-main"
-              }`}
-            >
-              프로필
-            </Link>
-          </li>
-          <li className="my-4 text-lg font-semibold">내 활동</li>
-        </ul>
-      </div>
-      <div className="flex-1 px-8 py-2 md:ml-12 md:py-6">
+    <form className="mx-auto flex md:mx-0 md:mt-12">
+      <div className="px-8 py-2 md:ml-12 md:py-6">
         <div className="flex flex-col md:flex-row md:gap-20">
           <div className="relative flex h-[150px] flex-col items-center">
             <div className="relative h-[150px]">

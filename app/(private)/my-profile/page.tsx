@@ -1,9 +1,9 @@
 import React from "react"
 import GetQueryClient from "@/lib/GetQueryClient"
 import { HydrationBoundary, dehydrate } from "@tanstack/react-query"
-import { getUser } from "@/lib/serverUserFetch"
 import ProfileContainer from "@/components/profile/ProfileContainer"
 import { queries } from "@/lib/queries"
+import { getUser } from "@/lib/serverUserFetch"
 
 const page = async () => {
   const queryClient = GetQueryClient()

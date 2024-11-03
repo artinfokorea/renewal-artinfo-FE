@@ -8,12 +8,14 @@ import { queries } from "@/lib/queries"
 import ItemManageBox from "../common/ItemManageBox"
 import { usePathname, useRouter } from "next/navigation"
 import { Spinner } from "../common/Loading"
+import ConfirmDialog from "../dialog/ConfirmDialog"
 
 interface Props {
   job: JOB
   handleApplyDialog: () => void
   isQualificationLoading: boolean
   updateStatus: () => void
+  handleDeleteJob: () => void
 }
 
 const InfoItem = ({
@@ -36,6 +38,7 @@ export const PartTimeDetailContainer = ({
   handleApplyDialog,
   isQualificationLoading,
   updateStatus,
+  handleDeleteJob,
 }: Props) => {
   const filter = filters()
   const { data } = useSession()
@@ -155,8 +158,19 @@ export const PartTimeDetailContainer = ({
             )}
             <div className="flex-1 border-b-2 border-whitesmoke" />
           </div>
+          <div
+            dangerouslySetInnerHTML={{ __html: job.contents }}
+            className="editor_view ck-content"
+          />
         </div>
       </div>
+      <ConfirmDialog
+        isOpen={isDeleteConfirmDialog}
+        handleDialog={() => setIsDeleteConfirmDialog(!isDeleteConfirmDialog)}
+        title="채용 삭제"
+        description="채용을 삭제하시겠습니까?"
+        action={handleDeleteJob}
+      />
     </div>
   )
 }
