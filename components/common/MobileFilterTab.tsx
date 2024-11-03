@@ -1,11 +1,11 @@
 import { PROVINCE } from "@/types"
 import { JobTypeValues, SearchType } from "@/types/jobs"
 import React, { useMemo } from "react"
-import MobileProvinceFilter from "./common/MobileProvinceFilter"
-import MobileProfessionalFilter from "./common/MobileProfessionalFilter"
-import MobileRecruitTypeFilter from "./common/MobileRecruitTypeFilter"
 import { ArtField, MAJOR, ProfessionalFieldTypes } from "@/types/majors"
 import { useMobileFilterState } from "@/hooks/useMobileFilterState"
+import MobileProfessionalFilter from "./MobileProfessionalFilter"
+import MobileProvinceFilter from "./MobileProvinceFilter"
+import MobileRecruitTypeFilter from "./MobileRecruitTypeFilter"
 
 interface Props {
   provinces?: PROVINCE[]
