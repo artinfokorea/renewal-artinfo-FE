@@ -1,9 +1,9 @@
 import { PROVINCE } from "@/types"
 import { JobTypeValues, SearchType } from "@/types/jobs"
 import React, { useMemo } from "react"
-import MobileProvinceFilter from "./MobileProvinceFilter"
-import MobileProfessionalFilter from "./MobileProfessionalFilter"
-import MobileRecruitTypeFilter from "./MobileRecruitTypeFilter"
+import MobileProvinceFilter from "./common/MobileProvinceFilter"
+import MobileProfessionalFilter from "./common/MobileProfessionalFilter"
+import MobileRecruitTypeFilter from "./common/MobileRecruitTypeFilter"
 import { ArtField, MAJOR, ProfessionalFieldTypes } from "@/types/majors"
 import { useMobileFilterState } from "@/hooks/useMobileFilterState"
 

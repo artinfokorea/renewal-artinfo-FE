@@ -15,7 +15,7 @@ import { usePathname, useRouter, useSearchParams } from "next/navigation"
 import { Suspense, useMemo, useState } from "react"
 import ArrowUpButton from "@/components/common/ArrowUpButton"
 import useBreakPoint from "@/hooks/useBreakPoint"
-import MobileFilterTab from "@/components/common/MobileFilterTab"
+import MobileFilterTab from "@/components/MobileFilterTab"
 
 const page = () => {
   const searchParams = useSearchParams()
