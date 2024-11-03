@@ -10,7 +10,6 @@ import ListSearchForm from "@/components/common/ListSearchForm"
 import JobListCheckBoxes from "@/components/jobs/JobListCheckBoxes"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
-import MobileFilterTab from "@/components/common/MobileFilterTab"
 import JobListSkeleton from "@/components/skeleton/JobListSkeleton"
 import JobPullTimeList from "@/components/jobs/JobPullTimeList"
 import ProvinceDialog from "@/components/dialog/ProvinceDialog"
@@ -23,6 +22,7 @@ import JobPartTimeList from "@/components/jobs/JobPartTimeList"
 import { MobileJobTypeTab } from "@/components/jobs/MobileJobTypeTab"
 import { useJobTimeType } from "@/hooks/useJobTimeType"
 import MobilePartTimeTab from "@/components/jobs/MobilePartTimeTab"
+import MobileFilterTab from "@/components/common/MobileFilterTab"
 
 const page = () => {
   const searchParams = useSearchParams()
