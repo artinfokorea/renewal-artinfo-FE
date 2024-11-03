@@ -14,7 +14,7 @@ interface Props {
   job: JOB
   handleApplyDialog: () => void
   isQualificationLoading: boolean
-  updateStatus: () => void
+  // updateStatus: () => void
   handleDeleteJob: () => void
 }
 
@@ -37,7 +37,7 @@ export const PartTimeDetailContainer = ({
   job,
   handleApplyDialog,
   isQualificationLoading,
-  updateStatus,
+  // updateStatus,
   handleDeleteJob,
 }: Props) => {
   const filter = filters()
@@ -138,7 +138,6 @@ export const PartTimeDetailContainer = ({
               className="h-10"
             />
             <button
-              onClick={updateStatus}
               className={`rounded border border-whitesmoke px-4 py-2 text-sm font-semibold md:text-lg ${job.isActive ? "text-main" : "text-grayfont"}`}
             >
               {job.isActive ? "진행중" : "마감"}
