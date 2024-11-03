@@ -1,15 +1,24 @@
 "use client"
 
-import { queries } from "@/lib/queries"
-import { useSuspenseQuery } from "@tanstack/react-query"
-import React from "react"
+import { ActivitiesTypeTab } from "@/components/activities/ActivitiesTypeTab"
+import { PostedList } from "@/components/activities/PostedList"
+
+import React, { useState } from "react"
 
 const page = () => {
-  // const { data: myActivities } = useSuspenseQuery(
-  //   queries.jobs.myActivities({ page: 1, size: 10 }),
-  // )
+  const [tab, setTab] = useState<"posted" | "applied">("posted")
 
-  return <></>
+  const handleTab = (tab: "posted" | "applied") => setTab(tab)
+
+  return (
+    <>
+      {/* <div className="my-8">
+        <ActivitiesTypeTab tab={tab} handleTab={handleTab} />
+        {tab === "posted" && <PostedList />}
+        {tab === "applied" && <div>참여 연주</div>}
+      </div> */}
+    </>
+  )
 }
 
 export default page
