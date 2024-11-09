@@ -188,7 +188,7 @@ export const getJobApplicants = async (
 ): Promise<ListResponse<USER, "applicants">> => {
   const response = await authApiRequest.get<
     ListApiResponse<USER, "applicants">
-  >(`/jobs/part-time/${jobId}/applicants`)
+  >(`/jobs/${jobId}/applicants`)
   return response.item
 }
 

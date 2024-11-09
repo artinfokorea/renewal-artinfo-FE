@@ -186,26 +186,26 @@ export const PartTimeForm = ({
             <PlusIcon className="h-4 w-4" />
             <span className="text-sm">날짜 추가</span>
           </Button>
-          <div className="flex flex-col gap-2 md:gap-4">
+          <div className="flex flex-col gap-1 md:gap-4">
             {watch("schedules")?.map((schedule, index) => (
               <div key={index} className="flex items-center md:gap-6">
                 <Input
                   {...register(`schedules.${index}.date`)}
                   type="date"
-                  className="ml-2 w-[110px] rounded border border-black px-1 md:w-[130px]"
+                  className="w-[120px] rounded border border-black px-1 md:ml-2 md:w-[130px]"
                 />
                 <span className="hidden text-main md:inline">시간</span>
                 <Input
                   {...register(`schedules.${index}.startTime`)}
                   type="time"
-                  className="ml-2 w-20 rounded border border-black px-1 md:w-[130px]"
+                  className="ml-2 w-24 rounded border border-black px-1 md:w-[130px]"
                 />
                 <p className="mx-2">~</p>
 
                 <Input
                   {...register(`schedules.${index}.endTime`)}
                   type="time"
-                  className="w-20 rounded border border-black px-1 md:w-[130px]"
+                  className="w-24 rounded border border-black px-1 md:w-[130px]"
                 />
                 {index > 0 && (
                   <Button

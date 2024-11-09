@@ -14,7 +14,7 @@ interface Props {
   job: JOB
   handleApplyDialog: () => void
   isQualificationLoading: boolean
-  // updateStatus: () => void
+  handleUpdatePartTimeStatus: () => void
   handleDeleteJob: () => void
 }
 
@@ -37,7 +37,7 @@ export const PartTimeDetailContainer = ({
   job,
   handleApplyDialog,
   isQualificationLoading,
-  // updateStatus,
+  handleUpdatePartTimeStatus,
   handleDeleteJob,
 }: Props) => {
   const filter = filters()
@@ -51,7 +51,7 @@ export const PartTimeDetailContainer = ({
   const [isDeleteConfirmDialog, setIsDeleteConfirmDialog] = useState(false)
 
   return (
-    <div className="mt-8 max-w-screen-lg px-4 md:mt-16 md:px-8">
+    <div className="mx-auto mt-8 max-w-screen-lg px-4 md:mt-16 md:px-8">
       <div className="flex flex-col">
         <h4 className="mt-4 break-words text-xl font-bold md:mt-0">
           {job?.title}
@@ -129,20 +129,23 @@ export const PartTimeDetailContainer = ({
               ))}
             </div>
           </div>
-          <div className="my-6 flex justify-end gap-2">
-            <ItemManageBox
-              handleEdit={() => router.push(`${pathname}?type=edit`)}
-              handleDelete={() =>
-                setIsDeleteConfirmDialog(!isDeleteConfirmDialog)
-              }
-              className="h-10"
-            />
-            <button
-              className={`rounded border border-whitesmoke px-4 py-2 text-sm font-semibold md:text-lg ${job.isActive ? "text-main" : "text-grayfont"}`}
-            >
-              {job.isActive ? "진행중" : "마감"}
-            </button>
-          </div>
+          {user?.id === job.authorId && (
+            <div className="my-6 flex justify-end gap-2">
+              <ItemManageBox
+                handleEdit={() => router.push(`${pathname}?type=edit`)}
+                handleDelete={() =>
+                  setIsDeleteConfirmDialog(!isDeleteConfirmDialog)
+                }
+                className="h-10"
+              />
+              <button
+                onClick={handleUpdatePartTimeStatus}
+                className={`rounded border border-whitesmoke px-4 py-1 text-sm font-semibold md:text-lg ${job.isActive ? "text-main" : "text-grayfont"}`}
+              >
+                {job.isActive ? "진행중" : "마감"}
+              </button>
+            </div>
+          )}
           <div className="flex items-center gap-4">
             <div className="flex-1 border-b border-whitesmoke" />
             {!isQualificationLoading ? (

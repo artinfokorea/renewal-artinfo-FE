@@ -73,16 +73,16 @@ export const PartTimeDetailClient = () => {
     router.push("/auth/sign-in")
   }
 
-  // const handleUpdatePartTimeStatus = async () => {
-  //   try {
-  //     await updateJobStatus(job.id, !job.isActive)
-  //     queryClient.invalidateQueries({ queryKey: [...queries.jobs._def] })
-  //     successToast("채용 상태가 변경되었습니다.")
-  //   } catch (error) {
-  //     errorToast("채용 상태 변경에 실패하였습니다.")
-  //     console.log(error)
-  //   }
-  // }
+  const handleUpdatePartTimeStatus = async () => {
+    try {
+      await updateJobStatus(job.id, !job.isActive)
+      queryClient.invalidateQueries({ queryKey: [...queries.jobs._def] })
+      successToast("채용 상태가 변경되었습니다.")
+    } catch (error) {
+      errorToast("채용 상태 변경에 실패하였습니다.")
+      console.log(error)
+    }
+  }
 
   const partTimeApply = async (profile: string) => {
     try {
@@ -129,6 +129,7 @@ export const PartTimeDetailClient = () => {
           isQualificationLoading={isQualificationLoading}
           handleApplyDialog={handleApplyDialog}
           handleDeleteJob={handleDeleteJob}
+          handleUpdatePartTimeStatus={handleUpdatePartTimeStatus}
         />
       ) : (
         <PartTimeForm
