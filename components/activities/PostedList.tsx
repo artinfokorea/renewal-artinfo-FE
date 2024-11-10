@@ -47,12 +47,16 @@ export const PostedList = () => {
   )
 
   if (isLoading) {
-    return <Spinner />
+    return (
+      <div className="flex justify-center">
+        <Spinner className="mt-20 h-8 w-8" />
+      </div>
+    )
   }
 
   return (
     <section className="flex flex-col gap-4">
-      {myActivities?.jobs.length === 0 ? (
+      {myActivities?.totalCount === 0 ? (
         <div className="text-center text-grayfont">데이터가 없습니다.</div>
       ) : (
         <div className="grid grid-cols-1 gap-4">

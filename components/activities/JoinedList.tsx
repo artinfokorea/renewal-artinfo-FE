@@ -28,7 +28,11 @@ const JoinedList = () => {
   }
 
   if (isLoading) {
-    return <Spinner />
+    return (
+      <div className="flex justify-center">
+        <Spinner className="mt-20 h-8 w-8" />
+      </div>
+    )
   }
 
   if (myApplyList?.jobs.length === 0) {
