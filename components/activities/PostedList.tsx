@@ -75,8 +75,7 @@ export const PostedList = () => {
                 <div className="flex gap-2">
                   <Button
                     onClick={() => toggleApplicants(job.id)}
-                    className="rounded border px-2 py-1 text-main"
-                    disabled={!job.isActive}
+                    className={`relative z-30 rounded border bg-white px-2 py-1 text-main`}
                   >
                     신청자
                   </Button>
