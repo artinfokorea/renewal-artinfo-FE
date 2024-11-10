@@ -10,6 +10,7 @@ import HamburgerIcon from "../icons/HamburgerIcon"
 import Link from "next/link"
 import { usePathname } from "next/navigation"
 import { useSession } from "next-auth/react"
+import { JobTimeType } from "@/types/jobs"
 
 interface Props {
   isBarOpen: boolean
@@ -59,14 +60,17 @@ const MobileDropDown = ({ handleBar, handleSign }: Props) => {
               static
               className="mobile-dropdown absolute -left-3 top-8 z-30 mt-3 flex w-screen flex-col gap-3 bg-white p-4 shadow-sm focus:outline-none"
             >
-              <DropDownMenu href="/jobs" label="채용" />
+              <DropDownMenu
+                href={`/jobs?jobTimeType=${JobTimeType.FULL_TIME}`}
+                label="채용"
+              />
               <DropDownMenu href="/performances" label="공연" />
               <DropDownMenu href="/lessons" label="레슨" />
               <DropDownMenu href="/news" label="뉴스" />
               <DropDownMenu href="/inquiry" label="문의" />
               <div className="mx-auto my-4 w-full border-b-[1px] border-whitesmoke" />
               <DropDownMenu href="/my-profile" label="내 정보" />
-              {/* <DropDownMenu href="/my-activities" label="내 활동" /> */}
+              <DropDownMenu href="/my-activities" label="내 활동" />
 
               <MenuItem>
                 {data?.user ? (

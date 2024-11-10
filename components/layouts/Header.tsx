@@ -14,6 +14,7 @@ import { useQuery } from "@tanstack/react-query"
 import { queries } from "@/lib/queries"
 import MobileDropDown from "./MobileDropDown"
 import DeskTopDropDown from "./DeskTopDropDown"
+import { JobTimeType } from "@/types/jobs"
 
 const NavMenu = ({ href, label }: { href: string; label: string }) => {
   const pathname = usePathname()
@@ -78,7 +79,10 @@ const Header = () => {
           <NavigationMenu className="ml-12 hidden lg:flex">
             <NavigationMenuList>
               <NavigationMenuItem>
-                <NavMenu href="/jobs" label="채용" />
+                <NavMenu
+                  href={`/jobs?jobTimeType=${JobTimeType.FULL_TIME}`}
+                  label="채용"
+                />
                 <NavMenu href="/performances" label="공연" />
                 <NavMenu href="/lessons" label="레슨" />
                 <NavMenu href="/news" label="뉴스" />
