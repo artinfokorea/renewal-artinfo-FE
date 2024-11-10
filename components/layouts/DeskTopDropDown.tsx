@@ -36,6 +36,11 @@ const DeskTopDropDown = ({ user, handleSign }: Props) => {
             내 프로필
           </DropdownMenuItem>
         </Link>
+        {/* <Link href="/my-activities" prefetch={false}>
+          <DropdownMenuItem className="cursor-pointer hover:bg-whitesmoke">
+            내 활동
+          </DropdownMenuItem>
+        </Link> */}
         <DropdownMenuItem
           onClick={handleSign}
           className="cursor-pointer hover:bg-whitesmoke"

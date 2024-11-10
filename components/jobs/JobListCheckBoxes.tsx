@@ -20,7 +20,9 @@ const ListCheckBoxes = ({
 }: Props) => {
   return (
     <form className="min-w-[180px] flex-col px-4 text-gray-400">
-      <JobTimeTypeCheckBoxes
+      <JobTypeCheckBoxes />
+      <ProfessionalCheckBoxes artFields={artFields} />
+      {/* <JobTimeTypeCheckBoxes
         jobTimeType={jobTimeType}
         handleJobTimeType={handleJobTimeType}
       />
@@ -31,7 +33,7 @@ const ListCheckBoxes = ({
         </>
       ) : (
         <PartTimeCategoriesCheckBoxes partTimeMajorList={partTimeMajorList} />
-      )}
+      )} */}
     </form>
   )
 }

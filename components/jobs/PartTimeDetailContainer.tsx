@@ -148,7 +148,7 @@ export const PartTimeDetailContainer = ({
           )}
           <div className="flex items-center gap-4">
             <div className="flex-1 border-b border-whitesmoke" />
-            {!isQualificationLoading ? (
+            {!isQualificationLoading && user?.id !== job.authorId ? (
               <button
                 onClick={handleApplyDialog}
                 className="text-sm font-semibold text-main md:text-lg"

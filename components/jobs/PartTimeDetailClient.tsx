@@ -88,6 +88,7 @@ export const PartTimeDetailClient = () => {
     try {
       await applyPartTimeJob(job.id, profile)
       successToast("채용 신청이 완료되었습니다.")
+      setIsApplyDialog(false)
     } catch (error) {
       errorToast("채용 신청에 실패하였습니다.")
       console.log(error)

@@ -106,10 +106,10 @@ const page = () => {
           {/* Mobile Filter */}
           {!isDesktop && (
             <>
-              <MobileJobTypeTab
+              {/* <MobileJobTypeTab
                 jobTimeType={jobTimeType}
                 handleJobTimeType={handleJobTimeTypeChange}
-              />
+              /> */}
 
               {jobTimeType === JobTimeType.FULL_TIME ? (
                 <MobileFilterTab

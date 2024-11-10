@@ -3,7 +3,7 @@ import { queries } from "@/lib/queries"
 import { useQuery } from "@tanstack/react-query"
 import { useSession } from "next-auth/react"
 import React from "react"
-import { Loading } from "../common/Loading"
+import { Spinner } from "../common/Loading"
 import { Button } from "@headlessui/react"
 import { useRouter } from "next/navigation"
 
@@ -27,33 +27,50 @@ const JoinedList = () => {
     router.push(`/jobs/part-time/${id}`)
   }
 
-  //   if (isLoading || myApplyList?.jobs.length === 0) {
-  //     return (
-  //       <div className="text-grayFont my-6 text-center">데이터가 없습니다</div>
-  //     )
-  //   }
+  if (isLoading) {
+    return <Spinner />
+  }
+
+  if (myApplyList?.jobs.length === 0) {
+    return (
+      <div className="text-grayFont my-6 text-center">데이터가 없습니다</div>
+    )
+  }
 
   return (
-    <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
-      {/* {myApplyList?.jobs.map(job => <div key={job.id}>{job.title}</div>)} */}
-      <div className="relative z-10 flex flex-col gap-4 rounded border border-lightgray p-4 shadow-md">
-        <div className="absolute inset-0 z-20 rounded bg-gray-500/50"></div>
-        <span>교회 오보에 대타 연주자 구합니다</span>
+    <div className="grid grid-cols-1 gap-4">
+      {myApplyList?.jobs.map(job => (
+        <div
+          key={job.id}
+          className="relative z-10 flex flex-col gap-4 rounded border border-lightgray p-4 shadow-md md:flex-row md:items-center md:py-2"
+        >
+          {!job.isActive && (
+            <div className="absolute inset-0 z-20 rounded bg-gray-500/50" />
+          )}
+          <div className="flex items-center gap-4 md:flex-1">
+            <div className="whitespace-nowrap rounded border bg-main px-3 py-1 text-white">
+              제목
+            </div>
+            <span>{job.title}</span>
+          </div>
 
-        <div className="flex items-center gap-4">
-          <div className="rounded bg-main px-3 py-1 text-white">신청일</div>
-          <p>{filter.YYYYMMDD("2024-10-19T23:00")}</p>
+          <div className="flex items-center gap-4">
+            <div className="rounded bg-main px-3 py-1 text-white">신청일</div>
+            <p>{filter.YYYYMMDD(job.appliedAt)}</p>
+          </div>
+          <div className="flex justify-end gap-4">
+            <Button className="rounded border px-2 py-1 text-main">
+              {job.isActive ? "선발중" : "마감"}
+            </Button>
+            <Button
+              onClick={() => goToDetail(job.id)}
+              className="rounded border px-2 py-1 text-main"
+            >
+              바로가기
+            </Button>
+          </div>
         </div>
-        <div className="flex justify-end gap-4">
-          <Button className="rounded border px-2 py-1 text-main">선발중</Button>
-          <Button
-            onClick={() => goToDetail(188)}
-            className="rounded border px-2 py-1 text-main"
-          >
-            바로가기
-          </Button>
-        </div>
-      </div>
+      ))}
     </div>
   )
 }

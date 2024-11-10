@@ -12,6 +12,7 @@ export type USER = {
   majors?: MAJOR[]
   schools?: SCHOOL[]
   type: UserType
+  profile?: string
 }
 
 export type SCHOOL = {

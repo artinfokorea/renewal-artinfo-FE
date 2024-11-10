@@ -66,6 +66,7 @@ const MobileDropDown = ({ handleBar, handleSign }: Props) => {
               <DropDownMenu href="/inquiry" label="문의" />
               <div className="mx-auto my-4 w-full border-b-[1px] border-whitesmoke" />
               <DropDownMenu href="/my-profile" label="내 정보" />
+              {/* <DropDownMenu href="/my-activities" label="내 활동" /> */}
 
               <MenuItem>
                 {data?.user ? (

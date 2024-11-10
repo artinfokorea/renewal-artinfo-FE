@@ -4,9 +4,10 @@ import { useEffect, useState } from "react"
 
 export const useJobTimeType = () => {
   const searchParams = useSearchParams()
+  const jobTimeParams = searchParams.get("jobTimeType") as JobTimeType
   const router = useRouter()
   const [jobTimeType, setJobTimeType] = useState<JobTimeType>(
-    (searchParams.get("jobTimeType") as JobTimeType) || JobTimeType.FULL_TIME,
+    jobTimeParams || JobTimeType.FULL_TIME,
   )
 
   const handleJobTimeTypeChange = (value: JobTimeType) => {
@@ -21,6 +22,10 @@ export const useJobTimeType = () => {
       scroll: false,
     })
   }, [jobTimeType])
+
+  useEffect(() => {
+    setJobTimeType(jobTimeParams)
+  }, [jobTimeParams])
 
   return {
     jobTimeType,

@@ -1,6 +1,6 @@
 import React, { useState } from "react"
 import { queries } from "@/lib/queries"
-import { useQueryClient, useSuspenseQuery } from "@tanstack/react-query"
+import { useQuery, useQueryClient } from "@tanstack/react-query"
 import { Button } from "@headlessui/react"
 import filters from "@/lib/filters"
 import { useRouter } from "next/navigation"
@@ -8,6 +8,7 @@ import { updateJobStatus } from "@/services/jobs"
 import useToast from "@/hooks/useToast"
 import { JOB } from "@/types/jobs"
 import ApplicantsList from "./ApplicantsList"
+import { Spinner } from "../common/Loading"
 
 export const PostedList = () => {
   const filter = filters()
@@ -41,24 +42,32 @@ export const PostedList = () => {
     }
   }
 
-  const { data: myActivities } = useSuspenseQuery(
+  const { data: myActivities, isLoading } = useQuery(
     queries.jobs.myActivities({ page: 1, size: 10 }),
   )
 
+  if (isLoading) {
+    return <Spinner />
+  }
+
   return (
     <section className="flex flex-col gap-4">
-      {myActivities.jobs.length === 0 ? (
-        <div>데이터가 없습니다.</div>
+      {myActivities?.jobs.length === 0 ? (
+        <div className="text-center text-grayfont">데이터가 없습니다.</div>
       ) : (
-        <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
-          {myActivities.jobs.map(job => (
-            <>
-              <div
-                key={job.id}
-                className="relative z-10 flex flex-col gap-4 rounded border border-lightgray p-4 shadow-md"
-              >
-                {/* <div className="absolute inset-0 z-20 rounded bg-gray-500/50" /> */}
-                <span>{job.title}</span>
+        <div className="grid grid-cols-1 gap-4">
+          {myActivities?.jobs.map(job => (
+            <div key={job.id}>
+              <div className="relative z-10 flex flex-col gap-4 rounded border border-lightgray p-4 shadow md:flex-row md:items-center md:px-4 md:py-2">
+                {!job.isActive && (
+                  <div className="absolute inset-0 z-20 rounded bg-gray-500/50" />
+                )}
+                <div className="flex items-center gap-4 md:flex-1">
+                  <div className="whitespace-nowrap rounded border bg-main px-3 py-1 text-white">
+                    제목
+                  </div>
+                  <span>{job.title}</span>
+                </div>
                 <div className="flex gap-2">
                   <Button
                     onClick={() => toggleApplicants(job.id)}
@@ -84,7 +93,7 @@ export const PostedList = () => {
                 </div>
               </div>
               {showApplicantsMap[job.id] && <ApplicantsList jobId={job.id} />}
-            </>
+            </div>
           ))}
         </div>
       )}
