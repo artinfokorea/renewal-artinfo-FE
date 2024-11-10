@@ -104,14 +104,14 @@ const JobDropDown = ({ title, href }: JobMenuProps) => {
       >
         <div className="absolute bottom-[72px] left-[20%] z-50 flex flex-col items-center gap-2 rounded border bg-white p-2">
           <Link href={`/jobs?jobTimeType=${JobTimeType.FULL_TIME}`}>
-            <div className="flex items-center gap-2 py-1">
+            <div className="flex items-center gap-2 p-2">
               <ScrollTextIcon className="h-5 w-5 text-gray-700" />
               <span className="pt-[2px] text-sm text-gray-700">정규</span>
             </div>
           </Link>
 
           <Link href={`/jobs?jobTimeType=${JobTimeType.PART_TIME}`}>
-            <div className="my-1 flex items-center gap-2">
+            <div className="flex items-center gap-2 p-2">
               <HourglassIcon className="h-5 w-5 text-gray-700" />
               <span className="pt-[2px] text-sm text-gray-700">단기</span>
             </div>
