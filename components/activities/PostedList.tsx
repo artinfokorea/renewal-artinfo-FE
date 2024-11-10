@@ -70,7 +70,7 @@ export const PostedList = () => {
                   <div className="whitespace-nowrap rounded border bg-main px-3 py-1 text-white">
                     제목
                   </div>
-                  <span>{job.title}</span>
+                  <span className="md:line-clamp-1">{job.title}</span>
                 </div>
                 <div className="flex gap-2">
                   <Button
