@@ -102,9 +102,9 @@ const JobDropDown = ({ title, href }: JobMenuProps) => {
         leaveFrom="opacity-100"
         leaveTo="opacity-0"
       >
-        <div className="absolute bottom-[72px] left-[20%] z-50 flex flex-col items-center rounded border bg-white p-2">
+        <div className="absolute bottom-[72px] left-[20%] z-50 flex flex-col items-center gap-2 rounded border bg-white p-2">
           <Link href={`/jobs?jobTimeType=${JobTimeType.FULL_TIME}`}>
-            <div className="my-1 flex items-center gap-2">
+            <div className="flex items-center gap-2 py-1">
               <ScrollTextIcon className="h-5 w-5 text-gray-700" />
               <span className="pt-[2px] text-sm text-gray-700">정규</span>
             </div>
