@@ -71,7 +71,7 @@ const page = () => {
             onClick={() => router.push("/my-profile")}
             className="bg-main text-white hover:bg-blue-600"
           >
-            로그인
+            내 프로필로 가기
           </Button>
         </div>
       </AlertDialog>
