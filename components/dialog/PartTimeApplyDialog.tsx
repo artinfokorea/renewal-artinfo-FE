@@ -32,7 +32,7 @@ export const PartTimeApplyDialog = ({
       <div className="fixed inset-0 flex w-screen items-center justify-center p-4">
         <DialogPanel className="z-10 mx-auto w-full rounded-xl bg-white py-4 md:max-w-[350px]">
           <DialogTitle className="my-2 text-center text-base font-semibold md:text-lg">
-            연주신청
+            연주 신청
           </DialogTitle>
 
           <div className="border-b-2 border-whitesmoke" />

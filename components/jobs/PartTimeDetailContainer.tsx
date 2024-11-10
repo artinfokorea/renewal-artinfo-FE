@@ -158,7 +158,7 @@ export const PartTimeDetailContainer = ({
                 onClick={handleApplyDialog}
                 className="text-sm font-semibold text-main md:text-lg"
               >
-                연주신청
+                연주 신청
               </button>
             ) : (
               <Spinner className="h-7 w-7" />
