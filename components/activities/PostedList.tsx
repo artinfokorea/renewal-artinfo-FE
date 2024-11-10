@@ -64,7 +64,7 @@ export const PostedList = () => {
             <div key={job.id}>
               <div className="relative z-10 flex flex-col gap-4 rounded border border-lightgray p-4 shadow md:flex-row md:items-center md:px-4 md:py-2">
                 {!job.isActive && (
-                  <div className="absolute inset-0 z-20 rounded bg-gray-500/50" />
+                  <div className="pointer-events-none absolute inset-0 z-20 rounded bg-gray-500/50" />
                 )}
                 <div className="flex items-center gap-4 md:flex-1">
                   <div className="whitespace-nowrap rounded border bg-main px-3 py-1 text-white">
@@ -76,18 +76,20 @@ export const PostedList = () => {
                   <Button
                     onClick={() => toggleApplicants(job.id)}
                     className="rounded border px-2 py-1 text-main"
+                    disabled={!job.isActive}
                   >
                     신청자
                   </Button>
                   <Button
                     onClick={() => handleUpdatePartTimeStatus(job)}
-                    className={`rounded border px-2 py-1 ${job.isActive ? "text-main" : "text-grayfont"}`}
+                    className={`relative z-30 rounded border bg-white px-2 py-1 text-main`}
                   >
                     {job.isActive ? "진행중" : "마감"}
                   </Button>
                   <Button
                     onClick={() => goToDetail(job.id)}
                     className="rounded border px-2 py-1 text-main"
+                    disabled={!job.isActive}
                   >
                     바로가기
                   </Button>

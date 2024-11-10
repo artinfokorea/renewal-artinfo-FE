@@ -134,7 +134,6 @@ export const PartTimeForm = ({
               className="mr-1 w-full rounded-lg border px-2 focus:outline-none md:w-[200px]"
             />
             <span className="text-lg">원</span>
-            <span className="text-xs leading-6">(1회)</span>
           </div>
         </div>
         <div className="mt-2 flex flex-col gap-2 md:mt-6 md:flex-row">

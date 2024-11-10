@@ -146,9 +146,14 @@ export const PartTimeDetailContainer = ({
               </button>
             </div>
           )}
-          <div className="flex items-center gap-4">
+          <div
+            className={`flex items-center ${
+              !(user?.id === job.authorId) && "gap-4"
+            }`}
+          >
             <div className="flex-1 border-b border-whitesmoke" />
-            {!isQualificationLoading && user?.id !== job.authorId ? (
+            {user?.id === job.authorId ? null : !isQualificationLoading &&
+              user?.id !== job.authorId ? (
               <button
                 onClick={handleApplyDialog}
                 className="text-sm font-semibold text-main md:text-lg"
@@ -156,9 +161,9 @@ export const PartTimeDetailContainer = ({
                 연주신청
               </button>
             ) : (
-              <Spinner />
+              <Spinner className="h-7 w-7" />
             )}
-            <div className="flex-1 border-b-2 border-whitesmoke" />
+            <div className="flex-1 border-b border-whitesmoke" />
           </div>
           <div
             dangerouslySetInnerHTML={{ __html: job.contents }}

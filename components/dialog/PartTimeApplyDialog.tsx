@@ -1,5 +1,5 @@
 import { Dialog, DialogPanel, DialogTitle, Textarea } from "@headlessui/react"
-import React, { useState } from "react"
+import React, { useEffect, useState } from "react"
 import { Button } from "../ui/button"
 import CloseIcon from "../icons/CloseIcon"
 
@@ -15,6 +15,12 @@ export const PartTimeApplyDialog = ({
   handleApply,
 }: PartTimeApplyDialogProps) => {
   const [introduce, setIntroduce] = useState("")
+
+  useEffect(() => {
+    return () => {
+      setIntroduce("")
+    }
+  }, [open])
 
   return (
     <Dialog
@@ -52,8 +58,9 @@ export const PartTimeApplyDialog = ({
               </p>
             </div>
 
-            <p className="text-sm font-medium text-silver">
-              * 연주 신청시 본인의 프로필이 상대방에게 전달됩니다.
+            <p className="break-keep text-sm font-medium text-silver">
+              * 연주 신청시 본인의 프로필(학력, 전공, 연락처)이 상대방에게
+              전달됩니다.
             </p>
 
             <div className="mt-4 flex justify-end gap-4">
