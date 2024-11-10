@@ -7,7 +7,7 @@ import FullTimeJobForm, {
 } from "@/components/jobs/FullTimeJobForm"
 import { Button } from "@/components/ui/button"
 import { queries } from "@/lib/queries"
-import { JOB, JobType } from "@/types/jobs"
+import { JOB, JobTimeType, JobType } from "@/types/jobs"
 import { useSession } from "next-auth/react"
 import {
   useParams,
@@ -39,7 +39,7 @@ const JobDetailCient = ({ job }: Props) => {
       updateArtOrganization(jobId, payload),
     deleteFn: (jobId?: number) => deleteJob(jobId as number),
     queryKey: [...queries.jobs._def],
-    redirectPath: pathname.slice(0, pathname.lastIndexOf("/")),
+    redirectPath: `/jobs?jobTimeType=${JobTimeType.FULL_TIME}`,
     successMessage: {
       create: "채용이 수정되었습니다.",
       delete: "채용이 삭제되었습니다.",

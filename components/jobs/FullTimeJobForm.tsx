@@ -52,14 +52,12 @@ const FullTimeJobForm = ({
   const [isPostDialog, setIsPostDialog] = useState(false)
   const { successToast, errorToast } = useToast()
   const [isUploadLoading, uploadTrasition] = useLoading()
-  const quillRef = useRef()
 
   const {
     register,
     handleSubmit,
     watch,
     setValue,
-    control,
     clearErrors,
     formState: { errors },
   } = useForm<CreateFulltimeJobFormData>({
