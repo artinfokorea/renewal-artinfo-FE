@@ -95,7 +95,7 @@ const JobDropDown = ({ title, href }: JobMenuProps) => {
 
       <Transition
         show={isJobMenuOpen}
-        enter="transition-opacity duration-500"
+        enter="transition-opacity duration-200"
         enterFrom="opacity-0"
         enterTo="opacity-100"
         leave="transition-opacity duration-300"
