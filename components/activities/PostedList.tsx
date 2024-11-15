@@ -9,6 +9,7 @@ import useToast from "@/hooks/useToast"
 import { JOB } from "@/types/jobs"
 import ApplicantsList from "./ApplicantsList"
 import { Spinner } from "../common/Loading"
+import EmptyDataMessage from "../common/EmptyDataMessage"
 
 export const PostedList = () => {
   const filter = filters()
@@ -57,7 +58,7 @@ export const PostedList = () => {
   return (
     <section className="flex flex-col gap-4">
       {myActivities?.totalCount === 0 ? (
-        <div className="my-6 text-center text-grayfont">데이터가 없습니다</div>
+        <EmptyDataMessage />
       ) : (
         <div className="grid grid-cols-1 gap-4">
           {myActivities?.jobs.map(job => (

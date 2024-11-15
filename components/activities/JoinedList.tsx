@@ -6,6 +6,7 @@ import React from "react"
 import { Spinner } from "../common/Loading"
 import { Button } from "@headlessui/react"
 import { useRouter } from "next/navigation"
+import EmptyDataMessage from "../common/EmptyDataMessage"
 
 const JoinedList = () => {
   const filter = filters()
@@ -36,7 +37,7 @@ const JoinedList = () => {
   }
 
   return myApplyList?.jobs.length === 0 ? (
-    <div className="my-6 text-center text-grayfont">데이터가 없습니다</div>
+    <EmptyDataMessage />
   ) : (
     <div className="grid grid-cols-1 gap-4">
       {myApplyList?.jobs.map(job => (

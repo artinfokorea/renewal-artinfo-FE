@@ -11,6 +11,7 @@ import { useQuery } from "@tanstack/react-query"
 import { queries } from "@/lib/queries"
 import useDebounce from "@/hooks/useDebounce"
 import { PERFORMANCE_AREA } from "@/types/performances"
+import EmptyDataMessage from "../common/EmptyDataMessage"
 
 interface Props {
   isOpen: boolean
@@ -102,9 +103,7 @@ const PerformanceAreaDialog = ({ isOpen, handleDialog, handleArea }: Props) => {
                   className="h-[400px] overflow-y-auto"
                 >
                   {areas?.performanceAreas.length === 0 ? (
-                    <p className="py-4 text-center text-gray-500">
-                      데이터가 없습니다.
-                    </p>
+                    <EmptyDataMessage />
                   ) : (
                     <>
                       {areas?.performanceAreas.map(area => (
