@@ -99,33 +99,43 @@ const PerformanceAreaDialog = ({ isOpen, handleDialog, handleArea }: Props) => {
                 </form>
                 <div
                   ref={scrollContainerRef}
-                  className="h-[400px] overflow-scroll"
+                  className="h-[400px] overflow-y-auto"
                 >
-                  {areas?.performanceAreas.map(area => (
-                    <div
-                      key={area.id}
-                      className="flex items-center justify-between border-b border-gray-200 px-2 py-2"
-                    >
-                      <div>
-                        <p className="text-gray-600">{area.name}</p>
-                        <p className="text-sm text-gray-400">{area.address}</p>
-                      </div>
-                      <button
-                        type="button"
-                        onClick={() => selectArea(area)}
-                        className="whitespace-nowrap text-blue-600"
-                      >
-                        선택
-                      </button>
-                    </div>
-                  ))}
-                  {hasNextPage && (
-                    <button
-                      onClick={handleLoadMore}
-                      className="w-full rounded border border-grayfont py-2 text-blue-600"
-                    >
-                      더보기
-                    </button>
+                  {areas?.performanceAreas.length === 0 ? (
+                    <p className="py-4 text-center text-gray-500">
+                      데이터가 없습니다.
+                    </p>
+                  ) : (
+                    <>
+                      {areas?.performanceAreas.map(area => (
+                        <div
+                          key={area.id}
+                          className="flex items-center justify-between border-b border-gray-200 px-2 py-2"
+                        >
+                          <div>
+                            <p className="text-gray-600">{area.name}</p>
+                            <p className="text-sm text-gray-400">
+                              {area.address}
+                            </p>
+                          </div>
+                          <button
+                            type="button"
+                            onClick={() => selectArea(area)}
+                            className="whitespace-nowrap text-blue-600"
+                          >
+                            선택
+                          </button>
+                        </div>
+                      ))}
+                      {hasNextPage && (
+                        <button
+                          onClick={handleLoadMore}
+                          className="w-full rounded border border-grayfont py-2 text-blue-600"
+                        >
+                          더보기
+                        </button>
+                      )}
+                    </>
                   )}
                 </div>
               </DialogPanel>

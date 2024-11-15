@@ -35,13 +35,9 @@ const JoinedList = () => {
     )
   }
 
-  if (myApplyList?.jobs.length === 0) {
-    return (
-      <div className="text-grayFont my-6 text-center">데이터가 없습니다</div>
-    )
-  }
-
-  return (
+  return myApplyList?.jobs.length === 0 ? (
+    <div className="my-6 text-center text-grayfont">데이터가 없습니다</div>
+  ) : (
     <div className="grid grid-cols-1 gap-4">
       {myApplyList?.jobs.map(job => (
         <div
