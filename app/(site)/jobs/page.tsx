@@ -23,6 +23,7 @@ import { MobileJobTypeTab } from "@/components/jobs/MobileJobTypeTab"
 import { useJobTimeType } from "@/hooks/useJobTimeType"
 import MobilePartTimeTab from "@/components/jobs/MobilePartTimeTab"
 import MobileFilterTab from "@/components/common/MobileFilterTab"
+import PartTimeListSkeleton from "@/components/skeleton/PartTimeListSkeleton"
 
 const page = () => {
   const searchParams = useSearchParams()
@@ -128,7 +129,7 @@ const page = () => {
           )}
 
           {jobTimeType === JobTimeType.PART_TIME ? (
-            <Suspense fallback={<JobListSkeleton />}>
+            <Suspense fallback={<PartTimeListSkeleton />}>
               <JobPartTimeList />
             </Suspense>
           ) : (
