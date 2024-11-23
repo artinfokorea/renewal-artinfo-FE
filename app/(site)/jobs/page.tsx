@@ -76,7 +76,7 @@ const page = () => {
           />
         )}
 
-        <div className="flex w-full flex-col md:ml-12 md:mt-4 md:flex-1">
+        <div className="flex w-full flex-col lg:ml-12 lg:mt-4 lg:flex-1">
           <div className="hidden items-center justify-between lg:flex">
             <div className="flex flex-wrap gap-2">
               <Button
