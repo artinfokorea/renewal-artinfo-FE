@@ -64,20 +64,12 @@ export const JobPartTimeCard = forwardRef<HTMLDivElement, Props>(
         <div className="my-3 flex flex-col gap-1 text-xs font-semibold md:flex-row md:justify-between md:text-sm">
           <span className="text-grey">{job.companyName}</span>
           <div className="flex flex-col gap-1">
-            {job.schedules && job.schedules.length === 1 ? (
+            {job.schedules && job.schedules.length > 0 && (
               <span>
-                {filter.YYYYMMDD(job.schedules[0].startAt)} ~
-                {filter.YYYYMMDD(job.schedules[0].endAt)}
-              </span>
-            ) : job.schedules && job.schedules.length > 1 ? (
-              <span>
-                {filter.YYYYMMDD(
-                  job.schedules[job.schedules.length - 1].startAt,
-                )}
-                ~{" "}
+                {filter.YYYYMMDD(job.schedules[0].startAt)}~{" "}
                 {filter.YYYYMMDD(job.schedules[job.schedules.length - 1].endAt)}
               </span>
-            ) : null}
+            )}
           </div>
         </div>
         {!isLastPage && <div ref={ref} />}
