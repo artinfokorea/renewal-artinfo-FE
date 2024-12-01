@@ -7,18 +7,9 @@ import HomeIcon from "../icons/HomeIcon"
 import Link from "next/link"
 import { usePathname } from "next/navigation"
 import BriefcaseIcon from "../icons/BriefcaseIcon"
-import UserIcon from "../icons/UserIcon"
-import InformationIcon from "../icons/InformationIcon"
-import { useSession } from "next-auth/react"
 import CalendarDaysIcon from "../icons/CalendarDaysIcon"
 import { Button, Transition } from "@headlessui/react"
-import {
-  DropdownMenu,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from "../ui/dropdown-menu"
-import { DropdownMenuContent } from "@radix-ui/react-dropdown-menu"
-import { HourglassIcon, ScrollTextIcon } from "lucide-react"
+import { HourglassIcon, ScrollTextIcon, Star, UsersIcon } from "lucide-react"
 import { JobTimeType } from "@/types/jobs"
 
 interface NavMenuProps {
@@ -102,7 +93,7 @@ const JobDropDown = ({ title, href }: JobMenuProps) => {
         leaveFrom="opacity-100"
         leaveTo="opacity-0"
       >
-        <div className="absolute bottom-[72px] left-[20%] z-50 flex flex-col items-center gap-2 rounded border bg-white p-2">
+        <div className="absolute bottom-[72px] left-[20%] z-50 flex flex-col gap-2 rounded border bg-white p-2">
           <Link href={`/jobs?jobTimeType=${JobTimeType.FULL_TIME}`}>
             <div className="flex items-center gap-2 p-2">
               <ScrollTextIcon className="h-5 w-5 text-gray-700" />
@@ -114,6 +105,20 @@ const JobDropDown = ({ title, href }: JobMenuProps) => {
             <div className="flex items-center gap-2 p-2">
               <HourglassIcon className="h-5 w-5 text-gray-700" />
               <span className="pt-[2px] text-sm text-gray-700">단기</span>
+            </div>
+          </Link>
+          <Link href={`/jobs?jobTimeType=${JobTimeType.AMATEUR}`}>
+            <div className="flex items-center gap-2 p-2">
+              <UsersIcon className="h-5 w-5 text-gray-700" />
+              <span className="pt-[2px] text-sm text-gray-700">아마추어</span>
+            </div>
+          </Link>
+          <Link href={`/jobs?jobTimeType=${JobTimeType.YOUTH}`}>
+            <div className="flex items-center gap-2 p-2">
+              <Star className="h-5 w-5 text-gray-700" />
+              <span className="pt-[2px] text-sm text-gray-700">
+                소년 ∙ 소녀
+              </span>
             </div>
           </Link>
         </div>

@@ -1,6 +1,6 @@
 import { ScrollApiResponse } from "@/interface"
 import { queries } from "@/lib/queries"
-import { JOB, JobType } from "@/types/jobs"
+import { JOB, JobTimeType, JobType } from "@/types/jobs"
 import { useSuspenseInfiniteQuery } from "@tanstack/react-query"
 import { useSearchParams } from "next/navigation"
 import { useInView } from "react-intersection-observer"
@@ -17,13 +17,28 @@ const JobPullTimeList = () => {
   ) as ProfessionalFieldTypes[]
   const keyword = searchParams.get("keyword") as string
   const provinceIds = searchParams.getAll("provinceId") as string[]
+  const jobTimeType = searchParams.get("jobTimeType") as JobTimeType
+  const getJobTypes = () => {
+    if (jobTimeType === JobTimeType.AMATEUR) {
+      return [JobType.AMATEUR]
+    }
+
+    if (jobTimeType === JobTimeType.YOUTH) {
+      return [JobType.YOUTH]
+    }
+
+    if (recruits.length > 0) {
+      return recruits
+    }
+
+    return [JobType.ART_ORGANIZATION, JobType.LECTURER, JobType.RELIGION]
+  }
+
+  const types = getJobTypes()
 
   const queryParams = {
     size: 10,
-    types:
-      recruits.length > 0
-        ? recruits
-        : [JobType.ART_ORGANIZATION, JobType.LECTURER, JobType.RELIGION],
+    types,
     keyword,
     professionalFields: professionals.map(professional => professional),
     provinceIds: provinceIds.map(id => Number(id)),

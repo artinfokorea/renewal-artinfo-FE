@@ -3,9 +3,10 @@ import { MAJOR } from "./majors"
 
 export enum JobType {
   ART_ORGANIZATION = "ART_ORGANIZATION",
-  PART_TIME = "PART_TIME",
   RELIGION = "RELIGION",
   LECTURER = "LECTURER",
+  AMATEUR = "AMATEUR",
+  YOUTH = "YOUTH",
 }
 
 export enum MajorType {
@@ -139,4 +140,6 @@ export interface ApplyJob {
 export enum JobTimeType {
   FULL_TIME = "FULL_TIME",
   PART_TIME = "PART_TIME",
+  AMATEUR = "AMATEUR",
+  YOUTH = "YOUTH",
 }

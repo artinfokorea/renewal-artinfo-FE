@@ -125,10 +125,7 @@ export const createPartTimeJob = async (
 export const createFullTimeJob = async (
   job: JobPayload,
 ): Promise<PostResponse> => {
-  const response = await authApiRequest.post<PostResponse>(
-    `/jobs/full-time`,
-    job,
-  )
+  const response = await authApiRequest.post<PostResponse>(`/jobs`, job)
   return response
 }
 
@@ -138,7 +135,7 @@ export const updateArtOrganization = async (
   payload: JobPayload,
 ): Promise<SuccessResponse> => {
   const response = await authApiRequest.put<SuccessResponse>(
-    `/jobs/full-time/${jobId}`,
+    `/jobs/${jobId}`,
     payload,
   )
   return response

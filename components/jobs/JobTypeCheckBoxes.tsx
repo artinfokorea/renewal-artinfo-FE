@@ -32,7 +32,7 @@ const JobTypeCheckBoxes = () => {
 
   return (
     <div className="mt-8">
-      <h4 className="text-lg font-semibold">직군</h4>
+      <h4 className="text-lg font-semibold">파트</h4>
       <CheckboxField
         title="전체"
         checked={checkedRecruits.length === 0}
