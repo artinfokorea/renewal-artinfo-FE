@@ -1,4 +1,4 @@
-import { JobType, PartTimeMajor } from "@/types/jobs"
+import { JobTimeType, JobType, PartTimeMajor } from "@/types/jobs"
 import { ProfessionalFieldTypes } from "@/types/majors"
 import { ListRequest } from "."
 

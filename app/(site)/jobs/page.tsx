@@ -11,7 +11,7 @@ import JobListCheckBoxes from "@/components/jobs/JobListCheckBoxes"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 import JobListSkeleton from "@/components/skeleton/JobListSkeleton"
-import JobPullTimeList from "@/components/jobs/JobPullTimeList"
+import JobList from "@/components/jobs/JobList"
 import ProvinceDialog from "@/components/dialog/ProvinceDialog"
 import AddButton from "@/components/common/AddButton"
 import CreateLinkButton from "@/components/common/CreateLinkButton"
@@ -53,6 +53,11 @@ const page = () => {
     Cookies.set("prevPath", pathname, { expires: 1 / 288 })
     if (jobTimeType === JobTimeType.PART_TIME) {
       router.push(`${pathname}/part-time/create`)
+    } else if (
+      jobTimeType === JobTimeType.AMATEUR ||
+      jobTimeType === JobTimeType.YOUTH
+    ) {
+      router.push(`${pathname}/create?jobType=${jobTimeType}`)
     } else {
       router.push(`${pathname}/create`)
     }
@@ -134,7 +139,7 @@ const page = () => {
             </Suspense>
           ) : (
             <Suspense fallback={<JobListSkeleton />}>
-              <JobPullTimeList />
+              <JobList />
             </Suspense>
           )}
         </div>

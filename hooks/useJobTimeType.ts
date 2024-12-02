@@ -1,31 +1,20 @@
 import { JobTimeType } from "@/types/jobs"
 import { useRouter, useSearchParams } from "next/navigation"
-import { useEffect, useState } from "react"
 
 export const useJobTimeType = () => {
   const searchParams = useSearchParams()
-  const jobTimeParams = searchParams.get("jobTimeType") as JobTimeType
   const router = useRouter()
-  const [jobTimeType, setJobTimeType] = useState<JobTimeType>(
-    jobTimeParams || JobTimeType.FULL_TIME,
-  )
+
+  const jobTimeType =
+    (searchParams.get("jobTimeType") as JobTimeType) || JobTimeType.FULL_TIME
 
   const handleJobTimeTypeChange = (value: JobTimeType) => {
-    setJobTimeType(value)
-  }
-
-  useEffect(() => {
-    const locationParams = new URLSearchParams()
-    locationParams.set("jobTimeType", jobTimeType)
-    const newUrl = `${window.location.pathname}?${locationParams.toString()}`
-    router.push(newUrl, {
+    const params = new URLSearchParams(searchParams.toString())
+    params.set("jobTimeType", value)
+    router.push(`${window.location.pathname}?${params.toString()}`, {
       scroll: false,
     })
-  }, [jobTimeType])
-
-  useEffect(() => {
-    setJobTimeType(jobTimeParams)
-  }, [jobTimeParams])
+  }
 
   return {
     jobTimeType,

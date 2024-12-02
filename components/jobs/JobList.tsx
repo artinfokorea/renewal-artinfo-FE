@@ -9,7 +9,7 @@ import JobCard from "./JobCard"
 import ReligionCard from "./ReligionCard"
 import { ProfessionalFieldTypes } from "@/types/majors"
 
-const JobPullTimeList = () => {
+const JobList = () => {
   const searchParams = useSearchParams()
   const recruits = searchParams.getAll("recruit") as JobType[]
   const professionals = searchParams.getAll(
@@ -18,6 +18,7 @@ const JobPullTimeList = () => {
   const keyword = searchParams.get("keyword") as string
   const provinceIds = searchParams.getAll("provinceId") as string[]
   const jobTimeType = searchParams.get("jobTimeType") as JobTimeType
+
   const getJobTypes = () => {
     if (jobTimeType === JobTimeType.AMATEUR) {
       return [JobType.AMATEUR]
@@ -93,4 +94,4 @@ const JobPullTimeList = () => {
   )
 }
 
-export default JobPullTimeList
+export default JobList
