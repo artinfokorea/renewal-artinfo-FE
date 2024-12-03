@@ -9,7 +9,7 @@ import { JobPartTimeCard } from "./JobPartTimeCard"
 
 const JobPartTimeList = () => {
   const searchParams = useSearchParams()
-  const majorGroups = searchParams.getAll("majorGroups") as MajorGroupField[]
+  const majorGroups = searchParams.getAll("majorGroup") as MajorGroupField[]
   const keyword = searchParams.get("keyword") as string
   const provinceIds = searchParams.getAll("provinceId") as string[]
 
