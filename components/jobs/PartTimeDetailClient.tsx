@@ -1,7 +1,6 @@
 "use client"
 
-import React, { useEffect, useState } from "react"
-import { useSession } from "next-auth/react"
+import React, { useState } from "react"
 import AlertDialog from "../dialog/AlertDialog"
 import { Button } from "../ui/button"
 import Cookies from "js-cookie"
@@ -30,7 +29,6 @@ import { JobTimeType } from "@/types/jobs"
 import useToast from "@/hooks/useToast"
 
 export const PartTimeDetailClient = () => {
-  const { data } = useSession()
   const params = useParams()
   const queryClient = useQueryClient()
   const searchParams = useSearchParams()
@@ -38,7 +36,7 @@ export const PartTimeDetailClient = () => {
   const type = searchParams.get("type") || "read"
   const router = useRouter()
   const pathname = usePathname()
-  const [isLoginModalOpen, setIsLoginModalOpen] = useState(false)
+
   const [isApplyDialog, setIsApplyDialog] = useState(false)
   const [isQualificationDialog, setIsQualificationDialog] = useState(false)
   const [isQualificationLoading, qualificationTransition] = useLoading()
@@ -55,10 +53,6 @@ export const PartTimeDetailClient = () => {
         delete: "채용이 삭제되었습니다.",
       },
     })
-
-  useEffect(() => {
-    setIsLoginModalOpen(!data)
-  }, [data])
 
   const handleDeleteJob = async () => {
     handleDelete(Number(params.id))
@@ -140,23 +134,6 @@ export const PartTimeDetailClient = () => {
         />
       )}
 
-      <AlertDialog
-        isOpen={isLoginModalOpen}
-        handleDialog={handleAlertDialog}
-        title="로그인이 필요합니다."
-      >
-        <div className="my-4 flex flex-col justify-center gap-4">
-          <p className="text-sm text-silver md:text-base">
-            채용 상세를 확인하려면 로그인이 필요합니다.
-          </p>
-          <Button
-            onClick={handleAlertDialog}
-            className="bg-main text-white hover:bg-blue-600"
-          >
-            로그인
-          </Button>
-        </div>
-      </AlertDialog>
       <AlertDialog
         title="연주 신청 권한이 없습니다."
         isOpen={isQualificationDialog}

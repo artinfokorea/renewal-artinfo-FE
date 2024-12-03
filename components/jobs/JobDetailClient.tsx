@@ -86,9 +86,15 @@ const JobDetailCient = ({ job }: Props) => {
     router.push("/auth/sign-in")
   }
 
+  console.log("job", job)
+
   useEffect(() => {
-    setIsLoginModalOpen(!data)
-  }, [data])
+    if (job.type === JobType.AMATEUR || job.type === JobType.YOUTH) {
+      setIsLoginModalOpen(false)
+    } else {
+      setIsLoginModalOpen(!data)
+    }
+  }, [data, job])
 
   return (
     <section>
