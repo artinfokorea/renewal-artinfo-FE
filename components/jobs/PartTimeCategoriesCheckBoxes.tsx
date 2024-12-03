@@ -24,11 +24,11 @@ export const PartTimeCategoriesCheckBoxes = ({ majorGroups }: Props) => {
 
   useEffect(() => {
     const locationParams = new URLSearchParams(window.location.search)
-    const currentRecruits = locationParams.getAll(
+    const currentMajors = locationParams.getAll(
       "majorGroup",
     ) as MajorGroupField[]
-    if (JSON.stringify(currentRecruits) !== JSON.stringify(checkedMajors)) {
-      locationParams.delete("partTimeMajor")
+    if (JSON.stringify(currentMajors) !== JSON.stringify(checkedMajors)) {
+      locationParams.delete("majorGroup")
       checkedMajors.forEach(v => locationParams.append("majorGroup", v))
       const newUrl = `${window.location.pathname}?${locationParams.toString()}`
       router.push(newUrl, {

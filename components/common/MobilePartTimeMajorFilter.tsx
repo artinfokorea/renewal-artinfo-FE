@@ -2,11 +2,11 @@ import { MajorGroupField } from "@/types/jobs"
 import { PartTimeMajorGroup } from "@/types/majors"
 
 interface Props {
-  partTimeMajors?: PartTimeMajorGroup[]
+  majorGroups?: PartTimeMajorGroup[]
   handleMajor: (major: MajorGroupField | "") => void
 }
 
-const MobilePartTimeMajorFilter = ({ partTimeMajors, handleMajor }: Props) => {
+const MobilePartTimeMajorFilter = ({ majorGroups, handleMajor }: Props) => {
   return (
     <div className="flex flex-col gap-1 px-2 py-4">
       <button
@@ -15,7 +15,7 @@ const MobilePartTimeMajorFilter = ({ partTimeMajors, handleMajor }: Props) => {
       >
         전체
       </button>
-      {partTimeMajors?.map(({ nameEn, nameKo }) => {
+      {majorGroups?.map(({ nameEn, nameKo }) => {
         return (
           <div key={nameEn}>
             <div className="flex items-center">

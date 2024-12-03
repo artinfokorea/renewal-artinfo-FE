@@ -19,7 +19,7 @@ export const useMobileFilterState = () => {
   >((searchParams.get("professional") as ProfessionalFieldTypes) || "")
   const [selectedMajorField, setSelectedMajorField] = useState<
     MajorGroupField | ""
-  >("")
+  >((searchParams.get("majorGroup") as MajorGroupField) || "")
 
   const handleSearchTab = (searchType: SearchType) => {
     if (mobileSearchTab === searchType) {
@@ -51,8 +51,8 @@ export const useMobileFilterState = () => {
 
   useEffect(() => {
     const locationParams = new URLSearchParams(window.location.search)
-    const currentPartTimeMajor = locationParams.get("partTimeMajor")
-    if (currentPartTimeMajor !== selectedMajorField) {
+    const currentMajor = locationParams.get("majorGroup")
+    if (currentMajor !== selectedMajorField) {
       locationParams.delete("majorGroup")
       if (selectedMajorField)
         locationParams.append("majorGroup", selectedMajorField)

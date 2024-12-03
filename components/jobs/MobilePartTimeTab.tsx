@@ -63,7 +63,7 @@ const MobilePartTimeTab = ({
       )}
       {mobileSearchTab === SearchType.MAJOR && (
         <MobilePartTimeMajorFilter
-          partTimeMajors={majorGroups}
+          majorGroups={majorGroups}
           handleMajor={handleMajorField}
         />
       )}

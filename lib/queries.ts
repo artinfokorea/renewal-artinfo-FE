@@ -63,7 +63,7 @@ const majors = createQueryKeys("majors", {
     queryFn: () => getArtFileds(request),
   }),
   partTimeMajorGroups: () => ({
-    queryKey: ["partTimeMajorGroups"],
+    queryKey: [""],
     queryFn: getPartTimeMajorGroups,
   }),
 })
@@ -139,7 +139,7 @@ const jobs = createQueryKeys("jobs", {
     queryFn: () => getPullTimeJobs(filters),
   }),
   infiniteList: (filters: JobsRequest) => ({
-    queryKey: ["fullTimeJobs", { filters }],
+    queryKey: [{ filters }],
     queryFn: ({ pageParam }: { pageParam: number }) =>
       getInfiniteFullTimeJobs({ ...filters, page: pageParam }),
   }),
@@ -152,20 +152,20 @@ const jobs = createQueryKeys("jobs", {
     queryFn: () => getPartTimeJobs(filters),
   }),
   infinitePartTimeList: (filters: PartTimeJobRequest) => ({
-    queryKey: ["partTimeJobs", { filters }],
+    queryKey: [{ filters }],
     queryFn: ({ pageParam }: { pageParam: number }) =>
       getInfinitePartTimeJobs({ ...filters, page: pageParam }),
   }),
   myActivities: (filters: ListRequest) => ({
-    queryKey: ["myActivities", filters],
+    queryKey: [filters],
     queryFn: () => getMyActivities(filters),
   }),
   applicantList: (jobId: number) => ({
-    queryKey: ["applicants", jobId],
+    queryKey: [jobId],
     queryFn: () => getJobApplicants(jobId),
   }),
   myApplyList: (userId: number, filters: ListRequest) => ({
-    queryKey: ["myApplyList", userId, filters],
+    queryKey: [userId, filters],
     queryFn: () => getMyApllyList(filters),
   }),
 })
