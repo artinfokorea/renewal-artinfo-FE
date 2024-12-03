@@ -24,7 +24,7 @@ const ListCheckBoxes = ({
         jobTimeType={jobTimeType}
         handleJobTimeType={handleJobTimeType}
       />
-      {jobTimeType === JobTimeType.PART_TIME ? (
+      {jobTimeType === JobTimeType.FULL_TIME ? (
         <>
           <JobTypeCheckBoxes />
           <ProfessionalCheckBoxes artFields={artFields} />
