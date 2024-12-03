@@ -9,14 +9,14 @@ interface Props {
   artFields?: ArtField[]
   jobTimeType: JobTimeType
   handleJobTimeType: (jobTime: JobTimeType) => void
-  partTimeMajorList?: PartTimeMajorGroup[]
+  majorGroups?: PartTimeMajorGroup[]
 }
 
 const ListCheckBoxes = ({
   artFields,
   handleJobTimeType,
   jobTimeType,
-  partTimeMajorList,
+  majorGroups,
 }: Props) => {
   return (
     <form className="min-w-[180px] flex-col px-4 text-gray-400">
@@ -24,13 +24,13 @@ const ListCheckBoxes = ({
         jobTimeType={jobTimeType}
         handleJobTimeType={handleJobTimeType}
       />
-      {jobTimeType === JobTimeType.FULL_TIME ? (
+      {jobTimeType === JobTimeType.PART_TIME ? (
         <>
           <JobTypeCheckBoxes />
           <ProfessionalCheckBoxes artFields={artFields} />
         </>
       ) : (
-        <PartTimeCategoriesCheckBoxes partTimeMajorList={partTimeMajorList} />
+        <PartTimeCategoriesCheckBoxes majorGroups={majorGroups} />
       )}
     </form>
   )

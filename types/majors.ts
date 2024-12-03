@@ -1,4 +1,4 @@
-import { PartTimeMajor } from "./jobs"
+import { MajorGroupField } from "./jobs"
 
 export enum ProfessionalFieldTypes {
   CLASSIC = "CLASSIC",
@@ -35,5 +35,5 @@ export type MAJOR = {
 
 export interface PartTimeMajorGroup {
   nameKo: string
-  nameEn: PartTimeMajor
+  nameEn: MajorGroupField
 }

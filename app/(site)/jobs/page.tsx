@@ -34,7 +34,7 @@ const page = () => {
   const isDesktop = useBreakPoint("lg")
   const { jobTimeType, handleJobTimeTypeChange } = useJobTimeType()
 
-  const [artFields, provinceList, majorList, partTimeMajors] = useQueries({
+  const [artFields, provinceList, majorList, majorGroups] = useQueries({
     queries: [
       queries.majors.artFields({ artCategories: [ArtType.MUSIC] }),
       queries.provinces.list(),
@@ -76,7 +76,7 @@ const page = () => {
           <JobListCheckBoxes
             handleJobTimeType={handleJobTimeTypeChange}
             jobTimeType={jobTimeType}
-            partTimeMajorList={partTimeMajors?.data?.majorGroups}
+            majorGroups={majorGroups?.data?.majorGroups}
             artFields={artFields?.data?.majorGroups}
           />
         )}
@@ -127,7 +127,7 @@ const page = () => {
               ) : (
                 <MobilePartTimeTab
                   provinces={provinceList?.data?.provinces}
-                  partTimeMajors={partTimeMajors?.data?.majorGroups}
+                  majorGroups={majorGroups?.data?.majorGroups}
                 />
               )}
             </>

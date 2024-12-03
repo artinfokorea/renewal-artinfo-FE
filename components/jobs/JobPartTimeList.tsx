@@ -1,6 +1,6 @@
 import { ScrollApiResponse } from "@/interface"
 import { queries } from "@/lib/queries"
-import { JOB, PartTimeMajor } from "@/types/jobs"
+import { JOB, MajorGroupField } from "@/types/jobs"
 import { useSuspenseInfiniteQuery } from "@tanstack/react-query"
 import { useSearchParams } from "next/navigation"
 import { useInView } from "react-intersection-observer"
@@ -9,13 +9,13 @@ import { JobPartTimeCard } from "./JobPartTimeCard"
 
 const JobPartTimeList = () => {
   const searchParams = useSearchParams()
-  const partTimeMajors = searchParams.getAll("partTimeMajor") as PartTimeMajor[]
+  const majorGroups = searchParams.getAll("majorGroups") as MajorGroupField[]
   const keyword = searchParams.get("keyword") as string
   const provinceIds = searchParams.getAll("provinceId") as string[]
 
   const queryParams = {
     size: 10,
-    majorGroups: partTimeMajors.length > 0 ? partTimeMajors : [],
+    majorGroups: majorGroups.length > 0 ? majorGroups : [],
     keyword,
     provinceIds: provinceIds.map(id => Number(id)),
   }

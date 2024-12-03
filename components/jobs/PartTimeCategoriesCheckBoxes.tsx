@@ -1,23 +1,20 @@
 import React, { useEffect, useState } from "react"
 import CheckboxField from "../common/CheckboxField"
-import { useQuery } from "@tanstack/react-query"
-import { queries } from "@/lib/queries"
-import { PartTimeMajor } from "@/types/jobs"
+import { MajorGroupField } from "@/types/jobs"
 import { useRouter, useSearchParams } from "next/navigation"
 import { PartTimeMajorGroup } from "@/types/majors"
 
 interface Props {
-  partTimeMajorList?: PartTimeMajorGroup[]
+  majorGroups?: PartTimeMajorGroup[]
 }
 
-export const PartTimeCategoriesCheckBoxes = ({ partTimeMajorList }: Props) => {
+export const PartTimeCategoriesCheckBoxes = ({ majorGroups }: Props) => {
   const router = useRouter()
   const searchParams = useSearchParams()
-  const partTimeMajors = searchParams.getAll("partTimeMajor") as PartTimeMajor[]
-  const [checkedMajors, setCheckedMajors] =
-    useState<PartTimeMajor[]>(partTimeMajors)
+  const majors = searchParams.getAll("majorGroup") as MajorGroupField[]
+  const [checkedMajors, setCheckedMajors] = useState<MajorGroupField[]>(majors)
 
-  const handleMajorChange = (value: PartTimeMajor) => {
+  const handleMajorChange = (value: MajorGroupField) => {
     if (checkedMajors.includes(value)) {
       setCheckedMajors(checkedMajors.filter(v => v !== value))
     } else {
@@ -28,11 +25,11 @@ export const PartTimeCategoriesCheckBoxes = ({ partTimeMajorList }: Props) => {
   useEffect(() => {
     const locationParams = new URLSearchParams(window.location.search)
     const currentRecruits = locationParams.getAll(
-      "partTimeMajor",
-    ) as PartTimeMajor[]
+      "majorGroup",
+    ) as MajorGroupField[]
     if (JSON.stringify(currentRecruits) !== JSON.stringify(checkedMajors)) {
       locationParams.delete("partTimeMajor")
-      checkedMajors.forEach(v => locationParams.append("partTimeMajor", v))
+      checkedMajors.forEach(v => locationParams.append("majorGroup", v))
       const newUrl = `${window.location.pathname}?${locationParams.toString()}`
       router.push(newUrl, {
         scroll: false,
@@ -49,8 +46,8 @@ export const PartTimeCategoriesCheckBoxes = ({ partTimeMajorList }: Props) => {
         handleChange={() => setCheckedMajors([])}
       />
 
-      {partTimeMajorList?.map(({ nameEn, nameKo }) => (
-        <CheckboxField<PartTimeMajor>
+      {majorGroups?.map(({ nameEn, nameKo }) => (
+        <CheckboxField<MajorGroupField>
           key={nameEn}
           value={nameEn}
           title={nameKo}

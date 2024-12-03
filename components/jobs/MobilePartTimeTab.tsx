@@ -8,17 +8,17 @@ import { useMemo } from "react"
 
 interface MobilePartTimeTabProps {
   provinces?: PROVINCE[]
-  partTimeMajors?: PartTimeMajorGroup[]
+  majorGroups?: PartTimeMajorGroup[]
 }
 
 const MobilePartTimeTab = ({
   provinces,
-  partTimeMajors,
+  majorGroups,
 }: MobilePartTimeTabProps) => {
   const {
     mobileSearchTab,
-    selectedPartTimeMajor,
-    handlePartTimeMajor,
+    selectedMajorField,
+    handleMajorField,
     handleSearchTab,
     selectedProvinceId,
     handleProvince,
@@ -31,10 +31,8 @@ const MobilePartTimeTab = ({
   }, [selectedProvinceId, provinces])
 
   const selectedMajor = useMemo(() => {
-    return partTimeMajors?.filter(
-      major => major.nameEn === selectedPartTimeMajor,
-    )[0]
-  }, [selectedPartTimeMajor, partTimeMajors])
+    return majorGroups?.filter(major => major.nameEn === selectedMajorField)[0]
+  }, [selectedMajorField, majorGroups])
 
   return (
     <div className="relative mx-4 flex flex-col rounded border lg:hidden">
@@ -53,7 +51,7 @@ const MobilePartTimeTab = ({
             mobileSearchTab === SearchType.MAJOR && "bg-whitesmoke"
           }`}
         >
-          {selectedPartTimeMajor ? selectedMajor?.nameKo : "분야"}
+          {selectedMajorField ? selectedMajor?.nameKo : "분야"}
         </button>
       </div>
 
@@ -65,8 +63,8 @@ const MobilePartTimeTab = ({
       )}
       {mobileSearchTab === SearchType.MAJOR && (
         <MobilePartTimeMajorFilter
-          partTimeMajors={partTimeMajors}
-          handleMajor={handlePartTimeMajor}
+          partTimeMajors={majorGroups}
+          handleMajor={handleMajorField}
         />
       )}
     </div>

@@ -1,9 +1,9 @@
-import { PartTimeMajor } from "@/types/jobs"
+import { MajorGroupField } from "@/types/jobs"
 import { PartTimeMajorGroup } from "@/types/majors"
 
 interface Props {
   partTimeMajors?: PartTimeMajorGroup[]
-  handleMajor: (major: PartTimeMajor | "") => void
+  handleMajor: (major: MajorGroupField | "") => void
 }
 
 const MobilePartTimeMajorFilter = ({ partTimeMajors, handleMajor }: Props) => {

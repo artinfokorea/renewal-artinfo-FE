@@ -1,6 +1,6 @@
 import { ScrollApiResponse } from "@/interface"
 import { queries } from "@/lib/queries"
-import { JOB, JobTimeType, JobType } from "@/types/jobs"
+import { JOB, JobTimeType, JobType, MajorGroupField } from "@/types/jobs"
 import { useSuspenseInfiniteQuery } from "@tanstack/react-query"
 import { useSearchParams } from "next/navigation"
 import { useInView } from "react-intersection-observer"
@@ -18,6 +18,7 @@ const JobList = () => {
   const keyword = searchParams.get("keyword") as string
   const provinceIds = searchParams.getAll("provinceId") as string[]
   const jobTimeType = searchParams.get("jobTimeType") as JobTimeType
+  const majorGroups = searchParams.getAll("majorGroup") as MajorGroupField[]
 
   const getJobTypes = () => {
     if (jobTimeType === JobTimeType.AMATEUR) {
@@ -35,6 +36,18 @@ const JobList = () => {
     return [JobType.ART_ORGANIZATION, JobType.LECTURER, JobType.RELIGION]
   }
 
+  const getMajorGroups = () => {
+    if (
+      jobTimeType !== JobTimeType.AMATEUR &&
+      jobTimeType !== JobTimeType.YOUTH
+    ) {
+      return []
+    }
+
+    return majorGroups
+  }
+  const majors = getMajorGroups()
+
   const types = getJobTypes()
 
   const queryParams = {
@@ -43,6 +56,7 @@ const JobList = () => {
     keyword,
     professionalFields: professionals.map(professional => professional),
     provinceIds: provinceIds.map(id => Number(id)),
+    majorGroups: majors,
   }
 
   const [ref, inView] = useInView({

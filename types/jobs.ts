@@ -108,7 +108,7 @@ export enum SearchType {
   CATEGORY = "CATEGORY",
 }
 
-export enum PartTimeMajor {
+export enum MajorGroupField {
   CONDUCTOR = "CONDUCTOR",
   KEYBOARD = "KEYBOARD",
   STRING = "STRING",
@@ -120,14 +120,14 @@ export enum PartTimeMajor {
 }
 
 export const PartTimeMajorValues = {
-  [PartTimeMajor.CONDUCTOR]: "지휘",
-  [PartTimeMajor.KEYBOARD]: "건반악기",
-  [PartTimeMajor.STRING]: "현악기",
-  [PartTimeMajor.WOOD_WIND]: "목관악기",
-  [PartTimeMajor.PERCUSSION]: "타악기",
-  [PartTimeMajor.BRASS_WIND]: "금관악기",
-  [PartTimeMajor.VOCAL]: "성악",
-  [PartTimeMajor.COMPOSER]: "작곡",
+  [MajorGroupField.CONDUCTOR]: "지휘",
+  [MajorGroupField.KEYBOARD]: "건반악기",
+  [MajorGroupField.STRING]: "현악기",
+  [MajorGroupField.WOOD_WIND]: "목관악기",
+  [MajorGroupField.PERCUSSION]: "타악기",
+  [MajorGroupField.BRASS_WIND]: "금관악기",
+  [MajorGroupField.VOCAL]: "성악",
+  [MajorGroupField.COMPOSER]: "작곡",
 }
 
 export interface ApplyJob {

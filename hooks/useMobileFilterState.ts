@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react"
 import { useRouter, useSearchParams } from "next/navigation"
-import { JobType, PartTimeMajor, SearchType } from "@/types/jobs"
+import { JobType, MajorGroupField, SearchType } from "@/types/jobs"
 import { ProfessionalFieldTypes } from "@/types/majors"
 
 export const useMobileFilterState = () => {
@@ -17,8 +17,8 @@ export const useMobileFilterState = () => {
   const [selectedProfessional, setSelectedProfessional] = useState<
     ProfessionalFieldTypes | ""
   >((searchParams.get("professional") as ProfessionalFieldTypes) || "")
-  const [selectedPartTimeMajor, setSelectedPartTimeMajor] = useState<
-    PartTimeMajor | ""
+  const [selectedMajorField, setSelectedMajorField] = useState<
+    MajorGroupField | ""
   >("")
 
   const handleSearchTab = (searchType: SearchType) => {
@@ -29,8 +29,8 @@ export const useMobileFilterState = () => {
     }
   }
 
-  const handlePartTimeMajor = (major: PartTimeMajor | "") => {
-    setSelectedPartTimeMajor(major)
+  const handleMajorField = (major: MajorGroupField | "") => {
+    setSelectedMajorField(major)
     setMobileSearchTab(undefined)
   }
 
@@ -52,16 +52,16 @@ export const useMobileFilterState = () => {
   useEffect(() => {
     const locationParams = new URLSearchParams(window.location.search)
     const currentPartTimeMajor = locationParams.get("partTimeMajor")
-    if (currentPartTimeMajor !== selectedPartTimeMajor) {
-      locationParams.delete("partTimeMajor")
-      if (selectedPartTimeMajor)
-        locationParams.append("partTimeMajor", selectedPartTimeMajor)
+    if (currentPartTimeMajor !== selectedMajorField) {
+      locationParams.delete("majorGroup")
+      if (selectedMajorField)
+        locationParams.append("majorGroup", selectedMajorField)
       const newUrl = `${window.location.pathname}?${locationParams.toString()}`
       router.push(newUrl, {
         scroll: false,
       })
     }
-  }, [selectedPartTimeMajor])
+  }, [selectedMajorField])
 
   useEffect(() => {
     const locationParams = new URLSearchParams(window.location.search)
@@ -106,12 +106,12 @@ export const useMobileFilterState = () => {
 
   return {
     mobileSearchTab,
-    selectedPartTimeMajor,
+    selectedMajorField,
     selectedRecruit,
     selectedProvinceId,
     selectedProfessional,
     handleSearchTab,
-    handlePartTimeMajor,
+    handleMajorField,
     handleRecruit,
     handleProvince,
     handleProfessional,
