@@ -11,7 +11,7 @@ export const MobileJobTypeTab = ({
 }: MobileJobTypeTabProps) => {
   return (
     <div className="relative mx-4 mb-2 flex flex-col rounded border lg:hidden">
-      <div className="grid grid-cols-4 text-sm text-main">
+      <div className="grid grid-cols-3 text-sm text-main">
         <button
           onClick={() => handleJobTimeType(JobTimeType.FULL_TIME)}
           className={`rounded py-2 ${
@@ -20,14 +20,14 @@ export const MobileJobTypeTab = ({
         >
           정규직
         </button>
-        <button
+        {/* <button
           onClick={() => handleJobTimeType(JobTimeType.PART_TIME)}
           className={`rounded py-2 ${
             jobTimeType === JobTimeType.PART_TIME && "bg-main text-white"
           }`}
         >
           단기직
-        </button>
+        </button> */}
         <button
           onClick={() => handleJobTimeType(JobTimeType.AMATEUR)}
           className={`rounded py-2 ${

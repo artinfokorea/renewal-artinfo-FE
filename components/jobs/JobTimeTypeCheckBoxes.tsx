@@ -20,12 +20,12 @@ export const JobTimeTypeCheckBoxes = ({
         checked={jobTimeType === JobTimeType.FULL_TIME}
         handleChange={() => handleJobTimeType(JobTimeType.FULL_TIME)}
       />
-      <CheckboxField
+      {/* <CheckboxField
         title="단기"
         value={jobTimeType}
         checked={jobTimeType === JobTimeType.PART_TIME}
         handleChange={() => handleJobTimeType(JobTimeType.PART_TIME)}
-      />
+      /> */}
       <CheckboxField
         title="아마추어"
         value={jobTimeType}
