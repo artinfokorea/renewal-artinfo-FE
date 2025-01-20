@@ -35,11 +35,11 @@ export const ProfileSideBar = () => {
           active={pathname === "/my-profile"}
           title="프로필"
         />
-        <ProfileLinkItem
+        {/* <ProfileLinkItem
           href="/my-activities"
           active={pathname === "/my-activities"}
           title="내 활동"
-        />
+        /> */}
       </ul>
     </div>
   )
