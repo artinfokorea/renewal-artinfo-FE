@@ -15,7 +15,7 @@ export default async function RootLayout({
         <section className="mx-auto flex max-w-screen-lg md:mt-12">
           <ProfileSideBar />
           <div className="flex w-full flex-col px-4 py-8">
-            <ProfileNavigation />
+            {/* <ProfileNavigation /> */}
             {children}
           </div>
         </section>
