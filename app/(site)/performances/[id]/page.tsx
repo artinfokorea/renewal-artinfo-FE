@@ -21,7 +21,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const data = await getPerformanceDetail(Number(id))
 
   const pageTitle = `${data.cast} - ${data.title}`
-  const pageDescription = data.customAreaName || data.area?.name
+  const pageDescription = data.cast
   const pageImage = data?.posterImageUrl
 
   return {
