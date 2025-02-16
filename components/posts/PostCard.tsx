@@ -30,9 +30,10 @@ const PostCard = forwardRef<HTMLDivElement, Props>(
               <h2 className="text-base font-normal md:font-semibold">
                 {post.title}
               </h2>
-              <h4 className="line-clamp-2 hidden text-sm font-light md:block">
-                {post.contents}
-              </h4>
+              <div
+                className="editor_view ck-content line-clamp-2 hidden text-sm font-light md:block"
+                dangerouslySetInnerHTML={{ __html: post.contents }}
+              />
             </div>
             {post.thumbnailImageUrl && (
               <FallbackImage

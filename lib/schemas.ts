@@ -1,3 +1,4 @@
+import { PostCategory } from "@/types/posts"
 import * as yup from "yup"
 
 interface StringSchemaOptions {
@@ -239,4 +240,16 @@ export const newsSchema = yup.object().shape({
 
 export const commentSchema = yup.object().shape({
   contents: createStringRequiredSchema("내용을 입력해주세요."),
+})
+
+export const postSchema = yup.object().shape({
+  title: createStringRequiredSchema("제목을 입력해주세요."),
+  contents: createStringRequiredSchema("내용을 입력해주세요."),
+  category: yup
+    .string()
+    .oneOf(
+      [PostCategory.ETC, PostCategory.INQUIRY, PostCategory.REVIEW],
+      "유효하지 않은 카테고리입니다.",
+    )
+    .required("카테고리를 선택해주세요."),
 })

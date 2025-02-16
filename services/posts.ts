@@ -60,7 +60,7 @@ export const createPost = async (payload: any): Promise<PostResponse> => {
 }
 
 /* 글 수정 */
-export const updateNews = async (
+export const updatePost = async (
   postId: number,
   payload: any,
 ): Promise<PostResponse> => {
