@@ -5,7 +5,11 @@ import { Metadata, Viewport } from "next"
 import Script from "next/script"
 import * as gtag from "@/lib/gtag"
 
-const inter = Inter({ subsets: ["latin"] })
+const inter = Inter({
+  subsets: ["latin"],
+  display: "swap",
+  weight: ["300", "400", "500", "600", "700"],
+})
 
 export const viewport: Viewport = {
   width: "device-width",

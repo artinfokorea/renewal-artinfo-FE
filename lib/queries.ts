@@ -41,6 +41,8 @@ import {
   getPerformancesCount,
 } from "@/services/performances"
 import { PerformancesRequest } from "@/interface/performances"
+import { getInfinitePosts, getPostDetail, getPosts } from "@/services/posts"
+import { PostsRequest } from "@/interface/posts"
 
 const ads = createQueryKeys("ads", {
   list: (type: AdvertisementType) => ({
@@ -194,6 +196,22 @@ const performances = createQueryKeys("performances", {
   }),
 })
 
+const posts = createQueryKeys("posts", {
+  list: (filters: PostsRequest) => ({
+    queryKey: [filters],
+    queryFn: () => getPosts(filters),
+  }),
+  infiniteList: (filters: PostsRequest) => ({
+    queryKey: [filters],
+    queryFn: ({ pageParam }: { pageParam: number }) =>
+      getInfinitePosts({ ...filters, page: pageParam }),
+  }),
+  detail: (postId: number) => ({
+    queryKey: [postId],
+    queryFn: () => getPostDetail(postId),
+  }),
+})
+
 export const queries = mergeQueryKeys(
   ads,
   jobs,
@@ -204,4 +222,5 @@ export const queries = mergeQueryKeys(
   news,
   comments,
   performances,
+  posts,
 )

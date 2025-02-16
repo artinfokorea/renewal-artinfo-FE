@@ -3,15 +3,16 @@ import { Button } from "../ui/button"
 
 interface Props {
   onClick: () => void
+  text?: string
 }
 
-const CreateLinkButton = ({ onClick }: Props) => {
+const CreateLinkButton = ({ onClick, text }: Props) => {
   return (
     <Button
       className="h-8 rounded-full bg-main px-5 text-xs font-semibold text-white"
       onClick={onClick}
     >
-      등록
+      {text || "등록"}
     </Button>
   )
 }
