@@ -8,7 +8,7 @@ import ItemManageBox from "../common/ItemManageBox"
 import { useRouter } from "next/navigation"
 import ConfirmDialog from "../dialog/ConfirmDialog"
 import { useSession } from "next-auth/react"
-import CommentContainer from "../comments/CommentContainer"
+import CommentContainer from "../news-comments/NewsCommentContainer"
 
 interface Props {
   news: NEWS

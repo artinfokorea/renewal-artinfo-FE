@@ -1,21 +1,21 @@
-import { COMMENT } from "@/types/comments"
+import { NEWS_COMMENT } from "@/types/news-comments"
 import React, { useState } from "react"
-import CommentCard from "./CommentCard"
+import CommentCard from "./NewsCommentCard"
 import { useQuery, useQueryClient } from "@tanstack/react-query"
 import { queries } from "@/lib/queries"
 import { useParams } from "next/navigation"
-import { CommentFormData } from "./CommentForm"
-import CommentReplyForm from "./CommentReplyForm"
+import { CommentFormData } from "./NewsCommentForm"
+import CommentReplyForm from "./NewsCommentReplyForm"
 import MoreButton from "../common/MoreButton"
 
 interface Props {
-  comment: COMMENT
+  comment: NEWS_COMMENT
   handleDelete: (id: number) => void
   handleUpdate: (id: number, payload: CommentFormData) => void
   handleCreate: (payload: CommentFormData, parentId?: number) => void
 }
 
-const CommentWithReplies = ({
+const NewsCommentWithReplies = ({
   comment,
   handleDelete,
   handleUpdate,
@@ -99,4 +99,4 @@ const CommentWithReplies = ({
   )
 }
 
-export default CommentWithReplies
+export default NewsCommentWithReplies

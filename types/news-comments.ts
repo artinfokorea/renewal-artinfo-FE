@@ -2,7 +2,7 @@ export enum CommentType {
   NEWS = "NEWS",
 }
 
-export type COMMENT = {
+export type NEWS_COMMENT = {
   id: number
   userId: number
   contents: string

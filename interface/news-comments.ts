@@ -1,4 +1,4 @@
-import { CommentType } from "@/types/comments"
+import { CommentType } from "@/types/news-comments"
 import { ListRequest } from "."
 
 export interface CommentPayload {

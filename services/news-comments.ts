@@ -1,8 +1,8 @@
-import { CommentPayload, CommentsRequest } from "./../interface/comments"
+import { CommentPayload, CommentsRequest } from "../interface/news-comments"
 import { ListApiResponse, SuccessResponse } from "@/interface"
 import { authApiRequest, publicApiRequest } from "."
 import { exceptionHandler } from "./exception-handler"
-import { COMMENT } from "@/types/comments"
+import { NEWS_COMMENT } from "@/types/news-comments"
 
 /* 뉴스 댓글 목록 조회 */
 export const getNewsComments = async (commentRequest: CommentsRequest) => {
@@ -10,7 +10,7 @@ export const getNewsComments = async (commentRequest: CommentsRequest) => {
 
   try {
     const response = await publicApiRequest.get<
-      ListApiResponse<COMMENT, "comments">
+      ListApiResponse<NEWS_COMMENT, "comments">
     >(`/comments/news/${newsId}`, {
       params: {
         page,

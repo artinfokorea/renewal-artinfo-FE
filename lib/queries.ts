@@ -31,8 +31,8 @@ import { LessonsRequest } from "@/interface/lessons"
 import { ArtFieldRequest } from "@/interface/majors"
 import { AdvertisementType } from "@/types/ads"
 import { createQueryKeys, mergeQueryKeys } from "@lukemorales/query-key-factory"
-import { getNewsComments } from "@/services/comments"
-import { CommentsRequest } from "@/interface/comments"
+import { getNewsComments } from "@/services/news-comments"
+import { CommentsRequest } from "@/interface/news-comments"
 import {
   getInfinitePerformances,
   getPerformance,

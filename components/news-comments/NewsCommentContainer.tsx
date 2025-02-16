@@ -3,20 +3,20 @@
 import { useQuery, useQueryClient } from "@tanstack/react-query"
 import { queries } from "@/lib/queries"
 import { useParams } from "next/navigation"
-import { CommentType } from "@/types/comments"
+import { CommentType } from "@/types/news-comments"
 import useMutation from "@/hooks/useMutation"
-import { CommentPayload } from "@/interface/comments"
+import { CommentPayload } from "@/interface/news-comments"
 import {
   createComment,
   deleteComment,
   updateComment,
-} from "@/services/comments"
-import CommentForm, { CommentFormData } from "../comments/CommentForm"
+} from "@/services/news-comments"
+import CommentForm, { CommentFormData } from "./NewsCommentForm"
 import { useState } from "react"
-import CommentWithReplies from "./CommentWithReplies"
+import CommentWithReplies from "./NewsCommentWithReplies"
 import MoreButton from "../common/MoreButton"
 
-const CommentContainer = () => {
+const NewsCommentContainer = () => {
   const params = useParams()
   const [size, setSize] = useState(5)
   const queryClient = useQueryClient()
@@ -99,4 +99,4 @@ const CommentContainer = () => {
   )
 }
 
-export default CommentContainer
+export default NewsCommentContainer

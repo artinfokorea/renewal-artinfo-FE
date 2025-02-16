@@ -18,7 +18,11 @@ interface Props {
   handleEdit: () => void
 }
 
-const CommentDesktopMenu = ({ isAuthor, handleDelete, handleEdit }: Props) => {
+const NewsCommentDesktopMenu = ({
+  isAuthor,
+  handleDelete,
+  handleEdit,
+}: Props) => {
   const { successToast } = useToast()
 
   return (
@@ -75,4 +79,4 @@ const CommentDesktopMenu = ({ isAuthor, handleDelete, handleEdit }: Props) => {
     </Menu>
   )
 }
-export default CommentDesktopMenu
+export default NewsCommentDesktopMenu

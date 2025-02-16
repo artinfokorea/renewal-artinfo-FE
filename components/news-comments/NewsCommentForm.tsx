@@ -19,7 +19,7 @@ interface Props {
   isLoading: boolean
 }
 
-const CommentForm = ({ handleCreateComment, isLoading }: Props) => {
+const NewsCommentForm = ({ handleCreateComment, isLoading }: Props) => {
   const { data } = useSession()
   const { data: user } = useQuery({
     ...queries.users.detail(),
@@ -72,4 +72,4 @@ const CommentForm = ({ handleCreateComment, isLoading }: Props) => {
   )
 }
 
-export default CommentForm
+export default NewsCommentForm

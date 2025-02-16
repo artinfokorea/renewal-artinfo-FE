@@ -9,7 +9,7 @@ import { queries } from "@/lib/queries"
 import { useSession } from "next-auth/react"
 import FallbackImage from "../common/FallbackImage"
 import { Button } from "../ui/button"
-import { CommentFormData } from "./CommentForm"
+import { CommentFormData } from "./NewsCommentForm"
 
 interface Props {
   parentId: number
@@ -17,7 +17,11 @@ interface Props {
   handleCreate: (payload: CommentFormData, parentId?: number) => void
 }
 
-const CommentReplyForm = ({ parentId, cancelReply, handleCreate }: Props) => {
+const NewsCommentReplyForm = ({
+  parentId,
+  cancelReply,
+  handleCreate,
+}: Props) => {
   const { data } = useSession()
   const { data: user } = useQuery({
     ...queries.users.detail(),
@@ -80,4 +84,4 @@ const CommentReplyForm = ({ parentId, cancelReply, handleCreate }: Props) => {
   )
 }
 
-export default CommentReplyForm
+export default NewsCommentReplyForm
