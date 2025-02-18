@@ -31,8 +31,8 @@ import { LessonsRequest } from "@/interface/lessons"
 import { ArtFieldRequest } from "@/interface/majors"
 import { AdvertisementType } from "@/types/ads"
 import { createQueryKeys, mergeQueryKeys } from "@lukemorales/query-key-factory"
-import { getNewsComments } from "@/services/news-comments"
-import { CommentsRequest } from "@/interface/news-comments"
+import { getNewsComments, getPostsComments } from "@/services/comments"
+import { CommentsRequest, PostCommentsRequest } from "@/interface/comments"
 import {
   getInfinitePerformances,
   getPerformance,
@@ -128,6 +128,10 @@ const comments = createQueryKeys("comments", {
   news: (filters: CommentsRequest) => ({
     queryKey: [filters.newsId, { filters }],
     queryFn: () => getNewsComments(filters),
+  }),
+  post: (filters: PostCommentsRequest) => ({
+    queryKey: [filters.postId, { filters }],
+    queryFn: () => getPostsComments(filters),
   }),
 })
 

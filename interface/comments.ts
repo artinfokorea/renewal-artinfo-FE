@@ -1,4 +1,4 @@
-import { CommentType } from "@/types/news-comments"
+import { CommentType } from "@/types/comments"
 import { ListRequest } from "."
 
 export interface CommentPayload {
@@ -10,5 +10,10 @@ export interface CommentPayload {
 
 export interface CommentsRequest extends ListRequest {
   newsId: number
+  parentId?: number
+}
+
+export interface PostCommentsRequest extends ListRequest {
+  postId: number
   parentId?: number
 }

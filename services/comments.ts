@@ -1,8 +1,9 @@
-import { CommentPayload, CommentsRequest } from "../interface/news-comments"
+import { CommentPayload, CommentsRequest } from "../interface/comments"
 import { ListApiResponse, SuccessResponse } from "@/interface"
 import { authApiRequest, publicApiRequest } from "."
 import { exceptionHandler } from "./exception-handler"
-import { NEWS_COMMENT } from "@/types/news-comments"
+import { COMMENT } from "@/types/comments"
+import { PostCommentsRequest } from "@/interface/comments"
 
 /* 뉴스 댓글 목록 조회 */
 export const getNewsComments = async (commentRequest: CommentsRequest) => {
@@ -10,8 +11,28 @@ export const getNewsComments = async (commentRequest: CommentsRequest) => {
 
   try {
     const response = await publicApiRequest.get<
-      ListApiResponse<NEWS_COMMENT, "comments">
+      ListApiResponse<COMMENT, "comments">
     >(`/comments/news/${newsId}`, {
+      params: {
+        page,
+        size,
+        parentId,
+      },
+    })
+    return response.item
+  } catch (error) {
+    throw new Error(exceptionHandler(error, "API getNewsComments error"))
+  }
+}
+
+/* 뉴스 댓글 목록 조회 */
+export const getPostsComments = async (commentRequest: PostCommentsRequest) => {
+  const { postId, page, size, parentId } = commentRequest
+
+  try {
+    const response = await publicApiRequest.get<
+      ListApiResponse<COMMENT, "comments">
+    >(`/comments/posts/${postId}`, {
       params: {
         page,
         size,

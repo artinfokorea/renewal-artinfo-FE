@@ -71,6 +71,18 @@ export const updatePost = async (
   return response
 }
 
+/* 글 좋아요 */
+export const likePost = async (
+  postId: number,
+  isLike: boolean,
+): Promise<SuccessResponse> => {
+  const response = await authApiRequest.post<SuccessResponse>(
+    `/posts/like/${postId}`,
+    { isLike },
+  )
+  return response
+}
+
 /* 글 삭제 */
 export const deletePost = async (postId: number): Promise<SuccessResponse> => {
   const response = await authApiRequest.delete<SuccessResponse>(

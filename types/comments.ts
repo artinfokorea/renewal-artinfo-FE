@@ -1,8 +1,9 @@
 export enum CommentType {
   NEWS = "NEWS",
+  POST = "POST",
 }
 
-export type NEWS_COMMENT = {
+export type COMMENT = {
   id: number
   userId: number
   contents: string

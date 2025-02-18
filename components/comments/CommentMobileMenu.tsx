@@ -18,7 +18,7 @@ interface Props {
   handleReply: () => void
 }
 
-const NewsCommentMobileMenu = ({
+const CommentMobileMenu = ({
   isAuthor,
   handleDelete,
   handleEdit,
@@ -74,4 +74,4 @@ const NewsCommentMobileMenu = ({
   )
 }
 
-export default NewsCommentMobileMenu
+export default CommentMobileMenu

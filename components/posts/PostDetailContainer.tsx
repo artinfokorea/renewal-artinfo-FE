@@ -7,7 +7,7 @@ import ItemManageBox from "../common/ItemManageBox"
 import { useRouter } from "next/navigation"
 import ConfirmDialog from "../dialog/ConfirmDialog"
 import { useSession } from "next-auth/react"
-import CommentContainer from "../news-comments/NewsCommentContainer"
+import CommentContainer from "../comments/CommentContainer"
 import { Post } from "@/types/posts"
 import {
   Breadcrumb,
@@ -17,7 +17,13 @@ import {
   BreadcrumbPage,
   BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb"
-import { EyeIcon, ThumbsUpIcon } from "lucide-react"
+import {
+  Clock5Icon,
+  EyeIcon,
+  MessageCircle,
+  ThumbsUpIcon,
+  UserCircle,
+} from "lucide-react"
 import { Separator } from "../ui/separator"
 
 interface Props {
@@ -53,16 +59,19 @@ const PostDetailContainer = ({ post, deletePost }: Props) => {
           </BreadcrumbList>
         </Breadcrumb>
         <h2 className="break-keep text-[26px] md:text-[26px]">{post.title}</h2>
-        <div className="flex gap-5 text-gray-400">
-          <h6 className="text-sm font-normal md:mt-auto md:text-base">
-            {filter.FROM_NOW_COMMENT(post.createdAt)}
-          </h6>
-          <button className="flex items-center gap-1 text-gray-300">
-            <EyeIcon className="h-4 w-4" />
+        <div className="flex gap-5 font-medium text-gray-400">
+          <div className="flex items-center gap-1">
+            <Clock5Icon className="h-4 w-4" />
+            <h6 className="text-sm font-normal md:mt-auto md:text-base">
+              {filter.FROM_NOW_COMMENT(post.createdAt)}
+            </h6>
+          </div>
+          <button className="flex items-center gap-1 text-sm text-gray-400 md:text-base">
+            <EyeIcon className="h-5 w-5" />
             <span className="">{post.viewCount}</span>
           </button>
-          <button className="flex items-center gap-1 text-gray-300">
-            <ThumbsUpIcon className="h-4 w-4" />
+          <button className="flex items-center gap-1 text-sm text-gray-400 md:text-base">
+            <UserCircle className="h-4 w-4" />
             <span className="">{post.likeCount}</span>
           </button>
         </div>
@@ -86,7 +95,23 @@ const PostDetailContainer = ({ post, deletePost }: Props) => {
           __html: post.contents,
         }}
       />
-      <CommentContainer />
+
+      <div className="mt-6 flex items-center space-x-5 font-light">
+        <button className="flex items-center gap-1 text-gray-700">
+          <ThumbsUpIcon className="h-4 w-4" />
+          <span className="text-sm font-normal md:text-base">
+            {post.likeCount}
+          </span>
+        </button>
+        <button className="flex items-center gap-1 text-gray-700">
+          <MessageCircle className="h-4 w-4" />
+          <span className="text-sm font-normal md:text-base">
+            {post.likeCount}
+          </span>
+        </button>
+      </div>
+
+      <CommentContainer type="post" />
 
       <ConfirmDialog
         isOpen={isDeleteConfirmDialog}

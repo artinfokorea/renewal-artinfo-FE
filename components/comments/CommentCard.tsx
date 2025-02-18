@@ -1,4 +1,4 @@
-import { NEWS_COMMENT } from "@/types/news-comments"
+import { COMMENT } from "@/types/comments"
 import React, { useEffect, useState } from "react"
 import FallbackImage from "../common/FallbackImage"
 import filters from "@/lib/filters"
@@ -6,24 +6,24 @@ import { useSession } from "next-auth/react"
 import { useQuery } from "@tanstack/react-query"
 import { queries } from "@/lib/queries"
 import ConfirmDialog from "../dialog/ConfirmDialog"
-import CommentDesktopMenu from "./NewsCommentDesktopMenu"
+import CommentDesktopMenu from "./CommentDesktopMenu"
 import { Textarea } from "@headlessui/react"
 import { useForm } from "react-hook-form"
-import { CommentFormData } from "./NewsCommentForm"
+import { CommentFormData } from "./CommentForm"
 import { yupResolver } from "@hookform/resolvers/yup"
 import { commentSchema } from "@/lib/schemas"
-import CommentMobileMenu from "./NewsCommentMobileMenu"
+import CommentMobileMenu from "./CommentMobileMenu"
 import EllipsisVerticalIcon from "../icons/EllipsisVerticalIcon"
 
 interface Props {
-  comment: NEWS_COMMENT
+  comment: COMMENT
   deleteComment: (id: number) => void
   isChild?: boolean
   handleUpdate: (id: number, payload: CommentFormData) => void
   handleReply: (parentId: number) => void
 }
 
-const NewsCommentCard = ({
+const CommentCard = ({
   comment,
   deleteComment,
   isChild,
@@ -171,4 +171,4 @@ const NewsCommentCard = ({
   )
 }
 
-export default NewsCommentCard
+export default CommentCard
