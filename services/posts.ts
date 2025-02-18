@@ -16,7 +16,7 @@ export const getPosts = async (
   request: PostsRequest,
 ): Promise<ListResponse<Post, "posts">> => {
   try {
-    const response = await publicApiRequest.get<ListApiResponse<Post, "posts">>(
+    const response = await authApiRequest.get<ListApiResponse<Post, "posts">>(
       "/posts",
       {
         params: request,
@@ -44,7 +44,7 @@ export const getInfinitePosts = async (
 /* 글 상세 조회 */
 export const getPostDetail = async (postId: number): Promise<Post> => {
   try {
-    const response = await publicApiRequest.get<DetailApiResponse<Post>>(
+    const response = await authApiRequest.get<DetailApiResponse<Post>>(
       `/posts/${postId}`,
     )
     return response.item

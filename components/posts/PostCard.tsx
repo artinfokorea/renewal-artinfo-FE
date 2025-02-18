@@ -8,6 +8,7 @@ import { Post, PostCategoryLabel } from "@/types/posts"
 import filters from "@/lib/filters"
 import { EyeIcon, MessageCircle, ThumbsUpIcon } from "lucide-react"
 import { usePostLike } from "@/hooks/usePostLike"
+import { PostThumbsUpButton } from "./PostThumbsUpButton"
 
 interface Props {
   post: Post
@@ -19,7 +20,6 @@ const PostCard = forwardRef<HTMLDivElement, Props>(
   ({ post, isLastPage, isLeft }, ref) => {
     const pathname = usePathname()
     const filter = filters()
-    const { handlePostLike } = usePostLike()
 
     const extractTextFromHtml = (html: string) => {
       const div = document.createElement("div")
@@ -42,13 +42,13 @@ const PostCard = forwardRef<HTMLDivElement, Props>(
     return (
       <Link href={`${pathname}/${post.id}`} prefetch={false}>
         <div
-          className={`max-h-[220px] border-b border-gray-300 py-3 md:py-6 ${isLeft ? "md:border-r md:pr-6" : "md:pl-6"}`}
+          className={`max-h-[200px] border-b border-gray-300 py-3 md:py-6 ${isLeft ? "md:border-r md:pr-6" : "md:pl-6"}`}
         >
           <h4 className="text-xs font-light">
             {PostCategoryLabel[post.category]}
           </h4>
           <div className="flex items-center gap-4">
-            <div className="flex-1 space-y-6">
+            <div className="flex-1 space-y-5">
               <h2 className="text-base font-normal md:font-semibold">
                 {post.title}
               </h2>
@@ -76,16 +76,11 @@ const PostCard = forwardRef<HTMLDivElement, Props>(
                   <EyeIcon className="h-4 w-4" />
                   <span className="text-xs leading-none">{post.viewCount}</span>
                 </div>
-                <button
-                  onClick={e => {
-                    e.preventDefault()
-                    handlePostLike(post.id, !post.isLiked)
-                  }}
-                  className="flex items-center gap-1 text-gray-400"
-                >
-                  <ThumbsUpIcon className="h-4 w-4" />
-                  <span className="text-xs leading-none">{post.likeCount}</span>
-                </button>
+                <PostThumbsUpButton
+                  postId={post.id}
+                  isLiked={post.isLiked}
+                  likeCount={post.likeCount}
+                />
                 <div className="flex items-center gap-1 text-gray-400">
                   <MessageCircle className="h-4 w-4" />
                   <span className="text-xs leading-none">

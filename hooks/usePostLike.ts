@@ -23,7 +23,7 @@ export const usePostLike = () => {
 
   const handlePostLike = async (postId: number, isLike: boolean) => {
     try {
-      await likePost(postId, true)
+      await likePost(postId, isLike)
 
       queryClient.invalidateQueries({
         queryKey: queries.posts._def,

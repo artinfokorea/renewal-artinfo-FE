@@ -54,9 +54,10 @@ const page = () => {
           {/* Mobile Filter */}
           {!isDesktop && <PostMobileFilterTabs />}
 
-          <Suspense fallback={<LessonListSkeleton />}>
+          {/* <Suspense fallback={<LessonListSkeleton />}>
             <PostList />
-          </Suspense>
+          </Suspense> */}
+          <PostList />
         </div>
         <ArrowUpButton
           onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}

@@ -35,7 +35,7 @@ const CommentDesktopMenu = ({ isAuthor, handleDelete, handleEdit }: Props) => {
         leaveTo="opacity-0"
       >
         {isAuthor ? (
-          <MenuItems className="absolute right-0 top-10 z-50 w-24 rounded-lg bg-white shadow-xl md:left-0">
+          <MenuItems className="absolute right-0 top-10 z-50 w-24 rounded-lg bg-white shadow-xl md:right-0">
             <MenuItem>
               <button
                 onClick={handleEdit}
