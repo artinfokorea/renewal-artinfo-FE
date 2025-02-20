@@ -8,10 +8,16 @@ interface Props {
   postId: number
   isLiked: boolean
   likeCount: number
+  isList: boolean
 }
 
-export const PostThumbsUpButton = ({ postId, isLiked, likeCount }: Props) => {
-  const { handlePostLike } = usePostLike()
+export const PostThumbsUpButton = ({
+  postId,
+  isLiked,
+  likeCount,
+  isList,
+}: Props) => {
+  const { handlePostLike } = usePostLike(isList)
 
   return (
     <button

@@ -8,7 +8,7 @@ import { queries } from "@/lib/queries"
 import { useSearchParams } from "next/navigation"
 import { PostCategory } from "@/types/posts"
 
-export const usePostLike = () => {
+export const usePostLike = (isList: boolean) => {
   const { successToast, errorToast } = useToast()
   const queryClient = useQueryClient()
   const searchParams = useSearchParams()
@@ -24,6 +24,32 @@ export const usePostLike = () => {
   const handlePostLike = async (postId: number, isLike: boolean) => {
     try {
       await likePost(postId, isLike)
+
+      if (isList) {
+        queryClient.setQueryData(
+          queries.posts.infiniteList(queryParams).queryKey,
+          (old: any) => {
+            console.log("old", old)
+            return {
+              ...old,
+              pages: old.pages.map((page: any) => ({
+                ...page,
+                posts: page.posts.map((post: any) =>
+                  post.id === postId
+                    ? {
+                        ...post,
+                        isLiked: isLike,
+                        likeCount: isLike
+                          ? post.likeCount + 1
+                          : post.likeCount - 1,
+                      }
+                    : post,
+                ),
+              })),
+            }
+          },
+        )
+      }
 
       queryClient.invalidateQueries({
         queryKey: queries.posts._def,

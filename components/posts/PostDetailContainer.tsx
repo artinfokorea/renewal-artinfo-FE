@@ -43,6 +43,8 @@ const PostDetailContainer = ({ post, deletePost }: Props) => {
     enabled: !!data?.user,
   })
 
+  console.log("post", post)
+
   return (
     <div className="mx-auto max-w-screen-lg px-4 pb-40">
       <div className="mt-4 flex flex-col gap-4">
@@ -59,7 +61,7 @@ const PostDetailContainer = ({ post, deletePost }: Props) => {
             </BreadcrumbItem>
           </BreadcrumbList>
         </Breadcrumb>
-        <h2 className="break-keep text-[26px] md:text-[26px]">{post.title}</h2>
+        <h2 className="text-[26px] md:text-[26px]">{post.title}</h2>
         <div className="flex gap-5 font-medium text-gray-400">
           <div className="flex items-center gap-1">
             <Clock5Icon className="h-4 w-4" />
@@ -73,7 +75,7 @@ const PostDetailContainer = ({ post, deletePost }: Props) => {
           </button>
           <button className="flex items-center gap-1 text-sm text-gray-400 md:text-base">
             <UserCircle className="h-4 w-4" />
-            <span className="">{post.likeCount}</span>
+            {post.authorName}
           </button>
         </div>
       </div>
@@ -102,6 +104,7 @@ const PostDetailContainer = ({ post, deletePost }: Props) => {
           postId={post.id}
           isLiked={post.isLiked}
           likeCount={post.likeCount}
+          isList={false}
         />
         <button className="flex items-center gap-1 text-gray-700">
           <MessageCircle className="h-4 w-4" />

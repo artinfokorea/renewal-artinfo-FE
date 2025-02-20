@@ -69,6 +69,9 @@ const CommentContainer = ({ type }: CommentContainerProps) => {
     if (parentId) form.parentId = parentId
 
     handleSubmit(form)
+    queryClient.invalidateQueries({
+      queryKey: queries[type === "post" ? "posts" : "news"]._def,
+    })
   }
 
   const moreFetch = async () => {

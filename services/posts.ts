@@ -64,7 +64,7 @@ export const updatePost = async (
   postId: number,
   payload: any,
 ): Promise<PostResponse> => {
-  const response = await authApiRequest.post<PostResponse>(
+  const response = await authApiRequest.put<PostResponse>(
     `/posts/${postId}`,
     payload,
   )

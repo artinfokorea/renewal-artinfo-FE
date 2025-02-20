@@ -19,6 +19,7 @@ import { PostMobileFilterTabs } from "@/components/posts/PostMobileFilterTabs"
 import { Suspense, useState } from "react"
 import { MobileTopPosts } from "@/components/posts/MobileTopPosts"
 import { AnimatePresence } from "framer-motion"
+import { DeskTopTopPosts } from "@/components/posts/DeskTopTopPosts"
 
 const page = () => {
   const router = useRouter()
@@ -42,16 +43,9 @@ const page = () => {
       </ListSearchForm>
 
       <section className="flex">
-        <article className="ml-4 hidden h-fit min-h-[150px] min-w-[130px] space-y-4 rounded-md border border-[#d9d9d9] px-3 py-4 lg:block">
-          <h5 className="text-sm font-semibold">Top Author</h5>
-          <ol className="list-inside list-decimal space-y-3 text-xs font-light">
-            {popularPosts?.posts.map(post => (
-              <li key={post.id}>{post.title}</li>
-            ))}
-          </ol>
-        </article>
+        <DeskTopTopPosts posts={popularPosts?.posts} />
 
-        <div className="flex w-full flex-col lg:ml-12 lg:mt-4 lg:flex-1">
+        <div className="flex w-full flex-col lg:ml-4 lg:mt-4 lg:flex-1">
           <div className="hidden items-center justify-between lg:flex">
             <PostSearchTabs />
             <CreateLinkButton

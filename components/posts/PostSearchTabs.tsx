@@ -7,7 +7,7 @@ export const PostSearchTabs = () => {
   const { selectedCategory, handleCategoryClick } = usePostFilterTab()
 
   return (
-    <div className="flex flex-wrap gap-2">
+    <div className="flex flex-wrap gap-2 px-4">
       <Button
         onClick={() => handleCategoryClick("ALL")}
         className={`h-8 w-[65px] rounded-[25px] border border-main px-4 text-xs font-semibold hover:bg-main hover:text-white ${selectedCategory === "ALL" ? "bg-main text-white" : "bg-white text-black"}`}

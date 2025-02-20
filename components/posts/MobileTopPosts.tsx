@@ -41,7 +41,7 @@ export const MobileTopPosts = ({
           >
             <ArrowLeft className="h-6 w-6" />
           </button>
-          <h1 className="text-xl font-bold text-main">Top Author</h1>
+          <h1 className="text-xl font-bold text-main">Top Series</h1>
         </div>
         <ol className="space-y-3 text-xs font-light">
           {posts?.map((post, index) => (
