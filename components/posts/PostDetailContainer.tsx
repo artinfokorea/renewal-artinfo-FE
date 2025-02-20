@@ -45,7 +45,7 @@ const PostDetailContainer = ({ post, deletePost }: Props) => {
 
   return (
     <div className="mx-auto max-w-screen-lg px-4 pb-40">
-      <div className="mt-12 flex flex-col gap-4">
+      <div className="mt-4 flex flex-col gap-4">
         <Breadcrumb>
           <BreadcrumbList>
             <BreadcrumbItem>
@@ -106,7 +106,7 @@ const PostDetailContainer = ({ post, deletePost }: Props) => {
         <button className="flex items-center gap-1 text-gray-700">
           <MessageCircle className="h-4 w-4" />
           <span className="text-sm font-normal md:text-base">
-            {post.likeCount}
+            {post.commentCount}
           </span>
         </button>
       </div>

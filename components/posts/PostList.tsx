@@ -1,10 +1,7 @@
 import React, { useEffect } from "react"
 
 import { useSearchParams } from "next/navigation"
-import {
-  useInfiniteQuery,
-  useSuspenseInfiniteQuery,
-} from "@tanstack/react-query"
+import { useSuspenseInfiniteQuery } from "@tanstack/react-query"
 import { ScrollApiResponse } from "@/interface"
 import { useInView } from "react-intersection-observer"
 import { queries } from "@/lib/queries"
@@ -26,7 +23,7 @@ const PostList = () => {
     data: posts,
     hasNextPage,
     fetchNextPage,
-  } = useInfiniteQuery<ScrollApiResponse<Post, "posts">>({
+  } = useSuspenseInfiniteQuery<ScrollApiResponse<Post, "posts">>({
     ...queries.posts.infiniteList(queryParams),
     initialPageParam: 1,
     getNextPageParam: lastPage => {

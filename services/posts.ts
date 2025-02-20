@@ -90,3 +90,12 @@ export const deletePost = async (postId: number): Promise<SuccessResponse> => {
   )
   return response
 }
+
+/* 인기 게시글 조회 */
+export const getPopularPosts = async (): Promise<
+  ListResponse<Post, "posts">
+> => {
+  const response =
+    await publicApiRequest.get<ListApiResponse<Post, "posts">>("/posts/top")
+  return response.item
+}

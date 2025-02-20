@@ -1,7 +1,13 @@
 import { usePostFilterTab } from "@/hooks/usePostFilterTab"
 import { PostCategory, PostCategoryLabel } from "@/types/posts"
 
-export const PostMobileFilterTabs = () => {
+interface PostMobileFilterTabsProps {
+  handleToggleMobileTopPosts: () => void
+}
+
+export const PostMobileFilterTabs = ({
+  handleToggleMobileTopPosts,
+}: PostMobileFilterTabsProps) => {
   const { isMobileFilterOpen, handleIsMobileFilterOpen, handleCategoryClick } =
     usePostFilterTab()
 
@@ -14,7 +20,9 @@ export const PostMobileFilterTabs = () => {
         >
           나눔
         </button>
-        <button className={`rounded py-2`}>Top Author</button>
+        <button onClick={handleToggleMobileTopPosts} className={`rounded py-2`}>
+          Top Author
+        </button>
       </div>
       {isMobileFilterOpen && (
         <div className="flex flex-col gap-1 px-2 py-4">

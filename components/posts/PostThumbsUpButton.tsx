@@ -26,7 +26,7 @@ export const PostThumbsUpButton = ({ postId, isLiked, likeCount }: Props) => {
       ) : (
         <ThumbsUpIcon className="h-4 w-4 text-gray-400" />
       )}
-      <span className="text-xs leading-none">{likeCount}</span>
+      <span className="text-sm md:text-base">{likeCount}</span>
     </button>
   )
 }

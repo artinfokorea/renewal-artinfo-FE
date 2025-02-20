@@ -41,7 +41,12 @@ import {
   getPerformancesCount,
 } from "@/services/performances"
 import { PerformancesRequest } from "@/interface/performances"
-import { getInfinitePosts, getPostDetail, getPosts } from "@/services/posts"
+import {
+  getInfinitePosts,
+  getPopularPosts,
+  getPostDetail,
+  getPosts,
+} from "@/services/posts"
 import { PostsRequest } from "@/interface/posts"
 
 const ads = createQueryKeys("ads", {
@@ -213,6 +218,10 @@ const posts = createQueryKeys("posts", {
   detail: (postId: number) => ({
     queryKey: [postId],
     queryFn: () => getPostDetail(postId),
+  }),
+  popular: () => ({
+    queryKey: [""],
+    queryFn: () => getPopularPosts(),
   }),
 })
 

@@ -22,6 +22,8 @@ const PostCard = forwardRef<HTMLDivElement, Props>(
     const filter = filters()
 
     const extractTextFromHtml = (html: string) => {
+      if (typeof window === "undefined") return ""
+
       const div = document.createElement("div")
       div.innerHTML = html
       div.style.cssText = `
@@ -74,7 +76,9 @@ const PostCard = forwardRef<HTMLDivElement, Props>(
               <div className="flex space-x-6">
                 <div className="flex items-center gap-1 text-gray-400">
                   <EyeIcon className="h-4 w-4" />
-                  <span className="text-xs leading-none">{post.viewCount}</span>
+                  <span className="text-sm leading-none md:text-base">
+                    {post.viewCount}
+                  </span>
                 </div>
                 <PostThumbsUpButton
                   postId={post.id}
@@ -83,14 +87,15 @@ const PostCard = forwardRef<HTMLDivElement, Props>(
                 />
                 <div className="flex items-center gap-1 text-gray-400">
                   <MessageCircle className="h-4 w-4" />
-                  <span className="text-xs leading-none">
+                  <span className="text-sm leading-none md:text-base">
                     {post.commentCount}
                   </span>
                 </div>
               </div>
-              <span className="text-xs font-light">
+
+              <p className="text-xs text-gray-400">
                 {filter.FROM_NOW_COMMENT(post.createdAt)}
-              </span>
+              </p>
             </div>
           </div>
           {!isLastPage && <div ref={ref} />}
