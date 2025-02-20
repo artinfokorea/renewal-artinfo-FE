@@ -15,10 +15,8 @@ export const MobileTopPosts = ({
   handleToggleMobileTopPosts,
 }: MobileTopPostsProps) => {
   useEffect(() => {
-    // 컴포넌트 마운트 시 body의 overflow를 hidden으로 설정
     document.body.style.overflow = "hidden"
 
-    // 컴포넌트 언마운트 시 원래대로 복원
     return () => {
       document.body.style.overflow = "unset"
     }

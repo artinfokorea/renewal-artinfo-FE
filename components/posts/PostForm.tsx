@@ -9,8 +9,18 @@ import { ErrorMessage } from "@hookform/error-message"
 import { Spinner } from "../common/Loading"
 import { postSchema } from "@/lib/schemas"
 import { Post, PostCategory, PostCategoryLabel } from "@/types/posts"
-import CKEditor from "../ckEditor/CKEditor"
+
 import { useEffect } from "react"
+import dynamic from "next/dynamic"
+
+const CKEditor = dynamic(() => import("@/components/ckEditor/CKEditor"), {
+  loading: () => (
+    <div className="flex h-[400px] items-center justify-center">
+      <Spinner className="h-8 w-8" />
+    </div>
+  ),
+  ssr: false,
+})
 
 export type PostFormData = yup.InferType<typeof postSchema>
 
