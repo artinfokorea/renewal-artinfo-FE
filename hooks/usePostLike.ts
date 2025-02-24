@@ -29,7 +29,6 @@ export const usePostLike = (isList: boolean) => {
         queryClient.setQueryData(
           queries.posts.infiniteList(queryParams).queryKey,
           (old: any) => {
-            console.log("old", old)
             return {
               ...old,
               pages: old.pages.map((page: any) => ({

@@ -27,8 +27,6 @@ const page = () => {
     },
   })
 
-  console.log("jobType", jobType)
-
   const handleFullTimeJob = async (payload: CreateFulltimeJobFormData) => {
     const {
       title,
