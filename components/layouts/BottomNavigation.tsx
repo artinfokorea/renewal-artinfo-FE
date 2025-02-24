@@ -29,11 +29,11 @@ const NavMenu = ({ title, href, prefetch = true, icon }: NavMenuProps) => {
     <Link
       href={href}
       prefetch={prefetch}
-      className={`flex h-full flex-col items-center text-gray-500 focus:outline-none ${
+      className={`flex h-full flex-col items-center justify-center text-gray-500 focus:outline-none ${
         isActive ? "text-main" : "text-gray-500"
       }`}
     >
-      <div className="mt-5 flex flex-col items-center gap-[2px]">
+      <div className="flex flex-col items-center gap-[2px]">
         {icon({
           className: "w-5 h-5",
         })}
@@ -77,7 +77,7 @@ const BottomNavigation = () => {
           allMenuClose={allMenuClose}
         />
         <CommunityDropDown
-          title="나눔"
+          title="소통"
           isMenuOpen={isMenuOpen.community}
           handleMenuOpen={handleMenuOpen}
           allMenuClose={allMenuClose}
