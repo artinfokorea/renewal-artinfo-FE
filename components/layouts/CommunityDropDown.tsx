@@ -48,7 +48,7 @@ export const CommunityDropDown = ({
         }`}
       >
         <div className="flex flex-col items-center gap-[2px]">
-          <Send className="h-5 w-5" />
+          <MessageCircleMore className="h-5 w-5" />
           <span className="mt-[2px] text-xs font-medium">{title}</span>
         </div>
       </Button>
@@ -65,7 +65,7 @@ export const CommunityDropDown = ({
         <div className="absolute bottom-[72px] left-[40%] z-50 flex min-w-[100px] flex-col gap-2 rounded border bg-white p-2">
           <Link href="/posts">
             <div className="flex items-center gap-2 p-2">
-              <MessageCircleMore className="h-5 w-5 text-gray-700" />
+              <Send className="h-5 w-5 text-gray-700" />
               <span className="pt-[2px] text-sm text-gray-700">나눔</span>
             </div>
           </Link>
