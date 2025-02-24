@@ -61,7 +61,7 @@ const PostDetailContainer = ({ post, deletePost }: Props) => {
             </BreadcrumbItem>
           </BreadcrumbList>
         </Breadcrumb>
-        <h2 className="text-[26px] md:text-[26px]">{post.title}</h2>
+        <h2 className="break-all text-[26px] md:text-[26px]">{post.title}</h2>
         <div className="flex gap-5 font-medium text-gray-400">
           <div className="flex items-center gap-1">
             <Clock5Icon className="h-4 w-4" />
