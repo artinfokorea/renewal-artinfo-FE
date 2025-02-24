@@ -31,9 +31,9 @@ export const MobileTopPosts = ({
         duration: 0.3,
         ease: "easeInOut",
       }}
-      className="fixed right-0 top-0 z-[100] h-full w-full bg-white"
+      className="fixed right-0 top-0 z-[100] h-full w-full overflow-y-auto bg-white"
     >
-      <section className="w-screen">
+      <section>
         <div className="relative flex w-full items-center justify-center gap-2 border-b border-gray-200 px-4 py-2">
           <button
             onClick={handleToggleMobileTopPosts}
@@ -54,7 +54,7 @@ export const MobileTopPosts = ({
                     TOP {index + 1}
                   </span>
                   <div className="space-y-1">
-                    <h2 className="line-clamp-2 text-sm font-semibold">
+                    <h2 className="line-clamp-2 break-all text-sm font-semibold">
                       {post.title}
                     </h2>
                     <h5 className="text-xs text-gray-900">{post.authorName}</h5>

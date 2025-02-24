@@ -50,10 +50,23 @@ export const usePostLike = (isList: boolean) => {
           },
         )
       }
+      // else {
+      //   queryClient.setQueryData(
+      //     queries.posts.detail(postId).queryKey,
+      //     (old: any) => {
+      //       return {
+      //         ...old,
+      //         isLiked: isLike,
+      //         likeCount: isLike ? old.likeCount + 1 : old.likeCount - 1,
+      //       }
+      //     },
+      //   )
+      // }
 
       queryClient.invalidateQueries({
         queryKey: queries.posts._def,
       })
+
       successToast("좋아요 성공")
     } catch (error) {
       errorToast("좋아요 실패")

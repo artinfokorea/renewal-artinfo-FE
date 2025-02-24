@@ -10,6 +10,7 @@ import React from "react"
 import { Post } from "@/types/posts"
 import { deletePost } from "@/services/posts"
 import PostDetailContainer from "./PostDetailContainer"
+import { useQuery } from "@tanstack/react-query"
 
 interface Props {
   post: Post
@@ -28,9 +29,17 @@ const PostDetailClient = ({ post }: Props) => {
     },
   })
 
+  const { data: postDetail } = useQuery({
+    ...queries.posts.detail(Number(params.id) as number),
+    enabled: !!params.id,
+    initialData: post,
+  })
+
+  console.log("postDetail", postDetail)
+
   return (
     <section>
-      <PostDetailContainer post={post} deletePost={handleDelete} />
+      <PostDetailContainer post={postDetail} deletePost={handleDelete} />
     </section>
   )
 }

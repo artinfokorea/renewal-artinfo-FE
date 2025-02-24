@@ -21,7 +21,7 @@ export const PostMobileFilterTabs = ({
           나눔
         </button>
         <button onClick={handleToggleMobileTopPosts} className={`rounded py-2`}>
-          Top Author
+          Top Stories
         </button>
       </div>
       {isMobileFilterOpen && (

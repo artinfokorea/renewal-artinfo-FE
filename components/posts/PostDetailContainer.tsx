@@ -43,7 +43,7 @@ const PostDetailContainer = ({ post, deletePost }: Props) => {
     enabled: !!data?.user,
   })
 
-  console.log("post", post)
+  // console.log("post", post)
 
   return (
     <div className="mx-auto max-w-screen-lg px-4 pb-40">

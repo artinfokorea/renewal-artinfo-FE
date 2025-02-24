@@ -44,14 +44,14 @@ const PostCard = forwardRef<HTMLDivElement, Props>(
     return (
       <Link href={`${pathname}/${post.id}`} prefetch={false}>
         <div
-          className={`flex flex-col justify-between border-b border-gray-300 py-3 md:py-6 lg:h-[210px] ${isLeft ? "md:border-r md:pr-6" : "md:pl-6"}`}
+          className={`flex flex-col justify-between border-b border-gray-300 py-3 md:h-[210px] md:py-6 ${isLeft ? "md:border-r md:pr-6" : "md:pl-6"}`}
         >
           <h4 className="text-xs font-light">
             {PostCategoryLabel[post.category]}
           </h4>
           <div className="flex items-center gap-4">
             <div className="flex-1 space-y-5">
-              <h2 className="line-clamp-2 text-base font-normal md:font-semibold lg:mt-1 lg:h-12">
+              <h2 className="line-clamp-2 break-all text-base font-normal md:font-semibold lg:mt-1">
                 {post.title}
               </h2>
               <div className="hidden text-sm font-light md:block lg:h-10">
