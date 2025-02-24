@@ -35,8 +35,6 @@ const PostDetailClient = ({ post }: Props) => {
     initialData: post,
   })
 
-  console.log("postDetail", postDetail)
-
   return (
     <section>
       <PostDetailContainer post={postDetail} deletePost={handleDelete} />

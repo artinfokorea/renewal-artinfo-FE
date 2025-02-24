@@ -21,6 +21,7 @@ const page = () => {
     redirectPath: pathname.slice(0, pathname.lastIndexOf("/")),
     successMessage: {
       create: "게시글이 등록되었습니다.",
+      update: "게시글이 수정되었습니다.",
     },
   })
 
@@ -29,7 +30,23 @@ const page = () => {
     enabled: !!postId,
   })
 
-  const handlePostForm = async (payload: PostFormData) => {
+  const extractFirstImageUrl = (htmlContent: string): string | null => {
+    const parser = new DOMParser()
+    const doc = parser.parseFromString(htmlContent, "text/html")
+    const firstImg = doc.querySelector("img")
+    return firstImg?.src || null
+  }
+
+  const handlePostForm = async (formData: PostFormData) => {
+    const payload: PostPayload = {
+      ...formData,
+    }
+
+    const thumbnailImageUrl = extractFirstImageUrl(payload.contents)
+
+    if (thumbnailImageUrl) {
+      payload.thumbnailImageUrl = thumbnailImageUrl
+    }
     !postId ? handleSubmit(payload) : handleSubmit(payload, Number(postId))
   }
 

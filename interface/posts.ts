@@ -9,4 +9,5 @@ export interface PostPayload {
   title: string
   contents: string
   category: PostCategory
+  thumbnailImageUrl?: string
 }

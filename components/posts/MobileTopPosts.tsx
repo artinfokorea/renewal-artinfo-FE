@@ -31,7 +31,7 @@ export const MobileTopPosts = ({
         duration: 0.3,
         ease: "easeInOut",
       }}
-      className="fixed right-0 top-0 z-[100] h-full w-full overflow-y-auto bg-white"
+      className="fixed right-0 top-0 z-[100] h-full w-full overflow-y-auto bg-white pb-12"
     >
       <section>
         <div className="relative flex w-full items-center justify-center gap-2 border-b border-gray-200 px-4 py-2">

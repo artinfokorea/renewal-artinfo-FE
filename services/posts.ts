@@ -8,7 +8,7 @@ import {
 } from "@/interface"
 import { exceptionHandler } from "./exception-handler"
 import { authApiRequest, publicApiRequest } from "."
-import { PostsRequest } from "@/interface/posts"
+import { PostPayload, PostsRequest } from "@/interface/posts"
 import { Post } from "@/types/posts"
 
 /* 글 리스트 조회 */
@@ -54,7 +54,9 @@ export const getPostDetail = async (postId: number): Promise<Post> => {
 }
 
 /* 글 생성 */
-export const createPost = async (payload: any): Promise<PostResponse> => {
+export const createPost = async (
+  payload: PostPayload,
+): Promise<PostResponse> => {
   const response = await authApiRequest.post<PostResponse>(`/posts`, payload)
   return response
 }
@@ -62,7 +64,7 @@ export const createPost = async (payload: any): Promise<PostResponse> => {
 /* 글 수정 */
 export const updatePost = async (
   postId: number,
-  payload: any,
+  payload: PostPayload,
 ): Promise<PostResponse> => {
   const response = await authApiRequest.put<PostResponse>(
     `/posts/${postId}`,
