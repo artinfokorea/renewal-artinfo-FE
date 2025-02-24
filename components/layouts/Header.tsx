@@ -18,7 +18,8 @@ import { JobTimeType } from "@/types/jobs"
 
 const NavMenu = ({ href, label }: { href: string; label: string }) => {
   const pathname = usePathname()
-  const isActive = pathname.includes(href)
+  const isActive = href.includes(pathname)
+
   return (
     <Link
       href={href}
@@ -83,8 +84,9 @@ const Header = () => {
                   href={`/jobs?jobTimeType=${JobTimeType.FULL_TIME}`}
                   label="채용"
                 />
-                <NavMenu href="/performances" label="공연" />
+                <NavMenu href="/posts" label="나눔" />
                 <NavMenu href="/lessons" label="레슨" />
+                <NavMenu href="/performances" label="공연" />
                 <NavMenu href="/news" label="뉴스" />
                 <NavMenu href="/inquiry" label="문의" />
               </NavigationMenuItem>

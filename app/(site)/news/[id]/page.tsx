@@ -21,16 +21,16 @@ export const generateMetadata = async ({
   const data = await getNewsDetail(Number(id))
 
   const pageTitle = data?.title
-  const pageDescription = data?.summary.substring(0, 40)
+  const pageDescription = data?.summary.substring(0, 150)
   const pageImage = data?.thumbnailImageUrl
   const defaultImage = "/img/metadata_image.png"
 
   return {
     title: `뉴스 | ${pageTitle}`,
-    description: `아트인포 | ${pageDescription}`,
+    description: pageDescription,
     openGraph: {
       title: `뉴스 | ${pageTitle}`,
-      description: `아트인포 | ${pageDescription}`,
+      description: pageDescription,
       images: {
         url: pageImage || defaultImage,
         alt: "아트인포-ARTINFO",

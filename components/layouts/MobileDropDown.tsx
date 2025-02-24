@@ -20,7 +20,7 @@ interface Props {
 
 const DropDownMenu = ({ href, label }: { href: string; label: string }) => {
   const pathname = usePathname()
-  const isActive = pathname.includes(href)
+  const isActive = href.includes(pathname)
 
   return (
     <MenuItem>
@@ -64,8 +64,9 @@ const MobileDropDown = ({ handleBar, handleSign }: Props) => {
                 href={`/jobs?jobTimeType=${JobTimeType.FULL_TIME}`}
                 label="채용"
               />
-              <DropDownMenu href="/performances" label="공연" />
+              <DropDownMenu href="/posts" label="나눔" />
               <DropDownMenu href="/lessons" label="레슨" />
+              <DropDownMenu href="/performances" label="공연" />
               <DropDownMenu href="/news" label="뉴스" />
               <DropDownMenu href="/inquiry" label="문의" />
               <div className="mx-auto my-4 w-full border-b-[1px] border-whitesmoke" />

@@ -14,6 +14,7 @@ export interface Post {
   id: number
   authorId: number
   authorName: string
+  authorIconImageUrl?: string
   category: PostCategory
   title: string
   contents: string

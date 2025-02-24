@@ -41,7 +41,7 @@ export const MobileTopPosts = ({
           >
             <ArrowLeft className="h-6 w-6" />
           </button>
-          <h1 className="text-xl font-bold text-main">Top Series</h1>
+          <h1 className="text-xl font-bold text-main">Top Stories</h1>
         </div>
         <ol className="space-y-3 text-xs font-light">
           {posts?.map((post, index) => (
@@ -60,10 +60,10 @@ export const MobileTopPosts = ({
                     <h5 className="text-xs text-gray-900">{post.authorName}</h5>
                   </div>
                 </div>
-                {post.thumbnailImageUrl && (
+                {post.authorIconImageUrl && (
                   <div className="flex items-center">
                     <FallbackImage
-                      src={post.thumbnailImageUrl}
+                      src={post.authorIconImageUrl}
                       alt={post.authorName}
                       width={60}
                       height={60}

@@ -22,16 +22,17 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const data = await getLessonDetail(Number(id))
 
   const pageTitle = data?.name
-  const pageDescription = data?.majors && data?.majors.join(", ")
+  const majors = data?.majors && data?.majors.join(", ")
+  const introduction = data?.introduction.substring(0, 150)
   const pageImage = data?.imageUrl
   const defaultImage = "/img/metadata_image.png"
 
   return {
-    title: `레슨 | ${pageTitle}`,
-    description: `아트인포 | ${pageDescription} 레슨 ${pageTitle}`,
+    title: `${pageTitle} | ${majors}`,
+    description: introduction,
     openGraph: {
       title: pageTitle,
-      description: `아트인포 | ${pageDescription} 레슨 ${pageTitle} `,
+      description: introduction,
       images: {
         url: pageImage || defaultImage,
         alt: "아트인포-ARTINFO",
