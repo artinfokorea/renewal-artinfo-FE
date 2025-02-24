@@ -20,7 +20,8 @@ interface Props {
 
 const DropDownMenu = ({ href, label }: { href: string; label: string }) => {
   const pathname = usePathname()
-  const isActive = href.includes(pathname)
+  const baseHref = href.split("?")[0]
+  const isActive = pathname.includes(baseHref)
 
   return (
     <MenuItem>

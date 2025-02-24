@@ -18,7 +18,8 @@ import { JobTimeType } from "@/types/jobs"
 
 const NavMenu = ({ href, label }: { href: string; label: string }) => {
   const pathname = usePathname()
-  const isActive = href.includes(pathname)
+  const baseHref = href.split("?")[0]
+  const isActive = pathname.includes(baseHref)
 
   return (
     <Link
