@@ -20,6 +20,7 @@ import { Suspense, useState } from "react"
 import { MobileTopPosts } from "@/components/posts/MobileTopPosts"
 import { AnimatePresence } from "framer-motion"
 import { DeskTopTopPosts } from "@/components/posts/DeskTopTopPosts"
+import PostListSkeleton from "@/components/skeleton/PostListSkeleton"
 
 const page = () => {
   const router = useRouter()
@@ -60,7 +61,8 @@ const page = () => {
             />
           )}
 
-          <Suspense fallback={<LessonListSkeleton />}>
+          {/* <PostListSkeleton /> */}
+          <Suspense fallback={<PostListSkeleton />}>
             <PostList />
           </Suspense>
         </div>
