@@ -67,6 +67,7 @@ const PostCard = forwardRef<HTMLDivElement, Props>(
                 style={{
                   width: 80,
                   height: 80,
+                  objectFit: "cover",
                 }}
                 className="hidden rounded-[10px] md:block"
               />

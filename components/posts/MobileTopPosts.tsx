@@ -67,6 +67,11 @@ export const MobileTopPosts = ({
                       alt={post.authorName}
                       width={60}
                       height={60}
+                      style={{
+                        width: 60,
+                        height: 60,
+                        objectFit: "cover",
+                      }}
                       className="mx-6 rounded-full"
                     />
                   </div>
