@@ -91,7 +91,7 @@ const PostDetailContainer = ({ post, deletePost }: Props) => {
       </div>
 
       <div
-        className="editor_view ck-content font-medium tracking-wide md:break-keep md:text-lg"
+        className="editor_view ck-content my-8 font-medium tracking-wide md:break-keep md:text-lg"
         dangerouslySetInnerHTML={{
           __html: post.contents,
         }}
