@@ -60,22 +60,21 @@ export const MobileTopPosts = ({
                     <h5 className="text-xs text-gray-900">{post.authorName}</h5>
                   </div>
                 </div>
-                {post.authorIconImageUrl && (
-                  <div className="flex items-center">
-                    <FallbackImage
-                      src={post.authorIconImageUrl}
-                      alt={post.authorName}
-                      width={60}
-                      height={60}
-                      style={{
-                        width: 60,
-                        height: 60,
-                        objectFit: "cover",
-                      }}
-                      className="mx-6 rounded-full"
-                    />
-                  </div>
-                )}
+
+                <div className="flex items-center">
+                  <FallbackImage
+                    src={post.authorIconImageUrl}
+                    alt={post.authorName}
+                    width={60}
+                    height={60}
+                    style={{
+                      width: 60,
+                      height: 60,
+                      objectFit: "cover",
+                    }}
+                    className="mx-6 rounded-full"
+                  />
+                </div>
               </li>
             </Link>
           ))}
