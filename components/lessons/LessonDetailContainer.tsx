@@ -4,9 +4,7 @@ import { queries } from "@/lib/queries"
 import { useQuery } from "@tanstack/react-query"
 import React, { useState } from "react"
 import filters from "@/lib/filters"
-import ClipBoardIcon from "../icons/ClipBoardIcon"
 import useToast from "@/hooks/useToast"
-import { clipboard } from "@toss/utils"
 import { LESSON, SchoolType, SchoolTypeValues } from "@/types/lessons"
 import { Badge } from "../ui/badge"
 import { useSession } from "next-auth/react"
@@ -16,6 +14,8 @@ import ConfirmDialog from "../dialog/ConfirmDialog"
 import FallbackImage from "../common/FallbackImage"
 import AlertDialog from "../dialog/AlertDialog"
 import { Button } from "../ui/button"
+import { LessonApplyDialog } from "../dialog/LessonApplyDialog"
+import { lessonApply } from "@/services/lessons"
 
 interface Props {
   lesson: LESSON
@@ -23,13 +23,12 @@ interface Props {
 }
 
 const LessonDetailContainer = ({ lesson, deleteLesson }: Props) => {
-  const [isPhoneShow, setIsPhoneShow] = useState(false)
   const [isDeleteConfirmDialog, setIsDeleteConfirmDialog] = useState(false)
   const [isApplyDialog, setIsApplyDialog] = useState(false)
   const [isPhoneEmpty, setIsPhoneEmpty] = useState(false)
   const filter = filters()
-  const { successToast } = useToast()
-  const { data } = useSession()
+  const { successToast, errorToast } = useToast()
+  const { data, status } = useSession()
   const router = useRouter()
   const pathname = usePathname()
 
@@ -38,11 +37,26 @@ const LessonDetailContainer = ({ lesson, deleteLesson }: Props) => {
     enabled: !!data?.user,
   })
 
-  const copyToPhone = async () => {
-    const isSuccess = await clipboard.writeText(lesson?.phone as string)
+  const checkPhone = () => {
+    if (!user?.phone) {
+      setIsPhoneEmpty(true)
+    } else {
+      setIsApplyDialog(true)
+    }
+  }
 
-    if (isSuccess) {
-      successToast("연락처가 복사되었습니다.")
+  const handleApply = async (contents: string) => {
+    try {
+      await lessonApply({
+        teacherId: lesson.authorId,
+        contents,
+      })
+
+      successToast("레슨 신청이 완료되었습니다.")
+      setIsApplyDialog(false)
+    } catch (error) {
+      console.error(error)
+      errorToast("레슨 신청에 실패했습니다.")
     }
   }
 
@@ -135,21 +149,12 @@ const LessonDetailContainer = ({ lesson, deleteLesson }: Props) => {
             <div className="flex flex-col gap-4">
               <div className="flex items-center gap-4 text-base md:text-lg">
                 <span className="font-bold">연락처</span>
-                {isPhoneShow ? (
-                  <div className="ml-4 flex items-center font-medium">
-                    <span>{lesson?.phone}</span>
-                    <button onClick={copyToPhone}>
-                      <ClipBoardIcon className="ml-2 w-4 pb-1" />
-                    </button>
-                  </div>
-                ) : (
-                  <button
-                    className="font-semibold text-main"
-                    onClick={() => setIsPhoneShow(!isPhoneShow)}
-                  >
-                    연락처보기
-                  </button>
-                )}
+                <button
+                  className="font-semibold text-main"
+                  onClick={checkPhone}
+                >
+                  문의
+                </button>
               </div>
               <div className="flex flex-col gap-2 text-base md:text-lg">
                 <span className="font-bold">지역</span>
@@ -217,22 +222,45 @@ const LessonDetailContainer = ({ lesson, deleteLesson }: Props) => {
         action={deleteLesson}
       />
       <AlertDialog
-        title="레슨 신청을 위해 연락처를 등록해 주세요."
+        title={
+          status === "unauthenticated"
+            ? "로그인이 필요합니다."
+            : "레슨 신청을 위해 연락처를 등록해 주세요."
+        }
         isOpen={isPhoneEmpty}
-        handleDialog={() => router.push("/my-profile")}
+        handleDialog={() => {
+          if (status === "unauthenticated") {
+            router.push("/auth/sign-in")
+          } else {
+            router.push("/my-profile")
+          }
+        }}
       >
         <div className="my-4 flex flex-col justify-center gap-4">
-          <p className="text-sm text-silver md:text-base">
-            레슨 신청을 위해 연락처를 등록해 주세요.
-          </p>
+          {status === "unauthenticated" && (
+            <p className="text-sm text-silver md:text-base">
+              레슨 문의를 위해 로그인이 필요합니다.
+            </p>
+          )}
           <Button
-            onClick={() => router.push("/my-profile")}
+            onClick={() => {
+              if (status === "unauthenticated") {
+                router.push("/auth/sign-in")
+              } else {
+                router.push("/my-profile")
+              }
+            }}
             className="bg-main text-white hover:bg-blue-600"
           >
-            프로필로 이동하기
+            {status === "unauthenticated" ? "로그인" : "프로필로 이동하기"}
           </Button>
         </div>
       </AlertDialog>
+      <LessonApplyDialog
+        open={isApplyDialog}
+        close={() => setIsApplyDialog(false)}
+        handleApply={handleApply}
+      />
     </div>
   )
 }
