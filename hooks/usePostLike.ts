@@ -48,6 +48,9 @@ export const usePostLike = (isList: boolean) => {
             }
           },
         )
+        queryClient.invalidateQueries({
+          queryKey: queries.posts.detail(postId).queryKey,
+        })
       } else {
         queryClient.setQueryData(
           queries.posts.detail(postId).queryKey,

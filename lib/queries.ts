@@ -22,7 +22,12 @@ import {
   getMajors,
   getPartTimeMajorGroups,
 } from "@/services/majors"
-import { getInfiniteNews, getNewsCount, getNewsDetail } from "@/services/news"
+import {
+  getInfiniteNews,
+  getNews,
+  getNewsCount,
+  getNewsDetail,
+} from "@/services/news"
 import { getProvinces } from "@/services/system"
 import { getMe } from "@/services/users"
 import { ListRequest } from "@/interface"
@@ -117,6 +122,10 @@ const news = createQueryKeys("news", {
   detail: (newsId: number) => ({
     queryKey: [newsId],
     queryFn: () => getNewsDetail(newsId),
+  }),
+  list: (filters: ListRequest) => ({
+    queryKey: [filters],
+    queryFn: () => getNews(filters),
   }),
   infiniteList: (filters: ListRequest) => ({
     queryKey: [{ filters }],

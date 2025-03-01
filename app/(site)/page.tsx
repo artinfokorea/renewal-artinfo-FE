@@ -7,6 +7,7 @@ import { ProfessionalFieldTypes } from "@/types/majors"
 import { JobType } from "@/types/jobs"
 import BannerContainer from "@/components/main/BannerContainer"
 import MainJobsContainer from "@/components/main/MainJobsContainer"
+import CommunicationContainer from "@/components/main/CommunicationContainer"
 
 export const dynamic = "force-dynamic"
 
@@ -38,6 +39,18 @@ const page = async () => {
       queryClient.prefetchQuery({
         ...queries.ads.list(AdvertisementType.BANNER),
       }),
+      queryClient.prefetchQuery({
+        ...queries.posts.list({
+          page: 1,
+          size: 5,
+        }),
+      }),
+      queryClient.prefetchQuery({
+        ...queries.news.list({
+          page: 1,
+          size: 5,
+        }),
+      }),
     ])
   } catch (error) {
     console.error("Failed to prefetch queries:", error)
@@ -50,6 +63,7 @@ const page = async () => {
       <HydrationBoundary state={dehydratedState}>
         <BannerContainer />
         <ArtContainer type={AdvertisementType.CONCERT} title="공연" />
+        <CommunicationContainer />
         <MainJobsContainer />
         <ArtContainer type={AdvertisementType.EXHIBITION} title="전시" />
       </HydrationBoundary>
