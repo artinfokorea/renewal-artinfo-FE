@@ -1,7 +1,11 @@
 import { LESSON } from "@/types/lessons"
 import { publicApiRequest, authApiRequest } from "."
 import { exceptionHandler } from "./exception-handler"
-import { LessonPayload, LessonsRequest } from "@/interface/lessons"
+import {
+  LessonApplyPayload,
+  LessonPayload,
+  LessonsRequest,
+} from "@/interface/lessons"
 import {
   DetailApiResponse,
   ListApiResponse,
@@ -107,5 +111,16 @@ export const updateLesson = async (
 
 export const deleteLesson = async (): Promise<SuccessResponse> => {
   const response = await authApiRequest.delete<SuccessResponse>("/lessons")
+  return response
+}
+
+/* 레슨 신청 */
+export const lessonApply = async (
+  payload: LessonApplyPayload,
+): Promise<SuccessResponse> => {
+  const response = await authApiRequest.post<SuccessResponse>(
+    "/lessons/apply",
+    payload,
+  )
   return response
 }

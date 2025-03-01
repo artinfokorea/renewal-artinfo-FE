@@ -14,6 +14,8 @@ import ItemManageBox from "../common/ItemManageBox"
 import { usePathname, useRouter } from "next/navigation"
 import ConfirmDialog from "../dialog/ConfirmDialog"
 import FallbackImage from "../common/FallbackImage"
+import AlertDialog from "../dialog/AlertDialog"
+import { Button } from "../ui/button"
 
 interface Props {
   lesson: LESSON
@@ -23,6 +25,8 @@ interface Props {
 const LessonDetailContainer = ({ lesson, deleteLesson }: Props) => {
   const [isPhoneShow, setIsPhoneShow] = useState(false)
   const [isDeleteConfirmDialog, setIsDeleteConfirmDialog] = useState(false)
+  const [isApplyDialog, setIsApplyDialog] = useState(false)
+  const [isPhoneEmpty, setIsPhoneEmpty] = useState(true)
   const filter = filters()
   const { successToast } = useToast()
   const { data } = useSession()
@@ -212,6 +216,23 @@ const LessonDetailContainer = ({ lesson, deleteLesson }: Props) => {
         description="레슨을 삭제하시겠습니까?"
         action={deleteLesson}
       />
+      <AlertDialog
+        title="레슨 신청을 위해 연락처를 등록해 주세요."
+        isOpen={isPhoneEmpty}
+        handleDialog={() => router.push("/my-profile")}
+      >
+        <div className="my-4 flex flex-col justify-center gap-4">
+          <p className="text-sm text-silver md:text-base">
+            레슨 신청을 위해 연락처를 등록해 주세요.
+          </p>
+          <Button
+            onClick={() => router.push("/my-profile")}
+            className="bg-main text-white hover:bg-blue-600"
+          >
+            프로필로 이동하기
+          </Button>
+        </div>
+      </AlertDialog>
     </div>
   )
 }

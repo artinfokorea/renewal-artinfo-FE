@@ -13,3 +13,8 @@ export interface LessonPayload {
   introduction: string
   career?: string
 }
+
+export interface LessonApplyPayload {
+  teacherId: number
+  contents: string
+}
