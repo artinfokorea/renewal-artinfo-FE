@@ -31,7 +31,7 @@ const MainJobsContainer = () => {
   return (
     <section className="my-12 md:my-16">
       <div className="flex justify-between">
-        <h3 className="text-xl font-bold">#채용</h3>
+        <h3 className="text-xl font-bold">채용</h3>
         <Link href="/jobs">
           <h5 className="font-bold text-silver">더보기</h5>
         </Link>

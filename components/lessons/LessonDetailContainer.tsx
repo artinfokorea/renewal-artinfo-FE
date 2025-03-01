@@ -51,6 +51,7 @@ const LessonDetailContainer = ({ lesson, deleteLesson }: Props) => {
               src={lesson?.imageUrl}
               alt="lesson_image"
               fill
+              style={{ objectFit: "cover" }}
               priority
               quality={100}
               className="rounded-md"
