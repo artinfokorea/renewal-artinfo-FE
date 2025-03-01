@@ -26,7 +26,7 @@ const LessonDetailContainer = ({ lesson, deleteLesson }: Props) => {
   const [isPhoneShow, setIsPhoneShow] = useState(false)
   const [isDeleteConfirmDialog, setIsDeleteConfirmDialog] = useState(false)
   const [isApplyDialog, setIsApplyDialog] = useState(false)
-  const [isPhoneEmpty, setIsPhoneEmpty] = useState(true)
+  const [isPhoneEmpty, setIsPhoneEmpty] = useState(false)
   const filter = filters()
   const { successToast } = useToast()
   const { data } = useSession()
