@@ -79,7 +79,7 @@ const PostDetailContainer = ({ post, deletePost }: Props) => {
       </div>
       <div className="flex items-center gap-2">
         <Separator className="flex-1 bg-lightgray" />
-        {user?.type === UserType.ADMIN && (
+        {user?.id === post.authorId && (
           <ItemManageBox
             handleEdit={() => router.push(`create?postId=${post.id}`)}
             handleDelete={() =>

@@ -54,7 +54,7 @@ const LessonForm = ({ handlePost, isFormLoading, post }: Props) => {
   }, [post])
 
   return (
-    <form className="mt-8 px-4 md:mt-16" onSubmit={handleSubmit(handlePost)}>
+    <form className="mt-8 px-4 md:my-16" onSubmit={handleSubmit(handlePost)}>
       <div className="space-x-2">
         {Object.entries(PostCategoryLabel).map(([key, value]) => (
           <Button
