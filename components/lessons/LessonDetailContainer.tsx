@@ -147,15 +147,6 @@ const LessonDetailContainer = ({ lesson, deleteLesson }: Props) => {
               ))}
             </div>
             <div className="flex flex-col gap-4">
-              <div className="flex items-center gap-4 text-base md:text-lg">
-                <span className="font-bold">연락처</span>
-                <button
-                  className="font-semibold text-main"
-                  onClick={checkPhone}
-                >
-                  문의
-                </button>
-              </div>
               <div className="flex flex-col gap-2 text-base md:text-lg">
                 <span className="font-bold">지역</span>
                 <div>
@@ -167,6 +158,14 @@ const LessonDetailContainer = ({ lesson, deleteLesson }: Props) => {
                     </span>
                   ))}
                 </div>
+              </div>
+              <div>
+                <button
+                  className="text-base font-semibold leading-7 text-main hover:underline"
+                  onClick={checkPhone}
+                >
+                  레슨 문의하기
+                </button>
               </div>
             </div>
           </div>
