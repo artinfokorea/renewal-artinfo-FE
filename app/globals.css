@@ -444,6 +444,30 @@ input[type="number"] {
   outline-offset: -1px;
 }
 
+.ck-content figure {
+  display: table;
+  margin: 1em auto;
+  text-align: center;
+}
+
+/* 테이블 컨테이너에 대한 스타일 */
+.ck-content figure.table {
+  min-width: 100% !important;
+  margin: 1em 0;
+}
+
+/* 실제 테이블에 대한 스타일 */
+.ck-content .table table {
+  width: 100% !important;
+  border-collapse: collapse;
+}
+
+/* 테이블 셀에 대한 스타일 */
+.ck-content .table td,
+.ck-content .table th {
+  border: 1px solid #bbb;
+  padding: 0.4em;
+}
 /* 이미지 정렬 스타일 */
 .ck-content .image-style-side,
 .ck-content .image-style-align-left,
