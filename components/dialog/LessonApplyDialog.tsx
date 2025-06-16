@@ -9,12 +9,14 @@ interface LessonApplyDialogProps {
   open: boolean
   close: () => void
   handleApply: (introduce: string) => void
+  isLoading: boolean
 }
 
 export const LessonApplyDialog = ({
   open,
   close,
   handleApply,
+  isLoading,
 }: LessonApplyDialogProps) => {
   const [contents, setContents] = useState("")
 
@@ -74,7 +76,7 @@ export const LessonApplyDialog = ({
                 취소
               </Button>
               <Button
-                disabled={contents.length === 0}
+                disabled={contents.length === 0 || isLoading}
                 type="button"
                 onClick={() => handleApply(contents)}
                 className="h-8 rounded-lg bg-main px-4 text-sm text-white disabled:bg-whitesmoke disabled:text-dimgray"

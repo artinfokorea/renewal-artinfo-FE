@@ -16,6 +16,7 @@ import AlertDialog from "../dialog/AlertDialog"
 import { Button } from "../ui/button"
 import { LessonApplyDialog } from "../dialog/LessonApplyDialog"
 import { lessonApply } from "@/services/lessons"
+import { useLoading } from "@toss/use-loading"
 
 interface Props {
   lesson: LESSON
@@ -31,6 +32,7 @@ const LessonDetailContainer = ({ lesson, deleteLesson }: Props) => {
   const { data, status } = useSession()
   const router = useRouter()
   const pathname = usePathname()
+  const [isLoading, startTransition] = useLoading()
 
   const { data: user } = useQuery({
     ...queries.users.detail(),
@@ -47,10 +49,12 @@ const LessonDetailContainer = ({ lesson, deleteLesson }: Props) => {
 
   const handleApply = async (contents: string) => {
     try {
-      await lessonApply({
-        teacherId: lesson.authorId,
-        contents,
-      })
+      await startTransition(
+        lessonApply({
+          teacherId: lesson.authorId,
+          contents,
+        }),
+      )
 
       successToast("레슨 신청이 완료되었습니다.")
       setIsApplyDialog(false)
@@ -256,6 +260,7 @@ const LessonDetailContainer = ({ lesson, deleteLesson }: Props) => {
         </div>
       </AlertDialog>
       <LessonApplyDialog
+        isLoading={isLoading}
         open={isApplyDialog}
         close={() => setIsApplyDialog(false)}
         handleApply={handleApply}
