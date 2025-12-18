@@ -15,7 +15,7 @@ import FallbackImage from "../common/FallbackImage"
 
 const BannerContainer = () => {
   const plugin = useRef(
-    Autoplay({ delay: 5000, stopOnInteraction: true, loop: true }),
+    Autoplay({ delay: 5000, stopOnInteraction: true }),
   )
 
   const { data: ads } = useSuspenseQuery({
