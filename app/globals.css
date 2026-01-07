@@ -7,6 +7,17 @@
   padding-bottom: env(safe-area-inset-bottom) !important;
 }
 
+/* 모바일 크롬 동적 주소창 대응을 위한 fixed bottom 네비게이션 */
+.fixed-bottom-nav {
+  position: fixed;
+  bottom: 0;
+  bottom: constant(safe-area-inset-bottom);
+  bottom: env(safe-area-inset-bottom);
+  /* 모바일 브라우저 주소창 변화에 대응 */
+  transform: translateZ(0);
+  -webkit-transform: translateZ(0);
+}
+
 @-webkit-keyframes skeleton-gradient {
   0% {
     background-color: rgba(165, 165, 165, 0.1);
