@@ -12,7 +12,15 @@
   position: fixed;
   left: 0;
   right: 0;
-  bottom: var(--bottom-nav-bottom, 0);
+  bottom: 0;
+}
+
+/* dvh 지원 브라우저에서는 top 기준으로 위치 (iOS Chrome 동적 뷰포트 대응) */
+@supports (height: 100dvh) {
+  .fixed-bottom-nav {
+    bottom: auto;
+    top: calc(100dvh - 5rem);
+  }
 }
 
 @-webkit-keyframes skeleton-gradient {
