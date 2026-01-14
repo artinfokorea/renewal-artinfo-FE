@@ -10,15 +10,9 @@
 /* 모바일 크롬 동적 주소창 대응을 위한 fixed bottom 네비게이션 */
 .fixed-bottom-nav {
   position: fixed;
-  bottom: 0;
   left: 0;
   right: 0;
-  /* GPU 레이어 강제 생성으로 iOS 렌더링 버그 방지 */
-  -webkit-transform: translate3d(0, 0, 0);
-  transform: translate3d(0, 0, 0);
-  -webkit-backface-visibility: hidden;
-  backface-visibility: hidden;
-  will-change: transform;
+  bottom: var(--bottom-nav-bottom, 0);
 }
 
 @-webkit-keyframes skeleton-gradient {

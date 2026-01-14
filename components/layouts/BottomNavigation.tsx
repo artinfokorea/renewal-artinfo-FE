@@ -49,6 +49,30 @@ const BottomNavigation = () => {
     community: false,
   })
 
+  // iOS Chrome 동적 뷰포트 대응
+  useEffect(() => {
+    const updateBottom = () => {
+      if (window.visualViewport) {
+        const bottomOffset =
+          window.innerHeight -
+          (window.visualViewport.height + window.visualViewport.offsetTop)
+        document.documentElement.style.setProperty(
+          "--bottom-nav-bottom",
+          `${Math.max(0, bottomOffset)}px`,
+        )
+      }
+    }
+
+    window.visualViewport?.addEventListener("resize", updateBottom)
+    window.visualViewport?.addEventListener("scroll", updateBottom)
+    updateBottom()
+
+    return () => {
+      window.visualViewport?.removeEventListener("resize", updateBottom)
+      window.visualViewport?.removeEventListener("scroll", updateBottom)
+    }
+  }, [])
+
   const handleMenuOpen = (menu: "job" | "community") => {
     setIsMenuOpen({
       job: menu === "job" ? !isMenuOpen.job : false,
