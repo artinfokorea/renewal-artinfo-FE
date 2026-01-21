@@ -89,6 +89,7 @@ const Header = () => {
                 <NavMenu href="/lessons" label="레슨" />
                 <NavMenu href="/performances" label="공연" />
                 <NavMenu href="/news" label="뉴스" />
+                <NavMenu href="/performance-inquiry" label="기획" />
                 <NavMenu href="/inquiry" label="문의" />
               </NavigationMenuItem>
             </NavigationMenuList>

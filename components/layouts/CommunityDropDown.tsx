@@ -62,7 +62,7 @@ export const CommunityDropDown = ({
         leaveFrom="opacity-100"
         leaveTo="opacity-0"
       >
-        <div className="absolute bottom-[72px] left-[40%] z-50 flex min-w-[100px] flex-col gap-2 rounded border bg-white p-2">
+        <div className="absolute bottom-[72px] left-[22%] z-50 flex min-w-[100px] flex-col gap-2 rounded border bg-white p-2">
           <Link href="/posts">
             <div className="flex items-center gap-2 p-2">
               <Send className="h-5 w-5 text-gray-700" />

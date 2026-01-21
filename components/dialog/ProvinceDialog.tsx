@@ -10,18 +10,41 @@ interface Props {
   open: boolean
   close: () => void
   multiple?: boolean
+  // 폼용 콜백 모드 props
+  selectedProvinceIds?: number[]
+  onSelectComplete?: (provinceIds: number[]) => void
 }
 
-const ProvinceDialog = ({ open, close, multiple, provinces }: Props) => {
+const ProvinceDialog = ({
+  open,
+  close,
+  multiple,
+  provinces,
+  selectedProvinceIds: externalSelectedIds,
+  onSelectComplete,
+}: Props) => {
   const searchParams = useSearchParams()
-  const provinceIds = searchParams.getAll("provinceId")
+  const urlProvinceIds = searchParams.getAll("provinceId")
   const router = useRouter()
-  const [selectedProvinceIds, setSelectedProvinceIds] =
-    useState<string[]>(provinceIds)
+
+  // 콜백 모드인지 URL 모드인지 판단
+  const isCallbackMode = !!onSelectComplete
+
+  const [selectedProvinceIds, setSelectedProvinceIds] = useState<string[]>(
+    isCallbackMode
+      ? (externalSelectedIds?.map(id => id.toString()) ?? [])
+      : urlProvinceIds,
+  )
 
   useEffect(() => {
-    if (open) setSelectedProvinceIds(provinceIds)
-  }, [open])
+    if (open) {
+      setSelectedProvinceIds(
+        isCallbackMode
+          ? (externalSelectedIds?.map(id => id.toString()) ?? [])
+          : urlProvinceIds,
+      )
+    }
+  }, [open, externalSelectedIds])
 
   const selectProvince = (provinceId: string) => {
     if (selectedProvinceIds.includes(provinceId)) {
@@ -34,6 +57,12 @@ const ProvinceDialog = ({ open, close, multiple, provinces }: Props) => {
   }
 
   const selecteComplete = () => {
+    if (isCallbackMode) {
+      onSelectComplete(selectedProvinceIds.map(id => Number(id)))
+      close()
+      return
+    }
+
     const locationParams = new URLSearchParams(window.location.search)
 
     if (selectedProvinceIds.length > 0) {
@@ -60,7 +89,7 @@ const ProvinceDialog = ({ open, close, multiple, provinces }: Props) => {
     >
       <div className="fixed inset-0 bg-black/30" aria-hidden="true" />
       <div className="fixed inset-0 flex w-screen items-center justify-center p-4">
-        <DialogPanel className="z-10 mx-auto h-[300px] max-w-[650px] rounded-xl bg-white py-4">
+        <DialogPanel className="z-10 mx-auto w-full max-w-[650px] rounded-xl bg-white py-4">
           <div className="relative mb-4">
             <DialogTitle className="flex-1 text-center font-semibold md:text-lg">
               지역선택
