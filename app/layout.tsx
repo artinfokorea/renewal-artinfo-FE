@@ -43,7 +43,7 @@ export const metadata: Metadata = {
   verification: {
     other: {
       "naver-site-verification": ["4871394d609daee93d74e672332148eb3c6b3fa9"],
-      "google-adsense-account": ["ca-pub-713969839508023"],
+      "google-adsense-account": ["ca-pub-7139698395080232"],
       "google-site-verification": [
         "xYjpBRtdcymBNXOmYXZca3KsqDIUd9CPUv3zeWLzXz0",
       ],
@@ -63,8 +63,10 @@ export default function RootLayout({
         style={{ height: "calc(100vh - 156px)" }}
         suppressHydrationWarning
       >
-        <Script
-          src={`https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=${process.env.AD_SENSE_ID}`}
+        <script
+          async
+          src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7139698395080232"
+          crossOrigin="anonymous"
         />
         <Script
           src={`https://www.googletagmanager.com/gtag/js?id=${gtag.GA_TRACKING_ID}`}
