@@ -1,7 +1,19 @@
 import { CKEditor } from "@ckeditor/ckeditor5-react"
-import ClassicEditor from "@ckeditor/ckeditor5-build-classic"
-import "@ckeditor/ckeditor5-build-classic/build/translations/ko"
+import {
+  ClassicEditor,
+  Essentials,
+  Bold,
+  Italic,
+  Heading,
+  Link,
+  List,
+  Image,
+  ImageUpload,
+  BlockQuote,
+  FileRepository,
+} from "ckeditor5"
 import "ckeditor5/ckeditor5.css"
+import "ckeditor5/ckeditor5-content.css"
 import { uploadImages } from "@/services/system"
 import { UploadTarget } from "@/types"
 
@@ -34,6 +46,18 @@ const Editor = ({ value, onChange }: Props) => {
   }
 
   const editorConfiguration = {
+    plugins: [
+      Essentials,
+      Bold,
+      Italic,
+      Heading,
+      Link,
+      List,
+      Image,
+      ImageUpload,
+      BlockQuote,
+      FileRepository,
+    ],
     toolbar: [
       "heading",
       "|",

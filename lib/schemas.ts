@@ -248,7 +248,13 @@ export const postSchema = yup.object().shape({
   category: yup
     .string()
     .oneOf(
-      [PostCategory.ETC, PostCategory.INQUIRY, PostCategory.REVIEW],
+      [
+        PostCategory.ETC,
+        PostCategory.INQUIRY,
+        PostCategory.REVIEW,
+        PostCategory.PROMOTION,
+        PostCategory.ADMISSION,
+      ],
       "유효하지 않은 카테고리입니다.",
     )
     .required("카테고리를 선택해주세요."),

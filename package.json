@@ -12,9 +12,7 @@
     "test:watch": "jest --watch"
   },
   "dependencies": {
-    "@ckeditor/ckeditor5-build-classic": "^42.0.0",
-    "@ckeditor/ckeditor5-font": "^42.0.0",
-    "@ckeditor/ckeditor5-react": "^8.0.0",
+    "@ckeditor/ckeditor5-react": "^11.0.1",
     "@ducanh2912/next-pwa": "^10.2.8",
     "@emotion/react": "^11.11.4",
     "@emotion/styled": "^11.11.5",
@@ -47,6 +45,7 @@
     "@types/js-cookie": "^3.0.6",
     "axios": "^1.6.8",
     "browser-image-compression": "^2.0.2",
+    "ckeditor5": "^47.4.0",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.1",
     "date-fns": "^3.6.0",
