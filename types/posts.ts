@@ -1,12 +1,16 @@
 export enum PostCategory {
   REVIEW = "REVIEW",
   INQUIRY = "INQUIRY",
+  PROMOTION = "PROMOTION",
+  ADMISSION = "ADMISSION",
   ETC = "ETC",
 }
 
 export const PostCategoryLabel = {
   [PostCategory.REVIEW]: "후기",
   [PostCategory.INQUIRY]: "질문",
+  [PostCategory.PROMOTION]: "홍보",
+  [PostCategory.ADMISSION]: "입시",
   [PostCategory.ETC]: "기타",
 }
 
