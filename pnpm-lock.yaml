@@ -231,6 +231,9 @@ importers:
       jest-environment-jsdom:
         specifier: ^29.7.0
         version: 29.7.0
+      kakao.maps.d.ts:
+        specifier: ^0.1.40
+        version: 0.1.40
       postcss:
         specifier: ^8
         version: 8.5.6
@@ -7251,6 +7254,8 @@ snapshots:
       '@ckeditor/ckeditor5-utils': 47.4.0
       '@ckeditor/ckeditor5-widget': 47.4.0
       ckeditor5: 47.4.0
+    transitivePeerDependencies:
+      - supports-color
 
   '@ckeditor/ckeditor5-paragraph@47.4.0':
     dependencies:

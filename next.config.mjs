@@ -6,6 +6,7 @@ const isProduction = process.env.DEV_ENV === "production"
 
 const config = {
   reactStrictMode: false,
+  transpilePackages: ["ckeditor5", "@ckeditor/ckeditor5-react"],
   env: {
     NAVER_SECRET_KEY: process.env.NAVER_SECRET_KEY,
     DEV_ENV: process.env.DEV_ENV,
