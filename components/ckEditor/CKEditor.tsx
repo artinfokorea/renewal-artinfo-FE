@@ -46,6 +46,7 @@ const Editor = ({ value, onChange }: Props) => {
   }
 
   const editorConfiguration = {
+    licenseKey: "GPL",
     plugins: [
       Essentials,
       Bold,
