@@ -52,40 +52,12 @@ const JobDetailContainer = ({ deleteJob, job }: Props) => {
           <h4 className="mt-4 break-words text-xl font-bold md:mt-0">
             {job?.title}
           </h4>
-          <div className="my-2 hidden items-center gap-2 text-xs text-white md:flex md:text-sm">
-            {job?.majors?.majors?.slice(0, 3).map((major, index) => {
-              if (job?.majors?.majors?.length > 3 && index === 2)
-                return (
-                  <Badge key={major.id} className="rounded-xl bg-main">
-                    <span>
-                      {`${major.koName} 외 ${job?.majors?.majors.length - 3}`}
-                    </span>
-                  </Badge>
-                )
-
-              return (
-                <Badge key={major.id} className="rounded-xl bg-main">
-                  {major.koName}
-                </Badge>
-              )
-            })}
-          </div>
-          <div className="my-2 flex items-center gap-2 text-xs text-white md:hidden md:text-sm">
-            {job?.majors?.majors?.slice(0, 2).map((major, index) => {
-              if (job?.majors?.majors?.length > 2 && index === 1)
-                return (
-                  <Badge key={major.id} className="rounded-xl bg-main">
-                    {major.koName}
-                    <span>{` 외 ${job?.majors?.majors?.length - 2}`}</span>
-                  </Badge>
-                )
-
-              return (
-                <Badge key={major.id} className="rounded-xl bg-main">
-                  {major.koName}
-                </Badge>
-              )
-            })}
+          <div className="my-2 flex flex-wrap items-center gap-2 text-xs text-white md:text-sm">
+            {job?.majors?.majors?.map(major => (
+              <Badge key={major.id} className="rounded-xl bg-main">
+                {major.koName}
+              </Badge>
+            ))}
           </div>
           <p className="words-keep keep-all break-keep text-sm font-medium text-coolgray md:text-lg">
             {job?.address} {job?.addressDetail}
