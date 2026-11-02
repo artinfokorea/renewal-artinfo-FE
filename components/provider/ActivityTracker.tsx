@@ -15,6 +15,15 @@ const LAST_PING_KEY = "artinfo_last_ping"
 const PING_INTERVAL_MS = 60 * 1000
 /** 30분 넘게 쉬었다 오면 새 방문으로 센다 */
 const SESSION_GAP_MS = 30 * 60 * 1000
+/** 탭이 실제로 이만큼 보인 뒤에야 첫 전송 — 렌더링만 하고 닫는 로봇을 거른다 */
+const MIN_VISIBLE_MS = 5 * 1000
+
+/** 검색 로봇·크롤러·자동화 브라우저 (서버도 같은 기준으로 한 번 더 거른다) */
+const BOT_UA =
+  /bot|crawl|spider|slurp|yeti|daum\/|bingpreview|facebookexternalhit|headless|phantomjs|puppeteer|playwright|lighthouse/i
+
+const isBot = () =>
+  navigator.webdriver === true || BOT_UA.test(navigator.userAgent || "")
 
 const uuidV4 = () => {
   const c: Crypto = window.crypto
@@ -52,6 +61,7 @@ const ActivityTracker = () => {
     // 로컬·미리보기 배포에서 운영 지표가 오염되지 않게 실제 도메인에서만 보낸다
     const host = window.location.hostname
     if (host !== "artinfokorea.com" && !host.endsWith(".artinfokorea.com")) return
+    if (isBot()) return
     const baseURL = process.env.REST_API_BASE_URL
     if (!baseURL) return
 
@@ -64,17 +74,21 @@ const ActivityTracker = () => {
     let visibleSince: number | null =
       document.visibilityState === "visible" ? Date.now() : null
     let pendingMs = 0
+    /** 이번 페이지에서 탭이 보인 총 시간 — MIN_VISIBLE_MS 를 넘기 전엔 보내지 않는다 */
+    let totalVisibleMs = 0
 
     const collect = () => {
       if (visibleSince !== null) {
         const now = Date.now()
         pendingMs += now - visibleSince
+        totalVisibleMs += now - visibleSince
         visibleSince = now
       }
     }
 
     const send = (keepalive = false) => {
       collect()
+      if (totalVisibleMs < MIN_VISIBLE_MS) return
       const last = Number(storage.get(LAST_PING_KEY) ?? 0)
       const newSession = !last || Date.now() - last > SESSION_GAP_MS
       const seconds = Math.round(pendingMs / 1000)
@@ -107,7 +121,10 @@ const ActivityTracker = () => {
 
     const onPageHide = () => send(true)
 
-    send()
+    // 첫 전송은 탭이 5초 이상 보인 뒤 (그 전에 떠나면 집계하지 않는다)
+    const firstTimer = window.setTimeout(() => {
+      if (document.visibilityState === "visible") send()
+    }, MIN_VISIBLE_MS + 500)
     const timer = window.setInterval(() => {
       if (document.visibilityState === "visible") send()
     }, PING_INTERVAL_MS)
@@ -115,6 +132,7 @@ const ActivityTracker = () => {
     window.addEventListener("pagehide", onPageHide)
 
     return () => {
+      window.clearTimeout(firstTimer)
       window.clearInterval(timer)
       document.removeEventListener("visibilitychange", onVisibility)
       window.removeEventListener("pagehide", onPageHide)
