@@ -1,5 +1,5 @@
 import { PROVINCE } from "@/types"
-import { FilterOption } from "@/components/common/FilterChips"
+import { FilterOption } from "@/components/common/ListToolbar"
 
 /** 칩에 보여줄 시·도 순서 (수도권 → 광역시 → 도) */
 const REGION_ORDER = [

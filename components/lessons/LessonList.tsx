@@ -47,17 +47,10 @@ const LessonList = () => {
     }
   }, [inView, hasNextPage])
 
-  const totalCount = lessons?.pages?.[0]?.totalCount ?? 0
   const isEmpty = !lessons?.pages?.[0]?.lessons?.length
 
   return (
-    <section aria-label="레슨 목록" className="mt-6 md:mt-8">
-      <div className="flex items-center justify-between border-b border-[#191F28] pb-3 text-sm text-[#4E5968]">
-        <span>
-          레슨 <strong className="text-[#191F28]">{totalCount}</strong>건
-        </span>
-        <span>최신순</span>
-      </div>
+    <section aria-label="레슨 목록" className="mt-4 md:mt-6">
       {isEmpty ? (
         <p className="py-16 text-center text-[15px] text-coolgray">
           조건에 맞는 레슨이 없어요. 필터를 바꿔 보세요.

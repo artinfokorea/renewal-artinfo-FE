@@ -17,7 +17,7 @@ const NewsCard = forwardRef<HTMLDivElement, Props>(
     const filter = filters()
 
     return (
-      <li className="border-b border-[#EEF0F3]">
+      <li className="border-t border-[#F2F4F6] first:border-t-0">
         <Link
           href={`${pathname}/${news.id}`}
           prefetch={false}

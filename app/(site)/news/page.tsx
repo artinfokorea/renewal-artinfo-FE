@@ -7,8 +7,8 @@ import { useSession } from "next-auth/react"
 import { queries } from "@/lib/queries"
 import { UserType } from "@/types/users"
 import ListPageHeader from "@/components/common/ListPageHeader"
+import ListToolbar from "@/components/common/ListToolbar"
 import CreateButton from "@/components/common/CreateButton"
-import SearchBar from "@/components/common/SearchBar"
 import ArrowUpButton from "@/components/common/ArrowUpButton"
 import NewsSkeleton from "@/components/skeleton/NewsSkeleton"
 import NewsList from "@/components/news/NewsList"
@@ -25,20 +25,10 @@ const page = () => {
   const { data: newsCount } = useQuery(queries.news.count())
 
   return (
-    <div className="mx-auto max-w-[1040px] px-4 pt-6 md:px-6 md:pt-12">
+    <div className="mx-auto max-w-[760px] px-4 pt-6 md:px-6 md:pt-14">
       <ListPageHeader
         title="뉴스"
-        description={
-          <>
-            아트인포 예술 뉴스
-            {newsCount?.totalCount !== undefined && (
-              <>
-                {" "}
-                <strong className="text-main">{newsCount.totalCount}</strong>개
-              </>
-            )}
-          </>
-        }
+        count={newsCount?.totalCount}
         action={
           user?.type === UserType.ADMIN ? (
             <CreateButton
@@ -49,9 +39,7 @@ const page = () => {
         }
       />
 
-      <div className="mt-5 md:mt-7">
-        <SearchBar placeholder="뉴스 제목, 내용으로 검색" />
-      </div>
+      <ListToolbar searchPlaceholder="뉴스 제목, 내용 검색" />
 
       <Suspense fallback={<NewsSkeleton />}>
         <NewsList />
