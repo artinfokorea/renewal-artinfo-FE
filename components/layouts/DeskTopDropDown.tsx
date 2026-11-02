@@ -8,6 +8,7 @@ import {
 import { USER } from "@/types/users"
 import Link from "next/link"
 import FallbackImage from "../common/FallbackImage"
+import { UserType } from "@/types/users"
 
 interface Props {
   user: USER
@@ -36,6 +37,13 @@ const DeskTopDropDown = ({ user, handleSign }: Props) => {
             내 프로필
           </DropdownMenuItem>
         </Link>
+        {user.type === UserType.ADMIN && (
+          <Link href="/admin" prefetch={false}>
+            <DropdownMenuItem className="cursor-pointer hover:bg-whitesmoke">
+              관리자
+            </DropdownMenuItem>
+          </Link>
+        )}
         {/* <Link href="/my-activities" prefetch={false}>
           <DropdownMenuItem className="cursor-pointer hover:bg-whitesmoke">
             내 활동

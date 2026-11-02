@@ -1,5 +1,10 @@
 import { getAds } from "@/services/ad"
 import {
+  getAdminBreakdown,
+  getAdminDaily,
+  getAdminOverview,
+} from "@/services/admin"
+import {
   getInfiniteFullTimeJobs,
   getJob,
   getPullTimeJobs,
@@ -234,7 +239,23 @@ const posts = createQueryKeys("posts", {
   }),
 })
 
+const admin = createQueryKeys("admin", {
+  overview: () => ({
+    queryKey: [""],
+    queryFn: getAdminOverview,
+  }),
+  daily: (days: number) => ({
+    queryKey: [days],
+    queryFn: () => getAdminDaily(days),
+  }),
+  breakdown: () => ({
+    queryKey: [""],
+    queryFn: getAdminBreakdown,
+  }),
+})
+
 export const queries = mergeQueryKeys(
+  admin,
   ads,
   jobs,
   majors,

@@ -11,6 +11,9 @@ import Link from "next/link"
 import { usePathname } from "next/navigation"
 import { useSession } from "next-auth/react"
 import { JobTimeType } from "@/types/jobs"
+import { useQuery } from "@tanstack/react-query"
+import { queries } from "@/lib/queries"
+import { UserType } from "@/types/users"
 
 interface Props {
   isBarOpen: boolean
@@ -37,6 +40,10 @@ const DropDownMenu = ({ href, label }: { href: string; label: string }) => {
 
 const MobileDropDown = ({ handleBar, handleSign }: Props) => {
   const { data } = useSession()
+  const { data: user } = useQuery({
+    ...queries.users.detail(),
+    enabled: !!data?.user,
+  })
 
   return (
     <Menu as={Fragment}>
@@ -72,6 +79,9 @@ const MobileDropDown = ({ handleBar, handleSign }: Props) => {
               <DropDownMenu href="/inquiry" label="문의" />
               <div className="mx-auto my-4 w-full border-b-[1px] border-whitesmoke" />
               <DropDownMenu href="/my-profile" label="내 정보" />
+              {user?.type === UserType.ADMIN && (
+                <DropDownMenu href="/admin" label="관리자" />
+              )}
               {/* <DropDownMenu href="/my-activities" label="내 활동" /> */}
 
               <MenuItem>
