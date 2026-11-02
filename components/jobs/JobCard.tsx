@@ -53,7 +53,7 @@ const JobCard = forwardRef<HTMLDivElement, Props>(
                 alt={`${job.companyName} 공고 이미지`}
                 fill
                 fallbackText={job.companyName}
-                className="object-cover"
+                className="object-contain"
                 sizes="(max-width: 768px) 110px, 160px"
               />
             ) : (
