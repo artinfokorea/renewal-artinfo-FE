@@ -1,5 +1,6 @@
 "use client"
 
+import MajorTagList from "./MajorTagList"
 import { queries } from "@/lib/queries"
 import { useQuery } from "@tanstack/react-query"
 import { usePathname, useRouter } from "next/navigation"
@@ -52,12 +53,8 @@ const JobDetailContainer = ({ deleteJob, job }: Props) => {
           <h4 className="mt-4 break-words text-xl font-bold md:mt-0">
             {job?.title}
           </h4>
-          <div className="my-2 flex flex-wrap items-center gap-2 text-xs text-white md:text-sm">
-            {job?.majors?.majors?.map(major => (
-              <Badge key={major.id} className="rounded-xl bg-main">
-                {major.koName}
-              </Badge>
-            ))}
+          <div className="my-2">
+            <MajorTagList majors={job?.majors?.majors} />
           </div>
           <p className="words-keep keep-all break-keep text-sm font-medium text-coolgray md:text-lg">
             {job?.address} {job?.addressDetail}

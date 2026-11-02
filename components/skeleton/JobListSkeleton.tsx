@@ -1,22 +1,20 @@
-import React from "react"
-
 const JobListSkeleton = () => {
   return (
-    <div className="mt-4">
-      {Array.from({ length: 10 }, (_, index) => index).map(index => (
-        <div
+    <ul className="mt-2">
+      {Array.from({ length: 8 }, (_, index) => index).map(index => (
+        <li
           key={index}
-          className="mx-4 flex h-[130px] rounded-xl md:h-[192px] md:px-4"
+          className="flex gap-3.5 border-b border-[#EEF0F3] py-4 md:items-center md:gap-6 md:px-2 md:py-5"
         >
-          <div className="my-4 h-[100px] w-[170px] animate-pulse rounded-lg bg-gray-200 md:my-auto md:h-[140px] md:w-[230px]" />
-          <div className="ml-4 flex flex-1 flex-col justify-center py-2 md:ml-12">
-            <div className="mb-2 h-5 w-40 animate-pulse bg-gray-200" />
-            <div className="mb-2 h-5 w-24 animate-pulse bg-gray-200" />
-            <div className="mb-2 h-5 w-28 animate-pulse bg-gray-200" />
+          <div className="h-[72px] w-[120px] shrink-0 animate-pulse rounded-[10px] bg-[#F2F4F6] md:h-[120px] md:w-[200px] md:rounded-xl" />
+          <div className="flex flex-1 flex-col gap-2">
+            <div className="h-5 w-4/5 animate-pulse rounded bg-[#F2F4F6]" />
+            <div className="h-4 w-1/2 animate-pulse rounded bg-[#F2F4F6]" />
+            <div className="h-6 w-32 animate-pulse rounded bg-[#F2F4F6]" />
           </div>
-        </div>
+        </li>
       ))}
-    </div>
+    </ul>
   )
 }
 

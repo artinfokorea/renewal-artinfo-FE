@@ -1,17 +1,15 @@
-import React from "react"
-
 const PerformanceListSkeleton = () => {
   return (
-    <div className="mt-4 grid grid-cols-2 gap-4 px-4 md:grid-cols-3 md:gap-8">
-      {Array.from({ length: 10 }, (_, index) => index).map(index => (
-        <div key={index}>
-          <div className="aspect-[3/4] animate-pulse rounded-[10px] bg-gray-200" />
-          <div className="my-4 flex flex-col items-center gap-3">
-            <p className="h-12 w-28 animate-pulse rounded bg-gray-200"></p>
-            <p className="h-4 w-40 animate-pulse bg-gray-200"> </p>
-          </div>
-        </div>
-      ))}
+    <div className="mt-6 border-t border-[#191F28] md:mt-8">
+      <ul className="mt-5 grid grid-cols-2 gap-x-3 gap-y-6 md:mt-6 md:grid-cols-4 md:gap-x-5 md:gap-y-8">
+        {Array.from({ length: 8 }, (_, index) => index).map(index => (
+          <li key={index} className="flex flex-col gap-2.5">
+            <div className="aspect-[3/4] animate-pulse rounded-xl bg-[#F2F4F6]" />
+            <div className="h-5 w-4/5 animate-pulse rounded bg-[#F2F4F6]" />
+            <div className="h-4 w-3/5 animate-pulse rounded bg-[#F2F4F6]" />
+          </li>
+        ))}
+      </ul>
     </div>
   )
 }

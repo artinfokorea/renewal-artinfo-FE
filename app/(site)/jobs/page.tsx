@@ -1,52 +1,52 @@
 "use client"
 
-import React, { useState, useMemo, Suspense } from "react"
-import { usePathname, useRouter, useSearchParams } from "next/navigation"
+import React, { Suspense } from "react"
+import { usePathname, useRouter } from "next/navigation"
 import { useQueries } from "@tanstack/react-query"
-import { queries } from "@/lib/queries"
-import { ArtType } from "@/types/majors"
 import Cookies from "js-cookie"
-import ListSearchForm from "@/components/common/ListSearchForm"
-import JobListCheckBoxes from "@/components/jobs/JobListCheckBoxes"
-import { Button } from "@/components/ui/button"
-import { Badge } from "@/components/ui/badge"
-import JobListSkeleton from "@/components/skeleton/JobListSkeleton"
-import JobList from "@/components/jobs/JobList"
-import ProvinceDialog from "@/components/dialog/ProvinceDialog"
-import AddButton from "@/components/common/AddButton"
-import CreateLinkButton from "@/components/common/CreateLinkButton"
-import ArrowUpButton from "@/components/common/ArrowUpButton"
-import useBreakPoint from "@/hooks/useBreakPoint"
-import { JobTimeType } from "@/types/jobs"
-import JobPartTimeList from "@/components/jobs/JobPartTimeList"
+import { queries } from "@/lib/queries"
+import { toRegionOptions } from "@/lib/regions"
+import { ArtType } from "@/types/majors"
+import { JobTimeType, JobTypeList } from "@/types/jobs"
 import { useJobTimeType } from "@/hooks/useJobTimeType"
-import MobilePartTimeTab from "@/components/jobs/MobilePartTimeTab"
-import MobileFilterTab from "@/components/common/MobileFilterTab"
+import { useSearchParamList } from "@/hooks/useSearchParamList"
+import ListPageHeader from "@/components/common/ListPageHeader"
+import CreateButton from "@/components/common/CreateButton"
+import SearchBar from "@/components/common/SearchBar"
+import FilterChips from "@/components/common/FilterChips"
+import FilterDropdown from "@/components/common/FilterDropdown"
+import ArrowUpButton from "@/components/common/ArrowUpButton"
+import JobList from "@/components/jobs/JobList"
+import JobPartTimeList from "@/components/jobs/JobPartTimeList"
+import JobListSkeleton from "@/components/skeleton/JobListSkeleton"
 import PartTimeListSkeleton from "@/components/skeleton/PartTimeListSkeleton"
 
+const JOB_TYPE_OPTIONS = JobTypeList.map(({ title, value }) => ({
+  label: title,
+  value,
+}))
+
 const page = () => {
-  const searchParams = useSearchParams()
-  const provinceIds = searchParams.getAll("provinceId") as string[]
   const router = useRouter()
   const pathname = usePathname()
-  const [isProvinceDialog, setIsProvinceDialog] = useState(false)
-  const isDesktop = useBreakPoint("lg")
   const { jobTimeType } = useJobTimeType()
+  const provinceFilter = useSearchParamList("provinceId")
+  const recruitFilter = useSearchParamList("recruit")
+  const professionalFilter = useSearchParamList("professional")
 
-  const [artFields, provinceList, majorList, majorGroups] = useQueries({
+  const [artFields, provinceList, jobsCount] = useQueries({
     queries: [
       queries.majors.artFields({ artCategories: [ArtType.MUSIC] }),
       queries.provinces.list(),
-      queries.majors.list(),
-      queries.majors.partTimeMajorGroups(),
+      queries.jobs.count(),
     ],
   })
 
-  const selectedProvinces = useMemo(() => {
-    return provinceList?.data?.provinces?.filter(province =>
-      provinceIds.includes(province.id.toString()),
-    )
-  }, [provinceIds])
+  const fieldOptions =
+    artFields?.data?.majorGroups?.map(({ nameKo, nameEn }) => ({
+      label: nameKo,
+      value: nameEn,
+    })) ?? []
 
   const goToCreatePage = () => {
     Cookies.set("prevPath", pathname, { expires: 1 / 288 })
@@ -57,95 +57,72 @@ const page = () => {
     }
   }
 
+  const totalCount = jobsCount?.data?.totalCount
+
   return (
-    <div className="mx-auto max-w-screen-lg">
-      <ListSearchForm>
-        <h4 className="text-xl font-bold md:text-2xl">
-          취업은 아트인포와 함께
-        </h4>
-      </ListSearchForm>
-      <section className="flex">
-        {/* Desktop Filter */}
-        {isDesktop && (
-          <JobListCheckBoxes
-            jobTimeType={jobTimeType}
-            majorGroups={majorGroups?.data?.majorGroups}
-            artFields={artFields?.data?.majorGroups}
+    <div className="mx-auto max-w-[1040px] px-4 pt-6 md:px-6 md:pt-12">
+      <ListPageHeader
+        title="채용"
+        description={
+          <>
+            예술단체·교회·학교의 음악인 채용 공고
+            {totalCount !== undefined && (
+              <>
+                {" "}
+                <strong className="text-main">{totalCount}</strong>개
+              </>
+            )}
+          </>
+        }
+        action={<CreateButton label="공고 등록" onClick={goToCreatePage} />}
+      />
+
+      <div className="mt-5 md:mt-7">
+        <SearchBar placeholder="기관명, 공고 제목, 전공으로 검색" />
+      </div>
+
+      {jobTimeType !== JobTimeType.PART_TIME && (
+        <div className="mt-4 flex flex-col gap-3 md:mt-5 md:flex-row md:items-start md:justify-between">
+          <FilterChips
+            label="지역 필터"
+            options={toRegionOptions(provinceList?.data?.provinces)}
+            selected={provinceFilter.values}
+            onToggle={provinceFilter.toggle}
+            onClear={provinceFilter.clear}
           />
-        )}
-
-        <div className="flex w-full flex-col lg:ml-12 lg:mt-4 lg:flex-1">
-          <div className="hidden items-center justify-between lg:flex">
-            <div className="flex flex-wrap gap-2">
-              <Button
-                onClick={() => setIsProvinceDialog(!isProvinceDialog)}
-                className="h-7 rounded border border-lightgray px-4 text-sm text-main"
-              >
-                지역선택
-              </Button>
-              {selectedProvinces?.slice(0, 7).map((province, index) => {
-                const name = province.name.slice(0, 2)
-                return (
-                  <Badge
-                    key={province.id}
-                    className="flex h-7 items-center rounded border-lightgray text-sm text-main"
-                  >
-                    <span>
-                      {selectedProvinces.length > 7 && index === 6
-                        ? `${name} 외 ${selectedProvinces.length - 7}`
-                        : name}
-                    </span>
-                  </Badge>
-                )
-              })}
-            </div>
-            <CreateLinkButton onClick={goToCreatePage} />
+          <div className="flex shrink-0 gap-2">
+            <FilterDropdown
+              label="유형"
+              options={JOB_TYPE_OPTIONS}
+              selected={recruitFilter.values}
+              onToggle={recruitFilter.toggle}
+              onClear={recruitFilter.clear}
+            />
+            <FilterDropdown
+              label="분야"
+              options={fieldOptions}
+              selected={professionalFilter.values}
+              onToggle={professionalFilter.toggle}
+              onClear={professionalFilter.clear}
+            />
           </div>
-
-          {/* Mobile Filter */}
-          {!isDesktop && (
-            <>
-              {jobTimeType !== JobTimeType.PART_TIME ? (
-                <MobileFilterTab
-                  majors={majorList?.data?.majors}
-                  provinces={provinceList?.data?.provinces}
-                  page="JOB"
-                  artFields={artFields?.data?.majorGroups}
-                />
-              ) : (
-                <MobilePartTimeTab
-                  provinces={provinceList?.data?.provinces}
-                  majorGroups={majorGroups?.data?.majorGroups}
-                />
-              )}
-            </>
-          )}
-
-          {jobTimeType === JobTimeType.PART_TIME ? (
-            <Suspense fallback={<PartTimeListSkeleton />}>
-              <JobPartTimeList />
-            </Suspense>
-          ) : (
-            <Suspense fallback={<JobListSkeleton />}>
-              <JobList />
-            </Suspense>
-          )}
         </div>
-        <ProvinceDialog
-          provinces={provinceList?.data?.provinces}
-          open={isProvinceDialog}
-          close={() => setIsProvinceDialog(false)}
-          multiple={true}
-        />
-        <ArrowUpButton
-          onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
-          className="scroll-to-top-button"
-        />
-        <AddButton
-          onClick={goToCreatePage}
-          className="fixed bottom-32 right-4 z-50 h-12 w-12 rounded-full bg-white shadow-md lg:hidden"
-        />
-      </section>
+      )}
+
+      {jobTimeType === JobTimeType.PART_TIME ? (
+        <Suspense fallback={<PartTimeListSkeleton />}>
+          <JobPartTimeList />
+        </Suspense>
+      ) : (
+        <Suspense fallback={<JobListSkeleton />}>
+          <JobList />
+        </Suspense>
+      )}
+
+      <ArrowUpButton
+        onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
+        className="scroll-to-top-button"
+      />
     </div>
   )
 }

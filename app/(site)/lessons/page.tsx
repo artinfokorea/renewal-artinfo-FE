@@ -1,123 +1,95 @@
 "use client"
 
-import AddButton from "@/components/common/AddButton"
-import CreateLinkButton from "@/components/common/CreateLinkButton"
-import ListSearchForm from "@/components/common/ListSearchForm"
-import ProfessionalCheckBoxes from "@/components/common/ProfessionalCheckBoxes"
-import ProvinceDialog from "@/components/dialog/ProvinceDialog"
+import { Suspense } from "react"
+import { usePathname, useRouter } from "next/navigation"
+import { useQueries } from "@tanstack/react-query"
+import { queries } from "@/lib/queries"
+import { toRegionOptions } from "@/lib/regions"
+import { useSearchParamList } from "@/hooks/useSearchParamList"
+import ListPageHeader from "@/components/common/ListPageHeader"
+import CreateButton from "@/components/common/CreateButton"
+import SearchBar from "@/components/common/SearchBar"
+import FilterChips from "@/components/common/FilterChips"
+import FilterDropdown from "@/components/common/FilterDropdown"
+import ArrowUpButton from "@/components/common/ArrowUpButton"
 import LessonList from "@/components/lessons/LessonList"
 import LessonListSkeleton from "@/components/skeleton/LessonListSkeleton"
-import { Badge } from "@/components/ui/badge"
-import { Button } from "@/components/ui/button"
-import { queries } from "@/lib/queries"
-import { useQueries } from "@tanstack/react-query"
-import { usePathname, useRouter, useSearchParams } from "next/navigation"
-import { Suspense, useMemo, useState } from "react"
-import ArrowUpButton from "@/components/common/ArrowUpButton"
-import useBreakPoint from "@/hooks/useBreakPoint"
-import MobileFilterTab from "@/components/common/MobileFilterTab"
 
 const page = () => {
-  const searchParams = useSearchParams()
-  const provinceIds = searchParams.getAll("provinceId") as string[]
   const router = useRouter()
-  const [isProvinceDialog, setIsProvinceDialog] = useState(false)
   const pathname = usePathname()
-  const isDesktop = useBreakPoint("lg")
+  const provinceFilter = useSearchParamList("provinceId")
+  const professionalFilter = useSearchParamList("professional")
 
-  const [lessonFields, provinceList, lessonsCount, majorList] = useQueries({
+  const [lessonFields, provinceList, lessonsCount] = useQueries({
     queries: [
       queries.lessons.fields(),
       queries.provinces.list(),
       queries.lessons.count(),
-      queries.majors.list(),
     ],
   })
 
-  const selectedProvinces = useMemo(() => {
-    return provinceList?.data?.provinces?.filter(province =>
-      provinceIds.includes(province.id.toString()),
-    )
-  }, [provinceIds])
+  const fieldOptions =
+    lessonFields?.data?.majorGroups?.map(({ nameKo, nameEn }) => ({
+      label: nameKo,
+      value: nameEn,
+    })) ?? []
+
+  const totalCount = lessonsCount?.data?.totalCount
 
   return (
-    <div className="mx-auto max-w-screen-lg">
-      <ListSearchForm>
-        <h4 className="text-xl font-bold md:text-2xl">
-          <span className="text-main">
-            {lessonsCount?.data?.totalCount || "00"}
-          </span>
-          명의 전문가가 준비중이에요.
-        </h4>
-      </ListSearchForm>
+    <div className="mx-auto max-w-[1040px] px-4 pt-6 md:px-6 md:pt-12">
+      <ListPageHeader
+        title="레슨"
+        description={
+          totalCount !== undefined ? (
+            <>
+              <strong className="text-main">{totalCount}</strong>명의 전문가가
+              레슨을 준비하고 있어요
+            </>
+          ) : (
+            "전문가에게 레슨을 받아보세요"
+          )
+        }
+        action={
+          <CreateButton
+            label="레슨 등록"
+            onClick={() => router.push(`${pathname}/create`)}
+          />
+        }
+      />
 
-      <section className="flex">
-        {/* Desktop Filter */}
-        {isDesktop && (
-          <form className="min-w-[180px] flex-col px-4 text-gray-400">
-            <ProfessionalCheckBoxes
-              artFields={lessonFields?.data?.majorGroups}
-            />
-          </form>
-        )}
-        <div className="flex w-full flex-col lg:ml-12 lg:mt-4 lg:flex-1">
-          <div className="hidden items-center justify-between lg:flex">
-            <div className="flex flex-wrap gap-2">
-              <Button
-                onClick={() => setIsProvinceDialog(!isProvinceDialog)}
-                className="h-7 rounded border border-lightgray px-4 text-sm text-main"
-              >
-                지역선택
-              </Button>
-              {selectedProvinces?.slice(0, 7).map((province, index) => {
-                const name = province.name.slice(0, 2)
-                return (
-                  <Badge
-                    key={province.id}
-                    className="flex h-7 items-center rounded border-lightgray text-sm text-main"
-                  >
-                    <span>
-                      {selectedProvinces.length > 7 && index === 6
-                        ? `${name} 외 ${selectedProvinces.length - 7}`
-                        : name}
-                    </span>
-                  </Badge>
-                )
-              })}
-            </div>
-            <CreateLinkButton
-              onClick={() => router.push(`${pathname}/create`)}
-            />
-          </div>
+      <div className="mt-5 md:mt-7">
+        <SearchBar placeholder="이름, 전공, 지역으로 검색" />
+      </div>
 
-          {/* Mobile Filter */}
-          {!isDesktop && (
-            <MobileFilterTab
-              majors={majorList?.data?.majors}
-              artFields={lessonFields?.data?.majorGroups}
-              provinces={provinceList?.data?.provinces}
-              page="LESSON"
-            />
-          )}
-          <Suspense fallback={<LessonListSkeleton />}>
-            <LessonList />
-          </Suspense>
+      <div className="mt-4 flex flex-col gap-3 md:mt-5 md:flex-row md:items-start md:justify-between">
+        <FilterChips
+          label="지역 필터"
+          options={toRegionOptions(provinceList?.data?.provinces)}
+          selected={provinceFilter.values}
+          onToggle={provinceFilter.toggle}
+          onClear={provinceFilter.clear}
+        />
+        <div className="flex shrink-0 gap-2">
+          <FilterDropdown
+            label="분야"
+            options={fieldOptions}
+            selected={professionalFilter.values}
+            onToggle={professionalFilter.toggle}
+            onClear={professionalFilter.clear}
+          />
         </div>
-        <ProvinceDialog
-          provinces={provinceList?.data?.provinces}
-          open={isProvinceDialog}
-          close={() => setIsProvinceDialog(false)}
-          multiple={true}
-        />
-        <ArrowUpButton
-          onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
-          className="scroll-to-top-button"
-        />
-        <AddButton
-          onClick={() => router.push(`${pathname}/create`)}
-          className="fixed bottom-32 right-4 z-50 h-12 w-12 rounded-full bg-white shadow-md lg:hidden"
-        />
-      </section>
+      </div>
+
+      <Suspense fallback={<LessonListSkeleton />}>
+        <LessonList />
+      </Suspense>
+
+      <ArrowUpButton
+        onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
+        className="scroll-to-top-button"
+      />
     </div>
   )
 }

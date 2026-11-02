@@ -1,9 +1,9 @@
-import { JOB } from "@/types/jobs"
+import { JOB, JobType } from "@/types/jobs"
 import Link from "next/link"
 import { usePathname } from "next/navigation"
 import React, { forwardRef } from "react"
 import filters from "@/lib/filters"
-import { Badge } from "../ui/badge"
+import { shortRegion } from "@/lib/regions"
 import FallbackImage from "../common/FallbackImage"
 
 interface Props {
@@ -11,105 +11,79 @@ interface Props {
   isLastPage: boolean
 }
 
+/**
+ * 채용 목록 한 줄 — 5:3 썸네일(데스크톱 200×120, 모바일 120×72) + 제목 2줄 + 메타 + 전공 태그.
+ * 이미지가 없거나 종교 공고면 기관명 박스로 대신한다.
+ */
 const JobCard = forwardRef<HTMLDivElement, Props>(
   ({ job, isLastPage }, ref) => {
     const pathname = usePathname()
     const filter = filters()
+    const majors = job?.majors?.majors ?? []
+    const showImage = !!job.imageUrl && job.type !== JobType.RELIGION
+    const region = shortRegion(job.address)
+    const meta = [job.companyName, region, filter.FROM_NOW_COMMENT(job.createdAt)]
+      .filter(Boolean)
+      .join(" · ")
+
+    const tags = (limit: number, className: string) => (
+      <div className={`flex-wrap gap-1.5 ${className}`}>
+        {majors.slice(0, limit).map(major => (
+          <span
+            key={major.id}
+            className="inline-flex h-6 items-center rounded-md bg-[#E8F3FF] px-2 text-xs font-medium text-[#1B64DA] md:h-[26px] md:px-2.5 md:text-[13px]"
+          >
+            {major.koName}
+          </span>
+        ))}
+        {majors.length > limit && (
+          <span className="inline-flex h-6 items-center rounded-md bg-[#F2F4F6] px-2 text-xs font-medium text-[#4E5968] md:h-[26px] md:text-[13px]">
+            +{majors.length - limit}
+          </span>
+        )}
+      </div>
+    )
 
     return (
-      <Link href={`${pathname}/${job.id}`} prefetch={false}>
-        <div className="mx-4 flex h-[130px] items-center rounded-xl md:h-[192px] md:px-4 md:hover:bg-[#f5f5f5]">
-          {job.imageUrl ? (
-            <div className="relative h-[100px] w-[170px] rounded-xl border-2 border-whitesmoke md:h-[140px] md:w-[230px]">
+      <li className="border-b border-[#EEF0F3]">
+        <Link
+          href={`${pathname}/${job.id}`}
+          prefetch={false}
+          className="group flex gap-3.5 py-4 md:items-center md:gap-6 md:px-2 md:py-5"
+        >
+          <div className="relative h-[72px] w-[120px] shrink-0 overflow-hidden rounded-[10px] border border-[#EEF0F3] bg-white md:h-[120px] md:w-[200px] md:rounded-xl">
+            {showImage ? (
               <FallbackImage
                 src={job.imageUrl}
-                alt={`${job.companyName}_job_image`}
+                alt={`${job.companyName} 공고 이미지`}
                 fill
                 fallbackText={job.companyName}
-                className="rounded-xl"
-                quality={100}
-                priority
-                sizes="(max-width: 768px) 100px 180px, (max-width: 1200px) 200px, 200px"
+                className="object-cover"
+                sizes="(max-width: 768px) 120px, 200px"
               />
-            </div>
-          ) : (
-            <div className="flex h-[100px] w-[170px] items-center justify-center rounded-xl border-2 border-whitesmoke bg-white px-2 md:h-[140px] md:w-[230px]">
-              <span className="break-all text-center text-base font-bold md:text-xl">
-                {job.companyName}
-              </span>
-            </div>
-          )}
-          <div className="ml-4 flex-1 py-2 md:ml-12">
-            <h4 className="line-clamp-2 break-keep text-sm font-bold leading-4 md:text-xl">
-              {job.title}
-            </h4>
-            <div className="my-2 flex items-center gap-2">
-              {job.address && (
-                <Badge className="rounded-xl border-main text-[10px] text-main md:text-sm">
-                  {job.address.split(" ")[0].substring(0, 2)}
-                </Badge>
-              )}
-              <div className="hidden gap-2 md:flex">
-                {job?.majors?.majors?.slice(0, 3).map((major, index) => {
-                  if (job?.majors?.majors?.length > 3 && index === 2)
-                    return (
-                      <Badge
-                        key={major.id}
-                        className="rounded-xl bg-main text-sm text-white"
-                      >
-                        <span className="text-sm text-white">
-                          {`${major.koName} 외 ${
-                            job?.majors?.majors.length - 3
-                          }`}
-                        </span>
-                      </Badge>
-                    )
-
-                  return (
-                    <Badge
-                      key={major.id}
-                      className="rounded-xl bg-main text-sm text-white"
-                    >
-                      {major.koName}
-                    </Badge>
-                  )
-                })}
+            ) : (
+              <div className="flex h-full items-center justify-center p-2 text-center md:p-3">
+                <span className="line-clamp-3 break-keep text-xs font-bold leading-snug text-[#333D4B] md:text-base">
+                  {job.companyName}
+                </span>
               </div>
-              <div className="flex gap-2 md:hidden">
-                {job?.majors?.majors?.slice(0, 1).map((major, index) => {
-                  if (job?.majors?.majors?.length > 1 && index === 0)
-                    return (
-                      <Badge
-                        key={major.id}
-                        className="rounded-xl bg-main text-[10px] text-white"
-                      >
-                        <span>
-                          {`${major.koName} 외 ${
-                            job?.majors?.majors.length - 1
-                          }`}
-                        </span>
-                      </Badge>
-                    )
-
-                  return (
-                    <Badge
-                      key={major.id}
-                      className="whitespace-nowrap rounded-xl bg-main text-[10px] text-white"
-                    >
-                      {major.koName}
-                    </Badge>
-                  )
-                })}
-              </div>
-            </div>
-            <div className="flex justify-between gap-2 text-xs text-coolgray md:text-base">
-              <span className="line-clamp-1">{job.companyName}</span>
-              <span>{filter.YYYYMMDD(job.createdAt)}</span>
-            </div>
+            )}
           </div>
-        </div>
+          <div className="flex min-w-0 flex-1 flex-col gap-1.5 md:gap-2">
+            <h3 className="line-clamp-2 break-keep text-[15px] font-bold leading-snug text-[#191F28] group-hover:text-main md:text-lg">
+              {job.title}
+            </h3>
+            <p className="truncate text-[13px] text-[#6B7684] md:text-sm">{meta}</p>
+            {majors.length > 0 && (
+              <>
+                {tags(2, "flex md:hidden")}
+                {tags(3, "hidden md:flex")}
+              </>
+            )}
+          </div>
+        </Link>
         {!isLastPage && <div ref={ref} />}
-      </Link>
+      </li>
     )
   },
 )

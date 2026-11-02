@@ -6,7 +6,6 @@ import { useSearchParams } from "next/navigation"
 import { useInView } from "react-intersection-observer"
 import React, { useEffect } from "react"
 import JobCard from "./JobCard"
-import ReligionCard from "./ReligionCard"
 import { ProfessionalFieldTypes } from "@/types/majors"
 
 const JobList = () => {
@@ -55,28 +54,36 @@ const JobList = () => {
     }
   }, [inView, hasNextPage])
 
+  const totalCount = jobs?.pages?.[0]?.totalCount ?? 0
+  const isEmpty = !jobs?.pages?.[0]?.jobs?.length
+
   return (
-    <div className="mt-4 max-w-full">
-      {jobs?.pages?.map(page =>
-        page?.jobs?.map((job, index) => {
-          return job.type === JobType.RELIGION ? (
-            <ReligionCard
-              key={`${job.id}${professionals}${provinceIds}`}
-              job={job}
-              ref={ref}
-              isLastPage={!(hasNextPage && index === page.jobs.length - 5)}
-            />
-          ) : (
-            <JobCard
-              key={`${job.id}${professionals}${provinceIds}`}
-              job={job}
-              ref={ref}
-              isLastPage={!(hasNextPage && index === page.jobs.length - 5)}
-            />
-          )
-        }),
+    <section aria-label="채용 공고 목록" className="mt-6 md:mt-8">
+      <div className="flex items-center justify-between border-b border-[#191F28] pb-3 text-sm text-[#4E5968]">
+        <span>
+          공고 <strong className="text-[#191F28]">{totalCount}</strong>건
+        </span>
+        <span>최신순</span>
+      </div>
+      {isEmpty ? (
+        <p className="py-16 text-center text-[15px] text-coolgray">
+          조건에 맞는 공고가 없어요. 필터를 바꿔 보세요.
+        </p>
+      ) : (
+        <ul>
+          {jobs?.pages?.map(page =>
+            page?.jobs?.map((job, index) => (
+              <JobCard
+                key={job.id}
+                job={job}
+                ref={ref}
+                isLastPage={!(hasNextPage && index === page.jobs.length - 5)}
+              />
+            )),
+          )}
+        </ul>
       )}
-    </div>
+    </section>
   )
 }
 

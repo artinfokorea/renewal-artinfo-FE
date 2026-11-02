@@ -1,4 +1,5 @@
 import React, { useState } from "react"
+import MajorTagList from "./MajorTagList"
 import { JOB } from "@/types/jobs"
 import filters from "@/lib/filters"
 import { Badge } from "../ui/badge"
@@ -60,18 +61,7 @@ export const PartTimeDetailContainer = ({
           <InfoItem title="단체명" value={job?.companyName} />
           <InfoItem title="급여" value={`${filter.FEECOMMA(job?.fee)}원`} />
 
-          <div className="flex items-center">
-            <span className="basis-1/5 text-sm font-semibold text-grayfont md:text-lg">
-              전공
-            </span>
-            <div className="my-2 flex flex-wrap items-center gap-2 text-xs text-white md:text-sm">
-              {job?.majors?.majors?.map(major => (
-                <Badge key={major.id} className="rounded-xl bg-main">
-                  {major.koName}
-                </Badge>
-              ))}
-            </div>
-          </div>
+          <MajorTagList majors={job?.majors?.majors} />
           <InfoItem
             title="주소"
             value={`${job.address} ${job.addressDetail}`}

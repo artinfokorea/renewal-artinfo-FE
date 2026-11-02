@@ -1,22 +1,20 @@
-import React from "react"
-
 const NewsSkeleton = () => {
   return (
-    <div className="flex flex-col gap-2 md:mt-4">
-      {Array.from({ length: 5 }, (_, index) => index).map(index => (
-        <div
+    <ul className="mt-6 border-t border-[#191F28] md:mt-8">
+      {Array.from({ length: 6 }, (_, index) => index).map(index => (
+        <li
           key={index}
-          className="h-100 flex flex-col gap-8 rounded-md p-4 md:mx-4 md:h-[224px] md:flex-row-reverse"
+          className="flex gap-3.5 border-b border-[#EEF0F3] py-4 md:items-center md:gap-6 md:px-2 md:py-5"
         >
-          <div className="aspect-[27/17] w-full animate-pulse rounded-md bg-gray-200 md:basis-1/3" />
-          <div className="flex flex-col gap-4 break-keep md:mt-2 md:basis-2/3">
-            <div className="h-10 animate-pulse rounded bg-gray-200" />
-            <div className="h-32 animate-pulse rounded bg-gray-200" />
-            <div className="h-6 w-20 animate-pulse rounded bg-gray-200" />
+          <div className="aspect-[27/17] w-[120px] shrink-0 animate-pulse rounded-[10px] bg-[#F2F4F6] md:w-[200px] md:rounded-xl" />
+          <div className="flex flex-1 flex-col gap-2">
+            <div className="h-5 w-4/5 animate-pulse rounded bg-[#F2F4F6]" />
+            <div className="hidden h-4 w-3/5 animate-pulse rounded bg-[#F2F4F6] md:block" />
+            <div className="h-4 w-20 animate-pulse rounded bg-[#F2F4F6]" />
           </div>
-        </div>
+        </li>
       ))}
-    </div>
+    </ul>
   )
 }
 

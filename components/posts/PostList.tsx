@@ -43,22 +43,36 @@ const PostList = () => {
     }
   }, [inView, hasNextPage])
 
+  const totalCount = posts?.pages?.[0]?.totalCount ?? 0
+  const isEmpty = !posts?.pages?.[0]?.posts?.length
+
   return (
-    <div className="mt-4 grid grid-cols-1 px-4 md:grid-cols-2">
-      {posts?.pages?.map(page =>
-        page?.posts?.map((post, index) => {
-          return (
-            <PostCard
-              post={post}
-              key={post.id}
-              ref={ref}
-              isLeft={index % 2 === 0}
-              isLastPage={!(hasNextPage && index === page.posts.length - 5)}
-            />
-          )
-        }),
+    <section aria-label="나눔 글 목록" className="mt-6 md:mt-8">
+      <div className="flex items-center justify-between border-b border-[#191F28] pb-3 text-sm text-[#4E5968]">
+        <span>
+          글 <strong className="text-[#191F28]">{totalCount}</strong>건
+        </span>
+        <span>최신순</span>
+      </div>
+      {isEmpty ? (
+        <p className="py-16 text-center text-[15px] text-coolgray">
+          조건에 맞는 글이 없어요.
+        </p>
+      ) : (
+        <ul>
+          {posts?.pages?.map(page =>
+            page?.posts?.map((post, index) => (
+              <PostCard
+                post={post}
+                key={post.id}
+                ref={ref}
+                isLastPage={!(hasNextPage && index === page.posts.length - 5)}
+              />
+            )),
+          )}
+        </ul>
       )}
-    </div>
+    </section>
   )
 }
 

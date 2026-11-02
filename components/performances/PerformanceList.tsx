@@ -44,19 +44,38 @@ const PerformanceList = () => {
     }
   }, [inView, hasNextPage])
 
+  const totalCount = performances?.pages?.[0]?.totalCount ?? 0
+  const isEmpty = !performances?.pages?.[0]?.performances?.length
+
   return (
-    <div className="mt-4 grid grid-cols-2 gap-4 px-4 md:grid-cols-3 md:gap-8">
-      {performances?.pages?.map(page =>
-        page?.performances?.map((performance, index) => (
-          <PerformanceCard
-            key={`${categories}${performance.id}${provinceIds}`}
-            isLastPage={!(hasNextPage && index == page.performances.length - 5)}
-            performance={performance}
-            ref={ref}
-          />
-        )),
+    <section aria-label="공연 목록" className="mt-6 md:mt-8">
+      <div className="flex items-center justify-between border-b border-[#191F28] pb-3 text-sm text-[#4E5968]">
+        <span>
+          공연 <strong className="text-[#191F28]">{totalCount}</strong>건
+        </span>
+        <span>최신순</span>
+      </div>
+      {isEmpty ? (
+        <p className="py-16 text-center text-[15px] text-coolgray">
+          조건에 맞는 공연이 없어요. 필터를 바꿔 보세요.
+        </p>
+      ) : (
+        <ul className="mt-5 grid grid-cols-2 gap-x-3 gap-y-6 md:mt-6 md:grid-cols-4 md:gap-x-5 md:gap-y-8">
+          {performances?.pages?.map(page =>
+            page?.performances?.map((performance, index) => (
+              <PerformanceCard
+                key={performance.id}
+                isLastPage={
+                  !(hasNextPage && index == page.performances.length - 5)
+                }
+                performance={performance}
+                ref={ref}
+              />
+            )),
+          )}
+        </ul>
       )}
-    </div>
+    </section>
   )
 }
 
