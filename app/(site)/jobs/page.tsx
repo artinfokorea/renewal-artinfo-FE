@@ -19,7 +19,6 @@ import ArrowUpButton from "@/components/common/ArrowUpButton"
 import useBreakPoint from "@/hooks/useBreakPoint"
 import { JobTimeType } from "@/types/jobs"
 import JobPartTimeList from "@/components/jobs/JobPartTimeList"
-import { MobileJobTypeTab } from "@/components/jobs/MobileJobTypeTab"
 import { useJobTimeType } from "@/hooks/useJobTimeType"
 import MobilePartTimeTab from "@/components/jobs/MobilePartTimeTab"
 import MobileFilterTab from "@/components/common/MobileFilterTab"
@@ -32,7 +31,7 @@ const page = () => {
   const pathname = usePathname()
   const [isProvinceDialog, setIsProvinceDialog] = useState(false)
   const isDesktop = useBreakPoint("lg")
-  const { jobTimeType, handleJobTimeTypeChange } = useJobTimeType()
+  const { jobTimeType } = useJobTimeType()
 
   const [artFields, provinceList, majorList, majorGroups] = useQueries({
     queries: [
@@ -53,11 +52,6 @@ const page = () => {
     Cookies.set("prevPath", pathname, { expires: 1 / 288 })
     if (jobTimeType === JobTimeType.PART_TIME) {
       router.push(`${pathname}/part-time/create`)
-    } else if (
-      jobTimeType === JobTimeType.AMATEUR ||
-      jobTimeType === JobTimeType.YOUTH
-    ) {
-      router.push(`${pathname}/create?jobType=${jobTimeType}`)
     } else {
       router.push(`${pathname}/create`)
     }
@@ -74,7 +68,6 @@ const page = () => {
         {/* Desktop Filter */}
         {isDesktop && (
           <JobListCheckBoxes
-            handleJobTimeType={handleJobTimeTypeChange}
             jobTimeType={jobTimeType}
             majorGroups={majorGroups?.data?.majorGroups}
             artFields={artFields?.data?.majorGroups}
@@ -112,12 +105,7 @@ const page = () => {
           {/* Mobile Filter */}
           {!isDesktop && (
             <>
-              <MobileJobTypeTab
-                jobTimeType={jobTimeType}
-                handleJobTimeType={handleJobTimeTypeChange}
-              />
-
-              {jobTimeType === JobTimeType.FULL_TIME ? (
+              {jobTimeType !== JobTimeType.PART_TIME ? (
                 <MobileFilterTab
                   majors={majorList?.data?.majors}
                   provinces={provinceList?.data?.provinces}

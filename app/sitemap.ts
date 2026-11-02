@@ -62,7 +62,6 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     { url: `${SITE_URL}/news`, lastModified: now, changeFrequency: "daily", priority: 0.8 },
     { url: `${SITE_URL}/posts`, lastModified: now, changeFrequency: "daily", priority: 0.7 },
     { url: `${SITE_URL}/inquiry`, lastModified: now, changeFrequency: "yearly", priority: 0.3 },
-    { url: `${SITE_URL}/performance-inquiry`, lastModified: now, changeFrequency: "yearly", priority: 0.3 },
   ]
 
   const [jobs, partTimeJobs, lessons, performances, news, posts] =

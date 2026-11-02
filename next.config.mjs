@@ -15,6 +15,12 @@ const config = {
     GTAG_ID: process.env.GTAG_ID,
     AD_SENSE_ID: process.env.AD_SENSE_ID,
   },
+  async redirects() {
+    return [
+      // 기획 페이지 제거 (2026-11)
+      { source: "/performance-inquiry", destination: "/", permanent: true },
+    ]
+  },
   images: {
     remotePatterns: [
       {
