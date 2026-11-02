@@ -5,6 +5,7 @@ import {
   AdminDaily,
   AdminEngagement,
   AdminOverview,
+  AdminVisitors,
 } from "@/types/admin"
 
 /* 관리자 지표 — 서버가 users.type = ADMIN 인지 확인한다 (아니면 403) */
@@ -39,5 +40,17 @@ export const getAdminEngagement = async (
   const response = await authApiRequest.get<
     DetailApiResponse<AdminEngagement>
   >("/admin/stats/engagement", { params: { days } })
+  return response.item
+}
+
+/* 그날 방문자 목록 (50명씩) */
+export const getAdminVisitors = async (
+  day: string,
+  offset: number,
+): Promise<AdminVisitors> => {
+  const response = await authApiRequest.get<DetailApiResponse<AdminVisitors>>(
+    "/admin/stats/visitors",
+    { params: { day, offset } },
+  )
   return response.item
 }

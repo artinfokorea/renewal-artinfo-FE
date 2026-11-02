@@ -12,6 +12,7 @@ import StatTile, { RecentDelta } from "@/components/admin/StatTile"
 import DailyBarChart, { METRIC_LABEL } from "@/components/admin/DailyBarChart"
 import BarList from "@/components/admin/BarList"
 import RetentionTable from "@/components/admin/RetentionTable"
+import VisitorList from "@/components/admin/VisitorList"
 import { formatDuration } from "@/components/admin/format"
 
 const RANGES = [7, 30, 90] as const
@@ -170,7 +171,7 @@ const AdminPage = () => {
           </div>
         </section>
 
-        <Card title="방문 추이" description="탭이 화면에 보인 시간만 체류시간으로 셉니다.">
+        <Card title="방문 추이" description="10초 이상 머물렀거나 2페이지 이상 본 방문만 셉니다 (GA4 참여 기준). 체류시간은 탭이 화면에 보인 시간입니다.">
           <div className="flex flex-col gap-2 md:flex-row md:items-center md:justify-between">
             <Tabs
               label="방문 지표"
@@ -199,6 +200,13 @@ const AdminPage = () => {
           description="그 주에 처음 온 방문자 중 1~4주 뒤 다시 온 비율. 같은 브라우저 기준입니다."
         >
           <RetentionTable cohorts={engagement?.retention ?? []} />
+        </Card>
+
+        <Card
+          title="방문자 목록"
+          description="그날 들어온 브라우저 한 개가 한 줄입니다. 기기 정보에 마우스를 올리면 User-Agent 원문이 보입니다. '미참여'는 10초 미만·1페이지만 본 방문으로 지표에서 빠집니다."
+        >
+          <VisitorList />
         </Card>
       </div>
 

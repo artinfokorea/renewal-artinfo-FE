@@ -59,3 +59,26 @@ export interface AdminEngagement {
   /** 첫 방문 주별 1~4주차 재방문 비율(%) — 측정 전이면 null */
   retention: { cohort: string; size: number; weeks: (number | null)[] }[]
 }
+
+export interface AdminVisitor {
+  visitorId: string
+  nickname: string | null
+  firstSeenAt: string
+  lastSeenAt: string
+  activeSeconds: number
+  pageViews: number
+  sessions: number
+  device: string
+  os: string
+  browser: string
+  userAgent: string | null
+  referrerHost: string | null
+  landingPath: string | null
+  engaged: boolean
+}
+
+export interface AdminVisitors {
+  day: string
+  total: number
+  visitors: AdminVisitor[]
+}
