@@ -65,8 +65,7 @@ const page = () => {
         title="채용"
         description={
           <>
-            <span className="hidden md:inline">예술단체·교회·학교의 음악인 </span>
-            채용 공고
+            예술인 채용 공고
             {totalCount !== undefined && (
               <span className="whitespace-nowrap">
                 {" "}
