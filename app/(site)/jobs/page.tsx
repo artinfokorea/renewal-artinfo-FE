@@ -28,11 +28,10 @@ const page = () => {
   const pathname = usePathname()
   const { jobTimeType } = useJobTimeType()
 
-  const [artFields, provinceList, jobsCount] = useQueries({
+  const [artFields, provinceList] = useQueries({
     queries: [
       queries.majors.artFields({ artCategories: [ArtType.MUSIC] }),
       queries.provinces.list(),
-      queries.jobs.count(),
     ],
   })
 
@@ -56,7 +55,6 @@ const page = () => {
     <div className="mx-auto max-w-[1040px] px-4 pt-6 md:px-6 md:pt-14">
       <ListPageHeader
         title="채용"
-        count={jobsCount?.data?.totalCount}
         action={<CreateButton label="공고 등록" onClick={goToCreatePage} />}
       />
 

@@ -22,17 +22,15 @@ const page = () => {
   const router = useRouter()
   const pathname = usePathname()
 
-  const [provinceList, performanceCount] = useQueries({
-    queries: [queries.provinces.list(), queries.performances.count()],
+  const [provinceList] = useQueries({
+    queries: [queries.provinces.list()],
   })
 
-  const totalCount = performanceCount?.data?.totalCount
 
   return (
     <div className="mx-auto max-w-[1040px] px-4 pt-6 md:px-6 md:pt-14">
       <ListPageHeader
         title="공연"
-        count={totalCount}
         action={
           <CreateButton
             label="공연 등록"

@@ -16,11 +16,10 @@ const page = () => {
   const router = useRouter()
   const pathname = usePathname()
 
-  const [lessonFields, provinceList, lessonsCount] = useQueries({
+  const [lessonFields, provinceList] = useQueries({
     queries: [
       queries.lessons.fields(),
       queries.provinces.list(),
-      queries.lessons.count(),
     ],
   })
 
@@ -30,13 +29,11 @@ const page = () => {
       value: nameEn,
     })) ?? []
 
-  const totalCount = lessonsCount?.data?.totalCount
 
   return (
     <div className="mx-auto max-w-[1040px] px-4 pt-6 md:px-6 md:pt-14">
       <ListPageHeader
         title="레슨"
-        count={totalCount}
         action={
           <CreateButton
             label="레슨 등록"
