@@ -16,7 +16,7 @@ const ListPageHeader = ({ title, description, action }: Props) => {
           {title}
         </h1>
         {description && (
-          <p className="text-sm text-[#6B7684] md:text-[15px]">{description}</p>
+          <p className="break-keep text-sm text-[#6B7684] md:text-[15px]">{description}</p>
         )}
       </div>
       {action}
