@@ -9,8 +9,13 @@ import BannerContainer from "@/components/main/BannerContainer"
 import MainJobsContainer from "@/components/main/MainJobsContainer"
 import CommunicationContainer from "@/components/main/CommunicationContainer"
 import { LessonBanner } from "@/components/main/LessonBanner"
+import { Metadata } from "next"
 
 export const dynamic = "force-dynamic"
+
+export const metadata: Metadata = {
+  alternates: { canonical: "/" },
+}
 
 const page = async () => {
   const queryClient = GetQueryClient()

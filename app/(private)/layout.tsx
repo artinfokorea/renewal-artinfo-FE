@@ -2,6 +2,12 @@ import BottomNavigation from "@/components/layouts/BottomNavigation"
 import Header from "@/components/layouts/Header"
 import { ProfileNavigation } from "@/components/profile/ProfileNavigation"
 import { ProfileSideBar } from "@/components/profile/ProfileSideBar"
+import { Metadata } from "next"
+
+export const metadata: Metadata = {
+  title: "마이페이지 | 아트인포",
+  robots: { index: false, follow: false },
+}
 
 export default async function RootLayout({
   children,

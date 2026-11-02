@@ -1,9 +1,13 @@
 import PostDetailClient from "@/components/posts/PostDetailClient"
+import JsonLd from "@/components/seo/JsonLd"
 import GetQueryClient from "@/lib/GetQueryClient"
+import { breadcrumbJsonLd, postJsonLd } from "@/lib/jsonld"
 import { queries } from "@/lib/queries"
+import { DEFAULT_OG_IMAGE, htmlToPlainText, pickDescription } from "@/lib/seo"
+import { PostCategoryLabel } from "@/types/posts"
 import { Metadata } from "next"
+import { notFound } from "next/navigation"
 import React from "react"
-import { convert } from "html-to-text"
 
 interface Props {
   params: { id: string; lng?: string }
@@ -11,39 +15,66 @@ interface Props {
 
 const getPostDetail = async (id: number) => {
   const queryClient = GetQueryClient()
-  const post = await queryClient.fetchQuery(queries.posts.detail(Number(id)))
-  return post
+  try {
+    return await queryClient.fetchQuery({
+      ...queries.posts.detail(id),
+      staleTime: 60 * 1000,
+    })
+  } catch {
+    notFound()
+  }
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
-  const { id } = params
+  const data = await getPostDetail(Number(params.id))
 
-  const data = await getPostDetail(Number(id))
-
-  const pageTitle = data?.title
-  const pageDescription = convert(data?.contents || "")
-  const pageImage = data?.thumbnailImageUrl
-  const defaultImage = "/img/metadata_image.png"
+  const pageTitle = data.title
+  const category = PostCategoryLabel[data.category]
+  const description = pickDescription([
+    htmlToPlainText(data.contents, 150),
+    [category, data.authorName].filter(Boolean).join(" · "),
+  ])
+  const path = `/posts/${data.id}`
 
   return {
     title: `커뮤니티 | ${pageTitle}`,
-    description: pageDescription,
+    description,
+    alternates: { canonical: path },
     openGraph: {
       title: pageTitle,
-      description: pageDescription,
+      description,
+      url: path,
+      type: "article",
+      publishedTime: data.createdAt
+        ? new Date(data.createdAt).toISOString()
+        : undefined,
+      authors: data.authorName ? [data.authorName] : undefined,
       images: {
-        url: pageImage || defaultImage,
-        alt: "아트인포-ARTINFO",
+        url: data.thumbnailImageUrl || DEFAULT_OG_IMAGE,
+        alt: pageTitle,
       },
     },
   }
 }
+
 const page = async ({ params }: Props) => {
-  const { id } = params
+  const post = await getPostDetail(Number(params.id))
 
-  const post = await getPostDetail(Number(id))
-
-  return <PostDetailClient post={post} />
+  return (
+    <>
+      <JsonLd
+        data={[
+          postJsonLd(post),
+          breadcrumbJsonLd([
+            { name: "홈", path: "/" },
+            { name: "커뮤니티", path: "/posts" },
+            { name: post.title, path: `/posts/${post.id}` },
+          ]),
+        ]}
+      />
+      <PostDetailClient post={post} />
+    </>
+  )
 }
 
 export default page

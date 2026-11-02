@@ -4,6 +4,14 @@ import ClientProvider from "@/components/provider/ClientProvider"
 import { Metadata, Viewport } from "next"
 import Script from "next/script"
 import * as gtag from "@/lib/gtag"
+import JsonLd from "@/components/seo/JsonLd"
+import { siteJsonLd } from "@/lib/jsonld"
+import {
+  SITE_DESCRIPTION,
+  SITE_TITLE,
+  SITE_URL,
+  DEFAULT_OG_IMAGE,
+} from "@/lib/seo"
 
 const inter = Inter({
   subsets: ["latin"],
@@ -19,25 +27,50 @@ export const viewport: Viewport = {
 }
 
 export const metadata: Metadata = {
-  title: "아트인포-ARTINFO",
-  description:
-    "예술의 중심 아트인포! 예술 채용, 레슨 등 모든 예술 정보를 아트인포에서 찾아보세요",
+  metadataBase: new URL(SITE_URL),
+  title: SITE_TITLE,
+  description: SITE_DESCRIPTION,
+  applicationName: "ARTINFO",
+  keywords: [
+    "아트인포",
+    "클래식 채용",
+    "음악 채용",
+    "연주자 구인",
+    "레슨",
+    "공연 정보",
+    "예술 뉴스",
+  ],
   openGraph: {
-    title: "아트인포-ARTINFO",
-    description:
-      "예술의 중심 아트인포! 예술 채용, 레슨 등 모든 예술 정보를 아트인포에서 찾아보세요",
-    url: "http://artinfokorea.com",
+    title: SITE_TITLE,
+    description: SITE_DESCRIPTION,
+    url: SITE_URL,
     siteName: "ARTINFO",
-    locale: "ko-KR",
+    locale: "ko_KR",
     type: "website",
     images: [
       {
-        url: "https://artinfo.s3.ap-northeast-2.amazonaws.com/prod/upload/1710/images/20240710/original/3jp88xoTO8r.1720575433094.png",
-        width: 380,
-        height: 380,
-        alt: "아트인포-ARTINFO",
+        url: DEFAULT_OG_IMAGE,
+        width: 300,
+        height: 300,
+        alt: SITE_TITLE,
       },
     ],
+  },
+  twitter: {
+    card: "summary",
+    title: SITE_TITLE,
+    description: SITE_DESCRIPTION,
+    images: [DEFAULT_OG_IMAGE],
+  },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      "max-image-preview": "large",
+      "max-snippet": -1,
+    },
   },
   manifest: "/manifest.json",
   verification: {
@@ -92,6 +125,7 @@ export default function RootLayout({
           src="https://static.nid.naver.com/js/naveridlogin_js_sdk_2.0.2.js"
           defer
         />
+        <JsonLd data={siteJsonLd()} />
         <ClientProvider>{children}</ClientProvider>
       </body>
     </html>

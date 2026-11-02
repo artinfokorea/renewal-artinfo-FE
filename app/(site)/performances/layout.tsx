@@ -1,17 +1,23 @@
 import type { Metadata } from "next"
+import { DEFAULT_OG_IMAGE } from "@/lib/seo"
 
 export const metadata: Metadata = {
-  title: `공연 | 아트인포`,
-  description: `공연 | 아트인포`,
+  title: "공연 | 아트인포",
+  description:
+    "클래식, 뮤지컬, 무용, 국악 공연 일정과 출연진, 예매 정보를 아트인포에서 확인하세요.",
+  alternates: { canonical: "/performances" },
   openGraph: {
-    title: `공연 | 아트인포`,
-    description: `공연 | 아트인포`,
+    title: "공연 | 아트인포",
+    description:
+      "클래식, 뮤지컬, 무용, 국악 공연 일정과 출연진, 예매 정보를 아트인포에서 확인하세요.",
+    url: "/performances",
     images: {
-      url: "https://artinfo.s3.ap-northeast-2.amazonaws.com/prod/upload/1710/images/20240710/original/3jp88xoTO8r.1720575433094.png",
+      url: DEFAULT_OG_IMAGE,
       alt: "아트인포-ARTINFO",
     },
   },
 }
+
 const RootLayout = ({
   children,
 }: Readonly<{

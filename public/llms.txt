@@ -1,0 +1,27 @@
+# 아트인포 (ARTINFO)
+
+> 아트인포는 클래식 음악을 중심으로 한 예술 전문 플랫폼입니다. 예술단체·종교기관·대학/학원 채용, 단기 연주 구인, 1:1 레슨 강사, 공연 정보, 예술 뉴스, 커뮤니티를 제공합니다.
+
+- 사이트: https://www.artinfokorea.com
+- 언어: 한국어 (ko-KR)
+- 운영: 아트인포코리아
+
+## 주요 섹션
+
+- [채용](https://www.artinfokorea.com/jobs): 예술단체, 종교기관, 대학·학원의 정규 채용 공고. 상세 페이지는 /jobs/{id}
+- [단기 채용](https://www.artinfokorea.com/jobs?jobTimeType=PART_TIME): 연주·공연 단기 구인(오브리). 상세 페이지는 /jobs/part-time/{id}
+- [레슨](https://www.artinfokorea.com/lessons): 전공별·지역별 레슨 강사 프로필. 상세 페이지는 /lessons/{id}
+- [공연](https://www.artinfokorea.com/performances): 클래식, 뮤지컬, 무용, 국악 공연 일정과 예매 정보. 상세 페이지는 /performances/{id}
+- [뉴스](https://www.artinfokorea.com/news): 예술계 뉴스 기사. 상세 페이지는 /news/{id}
+- [커뮤니티](https://www.artinfokorea.com/posts): 후기, 질문, 홍보, 입시 게시글. 상세 페이지는 /posts/{id}
+
+## 기계 판독용 리소스
+
+- 사이트맵: https://www.artinfokorea.com/sitemap.xml
+- robots: https://www.artinfokorea.com/robots.txt
+- 각 상세 페이지에는 schema.org JSON-LD(JobPosting, NewsArticle, Event, Service, DiscussionForumPosting)가 포함되어 있습니다.
+
+## 문의
+
+- 일반 문의: https://www.artinfokorea.com/inquiry
+- 공연 기획 문의: https://www.artinfokorea.com/performance-inquiry

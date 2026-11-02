@@ -1,7 +1,12 @@
 import PerformanceDetailClient from "@/components/performances/PerformanceDetailClient"
+import JsonLd from "@/components/seo/JsonLd"
 import GetQueryClient from "@/lib/GetQueryClient"
+import filters from "@/lib/filters"
+import { breadcrumbJsonLd, performanceEventJsonLd } from "@/lib/jsonld"
 import { queries } from "@/lib/queries"
+import { DEFAULT_OG_IMAGE, htmlToPlainText, pickDescription } from "@/lib/seo"
 import { Metadata } from "next"
+import { notFound } from "next/navigation"
 
 interface Props {
   params: { id: string; lng?: string }
@@ -9,40 +14,77 @@ interface Props {
 
 const getPerformanceDetail = async (id: number) => {
   const queryClient = GetQueryClient()
-  const performance = await queryClient.fetchQuery(
-    queries.performances.detail(Number(id)),
-  )
-  return performance
+  try {
+    return await queryClient.fetchQuery({
+      ...queries.performances.detail(id),
+      staleTime: 60 * 1000,
+    })
+  } catch {
+    notFound()
+  }
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
-  const { id } = params
+  const data = await getPerformanceDetail(Number(params.id))
+  const filter = filters()
 
-  const data = await getPerformanceDetail(Number(id))
-
-  const pageTitle = `${data.cast} - ${data.title}`
-  const pageDescription = data.cast
-  const pageImage = data?.posterImageUrl
+  const pageTitle = data.cast ? `${data.title} - ${data.cast}` : data.title
+  const period = [
+    filter.YYYYMMDD(data.startAt),
+    filter.YYYYMMDD(data.endAt),
+  ]
+    .filter(Boolean)
+    .join(" ~ ")
+  const place = data.customAreaName || data.area?.name
+  const summary = [period, place, data.cast && `출연 ${data.cast}`]
+    .filter(Boolean)
+    .join(" | ")
+  const description = pickDescription([
+    [summary, htmlToPlainText(data.introduction, 100)]
+      .filter(Boolean)
+      .join(" | "),
+    summary,
+    data.title,
+  ])
+  const path = `/performances/${data.id}`
 
   return {
     title: `공연 | ${pageTitle}`,
-    description: `아트인포 | ${pageDescription}`,
+    description,
+    alternates: { canonical: path },
     openGraph: {
       title: pageTitle,
-      description: `아트인포 | ${pageDescription} `,
+      description,
+      url: path,
       images: {
-        url: pageImage,
-        alt: "아트인포-ARTINFO",
+        url: data.posterImageUrl || DEFAULT_OG_IMAGE,
+        alt: pageTitle,
       },
     },
   }
 }
+
 const page = async ({ params }: Props) => {
-  const { id } = params
+  const performance = await getPerformanceDetail(Number(params.id))
 
-  const performance = await getPerformanceDetail(Number(id))
-
-  return <PerformanceDetailClient performance={performance} />
+  return (
+    <>
+      <JsonLd
+        data={[
+          performanceEventJsonLd(performance),
+          breadcrumbJsonLd([
+            { name: "홈", path: "/" },
+            { name: "공연", path: "/performances" },
+            {
+              name: performance.title,
+              path: `/performances/${performance.id}`,
+            },
+          ]),
+        ]}
+      />
+      <PerformanceDetailClient performance={performance} />
+    </>
+  )
 }
 
 export default page
