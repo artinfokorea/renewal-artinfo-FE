@@ -1,6 +1,11 @@
 import { DetailApiResponse } from "@/interface"
 import { authApiRequest } from "."
-import { AdminBreakdown, AdminDaily, AdminOverview } from "@/types/admin"
+import {
+  AdminBreakdown,
+  AdminDaily,
+  AdminEngagement,
+  AdminOverview,
+} from "@/types/admin"
 
 /* 관리자 지표 — 서버가 users.type = ADMIN 인지 확인한다 (아니면 403) */
 export const getAdminOverview = async (): Promise<AdminOverview> => {
@@ -24,5 +29,15 @@ export const getAdminBreakdown = async (): Promise<AdminBreakdown> => {
     await authApiRequest.get<DetailApiResponse<AdminBreakdown>>(
       "/admin/stats/breakdown",
     )
+  return response.item
+}
+
+/* 방문자(비회원 포함) DAU·WAU·MAU, 일별 방문·체류, 주간 리텐션 */
+export const getAdminEngagement = async (
+  days: number,
+): Promise<AdminEngagement> => {
+  const response = await authApiRequest.get<
+    DetailApiResponse<AdminEngagement>
+  >("/admin/stats/engagement", { params: { days } })
   return response.item
 }

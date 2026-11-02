@@ -2,6 +2,7 @@ import { getAds } from "@/services/ad"
 import {
   getAdminBreakdown,
   getAdminDaily,
+  getAdminEngagement,
   getAdminOverview,
 } from "@/services/admin"
 import {
@@ -251,6 +252,10 @@ const admin = createQueryKeys("admin", {
   breakdown: () => ({
     queryKey: [""],
     queryFn: getAdminBreakdown,
+  }),
+  engagement: (days: number) => ({
+    queryKey: [days],
+    queryFn: () => getAdminEngagement(days),
   }),
 })
 

@@ -8,13 +8,23 @@ import { queries } from "@/lib/queries"
 import filters from "@/lib/filters"
 import { UserType } from "@/types/users"
 import { AdminDailyMetric } from "@/types/admin"
-import { JobTypeValues, JobType } from "@/types/jobs"
 import StatTile, { RecentDelta } from "@/components/admin/StatTile"
 import DailyBarChart, { METRIC_LABEL } from "@/components/admin/DailyBarChart"
 import BarList from "@/components/admin/BarList"
+import RetentionTable from "@/components/admin/RetentionTable"
+import { formatDuration } from "@/components/admin/format"
 
 const RANGES = [7, 30, 90] as const
-const METRICS: AdminDailyMetric[] = ["activeUsers", "signups", "jobs", "posts", "comments"]
+/** 콘텐츠 일별 지표 (로그인 기록 기반 지표는 방문자 활동으로 대체) */
+const CONTENT_METRICS: AdminDailyMetric[] = ["signups", "jobs", "posts", "comments"]
+
+type EngagementMetric = "visitors" | "members" | "avgSeconds"
+const ENGAGEMENT_METRICS: EngagementMetric[] = ["visitors", "members", "avgSeconds"]
+const ENGAGEMENT_LABEL: Record<EngagementMetric, string> = {
+  visitors: "방문자",
+  members: "회원 방문자",
+  avgSeconds: "평균 체류시간",
+}
 
 const LOGIN_TYPE_LABEL: Record<string, string> = {
   EMAIL: "이메일",
@@ -24,18 +34,26 @@ const LOGIN_TYPE_LABEL: Record<string, string> = {
   APPLE: "애플",
 }
 
-const JOB_TYPE_LABEL: Record<string, string> = {
-  ...JobTypeValues,
-  [JobType.AMATEUR]: "아마추어",
-  [JobType.YOUTH]: "소년·소녀",
-  PART_TIME: "단기",
-}
-
-const Card = ({ title, children }: { title: string; children: React.ReactNode }) => (
+const Card = ({
+  title,
+  description,
+  children,
+}: {
+  title: string
+  description?: string
+  children: React.ReactNode
+}) => (
   <section className="flex flex-col gap-4 rounded-2xl border border-[#EEF0F3] bg-white p-5">
-    <h2 className="text-base font-bold text-[#191F28]">{title}</h2>
+    <div className="flex flex-col gap-1">
+      <h2 className="text-base font-bold text-[#191F28]">{title}</h2>
+      {description && <p className="text-[13px] text-[#8B95A1]">{description}</p>}
+    </div>
     {children}
   </section>
+)
+
+const SectionTitle = ({ children }: { children: React.ReactNode }) => (
+  <h2 className="mt-10 text-lg font-bold text-[#191F28] first:mt-0">{children}</h2>
 )
 
 const Tabs = <T extends string | number>({
@@ -70,6 +88,12 @@ const Tabs = <T extends string | number>({
   </div>
 )
 
+const memberSub = (n?: number) => (
+  <>
+    회원 <strong className="font-semibold text-[#333D4B]">{n?.toLocaleString() ?? "–"}</strong>
+  </>
+)
+
 /** 관리자 지표 대시보드 — 서버가 ADMIN 여부를 다시 확인한다 */
 const AdminPage = () => {
   const filter = filters()
@@ -80,11 +104,17 @@ const AdminPage = () => {
   })
   const isAdmin = me?.type === UserType.ADMIN
 
+  const [engagementDays, setEngagementDays] = useState<(typeof RANGES)[number]>(30)
+  const [engagementMetric, setEngagementMetric] = useState<EngagementMetric>("visitors")
   const [days, setDays] = useState<(typeof RANGES)[number]>(30)
-  const [metric, setMetric] = useState<AdminDailyMetric>("activeUsers")
+  const [metric, setMetric] = useState<AdminDailyMetric>("signups")
 
   const { data: overview, error: overviewError } = useQuery({
     ...queries.admin.overview(),
+    enabled: isAdmin,
+  })
+  const { data: engagement } = useQuery({
+    ...queries.admin.engagement(engagementDays),
     enabled: isAdmin,
   })
   const { data: daily } = useQuery({ ...queries.admin.daily(days), enabled: isAdmin })
@@ -115,6 +145,8 @@ const AdminPage = () => {
     )
   }
 
+  const s = engagement?.summary
+
   return (
     <div className="mx-auto max-w-[1040px] px-4 pt-6 md:px-6 md:pt-14">
       <div className="flex items-baseline justify-between gap-4">
@@ -122,114 +154,153 @@ const AdminPage = () => {
         <span className="text-[13px] text-[#8B95A1]">한국 시간 기준</span>
       </div>
 
-      {/* 요약 */}
-      <section aria-label="요약 지표" className="mt-6 grid grid-cols-2 gap-3 md:grid-cols-4">
-        <StatTile
-          label="회원"
-          value={overview?.users.total}
-          sub={<RecentDelta last7d={overview?.users.last7d} last30d={overview?.users.last30d} />}
-        />
-        <StatTile
-          label="로그인한 사용자 (30일)"
-          value={overview?.activeUsers.last30d}
-          sub={
-            <>
-              7일 <strong className="font-semibold text-[#333D4B]">{overview?.activeUsers.last7d?.toLocaleString() ?? "–"}</strong>
-            </>
-          }
-        />
-        <StatTile
-          label="진행 중 채용"
-          value={overview?.activeJobs}
-          sub={<RecentDelta last7d={overview?.jobs.last7d} last30d={overview?.jobs.last30d} />}
-        />
-        <StatTile
-          label="나눔 글"
-          value={overview?.posts.total}
-          sub={<RecentDelta last7d={overview?.posts.last7d} last30d={overview?.posts.last30d} />}
-        />
-        <StatTile label="댓글" value={overview?.comments.total} sub={<>7일 <strong className="font-semibold text-[#333D4B]">+{overview?.comments.last7d?.toLocaleString() ?? "–"}</strong></>} />
-        <StatTile label="레슨" value={overview?.lessons} />
-        <StatTile label="공연 (종료 전)" value={overview?.upcomingPerformances} sub={<>전체 {overview?.performances?.toLocaleString() ?? "–"}</>} />
-        <StatTile label="문의" value={overview?.inquiries.total} sub={<>30일 <strong className="font-semibold text-[#333D4B]">+{overview?.inquiries.last30d?.toLocaleString() ?? "–"}</strong></>} />
-      </section>
-
-      {/* 일별 추이 */}
-      <div className="mt-6">
-        <Card title="일별 추이">
-          <div className="flex flex-col gap-2 md:flex-row md:items-center md:justify-between">
-            <Tabs label="지표" items={METRICS} value={metric} onChange={setMetric} render={m => METRIC_LABEL[m]} />
-            <Tabs label="기간" items={RANGES} value={days} onChange={setDays} render={d => `${d}일`} />
+      {/* 방문자 활동 */}
+      <div className="mt-6 flex flex-col gap-4">
+        <SectionTitle>방문자 활동 (비회원 포함)</SectionTitle>
+        <section aria-label="방문자 요약" className="grid grid-cols-2 gap-3 md:grid-cols-4">
+          <StatTile label="오늘 방문자 (DAU)" value={s?.dau} sub={memberSub(s?.memberDau)} />
+          <StatTile label="7일 방문자 (WAU)" value={s?.wau} sub={memberSub(s?.memberWau)} />
+          <StatTile label="30일 방문자 (MAU)" value={s?.mau} sub={memberSub(s?.memberMau)} />
+          <div className="flex flex-col gap-1.5 rounded-2xl border border-[#EEF0F3] bg-white p-4 md:p-5">
+            <span className="text-[13px] font-medium text-[#6B7684]">평균 체류시간 (7일)</span>
+            <span className="text-2xl font-bold tabular-nums tracking-tight text-[#191F28] md:text-[28px]">
+              {s ? formatDuration(s.avgSeconds7d) : "–"}
+            </span>
+            <span className="text-[13px] text-[#6B7684]">방문자 1명·하루 기준</span>
           </div>
-          {daily ? (
-            <DailyBarChart points={daily.points} metric={metric} />
+        </section>
+
+        <Card title="방문 추이" description="탭이 화면에 보인 시간만 체류시간으로 셉니다.">
+          <div className="flex flex-col gap-2 md:flex-row md:items-center md:justify-between">
+            <Tabs
+              label="방문 지표"
+              items={ENGAGEMENT_METRICS}
+              value={engagementMetric}
+              onChange={setEngagementMetric}
+              render={m => ENGAGEMENT_LABEL[m]}
+            />
+            <Tabs label="기간" items={RANGES} value={engagementDays} onChange={setEngagementDays} render={d => `${d}일`} />
+          </div>
+          {engagement ? (
+            <DailyBarChart
+              points={engagement.daily}
+              valueKey={engagementMetric}
+              label={ENGAGEMENT_LABEL[engagementMetric]}
+              format={engagementMetric === "avgSeconds" ? formatDuration : undefined}
+              summary={engagementMetric === "avgSeconds" ? "average" : "sum"}
+            />
           ) : (
             <div className="h-[200px] animate-pulse rounded-xl bg-[#F7F8FA]" />
           )}
         </Card>
-      </div>
 
-      {/* 분포 */}
-      <div className="mt-6 grid grid-cols-1 gap-6 md:grid-cols-2">
-        <Card title="로그인 방식 (최근 30일 사용자)">
-          <BarList
-            items={(breakdown?.loginsByType ?? []).map(i => ({
-              label: LOGIN_TYPE_LABEL[i.type] ?? i.type,
-              count: i.count,
-            }))}
-          />
-        </Card>
-        <Card title="진행 중 채용 유형">
-          <BarList
-            items={(breakdown?.jobsByType ?? []).map(i => ({
-              label: JOB_TYPE_LABEL[i.type] ?? i.type,
-              count: i.count,
-            }))}
-          />
+        <Card
+          title="주간 리텐션"
+          description="그 주에 처음 온 방문자 중 1~4주 뒤 다시 온 비율. 같은 브라우저 기준입니다."
+        >
+          <RetentionTable cohorts={engagement?.retention ?? []} />
         </Card>
       </div>
 
-      {/* 목록 */}
-      <div className="mt-6 grid grid-cols-1 gap-6 md:grid-cols-3">
-        <Card title="최근 가입">
-          <ul className="flex flex-col divide-y divide-[#F2F4F6]">
-            {breakdown?.recentUsers.map(u => (
-              <li key={u.id} className="flex items-baseline justify-between gap-3 py-2 text-sm">
-                <span className="min-w-0 truncate text-[#191F28]">
-                  {u.nickname}
-                  <span className="ml-1.5 text-[12px] text-[#8B95A1]">{u.email}</span>
-                </span>
-                <span className="shrink-0 text-[12px] text-[#8B95A1]">{filter.FROM_NOW_COMMENT(u.createdAt)}</span>
-              </li>
-            ))}
-          </ul>
+      {/* 회원·콘텐츠 */}
+      <div className="mt-4 flex flex-col gap-4">
+        <SectionTitle>회원·콘텐츠</SectionTitle>
+        <section aria-label="콘텐츠 요약" className="grid grid-cols-2 gap-3 md:grid-cols-4">
+          <StatTile
+            label="회원"
+            value={overview?.users.total}
+            sub={<RecentDelta last7d={overview?.users.last7d} last30d={overview?.users.last30d} />}
+          />
+          <StatTile
+            label="채용 공고"
+            value={overview?.jobs.total}
+            sub={<RecentDelta last7d={overview?.jobs.last7d} last30d={overview?.jobs.last30d} />}
+          />
+          <StatTile
+            label="나눔 글"
+            value={overview?.posts.total}
+            sub={<RecentDelta last7d={overview?.posts.last7d} last30d={overview?.posts.last30d} />}
+          />
+          <StatTile
+            label="댓글"
+            value={overview?.comments.total}
+            sub={<>7일 <strong className="font-semibold text-[#333D4B]">+{overview?.comments.last7d?.toLocaleString() ?? "–"}</strong></>}
+          />
+          <StatTile label="레슨" value={overview?.lessons} />
+          <StatTile
+            label="공연 (종료 전)"
+            value={overview?.upcomingPerformances}
+            sub={<>전체 {overview?.performances?.toLocaleString() ?? "–"}</>}
+          />
+          <StatTile label="뉴스" value={overview?.news} />
+          <StatTile
+            label="문의"
+            value={overview?.inquiries.total}
+            sub={<>30일 <strong className="font-semibold text-[#333D4B]">+{overview?.inquiries.last30d?.toLocaleString() ?? "–"}</strong></>}
+          />
+        </section>
+
+        <Card title="콘텐츠 일별 추이">
+          <div className="flex flex-col gap-2 md:flex-row md:items-center md:justify-between">
+            <Tabs label="지표" items={CONTENT_METRICS} value={metric} onChange={setMetric} render={m => METRIC_LABEL[m]} />
+            <Tabs label="기간" items={RANGES} value={days} onChange={setDays} render={d => `${d}일`} />
+          </div>
+          {daily ? (
+            <DailyBarChart points={daily.points} valueKey={metric} label={METRIC_LABEL[metric]} />
+          ) : (
+            <div className="h-[200px] animate-pulse rounded-xl bg-[#F7F8FA]" />
+          )}
         </Card>
-        <Card title="인기 나눔 글 (30일)">
-          <ul className="flex flex-col divide-y divide-[#F2F4F6]">
-            {breakdown?.topPosts.length === 0 && <li className="py-2 text-sm text-coolgray">글이 없습니다.</li>}
-            {breakdown?.topPosts.map(p => (
-              <li key={p.id} className="py-2 text-sm">
-                <Link href={`/posts/${p.id}`} className="flex items-baseline justify-between gap-3 hover:text-main">
-                  <span className="min-w-0 truncate">{p.title}</span>
-                  <span className="shrink-0 tabular-nums text-[12px] text-[#8B95A1]">조회 {p.viewCount.toLocaleString()}</span>
-                </Link>
-              </li>
-            ))}
-          </ul>
-        </Card>
-        <Card title="최근 문의">
-          <ul className="flex flex-col divide-y divide-[#F2F4F6]">
-            {breakdown?.recentInquiries.length === 0 && <li className="py-2 text-sm text-coolgray">문의가 없습니다.</li>}
-            {breakdown?.recentInquiries.map(i => (
-              <li key={i.id} className="flex flex-col gap-0.5 py-2 text-sm">
-                <span className="truncate text-[#191F28]">{i.title}</span>
-                <span className="text-[12px] text-[#8B95A1]">
-                  {i.email} · {filter.FROM_NOW_COMMENT(i.createdAt)}
-                </span>
-              </li>
-            ))}
-          </ul>
-        </Card>
+
+        <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+          <Card title="로그인 방식 (최근 30일 사용자)">
+            <BarList
+              items={(breakdown?.loginsByType ?? []).map(i => ({
+                label: LOGIN_TYPE_LABEL[i.type] ?? i.type,
+                count: i.count,
+              }))}
+            />
+          </Card>
+          <Card title="최근 가입">
+            <ul className="flex flex-col divide-y divide-[#F2F4F6]">
+              {breakdown?.recentUsers.map(u => (
+                <li key={u.id} className="flex items-baseline justify-between gap-3 py-2 text-sm">
+                  <span className="min-w-0 truncate text-[#191F28]">
+                    {u.nickname}
+                    <span className="ml-1.5 text-[12px] text-[#8B95A1]">{u.email}</span>
+                  </span>
+                  <span className="shrink-0 text-[12px] text-[#8B95A1]">{filter.FROM_NOW_COMMENT(u.createdAt)}</span>
+                </li>
+              ))}
+            </ul>
+          </Card>
+          <Card title="인기 나눔 글 (30일)">
+            <ul className="flex flex-col divide-y divide-[#F2F4F6]">
+              {breakdown?.topPosts.length === 0 && <li className="py-2 text-sm text-coolgray">글이 없습니다.</li>}
+              {breakdown?.topPosts.map(p => (
+                <li key={p.id} className="py-2 text-sm">
+                  <Link href={`/posts/${p.id}`} className="flex items-baseline justify-between gap-3 hover:text-main">
+                    <span className="min-w-0 truncate">{p.title}</span>
+                    <span className="shrink-0 tabular-nums text-[12px] text-[#8B95A1]">조회 {p.viewCount.toLocaleString()}</span>
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </Card>
+          <Card title="최근 문의">
+            <ul className="flex flex-col divide-y divide-[#F2F4F6]">
+              {breakdown?.recentInquiries.length === 0 && <li className="py-2 text-sm text-coolgray">문의가 없습니다.</li>}
+              {breakdown?.recentInquiries.map(i => (
+                <li key={i.id} className="flex flex-col gap-0.5 py-2 text-sm">
+                  <span className="truncate text-[#191F28]">{i.title}</span>
+                  <span className="text-[12px] text-[#8B95A1]">
+                    {i.email} · {filter.FROM_NOW_COMMENT(i.createdAt)}
+                  </span>
+                </li>
+              ))}
+            </ul>
+          </Card>
+        </div>
       </div>
     </div>
   )

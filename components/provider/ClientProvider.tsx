@@ -5,6 +5,7 @@ import { QueryClientProvider, QueryClient } from "@tanstack/react-query"
 import { SessionProvider } from "next-auth/react"
 import { Toaster } from "react-hot-toast"
 import { ThemeProvider } from "@material-tailwind/react"
+import ActivityTracker from "./ActivityTracker"
 
 interface Props {
   children: React.ReactNode
@@ -25,6 +26,7 @@ const ClientProvider = ({ children }: Props) => {
     <QueryClientProvider client={client}>
       <ThemeProvider>
         <SessionProvider>
+          <ActivityTracker />
           {children}
           <Toaster />
         </SessionProvider>

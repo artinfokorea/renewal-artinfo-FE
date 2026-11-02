@@ -1,7 +1,7 @@
 "use client"
 
 import React, { useState } from "react"
-import { AdminDailyMetric, AdminDailyPoint } from "@/types/admin"
+import { AdminDailyMetric } from "@/types/admin"
 
 export const METRIC_LABEL: Record<AdminDailyMetric, string> = {
   activeUsers: "로그인한 사용자",
@@ -11,15 +11,23 @@ export const METRIC_LABEL: Record<AdminDailyMetric, string> = {
   comments: "새 댓글",
 }
 
-interface Props {
-  points: AdminDailyPoint[]
-  metric: AdminDailyMetric
+interface Props<T extends { date: string }> {
+  points: T[]
+  /** 그릴 값의 키 (예: signups, visitors) */
+  valueKey: keyof T & string
+  /** 지표 이름 (툴팁·표·접근성 라벨) */
+  label: string
+  /** 값 표시 형식 (기본: 천 단위 쉼표) */
+  format?: (value: number) => string
+  /** 기간 합계 대신 평균을 보여줄지 (체류시간처럼 더하면 안 되는 값) */
+  summary?: "sum" | "average"
 }
+
+const defaultFormat = (value: number) => value.toLocaleString()
 
 const HEIGHT = 200
 const PAD_TOP = 12
 const PAD_BOTTOM = 24
-const PAD_LEFT = 36
 
 /** 보기 좋은 눈금 최대값 (1, 2, 5 × 10ⁿ) */
 const niceMax = (max: number) => {
@@ -41,29 +49,48 @@ const shortDate = (date: string) => `${Number(date.slice(5, 7))}.${Number(date.s
  * 일별 막대 차트 (지표 하나). 막대에 마우스를 올리면 날짜와 값을 보여주고,
  * 같은 데이터를 표로도 볼 수 있다.
  */
-const DailyBarChart = ({ points, metric }: Props) => {
+const DailyBarChart = <T extends { date: string }>({
+  points,
+  valueKey,
+  label,
+  format = defaultFormat,
+  summary = "sum",
+}: Props<T>) => {
   const [hover, setHover] = useState<number | null>(null)
   const [showTable, setShowTable] = useState(false)
   const width = 720
-  const values = points.map(p => p[metric])
+  const values = points.map(p => Number(p[valueKey]) || 0)
   const max = niceMax(Math.max(0, ...values))
+  const tickValues = [0, max / 4, max / 2, (max * 3) / 4, max]
+  // 눈금 글자(예: "1분 40초")가 잘리지 않게 왼쪽 여백을 글자 길이에 맞춘다
+  const PAD_LEFT = Math.max(
+    36,
+    ...tickValues.map(t => format(Math.round(t)).length * 11 + 12),
+  )
   const plotW = width - PAD_LEFT
   const plotH = HEIGHT - PAD_TOP - PAD_BOTTOM
   const slot = plotW / Math.max(points.length, 1)
   const barW = Math.max(2, Math.min(18, slot - 2))
   const y = (v: number) => PAD_TOP + plotH - (v / max) * plotH
-  const ticks = [0, max / 4, max / 2, (max * 3) / 4, max]
+  const ticks = tickValues
   const labelEvery = Math.ceil(points.length / 8)
   const total = values.reduce((a, b) => a + b, 0)
+  const nonZero = values.filter(v => v > 0)
+  const headline =
+    summary === "sum"
+      ? total
+      : nonZero.length
+        ? Math.round(nonZero.reduce((a, b) => a + b, 0) / nonZero.length)
+        : 0
   const hovered = hover !== null ? points[hover] : null
 
   return (
     <div>
       <div className="mb-3 flex items-baseline justify-between gap-3">
         <span className="text-sm text-[#6B7684]">
-          기간 합계{" "}
+          {summary === "sum" ? "기간 합계" : "기간 평균"}{" "}
           <strong className="text-base font-bold tabular-nums text-[#191F28]">
-            {total.toLocaleString()}
+            {format(headline)}
           </strong>
         </span>
         <button
@@ -79,11 +106,11 @@ const DailyBarChart = ({ points, metric }: Props) => {
       {showTable ? (
         <div className="max-h-[260px] overflow-auto rounded-xl border border-[#EEF0F3]">
           <table className="w-full text-sm">
-            <caption className="sr-only">{METRIC_LABEL[metric]} 일별 표</caption>
+            <caption className="sr-only">{label} 일별 표</caption>
             <thead className="sticky top-0 bg-[#F7F8FA] text-[#6B7684]">
               <tr>
                 <th className="px-3 py-2 text-left font-medium">날짜</th>
-                <th className="px-3 py-2 text-right font-medium">{METRIC_LABEL[metric]}</th>
+                <th className="px-3 py-2 text-right font-medium">{label}</th>
               </tr>
             </thead>
             <tbody>
@@ -91,7 +118,7 @@ const DailyBarChart = ({ points, metric }: Props) => {
                 <tr key={p.date} className="border-t border-[#F2F4F6]">
                   <td className="px-3 py-1.5 text-[#4E5968]">{p.date}</td>
                   <td className="px-3 py-1.5 text-right tabular-nums text-[#191F28]">
-                    {p[metric].toLocaleString()}
+                    {format(Number(p[valueKey]) || 0)}
                   </td>
                 </tr>
               ))}
@@ -104,7 +131,7 @@ const DailyBarChart = ({ points, metric }: Props) => {
             viewBox={`0 0 ${width} ${HEIGHT}`}
             className="h-auto w-full"
             role="img"
-            aria-label={`${METRIC_LABEL[metric]} 일별 막대 차트, 기간 합계 ${total}`}
+            aria-label={`${label} 일별 막대 차트`}
             onMouseLeave={() => setHover(null)}
           >
             {ticks.map(t => (
@@ -124,12 +151,12 @@ const DailyBarChart = ({ points, metric }: Props) => {
                   fontSize={11}
                   fill="#8B95A1"
                 >
-                  {Math.round(t).toLocaleString()}
+                  {format(Math.round(t))}
                 </text>
               </g>
             ))}
             {points.map((p, i) => {
-              const v = p[metric]
+              const v = Number(p[valueKey]) || 0
               const cx = PAD_LEFT + slot * i + slot / 2
               const top = y(v)
               const h = PAD_TOP + plotH - top
@@ -165,8 +192,8 @@ const DailyBarChart = ({ points, metric }: Props) => {
                 left: `${((PAD_LEFT + slot * hover + slot / 2) / width) * 100}%`,
               }}
             >
-              {hovered.date} · {METRIC_LABEL[metric]}{" "}
-              <strong className="tabular-nums">{hovered[metric].toLocaleString()}</strong>
+              {hovered.date} · {label}{" "}
+              <strong className="tabular-nums">{format(Number(hovered[valueKey]) || 0)}</strong>
             </div>
           )}
         </div>
