@@ -26,7 +26,7 @@ const page = () => {
   })
 
   return (
-    <div className="mx-auto max-w-[760px] px-4 pt-6 md:px-6 md:pt-14">
+    <div className="mx-auto max-w-[1040px] px-4 pt-6 md:px-6 md:pt-14">
       <ListPageHeader
         title="나눔"
         action={
