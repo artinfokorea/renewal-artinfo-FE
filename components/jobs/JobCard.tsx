@@ -46,7 +46,7 @@ const JobCard = forwardRef<HTMLDivElement, Props>(
           prefetch={false}
           className="group flex gap-3.5 py-4 md:items-center md:gap-5 md:py-[18px]"
         >
-          <div className="relative h-[66px] w-[110px] shrink-0 overflow-hidden rounded-lg bg-[#F7F8FA] md:h-24 md:w-40 md:rounded-[10px]">
+          <div className="relative h-[66px] w-[110px] shrink-0 overflow-hidden rounded-lg border border-[#EEF0F3] bg-white md:h-24 md:w-40 md:rounded-[10px]">
             {showImage ? (
               <FallbackImage
                 src={job.imageUrl}
