@@ -36,7 +36,9 @@ const uuidV4 = () => {
   const bytes = c.getRandomValues(new Uint8Array(16))
   bytes[6] = (bytes[6] & 0x0f) | 0x40
   bytes[8] = (bytes[8] & 0x3f) | 0x80
-  const hex = Array.from(bytes, (b: number) => b.toString(16).padStart(2, "0")).join("")
+  const hex = Array.from(bytes, (b: number) =>
+    b.toString(16).padStart(2, "0"),
+  ).join("")
   return `${hex.slice(0, 8)}-${hex.slice(8, 12)}-${hex.slice(12, 16)}-${hex.slice(16, 20)}-${hex.slice(20)}`
 }
 
@@ -74,7 +76,8 @@ const ActivityTracker = () => {
   useEffect(() => {
     // 로컬·미리보기 배포에서 운영 지표가 오염되지 않게 실제 도메인에서만 보낸다
     const host = window.location.hostname
-    if (host !== "artinfokorea.com" && !host.endsWith(".artinfokorea.com")) return
+    if (host !== "artinfokorea.com" && !host.endsWith(".artinfokorea.com"))
+      return
     if (isBot()) return
     const baseURL = process.env.REST_API_BASE_URL
     if (!baseURL) return
@@ -93,6 +96,8 @@ const ActivityTracker = () => {
     /** 이번 탭에서 본 페이지 수 (첫 페이지 포함) */
     let totalPageViews = 0
     let pendingPageViews = 0
+    /** 지난 전송 이후 본 경로 (순서대로) — 서버가 그날 동선으로 쌓는다 */
+    let pendingPaths: string[] = []
     /** 첫 전송에 붙일 유입 정보 — 서버가 그날 첫 값만 남긴다 */
     const landingPath = window.location.pathname
     const referrer = document.referrer
@@ -120,11 +125,15 @@ const ActivityTracker = () => {
       const seconds = Math.round(pendingMs / 1000)
       const pageViews = pendingPageViews
       if (!newSession && seconds === 0 && pageViews === 0) return
+      const paths = pendingPaths
       pendingMs = 0
       pendingPageViews = 0
+      pendingPaths = []
       storage.set(LAST_PING_KEY, String(Date.now()))
 
-      const headers: Record<string, string> = { "Content-Type": "application/json" }
+      const headers: Record<string, string> = {
+        "Content-Type": "application/json",
+      }
       if (tokenRef.current) headers.Authorization = `Bearer ${tokenRef.current}`
 
       // 지표 전송 실패는 사용자에게 영향이 없어야 한다 — 오류는 무시
@@ -139,6 +148,7 @@ const ActivityTracker = () => {
           path: landingPath,
           // 지금 보고 있는 페이지 — 서버가 그날 마지막 값을 이탈 페이지로 남긴다
           currentPath: window.location.pathname,
+          paths,
           referrer,
         }),
         keepalive,
@@ -158,9 +168,10 @@ const ActivityTracker = () => {
 
     const onPageHide = () => send(true)
 
-    onPageViewRef.current = () => {
+    onPageViewRef.current = (path: string) => {
       totalPageViews += 1
       pendingPageViews += 1
+      pendingPaths.push(path)
       // 두 번째 페이지를 보는 순간 참여 기준을 넘으므로 바로 보낸다
       if (!engaged && totalPageViews >= ENGAGED_PAGE_VIEWS) send()
     }

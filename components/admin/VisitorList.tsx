@@ -1,6 +1,6 @@
 "use client"
 
-import React, { useState } from "react"
+import React, { Fragment, useState } from "react"
 import { useInfiniteQuery } from "@tanstack/react-query"
 import { getAdminVisitors } from "@/services/admin"
 import { AdminVisitor } from "@/types/admin"
@@ -9,49 +9,103 @@ import { formatDuration } from "./format"
 const PAGE_SIZE = 50
 const KST_OFFSET_MS = 9 * 60 * 60 * 1000
 
-const kstToday = () => new Date(Date.now() + KST_OFFSET_MS).toISOString().slice(0, 10)
+const kstToday = () =>
+  new Date(Date.now() + KST_OFFSET_MS).toISOString().slice(0, 10)
 const shiftDay = (day: string, n: number) =>
-  new Date(new Date(`${day}T00:00:00Z`).getTime() + n * 86400000).toISOString().slice(0, 10)
+  new Date(new Date(`${day}T00:00:00Z`).getTime() + n * 86400000)
+    .toISOString()
+    .slice(0, 10)
 /** DB 의 timestamp(UTC) → 한국 시각 HH:mm */
 const kstTime = (iso: string) => {
-  const d = new Date(new Date(iso.endsWith("Z") ? iso : `${iso}Z`).getTime() + KST_OFFSET_MS)
+  const d = new Date(
+    new Date(iso.endsWith("Z") ? iso : `${iso}Z`).getTime() + KST_OFFSET_MS,
+  )
   return d.toISOString().slice(11, 16)
 }
 
-const Row = ({ v }: { v: AdminVisitor }) => (
-  <tr className="border-t border-[#F2F4F6] align-top">
-    <td className="whitespace-nowrap px-3 py-2.5 tabular-nums text-[#4E5968]">
-      {kstTime(v.firstSeenAt)}–{kstTime(v.lastSeenAt)}
-    </td>
-    <td className="px-3 py-2.5">
-      {v.nickname ? (
-        <span className="font-medium text-[#191F28]">{v.nickname}</span>
-      ) : (
-        <span className="text-[#8B95A1]">비회원</span>
+const Row = ({ v }: { v: AdminVisitor }) => {
+  const [open, setOpen] = useState(false)
+  const paths = v.paths ?? []
+  return (
+    <Fragment>
+      <tr className="border-t border-[#F2F4F6] align-top">
+        <td className="whitespace-nowrap px-3 py-2.5 tabular-nums text-[#4E5968]">
+          {kstTime(v.firstSeenAt)}–{kstTime(v.lastSeenAt)}
+        </td>
+        <td className="px-3 py-2.5">
+          {v.nickname ? (
+            <span className="font-medium text-[#191F28]">{v.nickname}</span>
+          ) : (
+            <span className="text-[#8B95A1]">비회원</span>
+          )}
+          <span className="font-mono ml-1.5 text-[11px] text-[#B0B8C1]">
+            {v.visitorId}
+          </span>
+          {!v.engaged && (
+            <span className="ml-1.5 rounded bg-[#F2F4F6] px-1.5 py-0.5 text-[11px] text-[#6B7684]">
+              미참여
+            </span>
+          )}
+        </td>
+        <td
+          className="whitespace-nowrap px-3 py-2.5 text-[#333D4B]"
+          title={v.userAgent ?? undefined}
+        >
+          {v.device} · {v.os} · {v.browser}
+        </td>
+        <td
+          className="max-w-[160px] truncate px-3 py-2.5 text-[#4E5968]"
+          title={v.referrerHost ?? undefined}
+        >
+          {v.referrerHost ?? <span className="text-[#B0B8C1]">직접·내부</span>}
+        </td>
+        <td
+          className="max-w-[180px] truncate px-3 py-2.5 text-[#4E5968]"
+          title={v.landingPath ?? undefined}
+        >
+          {v.landingPath ?? "–"}
+        </td>
+        <td
+          className="max-w-[180px] truncate px-3 py-2.5 text-[#4E5968]"
+          title={v.exitPath ?? undefined}
+        >
+          {v.exitPath ?? "–"}
+        </td>
+        <td className="whitespace-nowrap px-3 py-2.5 text-right tabular-nums text-[#191F28]">
+          {paths.length > 0 ? (
+            <button
+              type="button"
+              onClick={() => setOpen(o => !o)}
+              aria-expanded={open}
+              className="rounded px-1.5 py-0.5 text-[#0064FF] hover:bg-[#F2F4F6]"
+              title="거친 페이지 보기"
+            >
+              {v.pageViews} {open ? "▴" : "▾"}
+            </button>
+          ) : (
+            v.pageViews
+          )}
+        </td>
+        <td className="whitespace-nowrap px-3 py-2.5 text-right tabular-nums text-[#191F28]">
+          {formatDuration(v.activeSeconds)}
+        </td>
+      </tr>
+      {open && (
+        <tr className="bg-[#FAFBFC]">
+          <td colSpan={8} className="px-3 py-2 text-[12px] text-[#4E5968]">
+            <span className="mr-1.5 text-[#8B95A1]">동선 {paths.length}</span>
+            {paths.map((p, i) => (
+              <Fragment key={`${i}-${p}`}>
+                {i > 0 && <span className="mx-1 text-[#B0B8C1]">→</span>}
+                <span className="font-mono">{p}</span>
+              </Fragment>
+            ))}
+          </td>
+        </tr>
       )}
-      <span className="ml-1.5 font-mono text-[11px] text-[#B0B8C1]">{v.visitorId}</span>
-      {!v.engaged && (
-        <span className="ml-1.5 rounded bg-[#F2F4F6] px-1.5 py-0.5 text-[11px] text-[#6B7684]">미참여</span>
-      )}
-    </td>
-    <td className="whitespace-nowrap px-3 py-2.5 text-[#333D4B]" title={v.userAgent ?? undefined}>
-      {v.device} · {v.os} · {v.browser}
-    </td>
-    <td className="max-w-[160px] truncate px-3 py-2.5 text-[#4E5968]" title={v.referrerHost ?? undefined}>
-      {v.referrerHost ?? <span className="text-[#B0B8C1]">직접·내부</span>}
-    </td>
-    <td className="max-w-[180px] truncate px-3 py-2.5 text-[#4E5968]" title={v.landingPath ?? undefined}>
-      {v.landingPath ?? "–"}
-    </td>
-    <td className="max-w-[180px] truncate px-3 py-2.5 text-[#4E5968]" title={v.exitPath ?? undefined}>
-      {v.exitPath ?? "–"}
-    </td>
-    <td className="whitespace-nowrap px-3 py-2.5 text-right tabular-nums text-[#191F28]">{v.pageViews}</td>
-    <td className="whitespace-nowrap px-3 py-2.5 text-right tabular-nums text-[#191F28]">
-      {formatDuration(v.activeSeconds)}
-    </td>
-  </tr>
-)
+    </Fragment>
+  )
+}
 
 /**
  * 날짜별 방문자 목록 — 한 줄이 방문자 1명(브라우저 1개)의 그날 기록.
@@ -61,15 +115,16 @@ const VisitorList = () => {
   const [day, setDay] = useState(kstToday)
   const today = kstToday()
 
-  const { data, fetchNextPage, hasNextPage, isFetchingNextPage, isLoading } = useInfiniteQuery({
-    queryKey: ["admin", "visitors", day],
-    queryFn: ({ pageParam }) => getAdminVisitors(day, pageParam),
-    initialPageParam: 0,
-    getNextPageParam: (last, pages) => {
-      const loaded = pages.reduce((n, p) => n + p.visitors.length, 0)
-      return loaded < last.total ? loaded : undefined
-    },
-  })
+  const { data, fetchNextPage, hasNextPage, isFetchingNextPage, isLoading } =
+    useInfiniteQuery({
+      queryKey: ["admin", "visitors", day],
+      queryFn: ({ pageParam }) => getAdminVisitors(day, pageParam),
+      initialPageParam: 0,
+      getNextPageParam: (last, pages) => {
+        const loaded = pages.reduce((n, p) => n + p.visitors.length, 0)
+        return loaded < last.total ? loaded : undefined
+      },
+    })
 
   const visitors = data?.pages.flatMap(p => p.visitors) ?? []
   const total = data?.pages[0]?.total ?? 0
@@ -86,7 +141,9 @@ const VisitorList = () => {
           >
             ‹
           </button>
-          <span className="min-w-[96px] text-center text-sm font-bold tabular-nums text-[#191F28]">{day}</span>
+          <span className="min-w-[96px] text-center text-sm font-bold tabular-nums text-[#191F28]">
+            {day}
+          </span>
           <button
             type="button"
             aria-label="다음날"
@@ -98,7 +155,11 @@ const VisitorList = () => {
           </button>
         </div>
         <span className="text-[13px] text-[#6B7684]">
-          방문자 <strong className="tabular-nums text-[#191F28]">{total.toLocaleString()}</strong>명
+          방문자{" "}
+          <strong className="tabular-nums text-[#191F28]">
+            {total.toLocaleString()}
+          </strong>
+          명
         </span>
       </div>
 
@@ -109,7 +170,9 @@ const VisitorList = () => {
             <tr>
               <th className="px-3 py-2 text-left font-medium">시간</th>
               <th className="px-3 py-2 text-left font-medium">방문자</th>
-              <th className="px-3 py-2 text-left font-medium">기기 · OS · 브라우저</th>
+              <th className="px-3 py-2 text-left font-medium">
+                기기 · OS · 브라우저
+              </th>
               <th className="px-3 py-2 text-left font-medium">유입</th>
               <th className="px-3 py-2 text-left font-medium">첫 페이지</th>
               <th className="px-3 py-2 text-left font-medium">마지막 페이지</th>
@@ -123,7 +186,10 @@ const VisitorList = () => {
             ))}
             {!isLoading && visitors.length === 0 && (
               <tr>
-                <td colSpan={8} className="px-3 py-10 text-center text-coolgray">
+                <td
+                  colSpan={8}
+                  className="px-3 py-10 text-center text-coolgray"
+                >
                   이 날의 방문 기록이 없습니다.
                 </td>
               </tr>

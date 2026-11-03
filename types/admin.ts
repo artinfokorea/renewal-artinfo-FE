@@ -37,9 +37,24 @@ export interface AdminDaily {
 export interface AdminBreakdown {
   loginsByType: { type: string; count: number }[]
   jobsByType: { type: string; count: number }[]
-  recentUsers: { id: number; nickname: string; email: string; createdAt: string }[]
-  topPosts: { id: number; title: string; viewCount: number; createdAt: string }[]
-  recentInquiries: { id: number; title: string; email: string; createdAt: string }[]
+  recentUsers: {
+    id: number
+    nickname: string
+    email: string
+    createdAt: string
+  }[]
+  topPosts: {
+    id: number
+    title: string
+    viewCount: number
+    createdAt: string
+  }[]
+  recentInquiries: {
+    id: number
+    title: string
+    email: string
+    createdAt: string
+  }[]
 }
 
 export interface AdminEngagement {
@@ -55,7 +70,12 @@ export interface AdminEngagement {
     avgSeconds7d: number
   }
   days: number
-  daily: { date: string; visitors: number; members: number; avgSeconds: number }[]
+  daily: {
+    date: string
+    visitors: number
+    members: number
+    avgSeconds: number
+  }[]
   /** 첫 방문 주별 1~4주차 재방문 비율(%) — 측정 전이면 null */
   retention: { cohort: string; size: number; weeks: (number | null)[] }[]
 }
@@ -76,6 +96,8 @@ export interface AdminVisitor {
   landingPath: string | null
   /** 마지막으로 본 페이지 (이탈 페이지) */
   exitPath: string | null
+  /** 그날 거친 페이지 경로 (순서대로, 최대 200개) */
+  paths: string[]
   engaged: boolean
 }
 
