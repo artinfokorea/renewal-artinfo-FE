@@ -43,6 +43,9 @@ const Row = ({ v }: { v: AdminVisitor }) => (
     <td className="max-w-[180px] truncate px-3 py-2.5 text-[#4E5968]" title={v.landingPath ?? undefined}>
       {v.landingPath ?? "–"}
     </td>
+    <td className="max-w-[180px] truncate px-3 py-2.5 text-[#4E5968]" title={v.exitPath ?? undefined}>
+      {v.exitPath ?? "–"}
+    </td>
     <td className="whitespace-nowrap px-3 py-2.5 text-right tabular-nums text-[#191F28]">{v.pageViews}</td>
     <td className="whitespace-nowrap px-3 py-2.5 text-right tabular-nums text-[#191F28]">
       {formatDuration(v.activeSeconds)}
@@ -100,7 +103,7 @@ const VisitorList = () => {
       </div>
 
       <div className="overflow-x-auto rounded-xl border border-[#EEF0F3]">
-        <table className="w-full min-w-[820px] text-[13px]">
+        <table className="w-full min-w-[980px] text-[13px]">
           <caption className="sr-only">{day} 방문자 목록</caption>
           <thead className="bg-[#F7F8FA] text-[12px] text-[#6B7684]">
             <tr>
@@ -109,6 +112,7 @@ const VisitorList = () => {
               <th className="px-3 py-2 text-left font-medium">기기 · OS · 브라우저</th>
               <th className="px-3 py-2 text-left font-medium">유입</th>
               <th className="px-3 py-2 text-left font-medium">첫 페이지</th>
+              <th className="px-3 py-2 text-left font-medium">마지막 페이지</th>
               <th className="px-3 py-2 text-right font-medium">페이지</th>
               <th className="px-3 py-2 text-right font-medium">체류</th>
             </tr>
@@ -119,7 +123,7 @@ const VisitorList = () => {
             ))}
             {!isLoading && visitors.length === 0 && (
               <tr>
-                <td colSpan={7} className="px-3 py-10 text-center text-coolgray">
+                <td colSpan={8} className="px-3 py-10 text-center text-coolgray">
                   이 날의 방문 기록이 없습니다.
                 </td>
               </tr>

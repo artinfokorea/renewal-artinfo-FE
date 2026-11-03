@@ -137,6 +137,8 @@ const ActivityTracker = () => {
           pageViews,
           newSession,
           path: landingPath,
+          // 지금 보고 있는 페이지 — 서버가 그날 마지막 값을 이탈 페이지로 남긴다
+          currentPath: window.location.pathname,
           referrer,
         }),
         keepalive,

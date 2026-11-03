@@ -74,6 +74,8 @@ export interface AdminVisitor {
   userAgent: string | null
   referrerHost: string | null
   landingPath: string | null
+  /** 마지막으로 본 페이지 (이탈 페이지) */
+  exitPath: string | null
   engaged: boolean
 }
 
