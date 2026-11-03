@@ -8,16 +8,21 @@ dayjs.extend(relativeTime)
 dayjs.locale("ko")
 dayjs.extend(utc)
 dayjs.extend(timezone)
-dayjs.tz.setDefault("Asia/Seoul")
+const TIME_ZONE = "Asia/Seoul"
+dayjs.tz.setDefault(TIME_ZONE)
 
 export default function filters() {
   return {
+    /**
+     * 날짜를 한국 시간(Asia/Seoul) 기준으로 포맷한다.
+     * 서버(UTC)와 브라우저(KST)가 같은 문자열을 만들어야 하이드레이션 불일치가 생기지 않는다.
+     */
     YYYYMMDD(date?: Date | string | null, format = "YYYY.MM.DD") {
       if (!date) {
         return null
       }
 
-      return dayjs(date).format(format)
+      return dayjs(date).tz(TIME_ZONE).format(format)
     },
     DIFF_FROM_NOW_ADD_TIME(date?: Date | string | null, format = "YYYY.MM.DD") {
       if (!date) {
