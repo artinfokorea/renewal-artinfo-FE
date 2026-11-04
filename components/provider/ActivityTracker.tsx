@@ -19,9 +19,19 @@ const SESSION_GAP_MS = 30 * 60 * 1000
 /**
  * 참여 기준 (GA4 와 같음): 탭이 10초 이상 보였거나 2페이지 이상 봤을 때부터 보낸다.
  * 렌더링만 하고 닫는 로봇이나 바로 나간 방문은 집계하지 않는다.
+ * 10초 규칙은 실제 입력(마우스·스크롤·터치·키)이 한 번이라도 있어야 인정한다 —
+ * 헤드리스 표시 없이 실제 Chrome 을 돌리는 크롤러는 페이지를 열어 둘 뿐 입력이 없다.
  */
 const ENGAGED_VISIBLE_MS = 10 * 1000
 const ENGAGED_PAGE_VIEWS = 2
+const INPUT_EVENTS = [
+  "pointermove",
+  "pointerdown",
+  "touchstart",
+  "keydown",
+  "wheel",
+  "scroll",
+] as const
 
 /** 검색 로봇·크롤러·자동화 브라우저 (서버도 같은 기준으로 한 번 더 거른다) */
 const BOT_UA =
@@ -102,6 +112,8 @@ const ActivityTracker = () => {
     const landingPath = window.location.pathname
     const referrer = document.referrer
     let engaged = false
+    /** 이번 탭에서 실제 입력이 한 번이라도 있었는지 */
+    let hasInput = false
 
     const collect = () => {
       if (visibleSince !== null) {
@@ -116,7 +128,7 @@ const ActivityTracker = () => {
       collect()
       if (!engaged) {
         engaged =
-          totalVisibleMs >= ENGAGED_VISIBLE_MS ||
+          (hasInput && totalVisibleMs >= ENGAGED_VISIBLE_MS) ||
           totalPageViews >= ENGAGED_PAGE_VIEWS
         if (!engaged) return
       }
@@ -168,6 +180,16 @@ const ActivityTracker = () => {
 
     const onPageHide = () => send(true)
 
+    // 첫 입력이 들어오면 그 뒤로는 안 듣는다. 이미 10초를 넘겼다면 그 자리에서 첫 전송
+    const onFirstInput = () => {
+      hasInput = true
+      INPUT_EVENTS.forEach(e => window.removeEventListener(e, onFirstInput))
+      if (!engaged) send()
+    }
+    INPUT_EVENTS.forEach(e =>
+      window.addEventListener(e, onFirstInput, { passive: true }),
+    )
+
     onPageViewRef.current = (path: string) => {
       totalPageViews += 1
       pendingPageViews += 1
@@ -180,7 +202,7 @@ const ActivityTracker = () => {
       pendingPathRef.current = null
     }
 
-    // 10초 동안 화면에 머물면 첫 전송 (그 전에 떠나면 집계하지 않는다)
+    // 10초 동안 화면에 머물면 첫 전송 (그 전에 떠나거나 입력이 아직 없으면 집계하지 않는다)
     const firstTimer = window.setTimeout(() => {
       if (document.visibilityState === "visible") send()
     }, ENGAGED_VISIBLE_MS + 500)
@@ -195,6 +217,7 @@ const ActivityTracker = () => {
       window.clearInterval(timer)
       document.removeEventListener("visibilitychange", onVisibility)
       window.removeEventListener("pagehide", onPageHide)
+      INPUT_EVENTS.forEach(e => window.removeEventListener(e, onFirstInput))
       onPageViewRef.current = null
     }
   }, [])
