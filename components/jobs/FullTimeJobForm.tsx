@@ -9,6 +9,7 @@ import * as yup from "yup"
 import FileUploader from "../common/FileUploader"
 import { Button } from "../ui/button"
 import PlusIcon from "../icons/PlusIcon"
+import CloseIcon from "../icons/CloseIcon"
 import MajorDialog from "../dialog/MajorDialog"
 import { Badge } from "../ui/badge"
 import PostCodeDialog from "../dialog/PostCodeDialog"
@@ -174,34 +175,50 @@ const FullTimeJobForm = ({
               )}
             />
           </div>
-          <div className="my-2 flex items-center gap-2">
-            <Button
-              type="button"
-              onClick={() => setIsMajorDialog(!isMajorDialog)}
-              className="flex h-8 gap-1 rounded-full border text-sm text-main"
-            >
-              <PlusIcon className="h-4 w-4 text-main" />
-              <span>전공</span>
-            </Button>
-            {!errors.majors && watch("majors").length == 0 && (
-              <span className="text-sm text-silver">
-                전공은 최대 3개까지 선택 가능합니다.
-              </span>
+          {/* 전공: 개수 제한이 없어 고른 전공을 모두 줄바꿈으로 보여주고, 각 배지에서 바로 뺄 수 있다 */}
+          <div className="my-2 flex flex-col gap-2">
+            <div className="flex items-center gap-2">
+              <Button
+                type="button"
+                onClick={() => setIsMajorDialog(!isMajorDialog)}
+                className="flex h-8 gap-1 rounded-full border text-sm text-main"
+              >
+                <PlusIcon className="h-4 w-4 text-main" />
+                <span>전공</span>
+              </Button>
+              {!errors.majors &&
+                (watch("majors").length === 0 ? (
+                  <span className="text-sm text-silver">
+                    모집하는 전공을 선택해주세요.
+                  </span>
+                ) : (
+                  <span className="text-sm text-silver">
+                    <span className="font-semibold text-main">
+                      {watch("majors").length}
+                    </span>
+                    개 선택
+                  </span>
+                ))}
+            </div>
+            {watch("majors").length > 0 && (
+              <ul aria-label="선택한 전공" className="flex flex-wrap gap-1.5">
+                {watch("majors").map((major: MAJOR) => (
+                  <li key={major.id}>
+                    <Badge className="h-8 gap-1 whitespace-nowrap bg-main pr-1.5 text-xs text-white md:text-sm">
+                      {major.koName}
+                      <button
+                        type="button"
+                        aria-label={`${major.koName} 삭제`}
+                        onClick={() => handleSelectMajor(major)}
+                        className="rounded-full p-0.5 hover:bg-white/20"
+                      >
+                        <CloseIcon className="h-3.5 w-3.5" />
+                      </button>
+                    </Badge>
+                  </li>
+                ))}
+              </ul>
             )}
-            {watch("majors")
-              ?.slice(0, 1)
-              .map((major: MAJOR, index: number) => {
-                return (
-                  <Badge
-                    key={major.id}
-                    className="h-8 whitespace-nowrap bg-main text-xs text-white md:text-sm"
-                  >
-                    {watch("majors").length > 1 && index === 0
-                      ? `${major.koName} 외 ${watch("majors").length - 1}`
-                      : major.koName}
-                  </Badge>
-                )
-              })}
             <ErrorMessage
               errors={errors}
               name="majors"
