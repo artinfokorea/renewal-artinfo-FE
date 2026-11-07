@@ -49,3 +49,9 @@ export const updateUserPassword = async (
   )
   return response
 }
+
+/** 회원탈퇴 — 서버가 개인정보를 익명화하고 soft delete 한다 (앱 심사 지침 5.1.1(v)) */
+export const withdrawUser = async (): Promise<SuccessResponse> => {
+  const response = await authApiRequest.delete<SuccessResponse>("/users/me")
+  return response
+}

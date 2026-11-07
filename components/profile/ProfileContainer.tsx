@@ -2,18 +2,22 @@
 
 import React, { useState } from "react"
 import { useLoading } from "@toss/use-loading"
+import { signOut } from "next-auth/react"
 import { sendPhoneVerificationCode, verifyPhoneCode } from "@/services/system"
 import useToast from "@/hooks/useToast"
 import {
   updateUser,
   updateUserPassword,
   updateUserPhone,
+  withdrawUser,
 } from "@/services/users"
 import { SchoolType } from "@/types/lessons"
 import { useQuery, useQueryClient } from "@tanstack/react-query"
 import { queries } from "@/lib/queries"
 import PhoneDialog from "@/components/dialog/PhoneDialog"
 import ProfileForm, { ProfileFormData } from "@/components/profile/ProfileForm"
+import ProfileOverview from "@/components/profile/ProfileOverview"
+import ConfirmDialog from "@/components/dialog/ConfirmDialog"
 import PasswordDialog, {
   PasswordFormData,
 } from "@/components/dialog/PasswordDialog"
@@ -29,6 +33,8 @@ const ProfileContainer = () => {
   const [isUpdatePasswordLoading, updatePasswordStartTransition] = useLoading()
   const [isPhoneDialog, setIsPhoneDialog] = useState(false)
   const [isPasswordDialog, setIsPasswordDialog] = useState(false)
+  const [isWithdrawDialog, setIsWithdrawDialog] = useState(false)
+  const [isWithdrawing, withdrawStartTransition] = useLoading()
   const queryClient = useQueryClient()
   const { successToast, errorToast } = useToast()
 
@@ -148,16 +154,50 @@ const ProfileContainer = () => {
     }
   }
 
+  const handleSignOut = () => signOut({ callbackUrl: "/auth/sign-in" })
+
+  /** 회원탈퇴 — 확인 다이얼로그 뒤 서버 탈퇴 → 로그아웃 */
+  const handleWithdraw = async () => {
+    try {
+      await withdrawStartTransition(withdrawUser())
+      setIsWithdrawDialog(false)
+      successToast("탈퇴가 완료되었습니다.")
+      await signOut({ callbackUrl: "/" })
+    } catch (error: any) {
+      errorToast(error?.message ?? "탈퇴에 실패했습니다. 잠시 후 다시 시도해주세요.")
+      console.log(error)
+    }
+  }
+
   return (
     <>
-      <ProfileForm
-        user={user}
-        isUpdateForm={isUpdateForm}
-        isUpdateProfileLoading={isUpdateProfileLoading}
-        handlePhoneDialog={() => setIsPhoneDialog(!isPhoneDialog)}
-        handleUpdateForm={() => setIsUpdateForm(!isUpdateForm)}
-        handlePasswordDialog={() => setIsPasswordDialog(!isPasswordDialog)}
-        handleProfile={(payload: ProfileFormData) => updateProfile(payload)}
+      {isUpdateForm ? (
+        <ProfileForm
+          user={user}
+          isUpdateForm
+          isUpdateProfileLoading={isUpdateProfileLoading}
+          handlePhoneDialog={() => setIsPhoneDialog(!isPhoneDialog)}
+          handleUpdateForm={() => setIsUpdateForm(false)}
+          handlePasswordDialog={() => setIsPasswordDialog(!isPasswordDialog)}
+          handleProfile={(payload: ProfileFormData) => updateProfile(payload)}
+        />
+      ) : (
+        <ProfileOverview
+          user={user}
+          isWithdrawing={isWithdrawing}
+          onEdit={() => setIsUpdateForm(true)}
+          onPhone={() => setIsPhoneDialog(true)}
+          onPassword={() => setIsPasswordDialog(true)}
+          onSignOut={handleSignOut}
+          onWithdraw={() => setIsWithdrawDialog(true)}
+        />
+      )}
+      <ConfirmDialog
+        isOpen={isWithdrawDialog}
+        handleDialog={() => setIsWithdrawDialog(!isWithdrawDialog)}
+        title="회원탈퇴"
+        description="탈퇴하면 프로필·학력·연락처 등 개인정보가 삭제되고 되돌릴 수 없습니다. 작성한 글과 댓글은 '탈퇴회원' 이름으로 남습니다. 정말 탈퇴하시겠습니까?"
+        action={handleWithdraw}
       />
       <PhoneDialog
         open={isPhoneDialog}
