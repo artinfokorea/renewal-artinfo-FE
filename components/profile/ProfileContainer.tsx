@@ -15,7 +15,7 @@ import { SchoolType } from "@/types/lessons"
 import { useQuery, useQueryClient } from "@tanstack/react-query"
 import { queries } from "@/lib/queries"
 import PhoneDialog from "@/components/dialog/PhoneDialog"
-import ProfileForm, { ProfileFormData } from "@/components/profile/ProfileForm"
+import ProfileEditForm, { ProfileFormData } from "@/components/profile/ProfileEditForm"
 import ProfileOverview from "@/components/profile/ProfileOverview"
 import ConfirmDialog from "@/components/dialog/ConfirmDialog"
 import PasswordDialog, {
@@ -172,14 +172,11 @@ const ProfileContainer = () => {
   return (
     <>
       {isUpdateForm ? (
-        <ProfileForm
+        <ProfileEditForm
           user={user}
-          isUpdateForm
-          isUpdateProfileLoading={isUpdateProfileLoading}
-          handlePhoneDialog={() => setIsPhoneDialog(!isPhoneDialog)}
-          handleUpdateForm={() => setIsUpdateForm(false)}
-          handlePasswordDialog={() => setIsPasswordDialog(!isPasswordDialog)}
-          handleProfile={(payload: ProfileFormData) => updateProfile(payload)}
+          isSubmitting={isUpdateProfileLoading}
+          onCancel={() => setIsUpdateForm(false)}
+          onSubmit={(payload: ProfileFormData) => updateProfile(payload)}
         />
       ) : (
         <ProfileOverview
