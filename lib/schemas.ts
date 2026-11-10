@@ -259,3 +259,68 @@ export const postSchema = yup.object().shape({
     )
     .required("카테고리를 선택해주세요."),
 })
+
+const dateString = (label: string) =>
+  yup
+    .string()
+    .required(`${label}을(를) 입력해주세요.`)
+    .matches(/^\d{4}-\d{2}-\d{2}$/, `${label} 형식이 올바르지 않습니다.`)
+
+/** 콩쿠르 등록 — 4단계 폼 (기본 정보 → 일정 → 접수·시상 → 자료) */
+export const competitionSchema = yup.object({
+  title: yup
+    .string()
+    .required("대회명을 입력해주세요.")
+    .min(2, "대회명은 2자 이상 입력해주세요.")
+    .max(120, "대회명은 120자 이하로 입력해주세요."),
+  host: yup
+    .string()
+    .required("주최를 입력해주세요.")
+    .max(80, "주최는 80자 이하로 입력해주세요."),
+  organizer: yup.string().max(80).default(""),
+  divisions: yup
+    .array()
+    .of(yup.string().required())
+    .min(1, "부문을 하나 이상 선택해주세요.")
+    .required(),
+  ages: yup.array().of(yup.string().required()).default([]),
+  area: yup.string().required("지역을 선택해주세요."),
+  venue: yup.string().max(80).default(""),
+  openAt: dateString("접수 시작일"),
+  closeAt: dateString("접수 마감일").test(
+    "after-open",
+    "접수 마감일은 시작일보다 뒤여야 합니다.",
+    (value, context) => !value || !context.parent.openAt || value >= context.parent.openAt,
+  ),
+  heldAt: yup.string().default(""),
+  resultAt: yup.string().default(""),
+  applyMethod: yup
+    .mixed<"LINK" | "EMAIL" | "POST">()
+    .oneOf(["LINK", "EMAIL", "POST"])
+    .required("접수 방법을 선택해주세요."),
+  applyLink: yup
+    .string()
+    .default("")
+    .when("applyMethod", {
+      is: "LINK",
+      then: schema =>
+        schema
+          .required("접수 링크를 입력해주세요.")
+          .matches(/^https?:\/\/.+/, "https:// 로 시작하는 주소를 입력해주세요."),
+    }),
+  email: yup
+    .string()
+    .default("")
+    .when("applyMethod", {
+      is: "EMAIL",
+      then: schema =>
+        schema
+          .required("접수 이메일을 입력해주세요.")
+          .matches(emailRegex, "유효한 이메일 주소를 입력해주세요."),
+    }),
+  tel: yup.string().max(30).default(""),
+  fee: yup.string().max(80).default(""),
+  prize: yup.string().max(1000).default(""),
+  description: yup.string().max(3000).default(""),
+  posterUrl: yup.string().default(""),
+})

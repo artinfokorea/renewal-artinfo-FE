@@ -85,6 +85,7 @@ const Header = () => {
                   href={`/jobs?jobTimeType=${JobTimeType.FULL_TIME}`}
                   label="채용"
                 />
+                <NavMenu href="/competitions" label="콩쿠르" />
                 <NavMenu href="/posts" label="나눔" />
                 <NavMenu href="/lessons" label="레슨" />
                 <NavMenu href="/performances" label="공연" />

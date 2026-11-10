@@ -72,6 +72,7 @@ const MobileDropDown = ({ handleBar, handleSign }: Props) => {
                 href={`/jobs?jobTimeType=${JobTimeType.FULL_TIME}`}
                 label="채용"
               />
+              <DropDownMenu href="/competitions" label="콩쿠르" />
               <DropDownMenu href="/posts" label="나눔" />
               <DropDownMenu href="/lessons" label="레슨" />
               <DropDownMenu href="/performances" label="공연" />

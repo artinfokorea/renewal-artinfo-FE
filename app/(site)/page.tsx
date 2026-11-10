@@ -7,6 +7,7 @@ import { ProfessionalFieldTypes } from "@/types/majors"
 import { JobType } from "@/types/jobs"
 import BannerContainer from "@/components/main/BannerContainer"
 import MainJobsContainer from "@/components/main/MainJobsContainer"
+import MainCompetitionsContainer from "@/components/main/MainCompetitionsContainer"
 import CommunicationContainer from "@/components/main/CommunicationContainer"
 import { LessonBanner } from "@/components/main/LessonBanner"
 import { Metadata } from "next"
@@ -46,6 +47,9 @@ const page = async () => {
         ...queries.ads.list(AdvertisementType.BANNER),
       }),
       queryClient.prefetchQuery({
+        ...queries.competitions.list({ page: 1, size: 5 }),
+      }),
+      queryClient.prefetchQuery({
         ...queries.posts.list({
           page: 1,
           size: 5,
@@ -71,6 +75,7 @@ const page = async () => {
         <ArtContainer type={AdvertisementType.CONCERT} title="공연" />
         <CommunicationContainer />
         <MainJobsContainer />
+        <MainCompetitionsContainer />
         <LessonBanner />
         <ArtContainer type={AdvertisementType.EXHIBITION} title="전시" />
       </HydrationBoundary>
