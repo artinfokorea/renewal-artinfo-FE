@@ -1,7 +1,7 @@
 "use client"
 
 import React, { useRef, useState } from "react"
-import { useForm } from "react-hook-form"
+import { FieldErrors, useForm } from "react-hook-form"
 import { yupResolver } from "@hookform/resolvers/yup"
 import { ErrorMessage } from "@hookform/error-message"
 import { useLoading } from "@toss/use-loading"
@@ -52,6 +52,7 @@ const CompetitionForm = ({ competition, isLoading, onSubmit }: Props) => {
   const { successToast, errorToast } = useToast()
   const [isUploadLoading, uploadTransition] = useLoading()
   const [step, setStep] = useState(0)
+  const [submitted, setSubmitted] = useState(false)
 
   const {
     register,
@@ -107,8 +108,31 @@ const CompetitionForm = ({ competition, isLoading, onSubmit }: Props) => {
 
   const next = async () => {
     const valid = await trigger(STEP_FIELDS[step])
-    if (!valid) return
+    if (!valid) {
+      errorToast("입력을 확인해 주세요.")
+      return
+    }
     setStep(s => Math.min(s + 1, STEPS.length - 1))
+    window.scrollTo({ top: 0, behavior: "smooth" })
+  }
+
+  /** 오류가 난 필드가 어느 단계에 있는지 */
+  const stepOf = (field: string) => STEP_FIELDS.findIndex(fields => fields.includes(field as keyof CompetitionFormData))
+  const errorList = Object.entries(errors)
+    .map(([field, error]) => ({ field, step: stepOf(field), message: (error as { message?: string })?.message ?? "" }))
+    .filter(e => e.message)
+    .sort((a, b) => a.step - b.step)
+
+  /** 등록 버튼을 눌렀는데 다른 단계에 오류가 있으면 — 그 단계로 옮기고 무엇이 문제인지 바로 보여준다 */
+  const onInvalid = (invalid: FieldErrors<CompetitionFormData>) => {
+    setSubmitted(true)
+    const first = Object.keys(invalid)
+      .map(stepOf)
+      .filter(i => i >= 0)
+      .sort((a, b) => a - b)[0]
+    const firstMessage = Object.values(invalid).find(e => e?.message)?.message as string | undefined
+    if (first !== undefined && first !== step) setStep(first)
+    errorToast(`${first !== undefined ? `${first + 1}단계 ` : ""}입력을 확인해 주세요${firstMessage ? `: ${firstMessage}` : "."}`)
     window.scrollTo({ top: 0, behavior: "smooth" })
   }
 
@@ -131,7 +155,7 @@ const CompetitionForm = ({ competition, isLoading, onSubmit }: Props) => {
   )
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className="mx-auto max-w-[720px] px-4 pb-16 pt-6 md:px-6 md:pt-10">
+    <form onSubmit={handleSubmit(onSubmit, onInvalid)} className="mx-auto max-w-[720px] px-4 pb-16 pt-6 md:px-6 md:pt-10">
       <h1 className="text-[22px] font-extrabold tracking-tight text-[#191F28] md:text-[26px]">{competition ? "콩쿠르 수정" : "콩쿠르 등록"}</h1>
       {!competition && (
         <p className="mt-1.5 text-[14px] text-[#6B7684]">주최·주관 단체가 직접 올리는 공고입니다. 내용을 확인한 뒤 게시되며(보통 1영업일), 그 전까지는 나에게만 보입니다.</p>
@@ -312,6 +336,21 @@ const CompetitionForm = ({ competition, isLoading, onSubmit }: Props) => {
         </Field>
         <p className="rounded-xl bg-[#FFF3E0] px-4 py-3 text-[13px] leading-5 text-[#9A5B00]">이미 수집된 같은 대회가 있으면 등록 후 그 공고와 합쳐지고, 이 등록본이 대표로 보입니다.</p>
       </section>
+
+      {submitted && errorList.length > 0 && (
+        <div role="alert" className="mt-4 rounded-xl border border-[#F5C2C7] bg-[#FDECEC] px-4 py-3 text-[13px] leading-6 text-[#B42318]">
+          <b className="block">아직 고쳐야 할 항목이 있어요</b>
+          <ul className="mt-1 list-disc pl-4">
+            {errorList.map(e => (
+              <li key={e.field}>
+                <button type="button" onClick={() => setStep(e.step)} className="underline underline-offset-2">
+                  {e.step + 1}단계 · {e.message}
+                </button>
+              </li>
+            ))}
+          </ul>
+        </div>
+      )}
 
       <div className="mt-5 flex justify-between gap-3">
         <button type="button" onClick={() => setStep(s => Math.max(0, s - 1))} disabled={step === 0} className="h-11 rounded-[10px] border border-[#E5E8EB] px-5 text-[14px] font-bold text-[#191F28] disabled:opacity-40">
