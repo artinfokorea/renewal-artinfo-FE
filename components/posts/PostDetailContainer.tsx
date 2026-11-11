@@ -79,7 +79,7 @@ const PostDetailContainer = ({ post, deletePost }: Props) => {
       </div>
       <div className="flex items-center gap-2">
         <Separator className="flex-1 bg-lightgray" />
-        {user?.id === post.authorId && (
+        {user?.id === post.authorId ? (
           <ItemManageBox
             handleEdit={() => router.push(`create?postId=${post.id}`)}
             handleDelete={() =>
@@ -87,7 +87,16 @@ const PostDetailContainer = ({ post, deletePost }: Props) => {
             }
             className="h-10 justify-end"
           />
-        )}
+        ) : user?.type === UserType.ADMIN ? (
+          // 관리자는 남의 글도 삭제할 수 있다 (커뮤니티 운영). 수정은 작성자만
+          <button
+            type="button"
+            onClick={() => setIsDeleteConfirmDialog(!isDeleteConfirmDialog)}
+            className="h-10 rounded-lg border-2 border-whitesmoke px-3 text-sm font-semibold text-error"
+          >
+            관리자 삭제
+          </button>
+        ) : null}
       </div>
 
       <div
