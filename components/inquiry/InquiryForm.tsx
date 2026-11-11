@@ -1,4 +1,4 @@
-import React from "react"
+import React, { useRef } from "react"
 import { useForm } from "react-hook-form"
 import { yupResolver } from "@hookform/resolvers/yup"
 import * as yup from "yup"
@@ -21,8 +21,11 @@ const schema = yup
       .required("이메일을 입력해주세요."),
     contents: yup
       .string()
-      .min(3, "내용은 10글자이상 입력해주세요.")
+      .min(10, "내용은 10글자이상 입력해주세요.")
       .required("내용은 필수입력사항 입니다."),
+    // 스팸 방지 — 화면에 안 보이는 칸(허니팟)과 폼을 연 시각. 봇은 허니팟을 채우거나 3초 안에 보낸다
+    website: yup.string().default(""),
+    startedAt: yup.number().default(0),
   })
   .required()
 
@@ -34,12 +37,14 @@ interface Props {
 }
 
 const InquiryForm = ({ handleInquiry, isLoading }: Props) => {
+  const startedAt = useRef(Date.now())
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm<InquiryFormData>({
     resolver: yupResolver(schema),
+    defaultValues: { website: "", startedAt: startedAt.current },
   })
 
   const router = useRouter()
@@ -47,6 +52,12 @@ const InquiryForm = ({ handleInquiry, isLoading }: Props) => {
   return (
     <form className="p-6 md:p-12" onSubmit={handleSubmit(handleInquiry)}>
       <h2 className="text-xl font-bold">문의하기</h2>
+      {/* 스팸 방지 허니팟 — 사람은 볼 수 없고 채우지 않는다 */}
+      <div aria-hidden="true" className="absolute -left-[9999px] h-0 w-0 overflow-hidden">
+        <label htmlFor="website">Website</label>
+        <input id="website" type="text" tabIndex={-1} autoComplete="off" {...register("website")} />
+        <input type="hidden" {...register("startedAt", { valueAsNumber: true })} />
+      </div>
       <p className="mt-2 text-sm text-gray-500">
         문의사항이 있으시면 아래 양식을 작성해주세요.
       </p>
