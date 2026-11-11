@@ -24,6 +24,8 @@ interface Props {
 }
 
 const STEPS = ["기본 정보", "일정", "접수·시상", "포스터·확인"]
+/** 마지막 단계 도착 후 이 시간 안의 제출은 무시한다(ms) */
+const SUBMIT_GUARD_MS = 800
 const STEP_FIELDS: (keyof CompetitionFormData)[][] = [
   ["title", "host", "organizer", "divisions", "ages", "area", "venue"],
   ["openAt", "closeAt", "heldAt", "resultAt"],
@@ -54,6 +56,8 @@ const CompetitionForm = ({ competition, isLoading, onSubmit }: Props) => {
   const [isUploadLoading, uploadTransition] = useLoading()
   const [step, setStep] = useState(0)
   const [submitted, setSubmitted] = useState(false)
+  /** 마지막 단계에 도착한 시각 — '다음'을 더블클릭하면 두 번째 클릭이 같은 자리의 '등록 요청' 버튼에 떨어져 바로 등록되던 문제를 막는다 */
+  const lastStepAt = useRef(0)
 
   const {
     register,
@@ -130,6 +134,7 @@ const CompetitionForm = ({ competition, isLoading, onSubmit }: Props) => {
       errorToast("입력을 확인해 주세요.")
       return
     }
+    if (step + 1 >= STEPS.length - 1) lastStepAt.current = Date.now()
     setStep(s => Math.min(s + 1, STEPS.length - 1))
     window.scrollTo({ top: 0, behavior: "smooth" })
   }
@@ -179,6 +184,11 @@ const CompetitionForm = ({ competition, isLoading, onSubmit }: Props) => {
         if (step < STEPS.length - 1) {
           event.preventDefault()
           void next()
+          return
+        }
+        // 4단계에 온 직후(더블클릭·연타)의 제출은 무시 — 등록은 사용자가 4단계를 보고 누른 것만 받는다
+        if (Date.now() - lastStepAt.current < SUBMIT_GUARD_MS) {
+          event.preventDefault()
           return
         }
         void handleSubmit(onSubmit, onInvalid)(event)
