@@ -173,7 +173,17 @@ const CompetitionForm = ({ competition, isLoading, onSubmit }: Props) => {
   )
 
   return (
-    <form onSubmit={handleSubmit(onSubmit, onInvalid)} className="mx-auto max-w-[720px] px-4 pb-16 pt-6 md:px-6 md:pt-10">
+    <form
+      onSubmit={event => {
+        // 마지막 단계 전에는 엔터 등으로 폼이 제출돼도 등록하지 않고 '다음'으로만 간다 (4단계 항목이 모두 선택이라 그냥 통과해 버리던 문제)
+        if (step < STEPS.length - 1) {
+          event.preventDefault()
+          void next()
+          return
+        }
+        void handleSubmit(onSubmit, onInvalid)(event)
+      }}
+      className="mx-auto max-w-[720px] px-4 pb-16 pt-6 md:px-6 md:pt-10">
       <h1 className="text-[22px] font-extrabold tracking-tight text-[#191F28] md:text-[26px]">{competition ? "콩쿠르 수정" : "콩쿠르 등록"}</h1>
       {!competition && (
         <p className="mt-1.5 text-[14px] text-[#6B7684]">주최·주관 단체가 직접 올리는 공고입니다. 내용을 확인한 뒤 게시되며(보통 1영업일), 그 전까지는 나에게만 보입니다.</p>
