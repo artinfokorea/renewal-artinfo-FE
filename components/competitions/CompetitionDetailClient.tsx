@@ -38,6 +38,7 @@ export const toPayload = (data: CompetitionFormData): CompetitionPayload => ({
   prize: data.prize || undefined,
   description: data.description || undefined,
   posterUrl: data.posterUrl || undefined,
+  contentImages: data.contentImages ?? [],
 })
 
 const CompetitionDetailClient = ({ initial, id }: Props) => {

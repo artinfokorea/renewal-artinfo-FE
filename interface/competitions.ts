@@ -28,4 +28,5 @@ export interface CompetitionPayload {
   description?: string
   posterUrl?: string
   documentUrl?: string
+  contentImages?: string[]
 }

@@ -1,7 +1,7 @@
 /** 접수 상태 — 서버가 한국 날짜 기준으로 계산해 내려준다 (SOON 은 접수중 가운데 마감 7일 이내) */
 export type CompetitionPhase = "UPCOMING" | "OPEN" | "SOON" | "JUDGING" | "CLOSED"
 export type CompetitionStatus = "REVIEW" | "PUBLISHED" | "HIDDEN"
-export type ApplyMethod = "LINK" | "EMAIL" | "POST"
+export type ApplyMethod = "LINK" | "EMAIL" | "POST" | "CONTACT"
 
 export const PHASE_LABEL: Record<CompetitionPhase, string> = {
   UPCOMING: "접수예정",
@@ -31,6 +31,7 @@ export const APPLY_METHOD_LABEL: Record<ApplyMethod, string> = {
   LINK: "주최 홈페이지·접수 폼",
   EMAIL: "이메일 접수",
   POST: "우편·방문 접수",
+  CONTACT: "전화 등 주최에 직접 문의",
 }
 
 /** 포스터가 없을 때 부문별 바탕색 */
@@ -66,8 +67,9 @@ export type COMPETITION = {
   description: string | null
   posterUrl: string | null
   documentUrl: string | null
+  /** 본문 이미지 (포스터와 별개, 여러 장) */
+  contentImages: string[]
   source: "OWNER" | "CRAWL"
-  sourceUrl: string | null
   status: CompetitionStatus
   authorId: number | null
   verified: boolean

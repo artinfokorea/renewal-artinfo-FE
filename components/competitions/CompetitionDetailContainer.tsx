@@ -7,6 +7,7 @@ import { useSession } from "next-auth/react"
 import { queries } from "@/lib/queries"
 import filters from "@/lib/filters"
 import { APPLY_METHOD_LABEL, COMPETITION, PHASE_LABEL } from "@/types/competitions"
+import { UserType } from "@/types/users"
 import ConfirmDialog from "../dialog/ConfirmDialog"
 import ItemManageBox from "../common/ItemManageBox"
 import { CompetitionPoster } from "./CompetitionCard"
@@ -40,6 +41,8 @@ const CompetitionDetailContainer = ({ competition: c, deleteCompetition }: Props
   const { data: user } = useQuery({ ...queries.users.detail(), enabled: !!session?.user })
   const [isDeleteDialog, setIsDeleteDialog] = useState(false)
   const isMine = !!user?.id && user.id === c.authorId
+  const isAdmin = user?.type === UserType.ADMIN
+  const canManage = isMine || isAdmin
 
   const steps = [
     { label: "접수 시작", date: c.openAt, done: c.openIn <= 0 },
@@ -64,7 +67,9 @@ const CompetitionDetailContainer = ({ competition: c, deleteCompetition }: Props
       ? c.applyLink
       : c.applyMethod === "EMAIL" && c.email
         ? `mailto:${c.email}`
-        : null
+        : c.applyMethod === "CONTACT" && c.tel
+          ? `tel:${c.tel.replace(/[^0-9+]/g, "")}`
+          : null
 
   const Cta = ({ className = "" }: { className?: string }) =>
     canApply && applyHref ? (
@@ -74,7 +79,7 @@ const CompetitionDetailContainer = ({ competition: c, deleteCompetition }: Props
         rel="noopener noreferrer"
         className={`flex h-12 items-center justify-center rounded-xl bg-main text-[15px] font-bold text-white hover:bg-blue-600 ${className}`}
       >
-        {c.applyMethod === "EMAIL" ? "이메일로 접수하기" : "접수처 바로가기 ↗"}
+        {c.applyMethod === "EMAIL" ? "이메일로 접수하기" : c.applyMethod === "CONTACT" ? `전화 문의 ${c.tel}` : "접수처 바로가기 ↗"}
       </a>
     ) : (
       <div
@@ -90,11 +95,11 @@ const CompetitionDetailContainer = ({ competition: c, deleteCompetition }: Props
         ‹ 콩쿠르 목록
       </button>
 
-      {isMine && (
+      {canManage && (
         <div className="mb-4 flex items-center gap-3 rounded-xl bg-[#E8F3FF] px-4 py-3 text-[13px] font-semibold text-[#1B64DA]">
           <span>
-            내가 등록한 공고
-            {c.status === "REVIEW" ? " · 검토 중 (나에게만 보여요)" : ` · 조회 ${c.viewCount.toLocaleString()}`}
+            {isMine ? "내가 등록한 공고" : "관리자"}
+            {c.status === "REVIEW" ? " · 검토 중 (등록자에게만 보여요)" : ` · 조회 ${c.viewCount.toLocaleString()}`}
           </span>
           <ItemManageBox
             className="ml-auto h-9"
@@ -106,15 +111,15 @@ const CompetitionDetailContainer = ({ competition: c, deleteCompetition }: Props
 
       <div className="grid grid-cols-1 gap-7 md:grid-cols-[minmax(0,1fr)_320px] md:items-start">
         <div className="min-w-0">
-          <div className="grid grid-cols-[88px_minmax(0,1fr)] gap-4 md:grid-cols-[120px_minmax(0,1fr)] md:gap-5">
-            <CompetitionPoster competition={c} sizes="120px" />
+          <div className="grid grid-cols-1 gap-5 md:grid-cols-[300px_minmax(0,1fr)] md:gap-6">
+            <div className="mx-auto w-full max-w-[360px] md:mx-0 md:max-w-none">
+              <CompetitionPoster competition={c} sizes="(max-width: 768px) 360px, 300px" />
+            </div>
             <div className="min-w-0">
               <div className="flex flex-wrap items-center gap-1.5">
                 <span className={`rounded-md px-2 py-0.5 text-[12px] font-bold ${PHASE_PILL[c.phase]}`}>{PHASE_LABEL[c.phase]}</span>
-                {c.source === "OWNER" ? (
+                {c.source === "OWNER" && (
                   <span className="text-[11px] font-bold text-[#1B64DA]">✓ 주최 등록{c.verified ? " · 인증" : ""}</span>
-                ) : (
-                  <span className="text-[11px] text-[#8B95A1]">수집 공고</span>
                 )}
               </div>
               <h1 className="mt-1.5 break-keep text-[19px] font-extrabold leading-snug text-[#191F28] md:text-2xl">{c.title}</h1>
@@ -139,7 +144,7 @@ const CompetitionDetailContainer = ({ competition: c, deleteCompetition }: Props
               ["장소", c.venue ?? "요강 참조", c.area],
               ["부문·대상", c.divisions.join(" · "), c.ages.join(" · ") || null],
               ["참가비", c.fee ?? "요강 참조", null],
-              ["접수 방법", APPLY_METHOD_LABEL[c.applyMethod], c.applyMethod === "EMAIL" ? c.email : null],
+              ["접수 방법", APPLY_METHOD_LABEL[c.applyMethod], c.applyMethod === "EMAIL" ? c.email : c.applyMethod === "CONTACT" ? c.tel : null],
             ].map(([k, v, s], i) => (
               <div key={String(k)} className={`grid grid-cols-[92px_minmax(0,1fr)] gap-3 px-4 py-3 ${i > 0 ? "border-t border-[#F2F4F6]" : ""}`}>
                 <dt className="font-medium text-[#6B7684]">{k}</dt>
@@ -183,6 +188,17 @@ const CompetitionDetailContainer = ({ competition: c, deleteCompetition }: Props
               <p className="whitespace-pre-line text-[14px] leading-7 text-[#4E5968]">{c.description}</p>
             </section>
           )}
+          {c.contentImages?.length > 0 && (
+            <section className="mt-7">
+              <h2 className="mb-3 text-[17px] font-extrabold">공고 내용</h2>
+              <div className="flex flex-col gap-3">
+                {c.contentImages.map((url, index) => (
+                  // eslint-disable-next-line @next/next/no-img-element
+                  <img key={url} src={url} alt={`공고 내용 ${index + 1}`} loading="lazy" className="w-full rounded-xl border border-[#F2F4F6]" />
+                ))}
+              </div>
+            </section>
+          )}
           {c.documentUrl && (
             <section className="mt-7">
               <h2 className="mb-3 text-[17px] font-extrabold">요강</h2>
@@ -210,13 +226,6 @@ const CompetitionDetailContainer = ({ competition: c, deleteCompetition }: Props
             {c.tel && <div className="flex gap-2 py-0.5 text-[#4E5968]"><span className="w-12 shrink-0 text-[#6B7684]">전화</span>{c.tel}</div>}
             {c.email && <div className="flex gap-2 py-0.5 text-[#4E5968]"><span className="w-12 shrink-0 text-[#6B7684]">이메일</span><span className="break-all">{c.email}</span></div>}
           </div>
-          {c.source === "CRAWL" && c.sourceUrl && (
-            <div className="rounded-xl bg-[#F7F8FA] px-4 py-3 text-[13px] leading-6 text-[#6B7684]">
-              <b className="text-[#4E5968]">수집 공고</b> · 내용이 바뀌었을 수 있으니 접수 전{" "}
-              <a href={c.sourceUrl} target="_blank" rel="noopener noreferrer" className="font-semibold text-[#1B64DA]">원문 보기 ↗</a>
-              로 확인해 주세요.
-            </div>
-          )}
         </aside>
       </div>
 

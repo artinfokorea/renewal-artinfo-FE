@@ -28,7 +28,7 @@ const STEP_FIELDS: (keyof CompetitionFormData)[][] = [
   ["title", "host", "organizer", "divisions", "ages", "area", "venue"],
   ["openAt", "closeAt", "heldAt", "resultAt"],
   ["applyMethod", "applyLink", "email", "tel", "fee", "prize"],
-  ["posterUrl", "description"],
+  ["posterUrl", "contentImages", "description"],
 ]
 
 const inputClass =
@@ -49,6 +49,7 @@ const Err = ({ message }: { message: string }) => <p className="mt-1 text-xs fon
  */
 const CompetitionForm = ({ competition, isLoading, onSubmit }: Props) => {
   const fileUploader = useRef<HTMLInputElement>(null)
+  const contentUploader = useRef<HTMLInputElement>(null)
   const { successToast, errorToast } = useToast()
   const [isUploadLoading, uploadTransition] = useLoading()
   const [step, setStep] = useState(0)
@@ -83,6 +84,7 @@ const CompetitionForm = ({ competition, isLoading, onSubmit }: Props) => {
       prize: competition?.prize ?? "",
       description: competition?.description ?? "",
       posterUrl: competition?.posterUrl ?? "",
+      contentImages: competition?.contentImages ?? [],
     },
   })
 
@@ -90,6 +92,7 @@ const CompetitionForm = ({ competition, isLoading, onSubmit }: Props) => {
   const ages = watch("ages") ?? []
   const applyMethod = watch("applyMethod")
   const posterUrl = watch("posterUrl")
+  const contentImages = (watch("contentImages") ?? []) as string[]
 
   const toggle = (key: "divisions" | "ages", value: string) => {
     const current = (watch(key) ?? []) as string[]
@@ -105,6 +108,21 @@ const CompetitionForm = ({ competition, isLoading, onSubmit }: Props) => {
       errorToast(error.message)
     }
   }
+
+  const handleContentFiles = async (files: File[]) => {
+    if (contentImages.length + files.length > 20) {
+      errorToast("본문 이미지는 20장까지 올릴 수 있습니다.")
+      return
+    }
+    try {
+      const uploaded = await uploadTransition(uploadImages(UploadTarget.JOB, files, true))
+      setValue("contentImages", [...contentImages, ...uploaded.images.map(image => image.url as string)], { shouldDirty: true })
+      successToast(`${uploaded.images.length}장을 올렸습니다.`)
+    } catch (error: any) {
+      errorToast(error.message)
+    }
+  }
+  const removeContentImage = (index: number) => setValue("contentImages", contentImages.filter((_, i) => i !== index), { shouldDirty: true })
 
   const next = async () => {
     const valid = await trigger(STEP_FIELDS[step])
@@ -259,6 +277,7 @@ const CompetitionForm = ({ competition, isLoading, onSubmit }: Props) => {
                 ["LINK", "주최 홈페이지·접수 폼 링크", "참가자가 외부 페이지에서 접수합니다"],
                 ["EMAIL", "이메일 접수", "참가 신청서를 메일로 받습니다"],
                 ["POST", "우편·방문 접수", "주소와 안내를 소개란에 적어 주세요"],
+                ["CONTACT", "전화 등 주최에 직접 문의", "접수 링크·이메일 없이 전화번호와 안내만 적습니다"],
               ] as const
             ).map(([value, label, desc]) => (
               <label
@@ -331,6 +350,23 @@ const CompetitionForm = ({ competition, isLoading, onSubmit }: Props) => {
           </div>
         </Field>
         <Field>
+          <Label hint="공고문·요강을 그림으로 올린 경우. 포스터와 별개로 여러 장, 20장까지">본문 이미지</Label>
+          <div className="flex flex-wrap gap-2">
+            {contentImages.map((url, index) => (
+              <div key={url} className="relative h-24 w-[72px] overflow-hidden rounded-lg border border-[#E5E8EB]">
+                <FallbackImage src={url} alt={`본문 이미지 ${index + 1}`} fill sizes="72px" className="object-cover" />
+                <button type="button" onClick={() => removeContentImage(index)} aria-label="삭제" className="absolute right-1 top-1 grid h-5 w-5 place-items-center rounded-full bg-[#191F28]/70 text-[11px] font-bold text-white">
+                  ×
+                </button>
+              </div>
+            ))}
+            <button type="button" onClick={() => contentUploader.current?.click()} disabled={isUploadLoading || contentImages.length >= 20} className="flex h-24 w-[72px] items-center justify-center rounded-lg border border-dashed border-[#D1D6DB] bg-[#F7F8FA] text-[13px] font-semibold text-[#6B7684] disabled:opacity-40">
+              + 추가
+            </button>
+          </div>
+          <ErrorMessage errors={errors} name="contentImages" render={({ message }) => <Err message={message} />} />
+        </Field>
+        <Field>
           <Label>소개·안내 문구</Label>
           <textarea {...register("description")} rows={6} placeholder="대회 소개, 심사 방식, 과제곡 안내, 우편 접수 주소 등" className={`${inputClass} h-auto py-2.5 leading-6`} />
         </Field>
@@ -368,6 +404,7 @@ const CompetitionForm = ({ competition, isLoading, onSubmit }: Props) => {
       </div>
 
       <FileUploader ref={fileUploader} uploadedFiles={handleUploadedFiles} />
+      <FileUploader ref={contentUploader} uploadedFiles={handleContentFiles} multiple />
     </form>
   )
 }
