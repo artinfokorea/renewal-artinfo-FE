@@ -1,6 +1,7 @@
 import { JOB, JobType } from "@/types/jobs"
 import { NEWS } from "@/types/news"
 import { PERFORMANCE_DETAIL } from "@/types/performances"
+import { COMPETITION } from "@/types/competitions"
 import { LESSON } from "@/types/lessons"
 import { Post } from "@/types/posts"
 import {
@@ -264,4 +265,44 @@ export const postJsonLd = (post: Post): JsonLdObject => {
       },
     ],
   }
+}
+
+/**
+ * 콩쿠르 상세 — schema.org Event. 대회일(heldAt)이 있으면 그날, 없으면 접수 마감일을 startDate 로 둔다.
+ * 접수 링크가 있으면 offers(접수)로, 참가비는 그 설명으로 넣는다.
+ */
+export const competitionEventJsonLd = (competition: COMPETITION): JsonLdObject => {
+  const path = `/competitions/${competition.id}`
+  const summary = [competition.host, competition.divisions.join("·"), competition.ages.join("·"), competition.area]
+    .filter(Boolean)
+    .join(" | ")
+  const data: JsonLdObject = {
+    "@context": "https://schema.org",
+    "@type": "Event",
+    name: competition.title,
+    description: htmlToPlainText(competition.description, 500) || summary || competition.title,
+    startDate: toIsoDate(competition.heldAt || competition.closeAt),
+    eventStatus: "https://schema.org/EventScheduled",
+    eventAttendanceMode: "https://schema.org/OfflineEventAttendanceMode",
+    image: competition.posterUrl ? [competition.posterUrl] : undefined,
+    url: absoluteUrl(path),
+    inLanguage: "ko-KR",
+    location: {
+      "@type": "Place",
+      name: competition.venue || competition.area,
+      address: { "@type": "PostalAddress", addressRegion: competition.area, addressCountry: "KR" },
+    },
+    organizer: { "@type": "Organization", name: competition.organizer || competition.host },
+  }
+  if (competition.applyLink) {
+    data.offers = {
+      "@type": "Offer",
+      url: competition.applyLink,
+      availability: competition.phase === "CLOSED" ? "https://schema.org/SoldOut" : "https://schema.org/InStock",
+      validFrom: toIsoDate(competition.openAt),
+      validThrough: toIsoDate(competition.closeAt),
+      ...(competition.fee ? { description: competition.fee } : {}),
+    }
+  }
+  return data
 }

@@ -59,17 +59,19 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     { url: `${SITE_URL}/jobs?jobTimeType=PART_TIME`, lastModified: now, changeFrequency: "daily", priority: 0.8 },
     { url: `${SITE_URL}/lessons`, lastModified: now, changeFrequency: "daily", priority: 0.8 },
     { url: `${SITE_URL}/performances`, lastModified: now, changeFrequency: "daily", priority: 0.8 },
+    { url: `${SITE_URL}/competitions`, lastModified: now, changeFrequency: "daily", priority: 0.8 },
     { url: `${SITE_URL}/news`, lastModified: now, changeFrequency: "daily", priority: 0.8 },
     { url: `${SITE_URL}/posts`, lastModified: now, changeFrequency: "daily", priority: 0.7 },
     { url: `${SITE_URL}/inquiry`, lastModified: now, changeFrequency: "yearly", priority: 0.3 },
   ]
 
-  const [jobs, partTimeJobs, lessons, performances, news, posts] =
+  const [jobs, partTimeJobs, lessons, performances, competitions, news, posts] =
     await Promise.all([
       fetchAll("/jobs", "jobs"),
       fetchAll("/jobs/part-time", "jobs"),
       fetchAll("/lessons", "lessons"),
       fetchAll("/performances", "performances"),
+      fetchAll("/competitions", "competitions"),
       fetchAll("/news", "news"),
       fetchAll("/posts", "posts"),
     ])
@@ -80,6 +82,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     ...toEntries(partTimeJobs, id => `/jobs/part-time/${id}`, { changeFrequency: "weekly", priority: 0.7 }),
     ...toEntries(lessons, id => `/lessons/${id}`, { changeFrequency: "monthly", priority: 0.6 }),
     ...toEntries(performances, id => `/performances/${id}`, { changeFrequency: "weekly", priority: 0.7 }),
+    ...toEntries(competitions, id => `/competitions/${id}`, { changeFrequency: "weekly", priority: 0.7 }),
     ...toEntries(news, id => `/news/${id}`, { changeFrequency: "monthly", priority: 0.7 }),
     ...toEntries(posts, id => `/posts/${id}`, { changeFrequency: "weekly", priority: 0.5 }),
   ]

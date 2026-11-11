@@ -3,7 +3,7 @@ import React from "react"
 import CompetitionDetailClient from "@/components/competitions/CompetitionDetailClient"
 import JsonLd from "@/components/seo/JsonLd"
 import GetQueryClient from "@/lib/GetQueryClient"
-import { breadcrumbJsonLd } from "@/lib/jsonld"
+import { breadcrumbJsonLd, competitionEventJsonLd } from "@/lib/jsonld"
 import { queries } from "@/lib/queries"
 import { DEFAULT_OG_IMAGE, pickDescription } from "@/lib/seo"
 import { COMPETITION } from "@/types/competitions"
@@ -45,6 +45,7 @@ const page = async ({ params }: Props) => {
       {competition && (
         <JsonLd
           data={[
+            competitionEventJsonLd(competition),
             breadcrumbJsonLd([
               { name: "홈", path: "/" },
               { name: "콩쿠르", path: "/competitions" },
