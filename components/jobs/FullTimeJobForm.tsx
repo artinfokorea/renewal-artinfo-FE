@@ -145,7 +145,7 @@ const FullTimeJobForm = ({ handleFullTimeJob, isLoading, job, initialType }: Pro
   return (
     <form
       onSubmit={handleSubmit(payload => handleFullTimeJob(payload, type), onInvalid)}
-      className="mx-auto max-w-[720px] px-4 pb-28 pt-5 [overflow-wrap:anywhere] [word-break:keep-all] md:px-6 md:pt-10"
+      className="mx-auto max-w-[720px] px-4 pb-44 pt-5 [overflow-wrap:anywhere] [word-break:keep-all] md:px-6 md:pt-10 lg:pb-28"
     >
       <h1 className="text-[22px] font-extrabold tracking-tight text-[#191F28] md:text-[26px]">{job ? "채용 수정" : "채용 등록"}</h1>
       <p className="mt-1 text-[13px] text-[#6B7684] md:text-[14px]">
@@ -273,8 +273,8 @@ const FullTimeJobForm = ({ handleFullTimeJob, isLoading, job, initialType }: Pro
         </Field>
       </Section>
 
-      {/* 하단 고정 바 — 남은 필수 항목 수 + 등록 */}
-      <div className="fixed inset-x-0 bottom-0 z-30 border-t border-[#E5E8EB] bg-white/90 backdrop-blur">
+      {/* 하단 고정 바 — 남은 필수 항목 수 + 등록. lg 미만에서는 모바일 탭바(h-20) 위에 올린다 */}
+      <div className="fixed inset-x-0 bottom-20 z-30 border-t border-[#E5E8EB] bg-white/90 backdrop-blur lg:bottom-0">
         <div className="mx-auto flex max-w-[720px] items-center gap-3 px-4 py-3 md:px-6">
           <span className="flex items-center gap-1.5 text-[13px] text-[#6B7684]">
             <i className={`h-2 w-2 rounded-full ${remaining ? "bg-error" : "bg-green"}`} />
