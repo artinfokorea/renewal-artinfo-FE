@@ -24,21 +24,34 @@ const SESSION_GAP_MS = 30 * 60 * 1000
  */
 const ENGAGED_VISIBLE_MS = 10 * 1000
 const ENGAGED_PAGE_VIEWS = 2
+/**
+ * 'scroll' 은 넣지 않는다 — 크롤러가 window.scrollTo() 로 내려도 scroll 이벤트가 나므로 사람 입력의 증거가 못 된다.
+ * 휠·포인터·터치·키는 실제 입력 장치에서만 (isTrusted) 생긴다.
+ */
 const INPUT_EVENTS = [
   "pointermove",
   "pointerdown",
   "touchstart",
   "keydown",
   "wheel",
-  "scroll",
 ] as const
 
 /** 검색 로봇·크롤러·자동화 브라우저 (서버도 같은 기준으로 한 번 더 거른다) */
 const BOT_UA =
   /bot|crawl|spider|slurp|yeti|daum\/|bingpreview|facebookexternalhit|headless|phantomjs|puppeteer|playwright|lighthouse/i
 
-const isBot = () =>
-  navigator.webdriver === true || BOT_UA.test(navigator.userAgent || "")
+/**
+ * 자동화 브라우저 판별.
+ * - navigator.webdriver: Selenium·Puppeteer·Playwright 기본값
+ * - 데스크톱 Chrome 인데 플러그인이 0개: 실제 Chrome 은 PDF 뷰어 플러그인이 항상 있고, 헤드리스·자동화 프로필은 비어 있다
+ */
+const isBot = () => {
+  const ua = navigator.userAgent || ""
+  if (navigator.webdriver === true || BOT_UA.test(ua)) return true
+  const desktopChrome = /Chrome\//.test(ua) && !/Mobile|Android|iPhone|iPad/.test(ua)
+  if (desktopChrome && navigator.plugins && navigator.plugins.length === 0) return true
+  return false
+}
 
 const uuidV4 = () => {
   const c: Crypto = window.crypto
@@ -181,7 +194,9 @@ const ActivityTracker = () => {
     const onPageHide = () => send(true)
 
     // 첫 입력이 들어오면 그 뒤로는 안 듣는다. 이미 10초를 넘겼다면 그 자리에서 첫 전송
-    const onFirstInput = () => {
+    // 스크립트가 만든 이벤트(dispatchEvent)는 사람 입력으로 치지 않는다
+    const onFirstInput = (event: Event) => {
+      if (!event.isTrusted) return
       hasInput = true
       INPUT_EVENTS.forEach(e => window.removeEventListener(e, onFirstInput))
       if (!engaged) send()
