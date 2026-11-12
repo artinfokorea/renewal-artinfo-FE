@@ -12,6 +12,10 @@ interface Props extends Omit<ImageProps, "src"> {
   isImageLoading: boolean
   openFileUploader: () => void
   className?: string
+  /** 빈 상태 제목 (기본: 대표 이미지를 등록해주세요.) */
+  title?: string
+  /** 빈 상태 보조 설명 — 선택 항목임을 알릴 때 쓴다 */
+  description?: string
 }
 
 const ImageField = ({
@@ -21,6 +25,8 @@ const ImageField = ({
   deleteImage,
   openFileUploader,
   className,
+  title = "대표 이미지를 등록해주세요.",
+  description,
 }: Props) => {
   return (
     <>
@@ -50,9 +56,12 @@ const ImageField = ({
         >
           <div className="flex flex-col items-center gap-2">
             <PhotoIcon className="h-12 w-12 text-dimgray" />
-            <h5 className="text-sm font-bold md:text-base">
-              대표 이미지를 등록해주세요.
-            </h5>
+            <h5 className="text-sm font-bold md:text-base">{title}</h5>
+            {description ? (
+              <p className="px-4 text-center text-xs text-silver md:text-sm">
+                {description}
+              </p>
+            ) : null}
           </div>
           <Button
             type="button"
