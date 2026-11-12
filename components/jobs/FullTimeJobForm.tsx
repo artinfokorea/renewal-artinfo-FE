@@ -1,26 +1,23 @@
+"use client"
+
 import { ErrorMessage } from "@hookform/error-message"
 import React, { useRef, useState } from "react"
-import { Input } from "@headlessui/react"
+import Image from "next/image"
 import { useRouter } from "next/navigation"
-import { useForm } from "react-hook-form"
+import { FieldErrors, useForm } from "react-hook-form"
 import { yupResolver } from "@hookform/resolvers/yup"
 import dynamic from "next/dynamic"
 import * as yup from "yup"
+import { useLoading } from "@toss/use-loading"
 import FileUploader from "../common/FileUploader"
-import { Button } from "../ui/button"
-import PlusIcon from "../icons/PlusIcon"
-import CloseIcon from "../icons/CloseIcon"
-import MajorDialog from "../dialog/MajorDialog"
-import { Badge } from "../ui/badge"
-import PostCodeDialog from "../dialog/PostCodeDialog"
-import { MAJOR } from "@/types/majors"
-import { JOB } from "@/types/jobs"
-import useToast from "@/hooks/useToast"
-import ImageField from "../common/ImageField"
 import { Spinner } from "../common/Loading"
+import PostCodeDialog from "../dialog/PostCodeDialog"
+import MajorChipPicker from "./MajorChipPicker"
+import { MAJOR } from "@/types/majors"
+import { JOB, JobType, JobTypeList } from "@/types/jobs"
+import useToast from "@/hooks/useToast"
 import { jobSchema } from "@/lib/schemas"
 import { uploadImages } from "@/services/system"
-import { useLoading } from "@toss/use-loading"
 import { UploadTarget } from "@/types"
 
 const CKEditor = dynamic(() => import("@/components/ckEditor/CKEditor"), {
@@ -35,24 +32,64 @@ const CKEditor = dynamic(() => import("@/components/ckEditor/CKEditor"), {
 export type CreateFulltimeJobFormData = yup.InferType<typeof jobSchema>
 
 interface Props {
-  handleFullTimeJob: (payload: CreateFulltimeJobFormData) => void
+  handleFullTimeJob: (payload: CreateFulltimeJobFormData, type: JobType) => void
   isLoading: boolean
   job?: JOB
-  withImage?: boolean
+  /** 등록 화면의 처음 분류 (링크로 넘어온 ?jobType=). 수정 화면은 job.type 으로 잠긴다 */
+  initialType?: JobType
 }
 
-const FullTimeJobForm = ({
-  handleFullTimeJob,
-  isLoading,
-  job,
-  withImage,
-}: Props) => {
+/** 분류별 짧은 설명 — 세그먼트 아래 작은 글씨 (데스크톱만) */
+const TYPE_HINT: Record<JobType, string> = {
+  [JobType.ART_ORGANIZATION]: "오케스트라·합창단·재단",
+  [JobType.RELIGION]: "교회·성당 반주·성가대",
+  [JobType.LECTURER]: "강사·교수·학원",
+  [JobType.AMATEUR]: "",
+  [JobType.YOUTH]: "",
+}
+
+const inputClass =
+  "h-11 w-full rounded-[10px] border border-[#E5E8EB] bg-white px-3 text-[15px] text-[#191F28] placeholder:text-[#8B95A1] focus:border-[#191F28] focus:outline-none disabled:bg-[#F7F8FA]"
+const Label = ({ children, required, hint }: { children: React.ReactNode; required?: boolean; hint?: string }) => (
+  <label className="mb-1.5 block text-[13px] font-semibold text-[#4E5968]">
+    {children}
+    {required && <i className="ml-0.5 not-italic text-error">*</i>}
+    {hint && <span className="ml-1.5 text-[12px] font-normal text-[#8B95A1]">{hint}</span>}
+  </label>
+)
+const Field = ({ children, name, className = "" }: { children: React.ReactNode; name?: string; className?: string }) => (
+  <div data-field={name} className={`mb-4 last:mb-0 ${className}`}>
+    {children}
+  </div>
+)
+const Err = ({ message }: { message: string }) => <p className="mt-1 text-xs font-medium text-error">{message}</p>
+const Section = ({ title, optional, children }: { title: string; optional?: boolean; children: React.ReactNode }) => (
+  <section className="mt-4 rounded-2xl border border-[#E5E8EB] p-5 md:p-6">
+    <h2 className="mb-4 flex items-center gap-2 text-[16px] font-extrabold text-[#191F28]">
+      {title}
+      {optional && <span className="rounded-md bg-[#F7F8FA] px-1.5 py-0.5 text-[12px] font-semibold text-[#8B95A1]">선택</span>}
+    </h2>
+    {children}
+  </section>
+)
+
+/** 등록 전 남은 필수 항목 수 — 하단 바에 보여 준다 (yup 스키마의 필수 항목과 같은 목록) */
+const REQUIRED: (keyof CreateFulltimeJobFormData)[] = ["title", "companyName", "majors", "address", "addressDetail", "contents"]
+
+/**
+ * 채용 등록·수정 (예술단체·종교·대학/학원 공통). 연주 대타는 PartTimeForm.
+ * 분류는 폼 맨 위 세그먼트로 고르고, 종교는 대표 이미지 없이 등록한다.
+ * 라벨·필수 표시·섹션 카드는 콩쿠르 등록(CompetitionForm)과 같은 체계.
+ */
+const FullTimeJobForm = ({ handleFullTimeJob, isLoading, job, initialType }: Props) => {
   const router = useRouter()
   const fileUploader = useRef<HTMLInputElement>(null)
-  const [isMajorDialog, setIsMajorDialog] = useState(false)
   const [isPostDialog, setIsPostDialog] = useState(false)
+  const [type, setType] = useState<JobType>(job?.type ?? initialType ?? JobType.ART_ORGANIZATION)
   const { successToast, errorToast } = useToast()
-  const [isUploadLoading, uploadTrasition] = useLoading()
+  const [isUploadLoading, uploadTransition] = useLoading()
+  const withImage = type !== JobType.RELIGION
+  const types = JobTypeList.filter(item => item.value !== JobType.AMATEUR && item.value !== JobType.YOUTH)
 
   const {
     register,
@@ -74,238 +111,199 @@ const FullTimeJobForm = ({
       recruitSiteUrl: job?.recruitSiteUrl || "",
     },
   })
-
-  const openFileUploader = () => {
-    fileUploader.current?.click()
-  }
-
-  const deleteImage = () => setValue("imageUrl", "")
+  const values = watch()
+  const remaining = REQUIRED.filter(key => {
+    const value = values[key]
+    return Array.isArray(value) ? value.length === 0 : !String(value ?? "").trim()
+  }).length
 
   const handleUploadedFiles = async (files: File[]) => {
     try {
-      const uploadResponse = await uploadTrasition(
-        uploadImages(UploadTarget.JOB, files, true),
-      )
-      successToast("채용 이미지가 등록되었습니다.")
+      const uploadResponse = await uploadTransition(uploadImages(UploadTarget.JOB, files, true))
       setValue("imageUrl", uploadResponse.images[0].url as string)
+      successToast("대표 이미지를 올렸습니다.")
     } catch (error: any) {
       errorToast(error.message)
-      console.log(error)
     }
   }
 
-  const handleSelectMajor = (selectedMajor: MAJOR) => {
-    const majorIds = watch("majors")?.map(major => major.id)
+  const toggleMajor = (major: MAJOR) => {
+    const current = watch("majors") || []
+    const next = current.some(item => item.id === major.id) ? current.filter(item => item.id !== major.id) : [...current, major]
+    setValue("majors", next, { shouldValidate: next.length > 0 })
+    if (next.length > 0) clearErrors("majors")
+  }
 
-    if (majorIds?.includes(selectedMajor.id)) {
-      setValue(
-        "majors",
-        watch("majors")?.filter(major => major.id !== selectedMajor.id),
-      )
-    } else {
-      const mergedMajors = [...(watch("majors") || []), selectedMajor]
-
-      setValue("majors", mergedMajors)
-    }
+  /** 등록을 눌렀는데 틀린 칸이 있으면 첫 칸으로 옮기고 토스트로 알린다 */
+  const onInvalid = (invalid: FieldErrors<CreateFulltimeJobFormData>) => {
+    const first = Object.keys(invalid)[0]
+    const firstMessage = Object.values(invalid).find(error => error?.message)?.message as string | undefined
+    document.querySelector(`[data-field="${first}"]`)?.scrollIntoView({ behavior: "smooth", block: "center" })
+    errorToast(firstMessage ?? "입력을 확인해 주세요.")
   }
 
   return (
     <form
-      className="mx-auto max-w-screen-lg px-2 py-4"
-      onSubmit={handleSubmit(handleFullTimeJob)}
+      onSubmit={handleSubmit(payload => handleFullTimeJob(payload, type), onInvalid)}
+      className="mx-auto max-w-[720px] px-4 pb-28 pt-5 [overflow-wrap:anywhere] [word-break:keep-all] md:px-6 md:pt-10"
     >
-      <h2 className="my-4 text-center font-bold md:my-12 md:text-2xl">
-        채용 등록
-      </h2>
-      <div className="flex flex-col lg:flex-row">
-        {withImage && (
-          <ImageField
-            imageUrl={watch("imageUrl") || ""}
-            isImageLoading={isUploadLoading}
-            alt="job_company_image"
-            deleteImage={deleteImage}
-            openFileUploader={openFileUploader}
-            title="대표 이미지 (선택)"
-            className="h-[190px] w-full md:h-[300px] lg:h-[244px] lg:w-[400px]"
-          />
-        )}
-        <div
-          className={`flex flex-1 flex-col text-dimgray ${
-            withImage ? "lg:ml-16" : "w-full"
-          }`}
-        >
-          <div className="md:mt:0 mb-2">
-            <Input
-              {...register("title")}
-              className="w-full border-b-2 border-whitesmoke py-2 focus:outline-none"
-              placeholder="제목을 입력해주세요."
-            />
-            <ErrorMessage
-              errors={errors}
-              name="title"
-              render={({ message }) => (
-                <p className="text-xs font-semibold text-error">{message}</p>
-              )}
-            />
-          </div>
-          <div className="mb-2">
-            <Input
-              {...register("companyName")}
-              className="w-full border-b-2 border-whitesmoke py-2 focus:outline-none"
-              placeholder="단체 이름을 입력해주세요."
-            />
-            <ErrorMessage
-              errors={errors}
-              name="companyName"
-              render={({ message }) => (
-                <p className="text-xs font-semibold text-error">{message}</p>
-              )}
-            />
-          </div>
-          <div className="mb-2">
-            <Input
-              {...register("recruitSiteUrl")}
-              className="w-full border-b-2 border-whitesmoke py-2 focus:outline-none"
-              placeholder="사이트 주소를 입력해주세요. 예): https://naver.com"
-            />
-            <ErrorMessage
-              errors={errors}
-              name="recruitSiteUrl"
-              render={({ message }) => (
-                <p className="text-xs font-semibold text-error">{message}</p>
-              )}
-            />
-          </div>
-          {/* 전공: 개수 제한이 없어 고른 전공을 모두 줄바꿈으로 보여주고, 각 배지에서 바로 뺄 수 있다 */}
-          <div className="my-2 flex flex-col gap-2">
-            <div className="flex items-center gap-2">
-              <Button
-                type="button"
-                onClick={() => setIsMajorDialog(!isMajorDialog)}
-                className="flex h-8 gap-1 rounded-full border text-sm text-main"
-              >
-                <PlusIcon className="h-4 w-4 text-main" />
-                <span>전공</span>
-              </Button>
-              {!errors.majors &&
-                (watch("majors").length === 0 ? (
-                  <span className="text-sm text-silver">
-                    모집하는 전공을 선택해주세요.
-                  </span>
-                ) : (
-                  <span className="text-sm text-silver">
-                    <span className="font-semibold text-main">
-                      {watch("majors").length}
-                    </span>
-                    개 선택
-                  </span>
-                ))}
-            </div>
-            {watch("majors").length > 0 && (
-              <ul aria-label="선택한 전공" className="flex flex-wrap gap-1.5">
-                {watch("majors").map((major: MAJOR) => (
-                  <li key={major.id}>
-                    <Badge className="h-8 gap-1 whitespace-nowrap bg-main pr-1.5 text-xs text-white md:text-sm">
-                      {major.koName}
-                      <button
-                        type="button"
-                        aria-label={`${major.koName} 삭제`}
-                        onClick={() => handleSelectMajor(major)}
-                        className="rounded-full p-0.5 hover:bg-white/20"
-                      >
-                        <CloseIcon className="h-3.5 w-3.5" />
-                      </button>
-                    </Badge>
-                  </li>
-                ))}
-              </ul>
-            )}
-            <ErrorMessage
-              errors={errors}
-              name="majors"
-              render={({ message }) => (
-                <p className="text-xs font-semibold text-error">{message}</p>
-              )}
-            />
-          </div>
-          <div className="flex h-20 gap-4">
-            <Button
+      <h1 className="text-[22px] font-extrabold tracking-tight text-[#191F28] md:text-[26px]">{job ? "채용 수정" : "채용 등록"}</h1>
+      <p className="mt-1 text-[13px] text-[#6B7684] md:text-[14px]">
+        등록하면 바로 게시됩니다. <i className="not-italic text-error">*</i> 표시는 필수 항목입니다.
+      </p>
+
+      {/* 분류 — 수정 중에는 바꿀 수 없다 (목록·API 가 분류별이라) */}
+      <div role="tablist" aria-label="채용 분류" className="mt-5 grid grid-cols-3 gap-1 rounded-[14px] bg-[#F7F8FA] p-1">
+        {types.map(item => {
+          const on = item.value === type
+          return (
+            <button
+              key={item.value}
               type="button"
-              onClick={() => setIsPostDialog(!isPostDialog)}
-              className="h-8 border text-sm text-main"
+              role="tab"
+              aria-selected={on}
+              disabled={!!job && !on}
+              onClick={() => setType(item.value)}
+              className={`flex h-11 flex-col items-center justify-center rounded-[10px] text-[14px] leading-tight disabled:opacity-40 md:h-12 ${on ? "bg-white font-bold text-[#191F28] shadow-sm" : "font-semibold text-[#6B7684]"}`}
             >
-              주소검색
-            </Button>
-            <div className="w-full">
-              <Input
-                disabled
-                value={watch("address")}
-                placeholder="주소검색을 통해 주소를 입력해주세요."
-                className="w-full border-b-2 border-whitesmoke py-2 focus:outline-none disabled:bg-white"
-              />
-              <ErrorMessage
-                errors={errors}
-                name="address"
-                render={({ message }) => (
-                  <p className="text-xs font-semibold text-error">{message}</p>
-                )}
-              />
-              <Input
-                {...register("addressDetail")}
-                placeholder="상세 주소를 입력해주세요."
-                className="w-full border-b-2 border-whitesmoke py-2 focus:outline-none"
-              />
-              <ErrorMessage
-                errors={errors}
-                name="addressDetail"
-                render={({ message }) => (
-                  <p className="text-xs font-semibold text-error">{message}</p>
-                )}
-              />
+              {item.title}
+              {TYPE_HINT[item.value] && <small className={`hidden text-[11px] font-medium md:block ${on ? "text-[#6B7684]" : "text-[#8B95A1]"}`}>{TYPE_HINT[item.value]}</small>}
+            </button>
+          )
+        })}
+      </div>
+
+      {withImage && (
+        <Section title="대표 이미지" optional>
+          <div className="flex items-center gap-4">
+            <button
+              type="button"
+              onClick={() => fileUploader.current?.click()}
+              disabled={isUploadLoading}
+              aria-label={values.imageUrl ? "대표 이미지 바꾸기" : "대표 이미지 올리기"}
+              className="relative aspect-[400/244] w-[128px] shrink-0 overflow-hidden rounded-xl border border-dashed border-[#D1D6DB] bg-[#F7F8FA] md:w-[176px]"
+            >
+              {values.imageUrl ? (
+                <Image src={values.imageUrl} alt="" fill sizes="176px" className="object-cover" />
+              ) : (
+                <span className="flex h-full flex-col items-center justify-center gap-1 text-[12px] font-semibold text-[#8B95A1] md:text-[13px]">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" className="h-6 w-6">
+                    <rect x="3" y="5" width="18" height="14" rx="2" />
+                    <circle cx="9" cy="10" r="2" />
+                    <path d="M21 16l-5-5-8 8" />
+                  </svg>
+                  이미지 선택
+                </span>
+              )}
+              {isUploadLoading && (
+                <span className="absolute inset-0 grid place-items-center bg-black/30">
+                  <Spinner className="h-6 w-6" />
+                </span>
+              )}
+            </button>
+            <div className="min-w-0 text-[12px] leading-relaxed text-[#8B95A1] md:text-[13px]">
+              <b className="block text-[13px] font-bold text-[#191F28] md:text-[14px]">이미지가 있는 공고가 더 많이 열립니다</b>
+              <span className="hidden md:inline">목록 썸네일과 상세 상단에 보입니다. 포스터·로고·단체 사진 모두 괜찮습니다. 없으면 단체명으로 표시됩니다.</span>
+              <span className="md:hidden">포스터·로고 모두 괜찮아요</span>
+              {values.imageUrl && (
+                <button type="button" onClick={() => setValue("imageUrl", "")} className="mt-1 block text-[12px] font-semibold text-[#6B7684] underline underline-offset-2">
+                  이미지 지우기
+                </button>
+              )}
             </div>
           </div>
+        </Section>
+      )}
+
+      <Section title="기본 정보">
+        <Field name="title">
+          <Label required>제목</Label>
+          <div className="relative">
+            <input {...register("title")} maxLength={50} placeholder="예) 2026 시즌 제2바이올린 단원 모집" className={`${inputClass} pr-14`} />
+            <span className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 text-[12px] text-[#8B95A1]">{(values.title ?? "").length}/50</span>
+          </div>
+          <ErrorMessage errors={errors} name="title" render={({ message }) => <Err message={message} />} />
+        </Field>
+        <Field name="companyName">
+          <Label required>단체명</Label>
+          <input {...register("companyName")} maxLength={20} placeholder="예) 서울시립교향악단" className={inputClass} />
+          <ErrorMessage errors={errors} name="companyName" render={({ message }) => <Err message={message} />} />
+        </Field>
+        <Field name="majors">
+          <Label required hint="여러 개 선택">모집 전공</Label>
+          <MajorChipPicker selected={values.majors || []} onToggle={toggleMajor} />
+          <ErrorMessage errors={errors} name="majors" render={({ message }) => <Err message={message} />} />
+        </Field>
+      </Section>
+
+      <Section title="근무지">
+        <Field name="address">
+          <Label required>주소</Label>
+          <div className="flex gap-2">
+            <input value={values.address} readOnly placeholder="주소 검색" onClick={() => setIsPostDialog(true)} className={`${inputClass} cursor-pointer`} />
+            <button type="button" onClick={() => setIsPostDialog(true)} className="h-11 shrink-0 rounded-[10px] border border-[#E5E8EB] px-4 text-[14px] font-bold text-[#191F28]">
+              검색
+            </button>
+          </div>
+          <ErrorMessage errors={errors} name="address" render={({ message }) => <Err message={message} />} />
+        </Field>
+        <Field name="addressDetail">
+          <Label required>상세 주소</Label>
+          <input {...register("addressDetail")} placeholder="예) 3층 연습실" className={inputClass} />
+          <ErrorMessage errors={errors} name="addressDetail" render={({ message }) => <Err message={message} />} />
+        </Field>
+      </Section>
+
+      <Section title="접수" optional>
+        <p className="-mt-2 mb-3 text-[13px] text-[#6B7684]">링크가 있으면 상세 화면에 지원하기 버튼이 생깁니다. 없으면 공고 내용의 안내를 따릅니다.</p>
+        <Field name="recruitSiteUrl">
+          <Label>접수 사이트 링크</Label>
+          <input {...register("recruitSiteUrl")} inputMode="url" placeholder="https://" className={inputClass} />
+          <ErrorMessage errors={errors} name="recruitSiteUrl" render={({ message }) => <Err message={message} />} />
+        </Field>
+      </Section>
+
+      <Section title="공고 내용">
+        <Field name="contents">
+          <Label required>모집 분야, 자격, 전형 일정, 접수 방법, 문의처</Label>
+          <div className="h-[320px] md:h-[460px]">
+            <CKEditor value={values.contents} onChange={(value: string) => setValue("contents", value, { shouldValidate: !!value })} />
+          </div>
+          <ErrorMessage errors={errors} name="contents" render={({ message }) => <Err message={message} />} />
+        </Field>
+      </Section>
+
+      {/* 하단 고정 바 — 남은 필수 항목 수 + 등록 */}
+      <div className="fixed inset-x-0 bottom-0 z-30 border-t border-[#E5E8EB] bg-white/90 backdrop-blur">
+        <div className="mx-auto flex max-w-[720px] items-center gap-3 px-4 py-3 md:px-6">
+          <span className="flex items-center gap-1.5 text-[13px] text-[#6B7684]">
+            <i className={`h-2 w-2 rounded-full ${remaining ? "bg-error" : "bg-green"}`} />
+            {remaining ? (
+              <>
+                필수 항목 <b className="text-error">{remaining}개</b> 남음
+              </>
+            ) : (
+              <b className="text-green">등록할 수 있어요</b>
+            )}
+          </span>
+          <span className="flex-1" />
+          <button type="button" onClick={() => router.back()} className="hidden h-11 rounded-xl px-4 text-[14px] font-bold text-[#6B7684] md:block">
+            취소
+          </button>
+          <button
+            type="submit"
+            disabled={isLoading || isUploadLoading}
+            className="h-11 min-w-[120px] rounded-xl bg-[#191F28] px-6 text-[15px] font-bold text-white disabled:opacity-40"
+          >
+            {isLoading ? <Spinner className="mx-auto h-5 w-5" /> : job ? "수정하기" : "등록하기"}
+          </button>
         </div>
       </div>
-      <div className="my-6 h-[300px] md:h-[500px]">
-        <CKEditor
-          value={watch("contents")}
-          onChange={(value: string) => setValue("contents", value)}
-        />
-        <ErrorMessage
-          errors={errors}
-          name="contents"
-          render={({ message }) => (
-            <p className="text-xs font-semibold text-error">{message}</p>
-          )}
-        />
-      </div>
-      <div className="mt-64 flex justify-end gap-2 md:mt-16">
-        <Button
-          type="button"
-          className="h-9 rounded-3xl border px-6 text-sm"
-          onClick={() => router.back()}
-        >
-          취소
-        </Button>
-        <Button
-          disabled={isLoading}
-          type="submit"
-          className="h-9 rounded-3xl bg-main px-6 text-sm text-white"
-        >
-          {isLoading ? <Spinner className="h-6 w-6" /> : job ? "수정" : "등록"}
-        </Button>
-      </div>
+
       <FileUploader ref={fileUploader} uploadedFiles={handleUploadedFiles} />
-      <MajorDialog
-        open={isMajorDialog}
-        close={() => setIsMajorDialog(!isMajorDialog)}
-        selectedMajors={watch("majors")}
-        handleSelectMajor={handleSelectMajor}
-        multiple={true}
-      />
       <PostCodeDialog
         isOpen={isPostDialog}
-        close={() => setIsPostDialog(!isPostDialog)}
+        close={() => setIsPostDialog(false)}
         setValue={address => {
           setValue("address", address)
           clearErrors("address")

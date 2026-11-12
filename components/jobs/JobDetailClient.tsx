@@ -30,7 +30,6 @@ const JobDetailCient = ({ job }: Props) => {
   const pathname = usePathname()
   const searchParams = useSearchParams()
   const pageType = searchParams.get("type") as "edit" | "create"
-  const jobType = searchParams.get("jobType") as JobType
   const [isLoginModalOpen, setIsLoginModalOpen] = useState(false)
   const { data } = useSession()
 
@@ -52,6 +51,7 @@ const JobDetailCient = ({ job }: Props) => {
 
   const handleUpdateFulltimeJob = async (
     payload: CreateFulltimeJobFormData,
+    jobType: JobType,
   ) => {
     const {
       title,
@@ -101,7 +101,6 @@ const JobDetailCient = ({ job }: Props) => {
           handleFullTimeJob={handleUpdateFulltimeJob}
           isLoading={isLoading}
           job={job}
-          withImage={jobType !== JobType.RELIGION}
         />
       ) : (
         <DetailContainer job={job} deleteJob={handleDeleteJob} />
