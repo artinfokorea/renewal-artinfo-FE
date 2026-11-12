@@ -126,7 +126,6 @@ const FullTimeJobForm = ({
             deleteImage={deleteImage}
             openFileUploader={openFileUploader}
             title="대표 이미지 (선택)"
-            description="없어도 등록할 수 있어요. 올리면 목록에서 공고가 더 눈에 띕니다."
             className="h-[190px] w-full md:h-[300px] lg:h-[244px] lg:w-[400px]"
           />
         )}
