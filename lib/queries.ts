@@ -1,9 +1,12 @@
 import { getAds } from "@/services/ad"
+import { AdminUsersParams } from "@/types/admin"
 import {
   getAdminBreakdown,
   getAdminDaily,
   getAdminEngagement,
   getAdminOverview,
+  getAdminUsers,
+  getAdminUsersSummary,
 } from "@/services/admin"
 import {
   getInfiniteFullTimeJobs,
@@ -278,6 +281,14 @@ const admin = createQueryKeys("admin", {
   engagement: (days: number) => ({
     queryKey: [days],
     queryFn: () => getAdminEngagement(days),
+  }),
+  usersSummary: () => ({
+    queryKey: [""],
+    queryFn: getAdminUsersSummary,
+  }),
+  users: (params: AdminUsersParams) => ({
+    queryKey: [params],
+    queryFn: () => getAdminUsers(params),
   }),
 })
 

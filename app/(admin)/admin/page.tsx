@@ -13,6 +13,7 @@ import DailyBarChart, { METRIC_LABEL } from "@/components/admin/DailyBarChart"
 import BarList from "@/components/admin/BarList"
 import RetentionTable from "@/components/admin/RetentionTable"
 import VisitorList from "@/components/admin/VisitorList"
+import AdminNav from "@/components/admin/AdminNav"
 import { formatDuration } from "@/components/admin/format"
 
 const RANGES = [7, 30, 90] as const
@@ -154,6 +155,7 @@ const AdminPage = () => {
         <h1 className="text-2xl font-bold tracking-tight text-[#191F28] md:text-[28px]">관리자</h1>
         <span className="text-[13px] text-[#8B95A1]">한국 시간 기준</span>
       </div>
+      <AdminNav />
 
       {/* 방문자 활동 */}
       <div className="mt-6 flex flex-col gap-4">

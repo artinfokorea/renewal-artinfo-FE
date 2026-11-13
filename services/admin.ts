@@ -1,10 +1,13 @@
-import { DetailApiResponse } from "@/interface"
+import { DetailApiResponse, SuccessResponse } from "@/interface"
 import { authApiRequest } from "."
 import {
   AdminBreakdown,
   AdminDaily,
   AdminEngagement,
   AdminOverview,
+  AdminUsers,
+  AdminUsersParams,
+  AdminUsersSummary,
   AdminVisitors,
 } from "@/types/admin"
 
@@ -54,3 +57,38 @@ export const getAdminVisitors = async (
   )
   return response.item
 }
+
+/* ---------- 회원 관리 ---------- */
+
+export const getAdminUsersSummary = async (): Promise<AdminUsersSummary> => {
+  const response = await authApiRequest.get<
+    DetailApiResponse<AdminUsersSummary>
+  >("/admin/users/summary")
+  return response.item
+}
+
+/* 회원 목록 — 필터·검색·페이지네이션 (가입 최신순) */
+export const getAdminUsers = async (
+  params: AdminUsersParams,
+): Promise<AdminUsers> => {
+  const response = await authApiRequest.get<DetailApiResponse<AdminUsers>>(
+    "/admin/users",
+    {
+      params: {
+        filter: params.filter,
+        q: params.q || undefined,
+        page: params.page,
+        size: params.size,
+      },
+    },
+  )
+  return response.item
+}
+
+/* 역할 변경 (ADMIN ↔ CLIENT) — 자기 자신은 서버가 거절 */
+export const updateAdminUserType = (id: number, type: "ADMIN" | "CLIENT") =>
+  authApiRequest.put<SuccessResponse>(`/admin/users/${id}/type`, { type })
+
+/* 탈퇴 처리 — 익명화 + soft delete + 푸시 토큰 삭제. 자기 자신·관리자는 서버가 거절 */
+export const withdrawAdminUser = (id: number) =>
+  authApiRequest.delete<SuccessResponse>(`/admin/users/${id}`)

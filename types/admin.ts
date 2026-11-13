@@ -106,3 +106,69 @@ export interface AdminVisitors {
   total: number
   visitors: AdminVisitor[]
 }
+
+/* ---------- 회원 관리 ---------- */
+
+export type AdminUserFilter =
+  | "all"
+  | "app"
+  | "web"
+  | "push_on"
+  | "push_off"
+  | "admin"
+  | "withdrawn"
+
+export interface AdminUsersSummary {
+  /** 회원 (탈퇴·관리자 제외) */
+  members: number
+  membersLast7d: number
+  admins: number
+  withdrawn: number
+  /** 앱 설치 회원 (푸시 토큰 1개 이상) */
+  appUsers: number
+  appUsersLast7d: number
+  appUsersIos: number
+  appUsersAndroid: number
+  /** 채용 알림 켠 / 끈 앱 회원 */
+  pushOn: number
+  pushOff: number
+  /** 등록된 기기(토큰) 수 */
+  devices: number
+}
+
+export interface AdminUser {
+  id: number
+  type: "ADMIN" | "CLIENT"
+  name: string
+  nickname: string
+  /** 마스킹된 이메일 */
+  email: string
+  /** 마스킹된 전화번호 */
+  phone: string | null
+  createdAt: string
+  deletedAt: string | null
+  lastLoginAt: string | null
+  loginTypes: string[]
+  hasApp: boolean
+  deviceCount: number
+  platforms: string[]
+  appInstalledAt: string | null
+  pushJob: boolean
+}
+
+export interface AdminUsersParams {
+  filter: AdminUserFilter
+  q: string
+  page: number
+  size: number
+}
+
+export interface AdminUsers {
+  total: number
+  page: number
+  size: number
+  totalPages: number
+  filter: string
+  query: string | null
+  users: AdminUser[]
+}
